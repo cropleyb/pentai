@@ -4,64 +4,55 @@ import unittest
 
 import pdb
 
-from pattern_conversion import *
+from update_substrips import *
+
+def pattern_string_to_int_list(occ_str):
+    ret = []
+    mapping = {
+        " ": 0, # empty
+        "U": 1, # us
+        "T": 2, # them
+    }
+    for occ in occ_str:
+        occ_int = mapping[occ]
+        ret.append(occ_int)
+    return ret
 
 
 class GameTest(unittest.TestCase):
-    def test_convert_empty(self):
-        pattern = "         "
-        templates = convert_to_hash_value_list(pattern)
+    def test_count_empty(self):
+        pattern = pattern_string_to_int_list("         ")
+        us_counter = LengthCounter()
+        them_counter = LengthCounter()
+        templates = add_substrips(pattern, us_counter, them_counter)
+        self.assertEquals(us_counter.tup(), (0,0,0,0,0))
+        self.assertEquals(them_counter.tup(), (0,0,0,0,0))
 
-        self.assertEquals(len(templates), 1)
-        self.assertTrue(0 in templates)
+    def test_count_single_us(self):
+        pattern = pattern_string_to_int_list("    U    ")
+        us_counter = LengthCounter()
+        them_counter = LengthCounter()
+        #pdb.set_trace()
+        templates = add_substrips(pattern, us_counter, them_counter)
+        self.assertEquals(us_counter.tup(), (5,0,0,0,0))
+        self.assertEquals(them_counter.tup(), (0,0,0,0,0))
 
-    def test_convert_to_1(self):
-        pattern = "        U"
-        templates = convert_to_hash_value_list(pattern)
+    def test_count_single_them(self):
+        pattern = pattern_string_to_int_list("    T    ")
+        us_counter = LengthCounter()
+        them_counter = LengthCounter()
+        templates = add_substrips(pattern, us_counter, them_counter)
+        self.assertEquals(us_counter.tup(), (0,0,0,0,0))
+        self.assertEquals(them_counter.tup(), (5,0,0,0,0))
 
-        self.assertEquals(len(templates), 1)
-        self.assertTrue(1 in templates)
+    def test_count_single_us_at_end(self):
+        pattern = pattern_string_to_int_list("U        ")
+        us_counter = LengthCounter()
+        them_counter = LengthCounter()
+        templates = add_substrips(pattern, us_counter, them_counter)
+        self.assertEquals(us_counter.tup(), (1,0,0,0,0))
+        self.assertEquals(them_counter.tup(), (0,0,0,0,0))
 
-    def test_convert_to_2(self):
-        pattern = "        T"
-        templates = convert_to_hash_value_list(pattern)
-
-        self.assertEquals(len(templates), 1)
-        self.assertTrue(2 in templates)
-
-    def test_convert_to_3(self):
-        pattern = "       U "
-        templates = convert_to_hash_value_list(pattern)
-
-        self.assertEquals(len(templates), 1)
-        self.assertTrue(3 in templates)
-
-    def test_convert_to_6(self):
-        pattern = "       T "
-        templates = convert_to_hash_value_list(pattern)
-
-        self.assertEquals(len(templates), 1)
-        self.assertTrue(6 in templates)
-    
-
-    def test_convert_8_spaces(self):
-        pattern = "        "
-        templates = convert_to_hash_value_list(pattern)
-
-        print templates
-        self.assertEquals(len(templates), 6) # 2 * 3 ** (9 - 8)
-
-        self.assertTrue(0 in templates)
-        self.assertTrue(1 in templates)
-        self.assertTrue(2 in templates)
-        # TODO: other end
-        #self.assertTrue(0 in templates) # special case - duplicate
-        self.assertTrue(6561 in templates)
-        self.assertTrue((2 * 6561) in templates)
-
-    # TODO: Test mirrors. We only need to create them if the pattern is assymetric
-
-# Argh. I need to create MANY templates per pattern, with more for shorter patterns - beyond the length of the pattern is unknown
 
 if __name__ == "__main__":
     unittest.main()
