@@ -1,0 +1,41 @@
+
+For each move, count the number of potential 5 in a row lines, for each number
+of stones out of 5.
+
+E.g.
+....X.... has 5 lines with one X out of 5
+..X..X... has 3 lines with one X out of 5 and 2 lines with 2 out of 5
+
+Maintain a total count.
+For each move, first remove the contributions for the current line, then
+add the contributions for the new line:
+
+..X..X... remove 3 lines with one X out of 5 and 2 lines with 2 out of 5
+    |
+   \|/
+    V
+..X.XX... add 3 lines for 2/5 and 2 for 3/5
+
+When there are opponent stones in the line as well, they don't count.
+Only count potential 5s when all stones in that substrip are the same colour.
+
+This can be done fairly efficiently:
+	Start at left end
+	Seen = [[0][0]] # us, them
+	for each point up to 5:
+		# add to the number of that occupancy seen
+		Seen[colour] += 1
+	for each point from 5 to the end (max 9):
+		# add to the number of that occupancy seen
+		Seen[colour] += 1
+		if Seen[0] > 0 and Seen[1] == 0:
+			add to substrip(Seen[0], us)
+		elif Seen[1] > 0 and Seen[0] == 0:
+			add to substrip(Seen[1], them)
+		# subtract from the number of the occupancy seen at the left end
+		Seen[left_colour] -= 1
+
+
+For captures, we need to do the same for the captured opponent points,
+one at a time, before and after
+

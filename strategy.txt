@@ -1,0 +1,55 @@
+
+per position, count them for each player
+
+feature, weight relative to prev. feature, weighting
+half-closed pairs (threatened) -ve
+stones on board
+fully-closed pair
+open pair
+fully-closed three 1.5 1.5
+half-closed three 3    4.5
+fully closed four 1    4.5
+three with a gap 1.5   6.75
+three with 2 gaps 1.5 10.25 
+open threes 3         30
+half-closed fours 4  120
+four with a gap 4    480
+open fours 4        1360
+fives 100         100000
+
+template strips have 4 types of occupancy:
+empty, us, them, off
+we care about the 8 locations, 4 to left and 4 to right (play spot must be empty)
+if there are no edges up to adjacent edge:
+3**8 + 3**7 + 3**6 + 3**5 + 3**4 = 9801 templates (out of 65536 hash space)
+(x 2 for mirror, / 2 for us-them symmetry?)
+
+incremental maintainence of chain lengths
+per direction (N, NE, E, SE, S, SW, W, NW)
+calc captures first:
+   is there an opponents stone in the adjacent pos?
+   and another the next along?
+   and one of ours next?
+   next position will have removed those stones
+
+calculate the occupancy strip for the current and next position
+use that as a hash into the templates
+subtract the previous value and add the new one
+
+"patterns" are used to generate "templates", each with a score contribution
+Patterns are of variable length, up to 9 positions, and are initially entered
+as text strings.
+
+Templates also have a max length of 9, centred on the position (to be) moved,
+except for near edges, where the positions over the edge are truncated
+A template has a hash value, calculated from the positions (1 through 9)
+and the occupancy of that position
+
+Generation of Templates from Patterns:
+Iterate over patterns
+for each pattern:
+    repeat this for each unknown (9 - pattern length)
+        create the original
+        create the mirror
+        create a copy for "them" with negative score
+        create a mirror copy for "them" with negative score
