@@ -19,40 +19,34 @@ def pattern_string_to_int_list(occ_str):
     return ret
 
 
-class GameTest(unittest.TestCase):
+class SubStripCountingTest(unittest.TestCase):
+    def setUp(self):
+        self.us_counter = LengthCounter()
+        self.them_counter = LengthCounter()
+
+    def add_substrips_for_str(self, ss_str):
+        pattern = pattern_string_to_int_list(ss_str)
+        add_substrips(pattern, self.us_counter, self.them_counter)
+
     def test_count_empty(self):
-        pattern = pattern_string_to_int_list("         ")
-        us_counter = LengthCounter()
-        them_counter = LengthCounter()
-        templates = add_substrips(pattern, us_counter, them_counter)
-        self.assertEquals(us_counter.tup(), (0,0,0,0,0))
-        self.assertEquals(them_counter.tup(), (0,0,0,0,0))
+        self.add_substrips_for_str("         ")
+        self.assertEquals(self.us_counter.tup(), (0,0,0,0,0))
+        self.assertEquals(self.them_counter.tup(), (0,0,0,0,0))
 
     def test_count_single_us(self):
-        pattern = pattern_string_to_int_list("    U    ")
-        us_counter = LengthCounter()
-        them_counter = LengthCounter()
-        #pdb.set_trace()
-        templates = add_substrips(pattern, us_counter, them_counter)
-        self.assertEquals(us_counter.tup(), (5,0,0,0,0))
-        self.assertEquals(them_counter.tup(), (0,0,0,0,0))
+        self.add_substrips_for_str("    U    ")
+        self.assertEquals(self.us_counter.tup(), (5,0,0,0,0))
+        self.assertEquals(self.them_counter.tup(), (0,0,0,0,0))
 
     def test_count_single_them(self):
-        pattern = pattern_string_to_int_list("    T    ")
-        us_counter = LengthCounter()
-        them_counter = LengthCounter()
-        templates = add_substrips(pattern, us_counter, them_counter)
-        self.assertEquals(us_counter.tup(), (0,0,0,0,0))
-        self.assertEquals(them_counter.tup(), (5,0,0,0,0))
+        self.add_substrips_for_str("    T    ")
+        self.assertEquals(self.us_counter.tup(), (0,0,0,0,0))
+        self.assertEquals(self.them_counter.tup(), (5,0,0,0,0))
 
     def test_count_single_us_at_end(self):
-        pattern = pattern_string_to_int_list("U        ")
-        us_counter = LengthCounter()
-        them_counter = LengthCounter()
-        templates = add_substrips(pattern, us_counter, them_counter)
-        self.assertEquals(us_counter.tup(), (1,0,0,0,0))
-        self.assertEquals(them_counter.tup(), (0,0,0,0,0))
-
+        self.add_substrips_for_str("U        ")
+        self.assertEquals(self.us_counter.tup(), (1,0,0,0,0))
+        self.assertEquals(self.them_counter.tup(), (0,0,0,0,0))
 
 if __name__ == "__main__":
     unittest.main()
