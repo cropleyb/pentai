@@ -5,7 +5,7 @@ import unittest
 
 import pdb
 
-from pente import *
+from penteTxt import *
 
 
 class GameTest(unittest.TestCase):
