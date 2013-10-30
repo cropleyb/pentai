@@ -226,6 +226,9 @@ class State():
 class Game():
     def __init__(self, size):
         self.board = Board(size)
+        # TEMP HACK
+        global BOARD_SIZE
+        BOARD_SIZE = size
         self.current_state = State()
         #pdb.set_trace()
 
