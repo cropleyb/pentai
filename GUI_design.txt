@@ -1,0 +1,35 @@
+3. Main screen
+2. New game - need dialogue / screen for selecting board size, opponent strength, game rules, time control etc., human/computer player for each side
+3. About
+Settings button
+
+4. TODO: find competitor on net.
+
+Game screen:
+	Board
+	Player names (in black and white)
+	Confirm move
+	Captured pairs
+	Game status (who is to move, win)
+	3. Chess Clock (top of screen)
+
+3. settings button
+  3. Turn confirmation on/off
+  3. TODO - clock timing
+  3. Sound effects volume
+  3. Music volume
+  3. Board style, piece colours
+  3. Show last move
+  3. 3D
+
+
+
+3. Menu
+3. Save game
+3. Resign - confirm
+3. Undo (for computer opponent only)
+3. Replay game (CD controls)
+3. Read Rules for current game
+3. Game History (cut/paste text)
+3. Return to main screen
+
