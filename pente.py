@@ -22,7 +22,7 @@ from kivy.config import Config
 from kivy.logger import LoggerHistory
 
 
-class Picture(Scatter):
+class Pente(Scatter):
     '''Picture is the class that will show the image with a white border and a
     shadow. They are nothing here because almost everything is inside the
     picture.kv. Check the rule named <Picture> inside the file, and you'll see
@@ -34,7 +34,7 @@ class Picture(Scatter):
     source = StringProperty(None)
 
 
-class PicturesApp(App):
+class PenteApp(App):
 
     def build(self):
 
@@ -44,18 +44,18 @@ class PicturesApp(App):
         # get any files into images directory
         curdir = dirname(__file__)
         pics = {}
-        for filename in ("./images/board.png","./images/black.png"): # glob(join(curdir, 'images', '*')):
+        for filename in ("./images/board.png",): # ,"./images/black.png"): # glob(join(curdir, 'images', '*')):
             try:
                 # load the image
-                picture = Picture(source=filename) #, rotation=randint(-30,30))
                 fs = filename[:].strip()
+                picture = Pente(source=filename) #, rotation=randint(-30,30))
                 pics[fs] = picture
                 print "FILENAME: '", fs, "'"
 
                 # add to the main field
                 root.add_widget(picture)
             except Exception, e:
-                Logger.exception('Pictures: Unable to load <%s>' % fs)
+                Logger.exception('Board: Unable to load <%s>' % fs)
         """
         try:
             fn = " ./images/board.png "
@@ -77,10 +77,10 @@ if __name__ == '__main__':
     Config.set('kivy', 'log_enable', 1)
     Config.set('kivy', 'log_dir', 'logs')
     Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
-    Logger.info('Before run')
-    print(LoggerHistory.history)
-    print "HELLO?"
-    PicturesApp().run()
-    Logger.info('After run')
-    print(LoggerHistory.history)
+    #Logger.info('Before run')
+    #print(LoggerHistory.history)
+    #print "HELLO?"
+    PenteApp().run()
+    #Logger.info('After run')
+    #print(LoggerHistory.history)
 
