@@ -9,17 +9,12 @@ import kivy
 import pdb
 kivy.require('1.0.6')
 
-from glob import glob
-from random import randint
 from os.path import join, dirname
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
 from kivy.properties import StringProperty
-# FIXME this shouldn't be necessary
-from kivy.core.window import Window
 from kivy.config import Config
-from kivy.logger import LoggerHistory
 
 
 class Pente(Scatter):
@@ -44,28 +39,17 @@ class PenteApp(App):
         # get any files into images directory
         curdir = dirname(__file__)
         pics = {}
-        for filename in ("./images/board.png",): # ,"./images/black.png"): # glob(join(curdir, 'images', '*')):
+        for filename in ("./images/board.png",):
             try:
                 # load the image
                 fs = filename[:].strip()
-                picture = Pente(source=filename) #, rotation=randint(-30,30))
+                picture = Pente(source=filename)
                 pics[fs] = picture
-                print "FILENAME: '", fs, "'"
 
                 # add to the main field
                 root.add_widget(picture)
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % fs)
-        """
-        try:
-            fn = " ./images/board.png "
-            root.add_widget(pics[fn])
-            fn = " ./images/black.png "
-            root.add_widget(pics[fn])
-        except Exception, e:
-            Logger.exception(e.message)
-            Logger.exception('Pictures: Unable to add <%s> to root', fn)
-        """
 
 
     def on_pause(self):
@@ -77,10 +61,5 @@ if __name__ == '__main__':
     Config.set('kivy', 'log_enable', 1)
     Config.set('kivy', 'log_dir', 'logs')
     Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
-    #Logger.info('Before run')
-    #print(LoggerHistory.history)
-    #print "HELLO?"
     PenteApp().run()
-    #Logger.info('After run')
-    #print(LoggerHistory.history)
 
