@@ -19,8 +19,6 @@ class Move():
 class IllegalMoveException(Exception):
     pass
 
-import copy
-
 class Board():
     def __init__(self, size):
         self.size = size
@@ -141,6 +139,7 @@ class State():
 
 
 
+    # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def colours(self, move_pos, direction, length):
         ''' Return a list of the colours of the stones in a line '''
         ret = []
@@ -159,17 +158,17 @@ class State():
         # return self.board[pos[0]][pos[1]]
         y = pos[1]
         x_pos_bit = 1 << pos[0]
-        col =        (self.board_black[y] & x_pos_bit) and 1
-        col = col or (self.board_white[y] & x_pos_bit) and 2
-        return col
+        colour =        (self.board_black[y] & x_pos_bit) and 1
+        colour = colour or (self.board_white[y] & x_pos_bit) and 2
+        return colour
 
-    def set_colour(self, pos, col):
-        # self.board[pos[0]][pos[1]] = col
+    def set_colour(self, pos, colour):
+        # self.board[pos[0]][pos[1]] = colour
         y = pos[1]
         x_pos_bit = 1 << pos[0]
-        if col == 1:
+        if colour == 1:
             self.board_black[y] |= x_pos_bit
-        elif col == 2:
+        elif colour == 2:
             self.board_white[y] |= x_pos_bit
         else:
             # clear
