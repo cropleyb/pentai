@@ -33,6 +33,9 @@ class Board():
         # TODO
         return 0
 
+    def make_move(self, x, y):
+        pass # TODO
+
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def colours(self, move_pos, direction, length):
         ''' Return a list of the colours of the stones in a line '''

@@ -21,6 +21,10 @@ class Pos():
         self.tup = (x,y)
     def __getitem__(self, dim):
         return self.tup[dim]
+    def shift(self, direction, steps):
+        new_pos = (self.tup[0] + (direction[0] * steps), \
+                   self.tup[1] + (direction[1] * steps)) 
+        return Pos(new_pos)
 
 class State():
     def __init__(self, parent=None, move=None):
@@ -55,8 +59,8 @@ class State():
         for direction in DIRECTIONS:
             clrs = self.colours(move_pos, direction, 4)
             if clrs == [1, 2, 2, 1] or clrs == [2, 1, 1, 2]:
-                capture_pos1 = self.shift(move_pos, direction, 1)
-                capture_pos2 = self.shift(move_pos, direction, 2)
+                capture_pos1 = move_pos.shift(direction, 1)
+                capture_pos2 = move_pos.shift(direction, 2)
                 # Remove stones
                 self.set_colour(capture_pos1, 0)
                 self.set_colour(capture_pos2, 0)
@@ -67,7 +71,7 @@ class State():
         for direction in DIRECTIONS:
             l = 1
             while l < 5:
-                test_pos = self.shift(move_pos, direction, l)
+                test_pos = move_pos.shift(direction, l)
                 if test_pos[0] < 0 or \
                    test_pos[0] >= BOARD_SIZE or \
                    test_pos[1] < 0 or \
@@ -80,7 +84,7 @@ class State():
                 l += 1
             m = -1
             while m > -5:
-                test_pos = self.shift(move_pos, direction, m)
+                test_pos = move_pos.shift(direction, m)
                 if test_pos[0] < 0 or \
                    test_pos[0] >= BOARD_SIZE or \
                    test_pos[1] < 0 or \
@@ -97,11 +101,6 @@ class State():
 
 
 
-    # TODO: move to pos
-    def shift(self, pos, direction, steps):
-        new_pos = (pos[0] + (direction[0] * steps), \
-                   pos[1] + (direction[1] * steps)) 
-        return new_pos
 
     def to_move(self):
         return self.turn % 2
