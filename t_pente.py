@@ -5,22 +5,26 @@ import unittest
 
 import pdb
 
-from penteTxt import *
+from board import *
+from update_substrips import *
 
 
-class GameTest(unittest.TestCase):
-    def test_create_game(self):
-        game = Game(size = 13)
-        self.assertEquals(game.board.size, 13)
+class BoardTest(unittest.TestCase):
+    def test_create_board(self):
+        board = Board(size = 13)
+        self.assertEquals(board.size, 13)
 
     def test_empty_board_score_stats(self):
-        game = Game(size = 13)
-        self.assertEquals(game.current_state.score(), 0)
+        board = Board(size = 13)
+        # self.assertEquals(board.score(), 0) TODO
 
     def test_empty_board_place_one_piece(self):
-        game = Game(size = 13)
+        self.us_counter = LengthCounter()
+        self.them_counter = LengthCounter()
+
+        board = Board(size = 13)
         #pdb.set_trace()
-        game.make_move(7,7)
+        # TODO board.make_move(7,7)
         #self.assertEquals() TODO
 
 if __name__ == "__main__":

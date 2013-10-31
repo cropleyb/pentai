@@ -1,14 +1,8 @@
 #!/usr/bin/python
-import pdb
-import alpha_beta
 
 # TODO
-#BOARD_SIZE = 13
-BOARD_SIZE = 7
-DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
-              (0,-1),(0,0),(0,1),
-              (1,-1),(1,0),(1,1))
-#DIRECTIONS = ((1,0),)
+import board
+
 
 class Move():
     def __init__(self, pos):
@@ -16,46 +10,53 @@ class Move():
     def position(self):
         return self.pos
 
+'''
 class IllegalMoveException(Exception):
     pass
+'''
 
+'''
 class Board():
     def __init__(self, size):
         self.size = size
 
-'''
-class UtilityStats():
-    def __init__(self, parent_stats=None):
-        if parent_stats == None:
-            self.captured = [0,0]
-            # 5s
-            # open 4s
-            # half open 4s
-            # closed 4s
-            # open 3s
-            # half open 3s
-            # open 2s
-            # threatened 2s
-            # safe 2s?
-            # open 1s
-        self.captured = parent_stats.captured[:]
+    def get_colour(self, pos):
+        # return self.board[pos[0]][pos[1]]
+        y = pos[1]
+        x_pos_bit = 1 << pos[0]
+        colour =        (self.board_black[y] & x_pos_bit) and 1
+        colour = colour or (self.board_white[y] & x_pos_bit) and 2
+        return colour
 
-    # 5+ in a row or 5+ captured = infinity
-    if state.captured[0] == 5:
-        return infinity
-    if state.captured[1] == 5:
-        return -infinity
-    return state.captured[0] - state.captured[1]
-    # 4+ captured in pente rules
-    # open 4
-    # 2 + open 3s
-    # closed 4
-    # open 3
-    # capture difference? pente rules
-    # occupied positions (centre weighted)
-    # closed 3s
-    # subtract pairs
+    def set_colour(self, pos, colour):
+        # self.board[pos[0]][pos[1]] = colour
+        y = pos[1]
+        x_pos_bit = 1 << pos[0]
+        if colour == 1:
+            self.board_black[y] |= x_pos_bit
+        elif colour == 2:
+            self.board_white[y] |= x_pos_bit
+        else:
+            # clear
+            self.board_black[y] &= ~x_pos_bit
+            self.board_white[y] &= ~x_pos_bit
+
+    # TODO - use yield, rename, combine L/R strands, reorder the left strand
+    def colours(self, move_pos, direction, length):
+        ''' Return a list of the colours of the stones in a line '''
+        ret = []
+        for distance in range(length):
+            test_pos = self.shift(move_pos, direction, distance)
+            if test_pos[0] < 0 or \
+               test_pos[0] >= BOARD_SIZE or \
+               test_pos[1] < 0 or \
+               test_pos[1] >= BOARD_SIZE:
+                # Other end of a potential capture is off the edge of the board
+                continue
+            ret.append(self.get_colour(test_pos))
+        return ret
 '''
+
 
 class Pos():
     def __init__(self, x, y):
@@ -137,43 +138,6 @@ class State():
                 self.won_by = my_colour
 
 
-
-
-    # TODO - use yield, rename, combine L/R strands, reorder the left strand
-    def colours(self, move_pos, direction, length):
-        ''' Return a list of the colours of the stones in a line '''
-        ret = []
-        for distance in range(length):
-            test_pos = self.shift(move_pos, direction, distance)
-            if test_pos[0] < 0 or \
-               test_pos[0] >= BOARD_SIZE or \
-               test_pos[1] < 0 or \
-               test_pos[1] >= BOARD_SIZE:
-                # Other end of a potential capture is off the edge of the board
-                continue
-            ret.append(self.get_colour(test_pos))
-        return ret
-
-    def get_colour(self, pos):
-        # return self.board[pos[0]][pos[1]]
-        y = pos[1]
-        x_pos_bit = 1 << pos[0]
-        colour =        (self.board_black[y] & x_pos_bit) and 1
-        colour = colour or (self.board_white[y] & x_pos_bit) and 2
-        return colour
-
-    def set_colour(self, pos, colour):
-        # self.board[pos[0]][pos[1]] = colour
-        y = pos[1]
-        x_pos_bit = 1 << pos[0]
-        if colour == 1:
-            self.board_black[y] |= x_pos_bit
-        elif colour == 2:
-            self.board_white[y] |= x_pos_bit
-        else:
-            # clear
-            self.board_black[y] &= ~x_pos_bit
-            self.board_white[y] &= ~x_pos_bit
 
     # TODO: move to pos
     def shift(self, pos, direction, steps):
