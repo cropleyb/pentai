@@ -4,6 +4,9 @@ DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
               (0,-1),(0,0),(0,1),
               (1,-1),(1,0),(1,1))
 
+class IllegalMoveException(Exception):
+    pass
+
 class Board():
     def __init__(self, size):
         self.size = size
