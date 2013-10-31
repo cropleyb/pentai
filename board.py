@@ -1,10 +1,8 @@
 
-#BOARD_SIZE = 13
 BOARD_SIZE = 7
 DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
               (0,-1),(0,0),(0,1),
               (1,-1),(1,0),(1,1))
-#DIRECTIONS = ((1,0),)
 
 class Board():
     def __init__(self, size):
@@ -14,7 +12,7 @@ class Board():
         # return self.board[pos[0]][pos[1]]
         y = pos[1]
         x_pos_bit = 1 << pos[0]
-        colour =        (self.board_black[y] & x_pos_bit) and 1
+        colour =           (self.board_black[y] & x_pos_bit) and 1
         colour = colour or (self.board_white[y] & x_pos_bit) and 2
         return colour
 
@@ -30,6 +28,10 @@ class Board():
             # clear
             self.board_black[y] &= ~x_pos_bit
             self.board_white[y] &= ~x_pos_bit
+
+    def score(self):
+        # TODO
+        return 0
 
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def colours(self, move_pos, direction, length):

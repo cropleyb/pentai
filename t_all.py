@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
 import unittest
-import t_pente
+import t_board
 import t_update_substrips
 import t_alpha_beta
 
 def suite():
-    suite1 = unittest.defaultTestLoader.loadTestsFromModule(t_pente)
+    suite1 = unittest.defaultTestLoader.loadTestsFromModule(t_board)
     suite2 = unittest.defaultTestLoader.loadTestsFromModule(t_update_substrips)
     suite3 = unittest.defaultTestLoader.loadTestsFromModule(t_alpha_beta)
     allTests = unittest.TestSuite()
