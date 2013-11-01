@@ -15,13 +15,12 @@ Game screen:
 
 
 	P1 time left P2 time left   |
-  * P1 name      P2 name        | <--- in move colour, * for to move
+    P1 name      P2 name        | <--- in move colour, underline for "to move"
 	captured pairs              |
                                 |
 	settings link               |           <BOARD>
                                 |
-                                |
-                                        confirm (button)                    
+    optional confirm button     |
 
 
 3. settings button
