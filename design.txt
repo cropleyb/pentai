@@ -1,0 +1,23 @@
+Classes
+-------
+State - should mark a particular state of the board
+Board - should know size, players, current state, rules - how to make moves
+Move - 
+Pos  - a position on the board
+Player - Interface / Base for human and computer players
+AIPlayer - knows about ABState, ABGame, sets them up from Board class
+IBoardDisplay, KVBoardDisplay, TxtBoardDisplay (,curses?)
+Rules - board size, 5 in a row, etc.
+
+ABState - state used by alpha-beta search code
+ABGame - game used by alpha-beta search code
+
+BoardGUI - contains: board, players, current state, potential state
+  try_move(move) - throws IllegalMoveException, returns set of captured stones
+    triggered from on onTouchDown and onTouchMove
+  make_move() - makes the move currently selected: sets current_state to
+                potential state. Detects end of game
+    triggered from on onTouchUp and confirm
+  undo()
+PieceGUI - contains position
+PanelGUI?
