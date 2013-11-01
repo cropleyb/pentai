@@ -22,7 +22,10 @@ class Pos():
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None, move=None):
-        self.state = State(parent.state, move)
+        s = None
+        if parent:
+            s = parent.state
+        self.state = state.State(s, move)
 
     def to_move(self):
         return self.state.to_move()
@@ -38,9 +41,9 @@ class ABState():
 
 
 class ABGame():
-    """ This class acts as a bridge to the AlphaBeta code """
+    """ This class acts as a bridge between the AlphaBeta code and my code """
     def __init__(self, size):
-        self.board = Board(size)
+        self.board = board.Board(size)
         # TEMP HACK
         global BOARD_SIZE
         BOARD_SIZE = size
@@ -84,7 +87,7 @@ if __name__ == "__main__":
     except ImportError:
         print "(without psyco)"
 
-    g = Game(7)
+    g = ABGame(7)
 
     #pdb.set_trace()
     alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)
