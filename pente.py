@@ -28,6 +28,9 @@ class Pente(Scatter):
 
     source = StringProperty(None)
 
+class Piece(Scatter):
+    source = StringProperty(None)
+
 
 class PenteApp(App):
 
@@ -39,15 +42,29 @@ class PenteApp(App):
         # get any files into images directory
         curdir = dirname(__file__)
         pics = {}
+        brd = None
         for filename in ("./images/board.png",):
             try:
                 # load the image
                 fs = filename[:].strip()
                 picture = Pente(source=filename)
+                brd = picture
                 pics[fs] = picture
 
                 # add to the main field
                 root.add_widget(picture)
+            except Exception, e:
+                Logger.exception('Board: Unable to load <%s>' % fs)
+
+        for filename in ("./images/black.png",):
+            try:
+                # load the image
+                fs = filename[:].strip()
+                black = Piece(source=filename)
+                pics[fs] = black
+
+                # add to the board
+                brd.add_widget(black)
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % fs)
 

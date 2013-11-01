@@ -10,23 +10,14 @@ FloatLayout:
             source: 'data/images/background.jpg'
             size: self.size
 
-    #BoxLayout:
-        #padding: 10
-        #spacing: 10
-        #size_hint: 1, None
-        #pos_hint: {'top': 1}
-        #height: 44
-        #Image:
-            #size_hint: None, None
-            #size: 24, 24
-            #source: 'data/logo/kivy-icon-24.png'
-        #Label:
-            #height: 24
-            #text_size: self.width, None
-            #color: (1, 1, 1, .8)
-            #text: 'Kivy %s - Pictures' % kivy.__version__
+<Piece>:
+    size: image.size
+    size_hint: None, None
 
-
+    Image:
+        id: image
+        source: root.source
+	
 
 <Pente>:
     # each time a picture is created, the image can delay the loading
@@ -53,6 +44,4 @@ FloatLayout:
                 # border: (36,36,36,36)
                 # size:(self.width+72, self.height+72)
                 # pos: (-36,-36)
-
-
 
