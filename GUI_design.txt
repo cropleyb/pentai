@@ -13,6 +13,17 @@ Game screen:
 	Game status (who is to move, win)
 	3. Chess Clock (top of screen)
 
+
+	P1 time left P2 time left   |
+  * P1 name      P2 name        | <--- in move colour, * for to move
+	captured pairs              |
+                                |
+	settings link               |           <BOARD>
+                                |
+                                |
+                                        confirm (button)                    
+
+
 3. settings button
   3. Turn confirmation on/off
   3. TODO - clock timing
