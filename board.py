@@ -4,9 +4,7 @@ DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
               (0,-1),(0,0),(0,1),
               (1,-1),(1,0),(1,1))
 
-class IllegalMoveException(Exception):
-    pass
-
+'''
 class State():
     """ This is for the state of a game after a particular move. """
     def __init__(self, parent=None, move=None):
@@ -129,11 +127,13 @@ class State():
         # closed 3s
         # subtract pairs
         # return 0 # state.utility()
+'''
 
 class Board():
     def __init__(self, size):
         self.size = size
 
+    '''
     def get_colour(self, pos):
         # return self.board[pos[0]][pos[1]]
         y = pos[1]
@@ -154,6 +154,7 @@ class Board():
             # clear
             self.board_black[y] &= ~x_pos_bit
             self.board_white[y] &= ~x_pos_bit
+    '''
 
     def score(self):
         # TODO

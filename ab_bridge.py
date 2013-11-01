@@ -3,6 +3,7 @@
 import board
 import state
 
+'''
 class Move():
     def __init__(self, pos):
         self.pos = pos
@@ -18,6 +19,7 @@ class Pos():
         new_pos = (self.tup[0] + (direction[0] * steps), \
                    self.tup[1] + (direction[1] * steps)) 
         return Pos(new_pos)
+'''
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
@@ -45,8 +47,8 @@ class ABGame():
     def __init__(self, size):
         self.board = board.Board(size)
         # TEMP HACK
-        global BOARD_SIZE
-        BOARD_SIZE = size
+        #global BOARD_SIZE
+        #BOARD_SIZE = size
         self.current_state = ABState()
 
     def to_move(self, state=None):
@@ -62,7 +64,7 @@ class ABGame():
 
     def successors(self, state):
         for succ in state.state.successors():
-            yield succ
+            yield ABState(succ) # TODO: move
         '''
         succ = []
         for x in range(BOARD_SIZE):

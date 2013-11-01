@@ -2,46 +2,67 @@
 #:import kivy kivy
 #:import win kivy.core.window
 
-FloatLayout:
-    canvas:
-        Color:
-            rgb: 1, 1, 1
-        Rectangle:
-            source: 'data/images/background.jpg'
-            size: self.size
+GridLayout:
+    cols: 2
+	GridLayout:
+		rows: 4
+		Label:
+			text: "Label 1"
+			size_hint_y: .2
+		Label:
+			text: "Label with\nmultiple lines"
+			size_hint_y: .2
+		Label:
+			font_size: '62sp'
+			text: "Label [color=ff3333][sub]with[/sub][/color] [color=3333ff][b]mark[sup]up[/sup][/b][/color]"
+			markup: True
+
+	FloatLayout:
+		canvas:
+			Color:
+				rgb: 1, 1, 1
+			Rectangle:
+				source: 'data/images/background.jpg'
+				size: self.size
 
 <Piece>:
-    size: image.size
-    size_hint: None, None
+	#on_size: self.center = image.center
+	size: image.size
+	size_hint: None, None
+	# center: 250, 250
 
-    Image:
-        id: image
-        source: root.source
+	Image:
+		id: image
+		source: root.source
 	
 
 <Pente>:
-    # each time a picture is created, the image can delay the loading
-    # as soon as the image is loaded, ensure that the center is changed
-    # to the center of the screen.
-    on_size: self.center = win.Window.center
-    size: image.size
-    size_hint: None, None
+	# each time a picture is created, the image can delay the loading
+	# as soon as the image is loaded, ensure that the center is changed
+	# to the center of the screen.
+	on_size: self.center = win.Window.center
+	size: image.size
+	size_hint: None, None
 
-    Image:
-        id: image
-        source: root.source
+	Image:
+		id: image
+		source: root.source
 
-        # create initial image to be x pixels width
-        size: 615, 615 / self.image_ratio
-        pos_hint: {'right': 1}
+		# create initial image to be x pixels width
+		size: 615, 615 / self.image_ratio
+		pos_hint: {'right': 1}
 
-        # add shadow background
-        # canvas.before:
-            # Color:
-                # rgba: 1,1,1,1
-            # BorderImage:
-                # source: 'shadow32.png'
-                # border: (36,36,36,36)
-                # size:(self.width+72, self.height+72)
-                # pos: (-36,-36)
+		# add shadow background
+		# canvas.before:
+			# Color:
+				# rgba: 1,1,1,1
+			# BorderImage:
+				# source: 'shadow32.png'
+				# border: (36,36,36,36)
+				# size:(self.width+72, self.height+72)
+				# pos: (-36,-36)
+	Label:
+		text: "Hello world"
+		# pos_hint: {'right': 1}
+		# Color: rgb: .5, 0, 0
 
