@@ -1,5 +1,14 @@
+class BoardTooBigException():
+    pass
+class BoardTooSmallException():
+    pass
+
 class Rules():
     def __init__(self, size, typeStr):
+        if size < 7:
+            raise BoardTooSmallException()
+        if size > 19:
+            raise BoardTooBigException()
         self.size = size
         ts = typeStr.lower()
         if ts == "standard":
@@ -38,6 +47,8 @@ class Rules():
             self.canCapturePairs = False
             self.canCaptureThrees = False
             self.exactlyFive = False
+        else:
+            raise UnknownRuleType
      
 '''
     Standard rules
