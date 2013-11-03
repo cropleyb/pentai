@@ -36,3 +36,15 @@ BoardGUI - contains: board, players, current state, potential state
 '''
 PieceGUI - contains position
 PanelGUI?
+
+human versus computer player scenario
+txt human turn:
+game move finished by computer triggers get_next_move()
+game calls the current player (with the interface object?) to get the next move
+for a human move, it calls back to the game to get a move. The game calls the interface object to request another move. The main loop checks for a flag that is set when a valid move has been entered (typed in). The game object is given the move, and updates the state using the rules object. Changes to the game state (board, captures) are sent to the GameGUI object (in this case a TxtGameGUI instance) and flush() called to trigger a redraw.
+
+txt computer turn
+
+txtGuiMain.py creates the Game, Players and contains the game turn loop
+
+kivyGuiMain.py creates the Game, Players and App
