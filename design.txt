@@ -1,17 +1,31 @@
 Classes
 -------
-State - should mark a particular state of the board
-Board - should know size, players, current state, rules - how to make moves
-Move - 
+State - should mark a particular state of the board?
+  LengthCounter, captures (W/B)
+Rules - board size, capture rules, first move constraints
+Board / Game - should know players, current state, rules - how to make moves
 Pos  - a position on the board
 Player - Interface / Base for human and computer players
-AIPlayer - knows about ABState, ABGame, sets them up from Board class
-IBoardDisplay, KVBoardDisplay, TxtBoardDisplay (,curses?)
+ - name
+AIPlayer - Calculates utility from State. # knows about ABState, ABGame, sets them up from Board class
+IBoardDisplay, KVBoardDisplay, TxtBoardDisplay (,curses?), NullBoardDisplay
 Rules - board size, 5 in a row, etc.
 
 ABState - state used by alpha-beta search code
 ABGame - game used by alpha-beta search code
 
+GameUI
+(two subclasses, kivy and txt)
+- Place stone (pos)
+- Remove stone (pos)
+- add capture stone
+- remove captured stone
+- draw board
+- show who is to move
+- get a move
+
+
+'''
 BoardGUI - contains: board, players, current state, potential state
   try_move(move) - throws IllegalMoveException, returns set of captured stones
     triggered from on onTouchDown and onTouchMove
@@ -19,5 +33,6 @@ BoardGUI - contains: board, players, current state, potential state
                 potential state. Detects end of game
     triggered from on onTouchUp and confirm
   undo()
+'''
 PieceGUI - contains position
 PanelGUI?
