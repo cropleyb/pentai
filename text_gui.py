@@ -1,4 +1,6 @@
 
+import string
+
 black = 1
 white = 2
 
@@ -6,19 +8,25 @@ class TextGui():
     def __init__(self, game):
         self.game = game
         self.board_chars = []
+        first_row = [' ']
+        first_row.extend([string.ascii_letters[j] for j in range(game.size())])
+        self.board_chars.append(first_row)
         for i in range(game.size()):
             row = []
             self.board_chars.append(row)
+            row.append(str(game.size()-i))
             for j in range(game.size()):
                 row.append(' ')
-
 
     def place_stone(self, x, y, colour):
         if colour == 1:
             col_char = "B"
         elif colour == 2:
             col_char = "W"
-        self.board_chars[y-1][x-1] = col_char
+        self.board_chars[1+self.game.size()-y][x] = col_char
+
+    def remove_stone(self, x, y):
+        self.board_chars[1+self.game.size()-y][x] = " "
 
     def board_to_string(self):
         ret = []
