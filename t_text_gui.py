@@ -78,6 +78,18 @@ class TextGuiTest(unittest.TestCase):
 "2       \n"
 "1       \n")
 
+    def test_place_two_stones(self):
+        self.gui.place_stone(4,2,black)
+        self.gui.place_stone(4,3,white)
+        game_string = self.gui.board_to_string()
+        self.assertEquals(game_string,
+" abcde\n"
+"5     \n"
+"4     \n"
+"3   W \n"
+"2   B \n"
+"1     \n")
+
     def test_player_names(self):
         self.setUpWithOverrides(player1="Bruce", player2="DeepThunk")
         game_aux_string = self.gui.aux_to_string()
@@ -89,7 +101,7 @@ class TextGuiTest(unittest.TestCase):
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce vs. * DeepThunk")
 
-# TODO: input, player?
+# TODO: input, clocks?
 
 if __name__ == "__main__":
     unittest.main()
