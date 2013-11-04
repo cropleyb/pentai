@@ -5,15 +5,10 @@ import ab_bridge
 from rules import *
 from game import *
 from text_gui import *
+from player import *
 
-# txtGuiMain.py creates the Game, Players and contains the game turn loop
+# txt_gui_main.py creates the Game, Players and contains the game turn loop
 
-class Player():
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return self.name
 
 
 if __name__ == "__main__":
