@@ -36,9 +36,9 @@ class RulesTest(unittest.TestCase):
         with self.assertRaises(BoardTooBigException):
             r = Rules(20, "standard")
 
-    def test_board_size_6_throws(self):
+    def test_board_size_4_throws(self):
         with self.assertRaises(BoardTooSmallException):
-            r = Rules(6, "standard")
+            r = Rules(4, "standard")
 
 
 if __name__ == "__main__":
