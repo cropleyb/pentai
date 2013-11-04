@@ -5,12 +5,27 @@ white = 2
 class TextGui():
     def __init__(self, game):
         self.game = game
+        self.board_chars = []
+        for i in range(game.size()):
+            row = []
+            self.board_chars.append(row)
+            for j in range(game.size()):
+                row.append(' ')
+
 
     def place_stone(self, x, y, colour):
-        pass
+        if colour == 1:
+            col_char = "B"
+        elif colour == 2:
+            col_char = "W"
+        self.board_chars[y-1][x-1] = col_char
 
-    def to_string(self):
-        return ""
+    def board_to_string(self):
+        ret = []
+        for r in self.board_chars:
+            ret.append("".join(r))
+            ret.append("\n")
+        return "".join(ret)
 '''
 - Place stone (pos, colour)
 - Remove stone (pos)
