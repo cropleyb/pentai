@@ -9,12 +9,12 @@ from text_gui import *
 class TextGuiTest(unittest.TestCase):
 
     def setUp(self):
-        self.setUpWithSize(5)
+        self.setUpWithOverrides(5, "Fred", "Wilma")
 
-    def setUpWithSize(self, size):
+    def setUpWithOverrides(self, size=5, player1=None, player2=None):
         rules = Rules(size, "standard")
-        game = Game(rules)
-        self.gui = TextGui(game)
+        self.game = Game(rules, player1, player2)
+        self.gui = TextGui(self.game)
 
     def test_show_empty_board(self):
         empty_game_string = self.gui.board_to_string()
@@ -50,7 +50,7 @@ class TextGuiTest(unittest.TestCase):
 "1     \n")
 
     def test_place_one_stone_different_size(self):
-        self.setUpWithSize(7)
+        self.setUpWithOverrides(7)
         self.gui.place_stone(4,2,black)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
@@ -64,7 +64,7 @@ class TextGuiTest(unittest.TestCase):
 "1       \n")
 
     def test_place_and_remove_one_stone_different_size(self):
-        self.setUpWithSize(7)
+        self.setUpWithOverrides(7)
         self.gui.place_stone(4,2,black)
         self.gui.remove_stone(4,2)
         game_string = self.gui.board_to_string()
@@ -77,6 +77,17 @@ class TextGuiTest(unittest.TestCase):
 "3       \n"
 "2       \n"
 "1       \n")
+
+    def test_player_names(self):
+        self.setUpWithOverrides(player1="Bruce", player2="DeepThunk")
+        game_aux_string = self.gui.aux_to_string()
+        self.assertEquals(game_aux_string, "* Bruce vs. DeepThunk")
+
+    def test_player_names_after_move(self):
+        self.setUpWithOverrides(player1="Bruce", player2="DeepThunk")
+        self.game.move_number += 1
+        game_aux_string = self.gui.aux_to_string()
+        self.assertEquals(game_aux_string, "Bruce vs. * DeepThunk")
 
 # TODO: input, player?
 

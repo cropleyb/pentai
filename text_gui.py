@@ -34,12 +34,14 @@ class TextGui():
             ret.append("".join(r))
             ret.append("\n")
         return "".join(ret)
-'''
-- Place stone (pos, colour)
-- Remove stone (pos)
-- add captured stone
-- remove captured stone (for undo/rewind)
-- draw board / flush() (pass for Kivy)
-  - show who is to move (though this isn't a method of the class)
-- get a move
-'''
+
+    # def set_who_is_to_move(self, player)
+
+    def aux_to_string(self):
+        p1 = self.game.get_player(0)
+        p2 = self.game.get_player(1)
+        if self.game.get_move_number() % 2 == 0:
+            p1 = "* " + p1
+        else:
+            p2 = "* " + p2
+        return p1 + " vs. " + p2
