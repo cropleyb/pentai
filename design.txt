@@ -16,13 +16,6 @@ ABGame - game used by alpha-beta search code
 
 GameUI
 (two subclasses, kivy and txt)
-- Place stone (pos)
-- Remove stone (pos)
-- add capture stone
-- remove captured stone
-- draw board
-- show who is to move
-- get a move
 
 
 '''
@@ -41,10 +34,33 @@ human versus computer player scenario
 txt human turn:
 game move finished by computer triggers get_next_move()
 game calls the current player (with the interface object?) to get the next move
-for a human move, it calls back to the game to get a move. The game calls the interface object to request another move. The main loop checks for a flag that is set when a valid move has been entered (typed in). The game object is given the move, and updates the state using the rules object. Changes to the game state (board, captures) are sent to the GameGUI object (in this case a TxtGameGUI instance) and flush() called to trigger a redraw.
+for a human move, it calls back to the game to get a move. The game calls the interface object to request another move. The main loop checks for a flag that is set when a valid move has been entered (typed in). The game object is given the move, and updates the state using the rules object.
+Changes to the game state (board, captures) are sent to the GameGUI
+ object (in this case a TxtGameGUI instance) and flush() called to trigger
+ a redraw.
 
 txt computer turn
 
 txtGuiMain.py creates the Game, Players and contains the game turn loop
 
 kivyGuiMain.py creates the Game, Players and App
+
+player interface:
+player name property
+select_next_move() - delegates to AB search or Gui (depending on which subclass)
+Move get_next_move() - delegates to AB search or Gui.
+
+game gui interface
+make move?
+- Place stone (pos, colour)
+- Remove stone (pos)
+- add captured stone
+- remove captured stone (for undo/rewind)
+- draw board / flush() (pass for Kivy)
+  - show who is to move (though this isn't a method of the class)
+- get a move
+
+implementation plan:
+1. human versus human, text GUI
+2. AI player move
+3. Kivy (acknowledge http://grungetextures.com/ for background, http://en.wikipedia.org/wiki/File:Realistic_White_Go_Stone.svg)
