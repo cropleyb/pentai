@@ -47,8 +47,8 @@ kivyGuiMain.py creates the Game, Players and App
 
 player interface:
 player name property
-select_next_move() - delegates to AB search or Gui (depending on which subclass)
-Move get_next_move() - delegates to AB search or Gui.
+prompt_for_action() - delegates to AB search or Gui (depending on which subclass)
+Action get_action() - delegates to AB search or Gui.
 
 game gui interface
 make move?

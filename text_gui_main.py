@@ -19,8 +19,8 @@ if __name__ == "__main__":
         print "(without psyco)"
 
     rules = Rules(7, "standard")
-    player1 = Player("Bruce")
-    player2 = Player("B2")
+    player1 = HumanPlayer("Bruce")
+    player2 = HumanPlayer("B2")
     game = Game(rules, player1, player2)
 
     gui = TextGui(game)
