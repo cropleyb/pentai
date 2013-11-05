@@ -2,6 +2,13 @@
 # TODO: This should just be a base class / interface to be filled out by 
 # human and AI players.
 
+# Action types:
+# Move
+# TODO: Undo
+# TODO: Resign
+
+
+
 class Player():
     def __init__(self, name):
         self.name = name

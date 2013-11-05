@@ -4,17 +4,25 @@ import string
 black = 1
 white = 2
 
+
+class MoveAction():
+    def __init__(self, move):
+        self.move = move
+
 class TextGui():
     def __init__(self, game):
         self.game = game
         self.board_chars = []
-        first_row = [' ']
-        first_row.extend([string.ascii_letters[j] for j in range(game.size())])
+        self.col_names = string.ascii_letters.replace('i','')[:game.size()]
+        padding = '   '
+        first_row = [padding]
+        first_row.extend(self.col_names)
         self.board_chars.append(first_row)
         for i in range(game.size()):
             row = []
             self.board_chars.append(row)
-            row.append(str(game.size()-i))
+            row_num_str = "%2d " % (game.size()-i)
+            row.append(row_num_str)
             for j in range(game.size()):
                 row.append(' ')
 
