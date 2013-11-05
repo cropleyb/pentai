@@ -12,11 +12,13 @@ from player import *
 
 
 if __name__ == "__main__":
+    """
     try:
         import psyco
         psyco.full()
     except ImportError:
         print "(without psyco)"
+    """
 
     rules = Rules(7, "standard")
     player1 = HumanPlayer("Bruce")
@@ -31,7 +33,7 @@ if __name__ == "__main__":
         else:
             p = player2
         print p.prompt_for_action(gui)
-        action = p.get_action()
+        action = p.get_action(gui)
         action.perform(game)
 
     #pdb.set_trace()

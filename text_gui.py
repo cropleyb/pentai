@@ -1,13 +1,9 @@
 
 import string
+from gui import *
 
 black = 1
 white = 2
-
-
-class MoveAction():
-    def __init__(self, move):
-        self.move = move
 
 class TextGui():
     def __init__(self, game):
@@ -43,16 +39,22 @@ class TextGui():
             ret.append("\n")
         return "".join(ret)
 
-    # def set_who_is_to_move(self, player)
+    def player_detail(self, player_num):
+        ret = ""
+        if self.game.get_move_number() % 2 == player_num:
+            ret = "* "
+        ret = ret + self.game.get_player(player_num).name
+        num_captures = self.game.get_captures(player_num)
+        if not self.game.rules.can_capture_threes:
+            num_captures /= 2
+            captures = str(num_captures) + 'p'
+        else:
+            captures = str(num_captures)
+        ret = ret + " (" + captures + ")"
+        return ret
 
     def aux_to_string(self):
-        p1 = self.game.get_player(0).name
-        p2 = self.game.get_player(1).name
-        if self.game.get_move_number() % 2 == 0:
-            p1 = "* " + p1
-        else:
-            p2 = "* " + p2
-        return p1 + " vs. " + p2 + "\n"
+        return self.player_detail(0) + " vs. " + self.player_detail(1) + "\n"
 
     def request_move(self, name):
         ret = [self.board_to_string()]
@@ -61,4 +63,14 @@ class TextGui():
         return "".join(ret)
 
     def get_action(self):
-        return self.gui.get_action()
+        s = raw_input().strip()
+        return self.get_action_from_string(s)
+
+    def get_action_from_string(self, s):
+        col = self.col_names.find(s[0]) + 1
+        row = string.atoi(s[1:])
+        if col < 0 or col >= self.game.size:
+            raise IllegalMoveException()
+        if row < 0 or row >= self.game.size:
+            raise IllegalMoveException()
+        return MoveAction(col, row)

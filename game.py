@@ -5,7 +5,10 @@ class Game():
     def __init__(self, rules, player1, player2):
         self.rules = rules
         self.player = [player1, player2]
+        #self.board = board
+        # TODO: I think these belong in board - dynamic game state
         self.move_number = 0
+        self.captures = [0, 0]
 
     def size(self):
         return self.rules.size
@@ -15,3 +18,6 @@ class Game():
 
     def get_move_number(self):
         return self.move_number
+
+    def get_captures(self, player_number):
+        return self.captures[player_number]

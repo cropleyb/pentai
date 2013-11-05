@@ -1,3 +1,4 @@
+# TODO: cloned in GUI
 class IllegalMoveException(Exception):
     pass
 
