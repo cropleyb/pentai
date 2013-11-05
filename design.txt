@@ -41,9 +41,9 @@ Changes to the game state (board, captures) are sent to the GameGUI
 
 txt computer turn
 
-txtGuiMain.py creates the Game, Players and contains the game turn loop
+text_gui_main.py creates the Game, Players and contains the game turn loop
 
-kivyGuiMain.py creates the Game, Players and App
+kivy_gui_main.py creates the Game, Players and App
 
 player interface:
 player name property
