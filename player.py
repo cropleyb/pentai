@@ -5,6 +5,7 @@
 class Player():
     def __init__(self, name, gui):
         self.name = name
+        self.gui = gui
 
     def __repr__(self):
         return self.name
@@ -17,9 +18,7 @@ class Player():
 
 class HumanPlayer(Player):
     def prompt_for_action(self):
-        gui.request_move(self.name)
+        self.gui.request_move(self.name)
 
     def get_action(self):
-        pass
-        # TODO: gui create and return an Action object
-        # return gui.get_action()
+        return self.gui.get_action()
