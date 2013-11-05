@@ -3,9 +3,8 @@
 # human and AI players.
 
 class Player():
-    def __init__(self, name, gui):
+    def __init__(self, name):
         self.name = name
-        self.gui = gui
 
     def __repr__(self):
         return self.name
@@ -17,8 +16,8 @@ class Player():
         pass
 
 class HumanPlayer(Player):
-    def prompt_for_action(self):
-        self.gui.request_move(self.name)
+    def prompt_for_action(self, gui):
+        return gui.request_move(self.name)
 
-    def get_action(self):
-        return self.gui.get_action()
+    def get_action(self, gui):
+        return gui.get_action()

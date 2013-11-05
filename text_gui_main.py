@@ -30,7 +30,7 @@ if __name__ == "__main__":
             p = player1
         else:
             p = player2
-        p.prompt_for_action(gui):
+        print p.prompt_for_action(gui)
         action = p.get_action()
         action.perform(game)
 

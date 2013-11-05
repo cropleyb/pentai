@@ -5,11 +5,15 @@ import unittest
 from game import *
 from rules import *
 from text_gui import *
+from player import *
 
 class TextGuiTest(unittest.TestCase):
 
     def setUp(self):
-        self.setUpWithOverrides(5, "Fred", "Wilma")
+        self.setUpWithOverrides(
+                size=5,
+                player1=HumanPlayer("Fred"),
+                player2=HumanPlayer("Wilma"))
 
     def setUpWithOverrides(self, size=5, player1=None, player2=None):
         rules = Rules(size, "standard")
@@ -91,15 +95,25 @@ class TextGuiTest(unittest.TestCase):
 "1     \n")
 
     def test_player_names(self):
-        self.setUpWithOverrides(player1="Bruce", player2="DeepThunk")
+        self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
+                                player2=HumanPlayer("DeepThunk"))
         game_aux_string = self.gui.aux_to_string()
-        self.assertEquals(game_aux_string, "* Bruce vs. DeepThunk")
+        self.assertEquals(game_aux_string, "* Bruce vs. DeepThunk\n")
 
     def test_player_names_after_move(self):
-        self.setUpWithOverrides(player1="Bruce", player2="DeepThunk")
+        self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
+                                player2=HumanPlayer("DeepThunk"))
         self.game.move_number += 1
         game_aux_string = self.gui.aux_to_string()
-        self.assertEquals(game_aux_string, "Bruce vs. * DeepThunk")
+        self.assertEquals(game_aux_string, "Bruce vs. * DeepThunk\n")
+
+    def test_player_move_prompt(self):
+        p = self.game.get_player(0)
+        promptStr = p.prompt_for_action(self.gui)
+        self.assertEquals(promptStr,
+' abcde\n5     \n4     \n3     \n2     \n1     \n'
+'* Fred vs. Wilma\n'
+'Your move, Fred:\n')
 
 # TODO: input, clocks?
 

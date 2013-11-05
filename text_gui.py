@@ -38,10 +38,19 @@ class TextGui():
     # def set_who_is_to_move(self, player)
 
     def aux_to_string(self):
-        p1 = self.game.get_player(0)
-        p2 = self.game.get_player(1)
+        p1 = self.game.get_player(0).name
+        p2 = self.game.get_player(1).name
         if self.game.get_move_number() % 2 == 0:
             p1 = "* " + p1
         else:
             p2 = "* " + p2
-        return p1 + " vs. " + p2
+        return p1 + " vs. " + p2 + "\n"
+
+    def request_move(self, name):
+        ret = [self.board_to_string()]
+        ret.append(self.aux_to_string())
+        ret.append("Your move, " + name + ":\n")
+        return "".join(ret)
+
+    def get_action(self):
+        return self.gui.get_action()
