@@ -26,12 +26,13 @@ class Pos():
 
 class GameState():
     """ This is for the state of a game as of a particular move. """
-    def __init__(self, game, parent=None):
+    def __init__(self, game, parent=None, gui=None):
         self.game = game
         self.parent = parent
+        self.gui = gui
         if parent == None:
             self.board = Board(game.size())
-            self.captured = [0,0]
+            self.captured = [0,0,0] # 3 for convenience
             self.won_by = False
             self.move_number = 1
         else:
@@ -58,23 +59,35 @@ class GameState():
         if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException()
 
+        other_colour = self.to_move_colour()
         # Place a stone
-        my_colour = self.to_move()
         self.move_number += 1
+        # FIXME: this should go before the move inc., but it breaks
+        my_colour = self.to_move_colour()
         self.board.set_occ(move_pos, my_colour)
         board_size = self.board.get_size()
 
+        if (self.gui != None):
+            self.gui.place_stone(move_pos[0], move_pos[1], my_colour)
+
+        MC = my_colour
+        OC = other_colour
+
         # Process captures
+        # TODO: keryo pente capture 3s
         for direction in DIRECTIONS:
             clrs = self.board.get_occs_in_a_line(move_pos, direction, 4)
-            if clrs == [1, 2, 2, 1] or clrs == [2, 1, 1, 2]:
+            if clrs == [MC, OC, OC, MC]: # or clrs == [2, 1, 1, 2]:
                 capture_pos1 = move_pos.shift(direction, 1)
                 capture_pos2 = move_pos.shift(direction, 2)
                 # Remove stones
-                self.set_colour(capture_pos1, 0)
-                self.set_colour(capture_pos2, 0)
+                self.board.set_occ(capture_pos1, EMPTY)
+                self.board.set_occ(capture_pos2, EMPTY)
+                if (self.gui != None):
+                    self.gui.remove_stone(capture_pos1[0], capture_pos1[1])
+                    self.gui.remove_stone(capture_pos2[0], capture_pos2[1])
                 # Keep track of capture count
-                self.captured[my_colour] += 1
+                self.captured[my_colour] += 2
 
         # Check for a win (TEMP)
         for direction in DIRECTIONS:
@@ -108,48 +121,11 @@ class GameState():
             if total_line_length >= 5:
                 self.won_by = my_colour
 
-    '''
-    def get_colour(self, pos):
-        # return self.board[pos[0]][pos[1]]
-        y = pos[1]
-        x_pos_bit = 1 << pos[0]
-        colour =           (self.board_black[y] & x_pos_bit) and 1
-        colour = colour or (self.board_white[y] & x_pos_bit) and 2
-        return colour
-
-    def set_colour(self, pos, colour):
-        # self.board[pos[0]][pos[1]] = colour
-        y = pos[1]
-        x_pos_bit = 1 << pos[0]
-        if colour == 1:
-            self.board_black[y] |= x_pos_bit
-        elif colour == 2:
-            self.board_white[y] |= x_pos_bit
-        else:
-            # clear
-            self.board_black[y] &= ~x_pos_bit
-            self.board_white[y] &= ~x_pos_bit
-    '''
-    
-    '''
-    # TODO - use yield, rename, combine L/R strands, reorder the left strand
-    def colours(self, move_pos, direction, length):
-        """ Return a list of the colours of the stones in a line """
-        ret = []
-        for distance in range(length):
-            test_pos = move_pos.shift(direction, distance)
-            if test_pos[0] < 0 or \
-               test_pos[0] >= self.BOARD_SIZE or \
-               test_pos[1] < 0 or \
-               test_pos[1] >= self.BOARD_SIZE:
-                # Other end of a potential capture is off the edge of the board
-                continue
-            ret.append(self.get_colour(test_pos))
-        return ret
-    '''
-
     def to_move(self):
         return not self.move_number % 2
+
+    def to_move_colour(self):
+        return (self.move_number % 2) + 1
 
     def successors(self):
         succ = []
@@ -163,25 +139,14 @@ class GameState():
                     pass
         return succ
 
+    # TODO: Move this, use Rules object
     def utility(self, player):
         # 5+ in a row or 5+ captured = infinity
-        if self.captured[0] == 5 or self.won_by == 1:
+        if self.captured[BLACK] >= 10 or self.won_by == BLACK:
             return alpha_beta.infinity
-        if self.captured[1] == 5 or self.won_by == 2:
+        if self.captured[WHITE] >= 10 or self.won_by == WHITE:
             return -alpha_beta.infinity
         return self.captured[0] - self.captured[1]
-
-
-        # 4+ captured in pente rules
-        # open 4
-        # 2 + open 3s
-        # closed 4
-        # open 3
-        # capture difference? pente rules
-        # occupied positions (centre weighted)
-        # closed 3s
-        # subtract pairs
-        # return 0 # state.utility()
 
     def score(self):
         return self.utility(None)

@@ -7,6 +7,7 @@ from game import *
 from text_gui import *
 from player import *
 
+import pdb
 # txt_gui_main.py creates the Game, Players and contains the game turn loop
 
 
@@ -26,12 +27,16 @@ if __name__ == "__main__":
     game = Game(rules, player1, player2)
 
     gui = TextGui(game)
+    # HACK
+    game.current_state.gui = gui
 
     while (True):
         print game.prompt_for_action(gui),
-        action = game.get_action(gui)
-        action.perform(game)
-
-    #pdb.set_trace()
+        #pdb.set_trace()
+        try:
+            action = game.get_action(gui)
+            action.perform(game)
+        except IllegalMoveException:
+            print "sorry that isn't a legal move"
     # alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)
     

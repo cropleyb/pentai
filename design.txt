@@ -17,6 +17,10 @@ ABGame - game used by alpha-beta search code
 GameUI
 (two subclasses, kivy and txt)
 
+GameState.make_move()
+  changes it.
+GameState.__init__(parent)
+  just copies it
 
 '''
 BoardGUI - contains: board, players, current state, potential state

@@ -23,6 +23,16 @@ class BoardTest(unittest.TestCase):
         board.set_occ(Pos(2, 3), WHITE)
         self.assertEquals(board.get_occ(Pos(2, 3)), WHITE)
 
+    def test_empty_board_place_one_piece_in_zero_corner(self):
+        board = Board(size = 7)
+        board.set_occ(Pos(0, 0), BLACK)
+        self.assertEquals(board.get_occ(Pos(0, 0)), BLACK)
+
+    def test_empty_board_place_one_piece_in_big_corner(self):
+        board = Board(size = 7)
+        board.set_occ(Pos(7, 7), WHITE)
+        self.assertEquals(board.get_occ(Pos(7, 7)), WHITE)
+
 if __name__ == "__main__":
     unittest.main()
 

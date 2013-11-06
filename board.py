@@ -19,10 +19,11 @@ BLACK = 1
 WHITE = 2
 
 class Board():
-    def __init__(self, size):
+    def __init__(self, size, gui=None):
         self.size = size
-        self.board_white = [0 for k in range(size)]
-        self.board_black = [0 for k in range(size)]
+        self.board_white = [0 for k in range(size+1)]
+        self.board_black = [0 for k in range(size+1)]
+        self.gui = gui
 
     def get_size(self):
         return self.size
