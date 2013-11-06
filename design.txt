@@ -1,11 +1,11 @@
 Classes
 -------
-State - should mark a particular state of the board?
-  LengthCounter, captures (W/B)
+GameState - should mark a particular state of the board - LengthCounter, captures (W/B)
+Board - part of a game state object, just the pieces
 Rules - board size, capture rules, first move constraints
-Board / Game - should know players, current state, rules - how to make moves
+Game - should know players, rules, how to make moves, should operate on the GameState object
 Pos  - a position on the board
-Player - Interface / Base for human and computer players
+Player - Base for human and computer players
  - name
 AIPlayer - Calculates utility from State. # knows about ABState, ABGame, sets them up from Board class
 IBoardDisplay, KVBoardDisplay, TxtBoardDisplay (,curses?), NullBoardDisplay
