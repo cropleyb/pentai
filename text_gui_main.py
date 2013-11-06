@@ -34,7 +34,7 @@ if __name__ == "__main__":
             p = player2
         print p.prompt_for_action(gui)
         action = p.get_action(gui)
-        action.perform(game)
+        game.perform(action)
 
     #pdb.set_trace()
     # alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)
