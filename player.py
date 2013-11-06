@@ -10,6 +10,7 @@
 
 
 class Player():
+    """ Interface only """
     def __init__(self, name):
         self.name = name
 
@@ -22,6 +23,7 @@ class Player():
     def get_action(self):
         pass
 
+# TODO: Split into another file
 class HumanPlayer(Player):
     def prompt_for_action(self, gui):
         return gui.request_move(self.name)

@@ -24,6 +24,9 @@ class Board():
         self.board_white = [0 for k in range(size)]
         self.board_black = [0 for k in range(size)]
 
+    def get_size(self):
+        return self.size
+
     def get_occ(self, pos):
         # return self.board[pos[0]][pos[1]]
         y = pos[1]
@@ -45,19 +48,18 @@ class Board():
             self.board_black[y] &= ~x_pos_bit
             self.board_white[y] &= ~x_pos_bit
 
-    '''
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
-    def colours(self, move_pos, direction, length):
+    def get_occs_in_a_line(self, move, direction, length):
         """ Return a list of the colours of the stones in a line """
         ret = []
+        start_pos = Pos(move[0], move[1])
         for distance in range(length):
-            test_pos = self.shift(move_pos, direction, distance)
+            test_pos = start_pos.shift(direction, distance)
             if test_pos[0] < 0 or \
                test_pos[0] >= self.size or \
                test_pos[1] < 0 or \
                test_pos[1] >= self.size:
                 # Other end of a potential capture is off the edge of the board
                 continue
-            ret.append(self.get_colour(test_pos))
+            ret.append(self.get_occ(test_pos))
         return ret
-    '''

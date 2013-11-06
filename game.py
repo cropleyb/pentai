@@ -1,6 +1,16 @@
 
 from game_state import *
 
+class Move():
+    def __init__(self, pos):
+        self.pos = pos
+
+    def position(self):
+        return self.pos
+
+    def __eq__(self, other):
+        return self.pos == other.pos
+
 class Game():
 
     def __init__(self, rules, player1, player2):
@@ -13,6 +23,15 @@ class Game():
 
     def get_player(self, player_number):
         return self.player[player_number]
+
+    def get_current_player(self):
+        return self.player[self.current_state.to_move()]
+
+    def prompt_for_action(self, gui):
+        return self.get_current_player().prompt_for_action(gui)
+
+    def get_action(self, gui):
+        return self.get_current_player().get_action(gui)
 
     # Not sure if these should even delegate
     def get_move_number(self):
@@ -28,5 +47,5 @@ class Game():
         return self.current_state.set_captured(player_number, pieces)
 
     def make_move(self, move):
-        pass
+        self.current_state.make_move(move)
 

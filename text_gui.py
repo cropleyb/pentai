@@ -73,4 +73,4 @@ class TextGui():
             raise IllegalMoveException()
         if row < 0 or row >= self.game.size:
             raise IllegalMoveException()
-        return MoveAction(col, row)
+        return MoveAction.create_from_tuple(col, row)

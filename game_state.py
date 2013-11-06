@@ -5,12 +5,6 @@ from board import *
 class IllegalMoveException(Exception):
     pass
 
-class Move():
-    def __init__(self, pos):
-        self.pos = pos
-    def position(self):
-        return self.pos
-
 DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
               (0,-1),(0,0),(0,1),
               (1,-1),(1,0),(1,1))
@@ -18,12 +12,17 @@ DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
 class Pos():
     def __init__(self, x, y):
         self.tup = (x,y)
+
     def __getitem__(self, dim):
         return self.tup[dim]
+
     def shift(self, direction, steps):
         new_pos = (self.tup[0] + (direction[0] * steps), \
                    self.tup[1] + (direction[1] * steps)) 
         return Pos(*new_pos)
+
+    def __eq__(self, other):
+        return self.tup == other.tup
 
 class GameState():
     """ This is for the state of a game as of a particular move. """
@@ -32,14 +31,14 @@ class GameState():
         self.parent = parent
         if parent == None:
             self.board = Board(game.size())
-            self.move_number = 1
             self.captured = [0,0]
             self.won_by = False
+            self.move_number = 1
         else:
             self.board = parent.board # TODO: Clone
-            self.move_number = parent.move_number + 1
             self.captured = parent.captured[:]
             self.won_by = parent.won_by
+            self.move_number = parent.move_number #+ 1
 
     def get_move_number(self):
         return self.move_number
@@ -55,16 +54,19 @@ class GameState():
         self.captured[player_num] = pieces
     
     def make_move(self, move):
-        move_pos = move.position()
-        if self.get_colour(move_pos) > 0:
+        move_pos = move.pos
+        if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException()
 
         # Place a stone
+        my_colour = self.to_move()
+        self.move_number += 1
         self.board.set_occ(move_pos, my_colour)
+        board_size = self.board.get_size()
 
         # Process captures
         for direction in DIRECTIONS:
-            clrs = self.colours(move_pos, direction, 4)
+            clrs = self.board.get_occs_in_a_line(move_pos, direction, 4)
             if clrs == [1, 2, 2, 1] or clrs == [2, 1, 1, 2]:
                 capture_pos1 = move_pos.shift(direction, 1)
                 capture_pos2 = move_pos.shift(direction, 2)
@@ -80,12 +82,12 @@ class GameState():
             while l < 5:
                 test_pos = move_pos.shift(direction, l)
                 if test_pos[0] < 0 or \
-                   test_pos[0] >= self.BOARD_SIZE or \
+                   test_pos[0] >= board_size or \
                    test_pos[1] < 0 or \
-                   test_pos[1] >= self.BOARD_SIZE:
+                   test_pos[1] >= board_size:
                     # Other end of a potential line is off the edge of the board
                     break
-                next_col = self.get_colour(test_pos)
+                next_col = self.board.get_occ(test_pos)
                 if next_col != my_colour:
                     break
                 l += 1
@@ -93,12 +95,12 @@ class GameState():
             while m > -5:
                 test_pos = move_pos.shift(direction, m)
                 if test_pos[0] < 0 or \
-                   test_pos[0] >= self.BOARD_SIZE or \
+                   test_pos[0] >= board_size or \
                    test_pos[1] < 0 or \
-                   test_pos[1] >= self.BOARD_SIZE:
+                   test_pos[1] >= board_size:
                     # Other end of a potential line is off the edge of the board
                     break
-                next_col = self.get_colour(test_pos)
+                next_col = self.board.get_occ(test_pos)
                 if next_col != my_colour:
                     break
                 m -= 1
@@ -106,6 +108,7 @@ class GameState():
             if total_line_length >= 5:
                 self.won_by = my_colour
 
+    '''
     def get_colour(self, pos):
         # return self.board[pos[0]][pos[1]]
         y = pos[1]
@@ -126,10 +129,12 @@ class GameState():
             # clear
             self.board_black[y] &= ~x_pos_bit
             self.board_white[y] &= ~x_pos_bit
+    '''
     
+    '''
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def colours(self, move_pos, direction, length):
-        ''' Return a list of the colours of the stones in a line '''
+        """ Return a list of the colours of the stones in a line """
         ret = []
         for distance in range(length):
             test_pos = move_pos.shift(direction, distance)
@@ -141,25 +146,10 @@ class GameState():
                 continue
             ret.append(self.get_colour(test_pos))
         return ret
+    '''
 
     def to_move(self):
-        return self.move_number % 2
-
-    '''
-    def __repr__(self):
-        edge = "* " * self.BOARD_SIZE
-        board_array = ["\n" + edge]
-        for y in range(self.BOARD_SIZE):
-            line = []
-            for x in range(self.BOARD_SIZE):
-                ind = self.get_colour((x,y))
-                col = " OX"[ind]
-                line.append(col)
-                line.append(' ')
-            board_array.append("".join(line))
-        board_array.append(edge)
-        return "\n".join(board_array)
-    '''
+        return not self.move_number % 2
 
     def successors(self):
         succ = []

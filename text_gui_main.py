@@ -28,12 +28,8 @@ if __name__ == "__main__":
     gui = TextGui(game)
 
     while (True):
-        if game.get_move_number() % 2 == 0:
-            p = player1
-        else:
-            p = player2
-        print p.prompt_for_action(gui),
-        action = p.get_action(gui)
+        print game.prompt_for_action(gui),
+        action = game.get_action(gui)
         action.perform(game)
 
     #pdb.set_trace()
