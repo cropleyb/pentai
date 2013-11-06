@@ -41,7 +41,7 @@ class TextGui():
 
     def player_detail(self, player_num):
         ret = ""
-        if self.game.get_move_number() % 2 == player_num:
+        if self.game.get_move_number() % 2 != player_num:
             ret = "* "
         ret = ret + self.game.get_player(player_num).name
         num_captured = self.game.get_captured(player_num)

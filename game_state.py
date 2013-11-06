@@ -32,7 +32,7 @@ class GameState():
         self.parent = parent
         if parent == None:
             self.board = Board(game.size())
-            self.move_number = 0 # TODO - should be 1
+            self.move_number = 1
             self.captured = [0,0]
             self.won_by = False
         else:
