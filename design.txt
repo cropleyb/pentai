@@ -1,7 +1,7 @@
 Classes
 -------
 GameState - should mark a particular state of the board - LengthCounter, captures (W/B)
-Board - part of a game state object, just the pieces
+Board - part of a game state object, just the pieces on the board, no knowledge of pente
 Rules - board size, capture rules, first move constraints
 Game - should know players, rules, how to make moves, should operate on the GameState object
 Pos  - a position on the board
