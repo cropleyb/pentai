@@ -32,9 +32,9 @@ if __name__ == "__main__":
             p = player1
         else:
             p = player2
-        print p.prompt_for_action(gui)
+        print p.prompt_for_action(gui),
         action = p.get_action(gui)
-        game.perform(action)
+        action.perform(game)
 
     #pdb.set_trace()
     # alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)
