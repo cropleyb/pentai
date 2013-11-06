@@ -1,3 +1,4 @@
+
 # TODO: cloned in GUI
 class IllegalMoveException(Exception):
     pass
@@ -22,7 +23,7 @@ class Pos():
                    self.tup[1] + (direction[1] * steps)) 
         return Pos(*new_pos)
 
-class State():
+class GameState():
     """ This is for the state of a game after a particular move. """
     def __init__(self, parent=None, move=None, board_size=13):
         self.parent = parent
