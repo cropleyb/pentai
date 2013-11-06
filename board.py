@@ -28,26 +28,27 @@ class Board():
         # return self.board[pos[0]][pos[1]]
         y = pos[1]
         x_pos_bit = 1 << pos[0]
-        colour =           (self.board_black[y] & x_pos_bit) and 1
-        colour = colour or (self.board_white[y] & x_pos_bit) and 2
+        colour =           (self.board_black[y] & x_pos_bit) and BLACK
+        colour = colour or (self.board_white[y] & x_pos_bit) and WHITE
         return colour
 
     def set_occ(self, pos, colour):
         # self.board[pos[0]][pos[1]] = colour
         y = pos[1]
         x_pos_bit = 1 << pos[0]
-        if colour == 1:
+        if colour == BLACK:
             self.board_black[y] |= x_pos_bit
-        elif colour == 2:
+        elif colour == WHITE:
             self.board_white[y] |= x_pos_bit
         else:
             # clear
             self.board_black[y] &= ~x_pos_bit
             self.board_white[y] &= ~x_pos_bit
 
+    '''
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def colours(self, move_pos, direction, length):
-        ''' Return a list of the colours of the stones in a line '''
+        """ Return a list of the colours of the stones in a line """
         ret = []
         for distance in range(length):
             test_pos = self.shift(move_pos, direction, distance)
@@ -59,3 +60,4 @@ class Board():
                 continue
             ret.append(self.get_colour(test_pos))
         return ret
+    '''
