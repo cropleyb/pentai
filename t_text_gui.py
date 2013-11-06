@@ -122,15 +122,15 @@ class TextGuiTest(unittest.TestCase):
     def test_player_names_after_move(self):
         self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
                                 player2=HumanPlayer("DeepThunk"))
-        self.game.move_number += 1
+        self.game.set_move_number(1)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce (0p) vs. * DeepThunk (0p)\n")
 
     def test_aux_after_moves_and_capture(self):
         self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
                                 player2=HumanPlayer("DeepThunk"))
-        self.game.move_number += 5
-        self.game.captures[0] = 2
+        self.game.set_move_number(5)
+        self.game.set_captured(0, 2)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce (1p) vs. * DeepThunk (0p)\n")
 
@@ -138,8 +138,8 @@ class TextGuiTest(unittest.TestCase):
         self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
                                 player2=HumanPlayer("DeepThunk"),
                                 rules_str="keryo")
-        self.game.move_number += 5
-        self.game.captures[0] = 3
+        self.game.set_move_number(5)
+        self.game.set_captured(0, 3)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce (3) vs. * DeepThunk (0)\n")
 

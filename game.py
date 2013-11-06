@@ -7,9 +7,6 @@ class Game():
         self.rules = rules
         self.player = [player1, player2]
         self.current_state = GameState(self)
-        # TODO: I think these belong in board - dynamic game state
-        self.move_number = 0
-        self.captures = [0, 0]
 
     def size(self):
         return self.rules.size
@@ -17,11 +14,18 @@ class Game():
     def get_player(self, player_number):
         return self.player[player_number]
 
+    # Not sure if these should even delegate
     def get_move_number(self):
-        return self.move_number
+        return self.current_state.get_move_number()
 
-    def get_captures(self, player_number):
-        return self.captures[player_number]
+    def set_move_number(self, turn):
+        self.current_state.set_move_number(turn)
+
+    def get_captured(self, player_number):
+        return self.current_state.get_captured(player_number)
+
+    def set_captured(self, player_number, pieces):
+        return self.current_state.set_captured(player_number, pieces)
 
     def make_move(self, move):
         pass

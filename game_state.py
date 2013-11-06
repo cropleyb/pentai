@@ -32,22 +32,33 @@ class GameState():
         self.parent = parent
         if parent == None:
             self.board = Board(game.size())
-            self.turn = 1
+            self.move_number = 0 # TODO - should be 1
             self.captured = [0,0]
             self.won_by = False
         else:
             self.board = parent.board # TODO: Clone
-            self.turn = parent.turn + 1
+            self.move_number = parent.move_number + 1
             self.captured = parent.captured[:]
             self.won_by = parent.won_by
 
+    def get_move_number(self):
+        return self.move_number
+
+    def get_captured(self, player_num):
+        return self.captured[player_num]
+
+    # these two should only be used for testing
+    def set_move_number(self, turn):
+        self.move_number = turn
+
+    def set_captured(self, player_num, pieces):
+        self.captured[player_num] = pieces
+    
     def make_move(self, move):
         move_pos = move.position()
         if self.get_colour(move_pos) > 0:
             raise IllegalMoveException()
 
-        # TODO: Check for whether this needs to be inverted?
-        #my_colour = self.turn % 2 + 1
         # Place a stone
         self.board.set_occ(move_pos, my_colour)
 
@@ -132,8 +143,9 @@ class GameState():
         return ret
 
     def to_move(self):
-        return self.turn % 2
+        return self.move_number % 2
 
+    '''
     def __repr__(self):
         edge = "* " * self.BOARD_SIZE
         board_array = ["\n" + edge]
@@ -147,6 +159,7 @@ class GameState():
             board_array.append("".join(line))
         board_array.append(edge)
         return "\n".join(board_array)
+    '''
 
     def successors(self):
         succ = []

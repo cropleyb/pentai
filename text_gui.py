@@ -44,13 +44,13 @@ class TextGui():
         if self.game.get_move_number() % 2 == player_num:
             ret = "* "
         ret = ret + self.game.get_player(player_num).name
-        num_captures = self.game.get_captures(player_num)
+        num_captured = self.game.get_captured(player_num)
         if not self.game.rules.can_capture_threes:
-            num_captures /= 2
-            captures = str(num_captures) + 'p'
+            num_captured /= 2
+            captured = str(num_captured) + 'p'
         else:
-            captures = str(num_captures)
-        ret = ret + " (" + captures + ")"
+            captured = str(num_captured)
+        ret = ret + " (" + captured + ")"
         return ret
 
     def aux_to_string(self):
