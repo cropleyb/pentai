@@ -1,4 +1,6 @@
 
+from board import *
+
 # TODO: cloned in GUI
 class IllegalMoveException(Exception):
     pass
@@ -24,38 +26,30 @@ class Pos():
         return Pos(*new_pos)
 
 class GameState():
-    """ This is for the state of a game after a particular move. """
-    def __init__(self, parent=None, move=None, board_size=13):
+    """ This is for the state of a game as of a particular move. """
+    def __init__(self, game, parent=None):
+        self.game = game
         self.parent = parent
         if parent == None:
-            # Hack
-            self.BOARD_SIZE = board_size
-
-            self.turn = 0
+            self.board = Board(game.size())
+            self.turn = 1
             self.captured = [0,0]
-            # self.board = [[0 for k in range(self.BOARD_SIZE)] for l in range(self.BOARD_SIZE)]
-            self.board_white = [0 for k in range(self.BOARD_SIZE)]
-            self.board_black = [0 for k in range(self.BOARD_SIZE)]
-            self.won_by = 0
-            return
-        # c = copy.deepcopy(parent)
-        # self.__dict__ = c.__dict__
-        # self.turn = self.turn + 1
-        self.BOARD_SIZE = parent.BOARD_SIZE
-        self.turn = parent.turn + 1
-        self.captured = parent.captured[:]
-        self.board_white = parent.board_white[:]
-        self.board_black = parent.board_black[:]
-        self.won_by = parent.won_by
+            self.won_by = False
+        else:
+            self.board = parent.board # TODO: Clone
+            self.turn = parent.turn + 1
+            self.captured = parent.captured[:]
+            self.won_by = parent.won_by
 
+    def make_move(self, move):
         move_pos = move.position()
         if self.get_colour(move_pos) > 0:
             raise IllegalMoveException()
 
         # TODO: Check for whether this needs to be inverted?
-        my_colour = self.turn % 2 + 1
+        #my_colour = self.turn % 2 + 1
         # Place a stone
-        self.set_colour(move_pos, my_colour)
+        self.board.set_occ(move_pos, my_colour)
 
         # Process captures
         for direction in DIRECTIONS:
