@@ -24,11 +24,16 @@ class SubStripCountingTest(unittest.TestCase):
         self.black_counter = LengthCounter()
         self.white_counter = LengthCounter()
 
-    # Helper
+    # Helpers
     def add_substrips_for_str(self, ss_str):
         pattern = pattern_string_to_int_list(ss_str)
         add_substrips(pattern, self.black_counter, self.white_counter)
 
+    def remove_substrips_for_str(self, ss_str):
+        pattern = pattern_string_to_int_list(ss_str)
+        remove_substrips(pattern, self.black_counter, self.white_counter)
+
+    # Tests
     def test_count_empty(self):
         self.add_substrips_for_str("         ")
         self.assertEquals(self.black_counter.tup(), (0,0,0,0,0))
@@ -127,6 +132,11 @@ class SubStripCountingTest(unittest.TestCase):
     def test_block_four(self):
         self.add_substrips_for_str("    BWWWW")
         self.assertEquals(self.black_counter.tup(), (1,0,0,0,0))
+        self.assertEquals(self.white_counter.tup(), (0,0,0,0,0))
+
+    def test_remove_substrips(self):
+        self.remove_substrips_for_str("    BWWWW")
+        self.assertEquals(self.black_counter.tup(), (-1,0,0,0,0))
         self.assertEquals(self.white_counter.tup(), (0,0,0,0,0))
 
 if __name__ == "__main__":
