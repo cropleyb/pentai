@@ -24,8 +24,8 @@ if __name__ == "__main__":
     game = Game(rules, player1, player2)
 
     gui = TextGui(game)
-    # HACK
-    game.current_state.gui = gui
+
+    game.current_state.add_observer(gui)
 
     print "Please enter moves in the form 'd4'."
     while (not game.finished()):

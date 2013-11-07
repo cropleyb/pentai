@@ -9,7 +9,7 @@ class ABState():
     def __init__(self, parent, move=None):
         my_game_state = parent.state
         my_game = my_game_state.game
-        self.state = game_state.GameState(my_game, my_game_state, None) # No gui for search (yet)
+        self.state = game_state.GameState(my_game, my_game_state)
 
     def to_move(self):
         return self.state.to_move()

@@ -29,12 +29,11 @@ class Pos():
 
 class GameState():
     """ This is for the state of a game as of a particular move. 
-        The observer is either a gui, or the AIState.
     """
-    def __init__(self, game, parent=None, observer=None):
+    def __init__(self, game, parent=None):
         self.game = game
         self.parent = parent
-        self.observer = observer
+        self.observers = []
         if parent == None:
             self.board = Board(game.size())
             # 3 for convenience, should only use [1] and [2]
@@ -46,6 +45,10 @@ class GameState():
             self.captured = parent.captured[:]
             self.won_by = parent.won_by
             self.move_number = parent.move_number # not + 1, that will be triggered by a move
+            # TODO: copy AI observer manually
+
+    def add_observer(self, o):
+        self.observers.append(o)
 
     def get_move_number(self):
         return self.move_number
@@ -73,8 +76,8 @@ class GameState():
         self.board.set_occ(move_pos, my_colour)
         board_size = self.board.get_size()
 
-        if (self.observer != None):
-            self.observer.place_stone(move_pos[0], move_pos[1], my_colour)
+        for o in self.observers:
+            o.place_stone(move_pos[0], move_pos[1], my_colour)
 
         MC = my_colour
         OC = other_colour
@@ -89,9 +92,9 @@ class GameState():
                 # Remove stones
                 self.board.set_occ(capture_pos1, EMPTY)
                 self.board.set_occ(capture_pos2, EMPTY)
-                if (self.observer != None):
-                    self.observer.remove_stone(capture_pos1[0], capture_pos1[1])
-                    self.observer.remove_stone(capture_pos2[0], capture_pos2[1])
+                for o in self.observers:
+                    o.remove_stone(capture_pos1[0], capture_pos1[1])
+                    o.remove_stone(capture_pos2[0], capture_pos2[1])
                 # Keep track of capture count
                 self.captured[my_colour] += 2
                 if self.captured[my_colour] >= 10:
