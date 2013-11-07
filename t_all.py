@@ -14,7 +14,7 @@ def suite():
     suite1 = unittest.defaultTestLoader.loadTestsFromModule(t_board)
     suite2 = unittest.defaultTestLoader.loadTestsFromModule(t_update_substrips)
     suite3 = unittest.defaultTestLoader.loadTestsFromModule(t_alpha_beta)
-    # suite4 = unittest.defaultTestLoader.loadTestsFromModule(t_ab_bridge)
+    suite4 = unittest.defaultTestLoader.loadTestsFromModule(t_ab_bridge)
     suite5 = unittest.defaultTestLoader.loadTestsFromModule(t_rules)
     suite6 = unittest.defaultTestLoader.loadTestsFromModule(t_text_gui)
     suite7 = unittest.defaultTestLoader.loadTestsFromModule(t_game_state)
@@ -22,7 +22,7 @@ def suite():
     allTests.addTest(suite1)
     allTests.addTest(suite2)
     allTests.addTest(suite3)
-    # allTests.addTest(suite4) - get some other stuff working first.
+    allTests.addTest(suite4)
     allTests.addTest(suite5)
     allTests.addTest(suite6)
     allTests.addTest(suite7)

@@ -21,9 +21,14 @@ WHITE = 2
 class Board():
     def __init__(self, size, gui=None):
         self.size = size
-        self.board_white = [0 for k in range(size+1)]
-        self.board_black = [0 for k in range(size+1)]
         self.gui = gui
+        self.board_black = [0 for k in range(size+1)]
+        self.board_white = [0 for k in range(size+1)]
+
+    def clone(self):
+        new_board = Board(self.size, self.gui)
+        new_board.board_black = self.board_black[:]
+        new_board.board_white = self.board_white[:]
 
     def get_size(self):
         return self.size
