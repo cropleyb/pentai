@@ -25,8 +25,6 @@ if __name__ == "__main__":
 
     gui = TextGui(game)
 
-    game.current_state.add_observer(gui)
-
     print "Please enter moves in the form 'd4'."
     while (not game.finished()):
         print game.prompt_for_action(gui),

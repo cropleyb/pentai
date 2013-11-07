@@ -19,11 +19,14 @@ BLACK = 1
 WHITE = 2
 
 class Board():
-    def __init__(self, size, gui=None):
+    def __init__(self, size):
         self.size = size
-        self.gui = gui
         self.board_black = [0 for k in range(size+1)]
         self.board_white = [0 for k in range(size+1)]
+        self.observers = []
+    
+    def add_observer(self, o):
+        self.observers.append(o)
 
     def clone(self):
         new_board = Board(self.size, self.gui)
@@ -54,6 +57,14 @@ class Board():
             self.board_black[y] &= ~x_pos_bit
             self.board_white[y] &= ~x_pos_bit
 
+        if colour > EMPTY:
+            for o in self.observers:
+                o.place_stone(pos[0], pos[1], colour)
+        else:
+            for o in self.observers:
+                o.remove_stone(pos[0], pos[1])
+
+
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def get_occs_in_a_line(self, move, direction, length):
         """ Return a list of the colours of the stones in a line """
@@ -67,5 +78,6 @@ class Board():
                test_pos[1] >= self.size:
                 # Other end of a potential capture is off the edge of the board
                 continue
+            # yield self.get_occ(test_pos)
             ret.append(self.get_occ(test_pos))
         return ret

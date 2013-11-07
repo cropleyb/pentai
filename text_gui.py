@@ -23,6 +23,10 @@ class TextGui():
                 row.append(' ')
         self.board_chars.append(first_row)
 
+        # We must watch what happens to the logical board, and update accordingly
+        board = game.current_state.board
+        board.add_observer(self)
+
     def place_stone(self, x, y, colour):
         if colour == 1:
             col_char = "B"

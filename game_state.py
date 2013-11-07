@@ -47,9 +47,6 @@ class GameState():
             self.move_number = parent.move_number # not + 1, that will be triggered by a move
             # TODO: copy AI observer manually
 
-    def add_observer(self, o):
-        self.observers.append(o)
-
     def get_move_number(self):
         return self.move_number
 
@@ -76,9 +73,6 @@ class GameState():
         self.board.set_occ(move_pos, my_colour)
         board_size = self.board.get_size()
 
-        for o in self.observers:
-            o.place_stone(move_pos[0], move_pos[1], my_colour)
-
         MC = my_colour
         OC = other_colour
 
@@ -89,12 +83,11 @@ class GameState():
             if clrs == [MC, OC, OC, MC]: # or clrs == [2, 1, 1, 2]:
                 capture_pos1 = move_pos.shift(direction, 1)
                 capture_pos2 = move_pos.shift(direction, 2)
+
                 # Remove stones
                 self.board.set_occ(capture_pos1, EMPTY)
                 self.board.set_occ(capture_pos2, EMPTY)
-                for o in self.observers:
-                    o.remove_stone(capture_pos1[0], capture_pos1[1])
-                    o.remove_stone(capture_pos2[0], capture_pos2[1])
+
                 # Keep track of capture count
                 self.captured[my_colour] += 2
                 if self.captured[my_colour] >= 10:
