@@ -28,11 +28,13 @@ class Pos():
         return self.tup == other.tup
 
 class GameState():
-    """ This is for the state of a game as of a particular move. """
-    def __init__(self, game, parent=None, gui=None):
+    """ This is for the state of a game as of a particular move. 
+        The observer is either a gui, or the AIState.
+    """
+    def __init__(self, game, parent=None, observer=None):
         self.game = game
         self.parent = parent
-        self.gui = gui
+        self.observer = observer
         if parent == None:
             self.board = Board(game.size())
             # 3 for convenience, should only use [1] and [2]
@@ -71,8 +73,8 @@ class GameState():
         self.board.set_occ(move_pos, my_colour)
         board_size = self.board.get_size()
 
-        if (self.gui != None):
-            self.gui.place_stone(move_pos[0], move_pos[1], my_colour)
+        if (self.observer != None):
+            self.observer.place_stone(move_pos[0], move_pos[1], my_colour)
 
         MC = my_colour
         OC = other_colour
@@ -87,9 +89,9 @@ class GameState():
                 # Remove stones
                 self.board.set_occ(capture_pos1, EMPTY)
                 self.board.set_occ(capture_pos2, EMPTY)
-                if (self.gui != None):
-                    self.gui.remove_stone(capture_pos1[0], capture_pos1[1])
-                    self.gui.remove_stone(capture_pos2[0], capture_pos2[1])
+                if (self.observer != None):
+                    self.observer.remove_stone(capture_pos1[0], capture_pos1[1])
+                    self.observer.remove_stone(capture_pos2[0], capture_pos2[1])
                 # Keep track of capture count
                 self.captured[my_colour] += 2
                 if self.captured[my_colour] >= 10:

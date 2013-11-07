@@ -23,6 +23,13 @@ class ABState():
     def score(self):
         return self.utility(None)
 
+    def place_stone(self, x, y, colour):
+        # TODO: update substrips
+        pass
+
+    def remove_stone(x, y):
+        # TODO: update substrips
+        pass
 
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """

@@ -25,4 +25,5 @@ class MoveAction():
         game.make_move(self.move)
 
 class Gui():
+    # TODO: base interface, constructor chaining takes (game)
     pass
