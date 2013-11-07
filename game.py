@@ -49,3 +49,9 @@ class Game():
     def make_move(self, move):
         self.current_state.make_move(move)
 
+    def finished(self):
+        return self.current_state.won_by > 0
+
+    def winner(self):
+        return self.current_state.won_by
+

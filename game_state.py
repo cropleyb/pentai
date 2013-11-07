@@ -6,8 +6,8 @@ class IllegalMoveException(Exception):
     pass
 
 DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
-              (0,-1),(0,0),(0,1),
-              (1,-1),(1,0),(1,1))
+               (0,-1),        (0,1),
+               (1,-1), (1,0), (1,1))
 
 class Pos():
     def __init__(self, x, y):
@@ -20,6 +20,9 @@ class Pos():
         new_pos = (self.tup[0] + (direction[0] * steps), \
                    self.tup[1] + (direction[1] * steps)) 
         return Pos(*new_pos)
+
+    def __repr__(self):
+        return str(self.tup)
 
     def __eq__(self, other):
         return self.tup == other.tup
@@ -90,14 +93,16 @@ class GameState():
                 self.captured[my_colour] += 2
 
         # Check for a win (TEMP)
-        for direction in DIRECTIONS:
+        # We only need half of the directions,
+        # because for each we need to check the opposite direction
+        for direction in DIRECTIONS[:4]:
             l = 1
             while l < 5:
                 test_pos = move_pos.shift(direction, l)
                 if test_pos[0] < 0 or \
-                   test_pos[0] >= board_size or \
+                   test_pos[0] > board_size or \
                    test_pos[1] < 0 or \
-                   test_pos[1] >= board_size:
+                   test_pos[1] > board_size:
                     # Other end of a potential line is off the edge of the board
                     break
                 next_col = self.board.get_occ(test_pos)
@@ -108,17 +113,17 @@ class GameState():
             while m > -5:
                 test_pos = move_pos.shift(direction, m)
                 if test_pos[0] < 0 or \
-                   test_pos[0] >= board_size or \
+                   test_pos[0] > board_size or \
                    test_pos[1] < 0 or \
-                   test_pos[1] >= board_size:
+                   test_pos[1] > board_size:
                     # Other end of a potential line is off the edge of the board
                     break
                 next_col = self.board.get_occ(test_pos)
                 if next_col != my_colour:
                     break
                 m -= 1
-            total_line_length = 1 + l - m
-            if total_line_length >= 5:
+            total_line_length = 1 + (l-1) - (m+1)
+            if total_line_length >= 5: # TODO: check rules for longer lines
                 self.won_by = my_colour
 
     def to_move(self):
@@ -141,7 +146,7 @@ class GameState():
 
     # TODO: Move this, use Rules object
     def utility(self, player):
-        # 5+ in a row or 5+ captured = infinity
+        # 5+ in a row or 5+ pairs captured = infinity
         if self.captured[BLACK] >= 10 or self.won_by == BLACK:
             return alpha_beta.infinity
         if self.captured[WHITE] >= 10 or self.won_by == WHITE:

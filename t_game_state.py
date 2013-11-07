@@ -20,10 +20,12 @@ class GameStateTest(unittest.TestCase):
     def setUpWithOverrides(self, size=5, player1=None, player2=None, rules_str="standard"):
         rules = Rules(size, rules_str)
         self.game = Game(rules, player1, player2)
-        self.gs = GameState(self.game)
+        self.gs = self.game.current_state
 
-    def move(self, x, y):
+    def move(self, x, y, finished_check=None):
         self.gs.make_move(Move(Pos(x,y)))
+        if finished_check != None:
+            self.assertEquals(self.game.finished(), finished_check)
 
     def aE(self, a, b):
         self.assertEquals(a, b)
@@ -106,6 +108,142 @@ class GameStateTest(unittest.TestCase):
         self.move(2,1) # W
         self.move(1,1) # B
         self.aE(self.gs.get_captured(B), 2)
+
+    def test_unfinished(self):
+        self.aE(self.game.finished(), False)
+        self.aE(self.gs.won_by, EMPTY)
+
+    ###########################################
+    # 5 in a row should win
+    ###########################################
+
+    def test_N_5_in_a_row_detected(self):
+        self.move(1,1) # B
+        self.move(3,1) # W
+        self.move(1,2) # B
+        self.move(2,1) # W
+        self.move(1,3) # B
+        self.move(5,4) # W
+        self.move(1,4) # B
+        self.move(2,4) # W
+        self.move(1,5) # B
+        self.aE(self.game.finished(), True)
+        self.aE(self.gs.won_by, B)
+
+    def test_NE_5_in_a_row_detected(self):
+        self.move(1,1) # B
+        self.move(3,1) # W
+        self.move(2,2) # B
+        self.move(2,1) # W
+        self.move(3,3) # B
+        self.move(5,4) # W
+        self.move(4,4) # B
+        self.move(2,4) # W
+        self.move(5,5) # B
+        self.aE(self.game.finished(), True)
+        self.aE(self.gs.won_by, B)
+
+    def test_E_5_in_a_row_detected(self):
+        self.move(1,1,False) # B
+        self.move(3,2,False) # W
+        self.move(2,1,False) # B
+        self.move(2,3,False) # W
+        self.move(3,1,False) # B
+        self.move(5,4,False) # W
+        self.move(4,1,False) # B
+        self.move(2,4,False) # W
+        self.move(5,1,True) # B
+        self.aE(self.gs.won_by, B)
+
+    def test_SE_5_in_a_row_detected(self):
+        self.move(1,5,False) # B
+        self.move(3,2,False) # W
+        self.move(2,4,False) # B
+        self.move(2,3,False) # W
+        self.move(3,3,False) # B
+        self.move(5,4,False) # W
+        self.move(4,2,False) # B
+        self.move(2,5,False) # W
+        self.move(5,1,True) # B
+        self.aE(self.gs.won_by, B)
+
+    def test_S_5_in_a_row_detected(self):
+        self.move(1,5,False) # B
+        self.move(3,2,False) # W
+        self.move(1,4,False) # B
+        self.move(2,3,False) # W
+        self.move(1,3,False) # B
+        self.move(5,4,False) # W
+        self.move(1,2,False) # B
+        self.move(2,5,False) # W
+        self.move(1,1,True) # B
+        self.aE(self.gs.won_by, B)
+
+    def test_SW_5_in_a_row_detected(self):
+        self.aE(self.game.finished(), False)
+        self.move(5,5) # B
+        self.aE(self.game.finished(), False)
+        self.move(3,2) # W
+        self.aE(self.game.finished(), False)
+        self.move(4,4) # B
+        self.aE(self.game.finished(), False)
+        self.move(2,3) # W
+        self.aE(self.game.finished(), False)
+        self.move(3,3) # B
+        self.aE(self.game.finished(), False)
+        self.move(5,4) # W
+        self.aE(self.game.finished(), False)
+        self.move(2,2) # B
+        self.aE(self.game.finished(), False)
+        self.move(2,5) # W
+        self.aE(self.game.finished(), False)
+        self.move(1,1) # B
+        self.aE(self.game.finished(), True)
+        self.aE(self.gs.won_by, B)
+
+    def test_W_5_in_a_row_detected(self):
+        self.aE(self.game.finished(), False)
+        self.move(5,1) # B
+        self.aE(self.game.finished(), False)
+        self.move(3,2) # W
+        self.aE(self.game.finished(), False)
+        self.move(4,1) # B
+        self.aE(self.game.finished(), False)
+        self.move(2,3) # W
+        self.aE(self.game.finished(), False)
+        self.move(3,1) # B
+        self.aE(self.game.finished(), False)
+        self.move(5,4) # W
+        self.aE(self.game.finished(), False)
+        self.move(2,1) # B
+        self.aE(self.game.finished(), False)
+        self.move(2,5) # W
+        self.aE(self.game.finished(), False)
+        self.move(1,1) # B
+        self.aE(self.game.finished(), True)
+        self.aE(self.gs.won_by, B)
+
+    def test_NW_5_in_a_row_detected(self):
+        self.aE(self.game.finished(), False)
+        self.move(5,1) # B
+        self.aE(self.game.finished(), False)
+        self.move(3,2) # W
+        self.aE(self.game.finished(), False)
+        self.move(4,2) # B
+        self.aE(self.game.finished(), False)
+        self.move(2,3) # W
+        self.aE(self.game.finished(), False)
+        self.move(3,3) # B
+        self.aE(self.game.finished(), False)
+        self.move(5,4) # W
+        self.aE(self.game.finished(), False)
+        self.move(2,4) # B
+        self.aE(self.game.finished(), False)
+        self.move(2,5) # W
+        self.aE(self.game.finished(), False)
+        self.move(1,5) # B
+        self.aE(self.game.finished(), True)
+        self.aE(self.gs.won_by, B)
 
 if __name__ == "__main__":
     unittest.main()

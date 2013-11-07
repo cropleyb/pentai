@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # HACK
     game.current_state.gui = gui
 
-    while (True):
+    while (not game.finished()):
         print game.prompt_for_action(gui),
         #pdb.set_trace()
         try:
