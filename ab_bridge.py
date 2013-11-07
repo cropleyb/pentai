@@ -23,11 +23,7 @@ class ABState():
     def score(self):
         return self.utility(None)
 
-    def place_stone(self, x, y, colour):
-        # TODO: update substrips
-        pass
-
-    def remove_stone(x, y):
+    def set_occ(self, pos, colour):
         # TODO: update substrips
         pass
 

@@ -28,13 +28,15 @@ class TextGui():
         board = game.current_state.board
         board.add_observer(self)
 
-    def set_occ(self, x, y, colour):
+    def set_occ(self, pos, colour):
         if colour == 1:
             col_char = "B"
         elif colour == 2:
             col_char = "W"
         else:
             col_char = " "
+        x = pos[0]
+        y = pos[1]
         self.board_chars[1+self.game.size()-y][x] = col_char
 
     def board_to_string(self):

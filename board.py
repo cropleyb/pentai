@@ -20,6 +20,10 @@ EMPTY = 0
 BLACK = 1
 WHITE = 2
 
+class BoardObserver():
+    def set_occ(self, pos, colour):
+        pass
+
 class Board():
     def __init__(self, size):
         self.size = size
@@ -60,7 +64,7 @@ class Board():
             self.board_white[y] &= ~x_pos_bit
 
         for o in self.observers:
-            o.set_occ(pos[0], pos[1], colour)
+            o.set_occ(pos, colour)
 
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def get_occs_in_a_line(self, move, direction, length):
