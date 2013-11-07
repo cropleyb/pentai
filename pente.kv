@@ -12,30 +12,38 @@
 
 # Top level
 
-<PanelInfo>:
-	GridLayout:
-		cols: 2
+FloatLayout:
+    canvas:
+        #Color:
+        #    rgb: .1, 1, 1
+        Rectangle:
+            source: 'images/board.png'
+            size: self.size
+
+#<PanelInfo>:
+	#GridLayout:
+		#cols: 2
 		# Left panel - info
-		GridLayout:
-			rows: 3
+		#GridLayout:
+			#rows: 3
 
 			# Player info
-			GridLayout:
-				rows: 2
-				cols: 2
-				Label:
-					text: "00:00"
-					# size_hint_y: 1
-				Label:
-					text: "00:00"
-					# size_hint_y: 1
-				Label
-					text: "Player1"
-					# size_hint_y: 1
-				Label
-					text: "Player2"
-					# size_hint_y: 1
-				# TODO: captured pieces
+#			GridLayout:
+#				rows: 2
+#				cols: 2
+#				Label:
+#					text: "00:00"
+#					# size_hint_y: 1
+#				Label:
+#					text: "00:00"
+#					# size_hint_y: 1
+#				Label
+#					text: "Player1"
+#					# size_hint_y: 1
+#				Label
+#					text: "Player2"
+#					# size_hint_y: 1
+#				# TODO: captured pieces
 
 <Piece>:
 	#on_size: self.center = image.center
