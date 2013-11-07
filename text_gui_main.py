@@ -27,6 +27,7 @@ if __name__ == "__main__":
     # HACK
     game.current_state.gui = gui
 
+    print "Please enter moves in the form 'd4'."
     while (not game.finished()):
         print game.prompt_for_action(gui),
         try:
