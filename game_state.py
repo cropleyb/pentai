@@ -35,14 +35,15 @@ class GameState():
         self.gui = gui
         if parent == None:
             self.board = Board(game.size())
-            self.captured = [0,0,0] # 3 for convenience
+            # 3 for convenience, should only use [1] and [2]
+            self.captured = [0,0,0]
             self.won_by = False
             self.move_number = 1
         else:
             self.board = parent.board # TODO: Clone
             self.captured = parent.captured[:]
             self.won_by = parent.won_by
-            self.move_number = parent.move_number #+ 1
+            self.move_number = parent.move_number # not + 1, that will be triggered by a move
 
     def get_move_number(self):
         return self.move_number
@@ -91,10 +92,14 @@ class GameState():
                     self.gui.remove_stone(capture_pos2[0], capture_pos2[1])
                 # Keep track of capture count
                 self.captured[my_colour] += 2
+                if self.captured[my_colour] >= 10:
+                    self.won_by = MC
 
-        # Check for a win (TEMP)
-        # We only need half of the directions,
+        # Check for a win by checking all the lines that run through
+        # the move position.
+        # We only need to check half of the directions,
         # because for each we need to check the opposite direction
+        # in case the last stone was not placed at an end.
         for direction in DIRECTIONS[:4]:
             l = 1
             while l < 5:
@@ -109,6 +114,8 @@ class GameState():
                 if next_col != my_colour:
                     break
                 l += 1
+
+            # Now see how far the line goes in the opposite direction.
             m = -1
             while m > -5:
                 test_pos = move_pos.shift(direction, m)
@@ -123,7 +130,8 @@ class GameState():
                     break
                 m -= 1
             total_line_length = 1 + (l-1) - (m+1)
-            if total_line_length >= 5: # TODO: check rules for longer lines
+            # TODO: check rules to see if lines longer than 5 also win
+            if total_line_length >= 5:
                 self.won_by = my_colour
 
     def to_move(self):
@@ -144,7 +152,8 @@ class GameState():
                     pass
         return succ
 
-    # TODO: Move this, use Rules object
+    '''
+    # TODO: Move this to ABState, maybe use Rules object
     def utility(self, player):
         # 5+ in a row or 5+ pairs captured = infinity
         if self.captured[BLACK] >= 10 or self.won_by == BLACK:
@@ -155,4 +164,5 @@ class GameState():
 
     def score(self):
         return self.utility(None)
+    '''
 
