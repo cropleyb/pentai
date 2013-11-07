@@ -223,8 +223,38 @@ class GameStateTest(unittest.TestCase):
         self.move(1,5,True) # B
         self.aE(self.gs.won_by, B)
 
+    def test_for_5_captures(self):
+        self.setUpWithOverrides(size=13)
+
+        # First halves
+        self.move(1,1,False) # B
+        self.move(2,1,False) # W
+        self.move(1,2,False) # B
+        self.move(2,2,False) # W
+        self.move(1,3,False) # B
+        self.move(2,3,False) # W
+        self.move(1,5,False) # B # NB don't make a line of 5
+        self.move(2,5,False) # W
+        self.move(1,6,False) # B
+        self.move(2,6,False) # W
+
+        # Switch to white first
+        self.move(5,5,False) # B
+        
+        # capture 5 pairs
+        self.move(3,1,False) # W
+        self.move(4,1,False) # B
+        self.move(3,2,False) # W
+        self.move(4,2,False) # B
+        self.move(3,3,False) # W
+        self.move(4,3,False) # B
+        self.move(3,5,False) # W
+        self.move(4,5,False) # B
+        self.move(3,6,False) # W
+        self.move(4,6,True) # B # finished game
+        self.aE(self.gs.captured[1], 10)
+        self.aE(self.gs.won_by, B)
+
 if __name__ == "__main__":
     unittest.main()
-
-
 
