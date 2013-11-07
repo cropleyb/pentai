@@ -41,6 +41,15 @@ class GameStateTest(unittest.TestCase):
         self.aE(self.gs.get_captured(B), 0)
         self.aE(self.gs.get_captured(W), 0)
 
+    def test_make_one_move(self):
+        self.move(2,4)
+        try:
+            self.move(2,4)
+        except IllegalMoveException, e:
+            self.assertEquals(e.message, "That position is already occupied")
+            return
+        self.fail()
+
     def test_make_one_N_capture(self):
         self.move(2,4)
         self.move(1,4)

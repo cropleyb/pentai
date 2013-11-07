@@ -67,10 +67,13 @@ class TextGui():
         return self.get_action_from_string(s)
 
     def get_action_from_string(self, s):
-        col = self.col_names.find(s[0]) + 1
-        row = string.atoi(s[1:])
-        if col < 0 or col >= self.game.size:
-            raise IllegalMoveException()
-        if row < 0 or row >= self.game.size:
-            raise IllegalMoveException()
-        return MoveAction.create_from_tuple(col, row)
+        try:
+            col = self.col_names.find(s[0]) + 1
+            row = string.atoi(s[1:])
+            if col > 0 and col <= self.game.size() and \
+               row > 0 and row <= self.game.size():
+                return MoveAction.create_from_tuple(col, row)
+        except:
+            pass
+        off_board_msg = "That position is not on the board"
+        raise IllegalMoveException(off_board_msg)

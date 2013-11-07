@@ -60,7 +60,7 @@ class GameState():
     def make_move(self, move):
         move_pos = move.pos
         if self.board.get_occ(move_pos) > 0:
-            raise IllegalMoveException()
+            raise IllegalMoveException("That position is already occupied")
 
         other_colour = self.to_move_colour()
         # Place a stone
