@@ -6,7 +6,6 @@ This is a basic picture viewer, using the scatter widget.
 '''
 
 import kivy
-import pdb
 kivy.require('1.0.6')
 
 from os.path import join, dirname
@@ -81,16 +80,15 @@ class PenteApp(App):
 
         # the root is created in pictures.kv
         root = self.root
-        pdb.set_trace()
 
         # get any files into images directory
         curdir = dirname(__file__)
 
         try:
             # load the image
-            #filename = "./images/board.png"
+            filename = "./images/board.png"
             #fs = filename[:].strip()
-            pi = PanelInfo() # source=filename)
+            pi = PanelInfo(source=filename)
 
             # add to the main field
             root.add_widget(pi)
