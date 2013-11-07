@@ -21,6 +21,7 @@ class TextGui():
             row.append(row_num_str)
             for j in range(game.size()):
                 row.append(' ')
+        self.board_chars.append(first_row)
 
     def place_stone(self, x, y, colour):
         if colour == 1:

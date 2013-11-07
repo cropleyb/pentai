@@ -30,7 +30,8 @@ class TextGuiTest(unittest.TestCase):
 " 4      \n"
 " 3      \n"
 " 2      \n"
-" 1      \n")
+" 1      \n"
+"   abcde\n")
 
     def test_place_one_stone(self):
         self.gui.place_stone(4,2,black)
@@ -41,7 +42,8 @@ class TextGuiTest(unittest.TestCase):
 " 4      \n"
 " 3      \n"
 " 2    B \n"
-" 1      \n")
+" 1      \n"
+"   abcde\n")
 
     def test_place_and_remove_stone(self):
         self.gui.place_stone(4,2,black)
@@ -53,7 +55,8 @@ class TextGuiTest(unittest.TestCase):
 " 4      \n"
 " 3      \n"
 " 2      \n"
-" 1      \n")
+" 1      \n"
+"   abcde\n")
 
     def test_place_one_stone_different_size(self):
         self.setUpWithOverrides(7)
@@ -67,7 +70,8 @@ class TextGuiTest(unittest.TestCase):
 " 4        \n"
 " 3        \n"
 " 2    B   \n"
-" 1        \n")
+" 1        \n"
+"   abcdefg\n")
 
     def test_place_and_remove_one_stone_different_size(self):
         self.setUpWithOverrides(7)
@@ -82,7 +86,8 @@ class TextGuiTest(unittest.TestCase):
 " 4        \n"
 " 3        \n"
 " 2        \n"
-" 1        \n")
+" 1        \n"
+"   abcdefg\n")
 
     def test_big_empty_board(self):
         self.setUpWithOverrides(13)
@@ -101,7 +106,8 @@ class TextGuiTest(unittest.TestCase):
 " 4              \n"
 " 3              \n"
 " 2              \n"
-" 1              \n")
+" 1              \n"
+"   abcdefghjklmn\n")
 
     def test_place_two_stones(self):
         self.gui.place_stone(4,2,black)
@@ -113,7 +119,8 @@ class TextGuiTest(unittest.TestCase):
 " 4      \n"
 " 3    W \n"
 " 2    B \n"
-" 1      \n")
+" 1      \n"
+"   abcde\n")
 
     def test_player_names(self):
         self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
@@ -155,6 +162,7 @@ class TextGuiTest(unittest.TestCase):
 ' 3      \n'
 ' 2      \n'
 ' 1      \n'
+'   abcde\n'
 '* Fred (0p) vs. Wilma (0p)\n'
 'Your move, Fred:\n')
 
