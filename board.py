@@ -7,8 +7,10 @@ DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
 class Pos():
     def __init__(self, x, y):
         self.tup = (x,y)
+
     def __getitem__(self, dim):
         return self.tup[dim]
+
     def shift(self, direction, steps):
         new_pos = (self.tup[0] + (direction[0] * steps), \
                    self.tup[1] + (direction[1] * steps)) 
@@ -57,13 +59,8 @@ class Board():
             self.board_black[y] &= ~x_pos_bit
             self.board_white[y] &= ~x_pos_bit
 
-        if colour > EMPTY:
-            for o in self.observers:
-                o.place_stone(pos[0], pos[1], colour)
-        else:
-            for o in self.observers:
-                o.remove_stone(pos[0], pos[1])
-
+        for o in self.observers:
+            o.set_occ(pos[0], pos[1], colour)
 
     # TODO - use yield, rename, combine L/R strands, reorder the left strand
     def get_occs_in_a_line(self, move, direction, length):

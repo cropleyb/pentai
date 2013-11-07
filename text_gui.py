@@ -2,6 +2,7 @@
 import string
 from gui import *
 
+empty = 0
 black = 1
 white = 2
 
@@ -27,15 +28,14 @@ class TextGui():
         board = game.current_state.board
         board.add_observer(self)
 
-    def place_stone(self, x, y, colour):
+    def set_occ(self, x, y, colour):
         if colour == 1:
             col_char = "B"
         elif colour == 2:
             col_char = "W"
+        else:
+            col_char = " "
         self.board_chars[1+self.game.size()-y][x] = col_char
-
-    def remove_stone(self, x, y):
-        self.board_chars[1+self.game.size()-y][x] = " "
 
     def board_to_string(self):
         ret = []
