@@ -16,6 +16,10 @@ class Pos():
                    self.tup[1] + (direction[1] * steps)) 
         return Pos(*new_pos)
 
+    def __eq__(self, other):
+        return self.tup[0] == other[0] and \
+               self.tup[1] == other[1]
+
 EMPTY = 0
 BLACK = 1
 WHITE = 2
@@ -66,9 +70,11 @@ class Board():
         for o in self.observers:
             o.set_occ(pos, colour)
 
-    # TODO - use yield, rename, combine L/R strands, reorder the left strand
-    def get_occs_in_a_line(self, move, direction, length):
-        """ Return a list of the colours of the stones in a line """
+    # TODO - use yield?
+    def get_occs_in_a_line_for_capture_test(self, move, direction, length):
+        """ Return a list of the colours of the stones in a line 
+            starting at 'move'.
+        """
         ret = []
         start_pos = Pos(move[0], move[1])
         for distance in range(length):
@@ -81,4 +87,22 @@ class Board():
                 continue
             # yield self.get_occ(test_pos)
             ret.append(self.get_occ(test_pos))
+        return ret
+
+    def get_positions_in_line_through_pos(self, pos, direction, length):
+        """ Return a list of the colours of the stones in a line 
+            going through 'pos', 'length' in each direction.
+        """
+        ret = []
+        start_pos = pos.shift(direction, -length)
+        for distance in range(1 + 2*length):
+            test_pos = start_pos.shift(direction, distance)
+            if test_pos[0] < 0 or \
+               test_pos[0] >= self.size or \
+               test_pos[1] < 0 or \
+               test_pos[1] >= self.size:
+                # off the edge of the board
+                continue
+            # yield self.get_occ(test_pos)
+            ret.append(test_pos)
         return ret

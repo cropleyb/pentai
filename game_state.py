@@ -79,8 +79,8 @@ class GameState():
         # Process captures
         # TODO: keryo pente capture 3s
         for direction in DIRECTIONS:
-            clrs = self.board.get_occs_in_a_line(move_pos, direction, 4)
-            if clrs == [MC, OC, OC, MC]: # or clrs == [2, 1, 1, 2]:
+            occs = self.board.get_occs_in_a_line_for_capture_test(move_pos, direction, 4)
+            if occs == [MC, OC, OC, MC]:
                 capture_pos1 = move_pos.shift(direction, 1)
                 capture_pos2 = move_pos.shift(direction, 2)
 
