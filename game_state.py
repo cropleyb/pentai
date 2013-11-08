@@ -1,31 +1,10 @@
 
 from board import *
+from pos import *
 
 # TODO: cloned in GUI
 class IllegalMoveException(Exception):
     pass
-
-DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
-               (0,-1),        (0,1),
-               (1,-1), (1,0), (1,1))
-
-class Pos():
-    def __init__(self, x, y):
-        self.tup = (x,y)
-
-    def __getitem__(self, dim):
-        return self.tup[dim]
-
-    def shift(self, direction, steps):
-        new_pos = (self.tup[0] + (direction[0] * steps), \
-                   self.tup[1] + (direction[1] * steps)) 
-        return Pos(*new_pos)
-
-    def __repr__(self):
-        return str(self.tup)
-
-    def __eq__(self, other):
-        return self.tup == other.tup
 
 class GameState():
     """ This is for the state of a game as of a particular move. 
