@@ -32,9 +32,18 @@ class ABState():
     def board(self):
         return self.state.board
 
-    def set_occ(self, pos, colour):
+    def before_set_occ(self, pos):
+        self.black_lines.set_add_mode(False)
+        self.white_lines.set_add_mode(False)
+        self._set_or_reset_occ(pos)
+
+    def after_set_occ(self, pos):
+        self.black_lines.set_add_mode(True)
+        self.white_lines.set_add_mode(True)
+        self._set_or_reset_occ(pos)
+
+    def _set_or_reset_occ(self, pos):
         # update substrips
-        # TODO: We need one for before, and one for after
         for direction in DIRECTIONS[:4]:
             l = self.board().get_positions_in_line_through_pos(pos, direction, 4)
             occs = [self.board().get_occ(i) for i in l]

@@ -9,8 +9,8 @@ class LengthCounter():
     def tup(self):
         return tuple(self.counts)
 
-    def set_add_mode(self, mode):
-        self.add_mode = mode
+    def set_add_mode(self, m):
+        self.add_mode = m
 
     def process(self, length):
         if self.add_mode:
@@ -27,13 +27,9 @@ class LengthCounter():
 
 # TODO give this a better home
 def add_substrips(pattern, us_counter, them_counter):
-    us_counter.set_add_mode(True)
-    them_counter.set_add_mode(True)
     process_substrips(pattern, us_counter, them_counter)
 
 def remove_substrips(pattern, us_counter, them_counter):
-    us_counter.set_add_mode(False)
-    them_counter.set_add_mode(False)
     process_substrips(pattern, us_counter, them_counter)
 
 def process_substrips(pattern, us_counter, them_counter):

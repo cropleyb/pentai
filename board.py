@@ -6,7 +6,11 @@ BLACK = 1
 WHITE = 2
 
 class BoardObserver():
-    def set_occ(self, pos, colour):
+
+    def before_set_occ(self, pos, colour):
+        pass
+
+    def after_set_occ(self, pos, colour):
         pass
 
 class Board():
@@ -37,6 +41,9 @@ class Board():
 
     def set_occ(self, pos, colour):
         # self.board[pos[0]][pos[1]] = colour
+        for o in self.observers:
+            o.before_set_occ(pos)
+
         y = pos[1]
         x_pos_bit = 1 << pos[0]
         if colour == BLACK:
@@ -49,7 +56,7 @@ class Board():
             self.board_white[y] &= ~x_pos_bit
 
         for o in self.observers:
-            o.set_occ(pos, colour)
+            o.after_set_occ(pos)
 
     # TODO - use yield?
     def get_occs_in_a_line_for_capture_test(self, pos, direction, length):

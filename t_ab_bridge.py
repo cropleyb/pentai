@@ -29,28 +29,65 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         self.assertEquals(self.s.black_lines, [20, 0, 0, 0, 0])
         self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
 
+    def test_empty_board(self):
+        self.assertEquals(self.s.black_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+
     def test_update_substrips_SW_corner(self):
         self.s.board().set_occ(Pos(0,0), BLACK)
 
         self.assertEquals(self.s.black_lines, [3, 0, 0, 0, 0])
         self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
-    '''
+
+    def test_update_substrips_remove_single_stone(self):
+        self.s.board().set_occ(Pos(0,0), BLACK)
+        #pdb.set_trace()
+        self.s.board().set_occ(Pos(0,0), EMPTY)
+
+        self.assertEquals(self.s.black_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+
+    def test_update_substrips_TEMP(self):
+        self.s.board().set_occ(Pos(0,0), BLACK)
+        self.s.board().set_occ(Pos(1,1), BLACK)
+
+        self.assertEquals(self.s.black_lines, [7, 1, 0, 0, 0])
+        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+
+    def test_update_substrips_near_SW_corner(self):
+        self.s.board().set_occ(Pos(1,0), BLACK)
+
+        self.assertEquals(self.s.black_lines, [4, 0, 0, 0, 0])
+        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+
+    def test_update_substrips_2_opp_colour_pieces(self):
+        self.s.board().set_occ(Pos(0,0), BLACK)
+        self.s.board().set_occ(Pos(0,1), WHITE)
+
+        self.assertEquals(self.s.black_lines, [2, 0, 0, 0, 0]) # FAILING
+        self.assertEquals(self.s.white_lines, [3, 0, 0, 0, 0])
+
+    def test_update_substrips_2_pieces(self):
+        self.s.board().set_occ(Pos(0,0), BLACK)
+        self.s.board().set_occ(Pos(0,1), BLACK)
+
+        self.assertEquals(self.s.black_lines, [5, 1, 0, 0, 0]) # FAILING
+        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+
     def test_update_substrips_NE_corner(self):
-        self.s.board().set_occ(Pos(13,13), BLACK)
+        self.s.board().set_occ(Pos(12,12), BLACK)
 
         self.assertEquals(self.s.black_lines, [3, 0, 0, 0, 0])
         self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+
     '''
-
-
     def test_one_level_search(self):
         r = rules.Rules(7, "standard")
-        '''
+        
         # TODO
         alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)
         # self.assertEquals() # TODO
-        '''
-
+    '''
 
 if __name__ == "__main__":
     unittest.main()

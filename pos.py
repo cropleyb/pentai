@@ -18,6 +18,9 @@ class Pos():
         return self.tup[0] == other[0] and \
                self.tup[1] == other[1]
 
+    def __repr__(self):
+        return str(self.tup)
+
     def off_board(self, size):
         return self.tup[0] < 0 or \
                self.tup[0] >= size or \
