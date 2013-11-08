@@ -18,6 +18,12 @@ class LengthCounter():
         else:
             self.counts[length-1] -= 1
 
+    def __eq__(self, other):
+        return self.counts == other
+
+    def __repr__(self):
+        return str(self.counts)
+
 
 # TODO give this a better home
 def add_substrips(pattern, us_counter, them_counter):

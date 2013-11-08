@@ -2,14 +2,20 @@
 
 import board
 import game_state
+from pos import *
 
+from update_substrips import *
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
-    def __init__(self, parent, move=None):
-        my_game_state = parent.state
-        my_game = my_game_state.game
-        self.state = game_state.GameState(my_game, my_game_state)
+    def __init__(self):
+        self.black_lines = LengthCounter()
+        self.white_lines = LengthCounter()
+
+    def set_state(self, s):
+        self.state = s
+        self.board().add_observer(self)
+        # TODO: Remove us as an observer from previous self.state
 
     def to_move(self):
         return self.state.to_move()
@@ -23,9 +29,16 @@ class ABState():
     def score(self):
         return self.utility(None)
 
+    def board(self):
+        return self.state.board
+
     def set_occ(self, pos, colour):
-        # TODO: update substrips
-        pass
+        # update substrips
+        # TODO: We need one for before, and one for after
+        for direction in DIRECTIONS[:4]:
+            l = self.board().get_positions_in_line_through_pos(pos, direction, 4)
+            occs = [self.board().get_occ(i) for i in l]
+            add_substrips(occs, self.black_lines, self.white_lines)
 
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
