@@ -12,7 +12,6 @@ class GameState():
     def __init__(self, game, parent=None):
         self.game = game
         self.parent = parent
-        self.observers = []
         if parent == None:
             self.board = Board(game.size())
             # 3 for convenience, should only use [1] and [2]
