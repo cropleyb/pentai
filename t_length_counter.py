@@ -4,7 +4,7 @@ import unittest
 
 import pdb
 
-from update_substrips import *
+from length_counter import *
 
 def pattern_string_to_int_list(occ_str):
     ret = []

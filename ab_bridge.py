@@ -4,7 +4,7 @@ import board
 import game_state
 from pos import *
 
-from update_substrips import *
+from length_counter import *
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """

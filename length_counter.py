@@ -2,8 +2,11 @@
 COUNT_LENGTH=5
 
 class LengthCounter():
-    def __init__(self):
-        self.counts = [0] * COUNT_LENGTH
+    def __init__(self, arr=None):
+        if arr == None:
+            self.counts = [0] * COUNT_LENGTH
+        else:
+            self.counts = arr[:]
         self.add_mode = True
 
     def tup(self):
@@ -23,6 +26,13 @@ class LengthCounter():
 
     def __repr__(self):
         return str(self.counts)
+
+    def __len__(self):
+        return COUNT_LENGTH
+
+    def __getitem__(self, i):
+        return self.counts[i]
+
 
 
 # TODO give this a better home
