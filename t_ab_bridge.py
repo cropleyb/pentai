@@ -8,7 +8,7 @@ import alpha_beta
 
 import game
 import rules
-import player
+import human_player
 from board import *
 
 from ab_bridge import *
@@ -16,8 +16,8 @@ from ab_bridge import *
 class AlphaBetaBridgeTest(unittest.TestCase):
 
     def setUp(self):
-        player1 = player.HumanPlayer("Blomp")
-        player2 = player.HumanPlayer("Kubba")
+        player1 = human_player.HumanPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
         r = rules.Rules(13, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()

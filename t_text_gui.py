@@ -5,7 +5,7 @@ import unittest
 from game import *
 from rules import *
 from text_gui import *
-from player import *
+from human_player import *
 
 import pdb
 

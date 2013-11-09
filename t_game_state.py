@@ -3,7 +3,7 @@
 import unittest
 
 from game_state import *
-from player import *
+from human_player import *
 from rules import *
 from game import *
 
