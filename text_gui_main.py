@@ -33,8 +33,8 @@ if __name__ == "__main__":
             action.perform(game)
         except IllegalMoveException, e:
             print e.message
-    print gui.game.board_to_string()
-    winner = game.get_winner()
+    print gui.board_to_string()
+    winner = game.winner_name()
     print "Won by %s" % winner
 
     # alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)

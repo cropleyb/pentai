@@ -24,6 +24,6 @@ class MoveAction():
     def perform(self, game):
         game.make_move(self.move)
 
-class Gui():
+class Gui(BoardObserver):
     # TODO: base interface, constructor chaining takes (game)
     pass

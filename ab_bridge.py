@@ -32,12 +32,12 @@ class ABState():
     def board(self):
         return self.state.board
 
-    def before_set_occ(self, pos):
+    def before_set_occ(self, pos, colour):
         self.black_lines.set_add_mode(False)
         self.white_lines.set_add_mode(False)
         self._set_or_reset_occ(pos)
 
-    def after_set_occ(self, pos):
+    def after_set_occ(self, pos, colour):
         self.black_lines.set_add_mode(True)
         self.white_lines.set_add_mode(True)
         self._set_or_reset_occ(pos)

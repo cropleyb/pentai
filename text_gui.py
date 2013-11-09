@@ -6,7 +6,7 @@ empty = 0
 black = 1
 white = 2
 
-class TextGui():
+class TextGui(Gui):
     def __init__(self, game):
         self.game = game
         self.board_chars = []
@@ -28,7 +28,7 @@ class TextGui():
         board = game.current_state.board
         board.add_observer(self)
 
-    def set_occ(self, pos, colour):
+    def after_set_occ(self, pos, colour):
         if colour == 1:
             col_char = "B"
         elif colour == 2:

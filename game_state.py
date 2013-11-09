@@ -16,12 +16,12 @@ class GameState():
             self.board = Board(game.size())
             # 3 for convenience, should only use [1] and [2]
             self.captured = [0,0,0]
-            self.won_by = False
+            self.set_won_by(False)
             self.move_number = 1
         else:
             self.board = parent.board # TODO: Clone
             self.captured = parent.captured[:]
-            self.won_by = parent.won_by
+            self.set_won_by(parent.get_won_by())
             self.move_number = parent.move_number # not + 1, that will be triggered by a move
             # TODO: copy AI observer manually
 
@@ -69,7 +69,8 @@ class GameState():
                 # Keep track of capture count
                 self.captured[my_colour] += 2
                 if self.captured[my_colour] >= 10:
-                    self.won_by = MC
+                    self.set_won_by(MC)
+                    #self.won_by = MC
 
         # Check for a win by checking all the lines that run through
         # the move position.
@@ -108,7 +109,13 @@ class GameState():
             total_line_length = 1 + (l-1) - (m+1)
             # TODO: check rules to see if lines longer than 5 also win
             if total_line_length >= 5:
-                self.won_by = my_colour
+                self.set_won_by(my_colour)
+
+    def set_won_by(self, wb):
+        self._won_by = wb
+
+    def get_won_by(self):
+        return self._won_by
 
     def to_move(self):
         return not self.move_number % 2

@@ -120,7 +120,7 @@ class GameStateTest(unittest.TestCase):
 
     def test_unfinished(self):
         self.aE(self.game.finished(), False)
-        self.aE(self.gs.won_by, EMPTY)
+        self.aE(self.gs.get_won_by(), EMPTY)
 
     ###########################################
     # 5 in a row should win
@@ -137,7 +137,7 @@ class GameStateTest(unittest.TestCase):
         self.move(1,4,False) # B
         self.move(2,4,False) # W
         self.move(1,5,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_NE_5_in_a_row_detected(self):
         self.move(1,1,False) # B
@@ -149,7 +149,7 @@ class GameStateTest(unittest.TestCase):
         self.move(4,4,False) # B
         self.move(2,4,False) # W
         self.move(5,5,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_E_5_in_a_row_detected(self):
         self.move(1,1,False) # B
@@ -161,7 +161,7 @@ class GameStateTest(unittest.TestCase):
         self.move(4,1,False) # B
         self.move(2,4,False) # W
         self.move(5,1,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_SE_5_in_a_row_detected(self):
         self.move(1,5,False) # B
@@ -173,7 +173,7 @@ class GameStateTest(unittest.TestCase):
         self.move(4,2,False) # B
         self.move(2,5,False) # W
         self.move(5,1,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_S_5_in_a_row_detected(self):
         self.move(1,5,False) # B
@@ -185,7 +185,7 @@ class GameStateTest(unittest.TestCase):
         self.move(1,2,False) # B
         self.move(2,5,False) # W
         self.move(1,1,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_SW_5_in_a_row_detected(self):
         self.move(5,5,False) # B
@@ -197,7 +197,7 @@ class GameStateTest(unittest.TestCase):
         self.move(2,2,False) # B
         self.move(2,5,False) # W
         self.move(1,1,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_W_5_in_a_row_detected(self):
         self.move(5,1,False) # B
@@ -209,7 +209,7 @@ class GameStateTest(unittest.TestCase):
         self.move(2,1,False) # B
         self.move(2,5,False) # W
         self.move(1,1,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_NW_5_in_a_row_detected(self):
         self.move(5,1,False) # B
@@ -221,7 +221,7 @@ class GameStateTest(unittest.TestCase):
         self.move(2,4,False) # B
         self.move(2,5,False) # W
         self.move(1,5,True) # B
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
     def test_for_5_captures(self):
         self.setUpWithOverrides(size=13)
@@ -253,7 +253,7 @@ class GameStateTest(unittest.TestCase):
         self.move(3,6,False) # W
         self.move(4,6,True) # B # finished game
         self.aE(self.gs.captured[1], 10)
-        self.aE(self.gs.won_by, B)
+        self.aE(self.gs.get_won_by(), B)
 
 if __name__ == "__main__":
     unittest.main()
