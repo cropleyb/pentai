@@ -56,5 +56,5 @@ class Game():
         return self.current_state.get_won_by()
 
     def winner_name(self):
-        return self.player[self.current_state.get_won_by()]
+        return self.player[self.current_state.get_won_by()-1]
 
