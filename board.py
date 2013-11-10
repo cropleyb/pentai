@@ -24,9 +24,10 @@ class Board():
         self.observers.append(o)
 
     def clone(self):
-        new_board = Board(self.size, self.gui)
+        new_board = Board(self.size)
         new_board.board_black = self.board_black[:]
         new_board.board_white = self.board_white[:]
+        return new_board
 
     def get_size(self):
         return self.size

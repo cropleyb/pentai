@@ -31,13 +31,14 @@ class ABState():
     def utility(self, player):
         bl = self.black_lengths
         wl = self.white_lengths
-        # TODO: use an accessor
-        captures = self.state.captured
         score = 0
         if bl[4] > 0:
-            return infinity
+            return alpha_beta.infinity
         if wl[4] > 0:
-            return -infinity
+            return -alpha_beta.infinity
+        # TODO: use an accessor
+        # captures = self.state.captured
+
         # TODO: check rules, use captures
 
         for i in range(len(bl)):
