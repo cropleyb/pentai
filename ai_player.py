@@ -10,7 +10,7 @@ class AIPlayer(Player):
         #TODO fix hack
         Player.__init__(self, name)
 
-        self.max_depth = 2
+        self.max_depth = 1
 
     def prompt_for_action(self, base_game, gui):
         # TODO: set up and execute AB search

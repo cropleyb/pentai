@@ -7,6 +7,7 @@ import gui
 import human_player
 import rules
 import game
+#import profile
 
 from ai_player import *
 
@@ -24,15 +25,12 @@ class AIPlayerTest(unittest.TestCase):
         self.s.set_state(my_game.current_state)
         '''
 
-    '''
-    # TODO
     def test_find_one_move(self):
         p = AIPlayer("Deep thunk")
-        # pdb.set_trace()
+        pdb.set_trace()
         p.prompt_for_action(self.game, self.gui)
         ma = p.get_action(self.game, self.gui)
         self.assertEquals(ma, gui.MoveAction(6,6))
-    '''
 
 if __name__ == "__main__":
     unittest.main()

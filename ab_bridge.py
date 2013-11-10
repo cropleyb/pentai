@@ -5,6 +5,7 @@ import game_state
 import alpha_beta
 import search_order
 import game
+import gui
 from pos import *
 
 from length_counter import *
@@ -29,8 +30,8 @@ class ABState():
         return self.state.__repr__()
 
     def utility(self, player):
-        bl = self.black_lengths
-        wl = self.white_lengths
+        bl = self.black_lines
+        wl = self.white_lines
         score = 0
         if bl[4] > 0:
             return alpha_beta.infinity
@@ -85,6 +86,9 @@ class ABState():
 
         return ab_child
 
+    def terminal(self):
+        return self.state.get_won_by() != game.EMPTY
+
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
     def __init__(self, base_game):
@@ -105,19 +109,15 @@ class ABGame():
         return state.utility(player)
 
     def successors(self, state):
-        return list(self.successor_iter(state))
-
-    def successor_iter(self, state):
         for pos in self.pos_iter.get_iter():
-            #pdb.set_trace()
-            # TODO: create a AB_State for each possible move from state
+            # create a AB_State for each possible move from state
             try:
                 succ = state.create_state(pos)
-                yield succ
+                yield gui.MoveAction(game.Move(pos)), succ
             except game_state.IllegalMoveException:
                 # Ignore these
                 pass
 
     def terminal_test(self, state):
-        return False
-        # return len(self.successors(state)) == 0 THIS causes mass delay
+        return state.terminal()
+

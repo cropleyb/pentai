@@ -25,6 +25,10 @@ class GameState():
             self.move_number = parent.move_number # not + 1, that will be triggered by a move
             # TODO: copy AI observer manually
 
+    def __repr__(self):
+        return "TODO: game representation."
+        #return self.game.__repr__()
+
     def get_move_number(self):
         return self.move_number
 

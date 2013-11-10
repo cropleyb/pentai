@@ -34,7 +34,7 @@ def suite():
     allTests.addTest(suite7)
     allTests.addTest(suite8)
     allTests.addTest(suite9)
-    allTests.addTest(suite10)
+    #allTests.addTest(suite10)
     return allTests
 
 if __name__ == "__main__":

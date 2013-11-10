@@ -2,10 +2,12 @@ import pdb
 
 infinity = 1e+31
 
-def argmax(l, fn):
+def argmax(aspl, fn):
+    """ aspl: action state pair list
+    """
     #print "***** In argmax"
-    #pdb.set_trace()
-    vals = [(fn(item), item) for item in l]
+
+    vals = [(fn(item), item) for item in aspl]
     vals.sort()
     best = max(vals)
     return best[1], best[0]
@@ -40,8 +42,6 @@ def alphabeta_search(state, game, max_depth=4):
 
     def cutoff_test(state, depth):
         # The default test cuts off at depth d or at a terminal state
-        #print "Cutoff check"
-        #print state
         return depth>max_depth or game.terminal_test(state)
 
     # print "***** Defining top_min_func"
