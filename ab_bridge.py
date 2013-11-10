@@ -9,6 +9,8 @@ from pos import *
 
 from length_counter import *
 
+import pdb
+
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self):
@@ -27,7 +29,23 @@ class ABState():
         return self.state.__repr__()
 
     def utility(self, player):
-        return self.state.utility(player)
+        bl = self.black_lengths
+        wl = self.white_lengths
+        # TODO: use an accessor
+        captures = self.state.captured
+        score = 0
+        if bl[4] > 0:
+            return infinity
+        if wl[4] > 0:
+            return -infinity
+        # TODO: check rules, use captures
+
+        for i in range(len(bl)):
+            rev = 4 - i
+            score += bl[rev]
+            score -= wl[rev]
+            score *= 100
+        return score
 
     def score(self):
         return self.utility(None)
@@ -86,7 +104,11 @@ class ABGame():
         return state.utility(player)
 
     def successors(self, state):
+        return list(self.successor_iter(state))
+
+    def successor_iter(self, state):
         for pos in self.pos_iter.get_iter():
+            #pdb.set_trace()
             # TODO: create a AB_State for each possible move from state
             try:
                 succ = state.create_state(pos)
