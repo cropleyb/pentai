@@ -2,6 +2,9 @@
 
 import board
 import game_state
+import alpha_beta
+import search_order
+import game
 from pos import *
 
 from length_counter import *
@@ -49,10 +52,27 @@ class ABState():
             occs = [self.board().get_occ(i) for i in l]
             add_substrips(occs, self.black_lines, self.white_lines)
 
+    def create_state(self, move_pos):
+        ab_child = ABState()
+
+        # clone the base level state object
+        base_child = game_state.GameState(self.state.game, self.state)
+
+        # connect the two (including move hook)
+        ab_child.set_state(base_child)
+
+        # make the move for the base (which updates ab_child)
+        base_child.make_move(game.Move(move_pos))
+
+        return ab_child
+
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
-    def __init__(self, game):
-        self.current_state = ABState(game.current_state)
+    def __init__(self, base_game):
+        s = self.current_state = ABState()
+        s.set_state(base_game.current_state)
+        self.base_game = base_game
+        self.pos_iter = search_order.PosIterator(base_game.size())
 
     def to_move(self, state=None):
         if state is None:
@@ -66,34 +86,15 @@ class ABGame():
         return state.utility(player)
 
     def successors(self, state):
-        for succ in game_state.state.successors():
-            yield ABState(succ) # TODO: move
-        '''
-        succ = []
-        for x in range(BOARD_SIZE):
-            for y in range(BOARD_SIZE):
-                pos = (x, y)
-                action = Move(pos)
-                try:
-                    succ.append((action, state.State(state, action)))
-                except IllegalMoveException:
-                    pass
-        return succ
-        '''
+        for pos in self.pos_iter.get_iter():
+            # TODO: create a AB_State for each possible move from state
+            try:
+                succ = state.create_state(pos)
+                yield succ
+            except game_state.IllegalMoveException:
+                # Ignore these
+                pass
 
     def terminal_test(self, state):
         return False
         # return len(self.successors(state)) == 0 THIS causes mass delay
-
-if __name__ == "__main__":
-    try:
-        import psyco
-        psyco.full()
-    except ImportError:
-        print "(without psyco)"
-
-    g = ABGame(7)
-
-    #pdb.set_trace()
-    alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)
-    

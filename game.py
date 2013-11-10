@@ -27,7 +27,7 @@ class Game():
     def get_current_player(self):
         return self.player[self.current_state.to_move()]
 
-    def prompt_for_action(self, gui):
+    def prompt_for_action(self, game, gui):
         return self.get_current_player().prompt_for_action(gui)
 
     def get_action(self, gui):

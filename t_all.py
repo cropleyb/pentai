@@ -11,6 +11,7 @@ import t_text_gui
 import t_game_state
 import t_search_order
 import t_utility
+import t_ai_player
 
 def suite():
     suite1 = unittest.defaultTestLoader.loadTestsFromModule(t_board)
@@ -22,6 +23,7 @@ def suite():
     suite7 = unittest.defaultTestLoader.loadTestsFromModule(t_game_state)
     suite8 = unittest.defaultTestLoader.loadTestsFromModule(t_search_order)
     suite9 = unittest.defaultTestLoader.loadTestsFromModule(t_utility)
+    suite10 = unittest.defaultTestLoader.loadTestsFromModule(t_ai_player)
     allTests = unittest.TestSuite()
     allTests.addTest(suite1)
     allTests.addTest(suite2)
@@ -32,6 +34,7 @@ def suite():
     allTests.addTest(suite7)
     allTests.addTest(suite8)
     allTests.addTest(suite9)
+    allTests.addTest(suite10)
     return allTests
 
 if __name__ == "__main__":

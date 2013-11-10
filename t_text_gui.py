@@ -154,7 +154,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_player_move_prompt(self):
         p = self.game.get_player(0)
-        promptStr = p.prompt_for_action(self.gui)
+        promptStr = p.prompt_for_action(self.game, self.gui)
         self.assertEquals(promptStr,
 '   abcde\n'
 ' 5      \n'
