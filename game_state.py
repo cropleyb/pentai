@@ -19,7 +19,7 @@ class GameState():
             self.set_won_by(False)
             self.move_number = 1
         else:
-            self.board = parent.board # TODO: Clone
+            self.board = parent.board.clone()
             self.captured = parent.captured[:]
             self.set_won_by(parent.get_won_by())
             self.move_number = parent.move_number # not + 1, that will be triggered by a move
