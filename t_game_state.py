@@ -23,7 +23,7 @@ class GameStateTest(unittest.TestCase):
         self.gs = self.game.current_state
 
     def move(self, x, y, finished_check=None):
-        self.gs.make_move(Move(Pos(x,y)))
+        self.gs.make_move(Pos(x,y))
         if finished_check != None:
             self.assertEquals(self.game.finished(), finished_check)
 

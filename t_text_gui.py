@@ -168,15 +168,15 @@ class TextGuiTest(unittest.TestCase):
 
     def test_move_action(self):
         action = self.gui.get_action_from_string("b3")
-        self.assertEquals(action, MoveAction(Move(Pos(2,3))))
+        self.assertEquals(action, MoveAction(Pos(2,3)))
 
     def test_move_action_L_front(self):
         action = self.gui.get_action_from_string("a1")
-        self.assertEquals(action, MoveAction(Move(Pos(1,1))))
+        self.assertEquals(action, MoveAction(Pos(1,1)))
 
     def test_move_action_R_back(self):
         action = self.gui.get_action_from_string("e5")
-        self.assertEquals(action, MoveAction(Move(Pos(5,5))))
+        self.assertEquals(action, MoveAction(Pos(5,5)))
 
     def test_off_board_move_R(self):
         try:

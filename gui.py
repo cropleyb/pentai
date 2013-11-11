@@ -5,15 +5,15 @@ from game import *
 
 class MoveAction():
     @staticmethod 
-    def create_from_move(move):
-        return MoveAction(move)
+    def create_from_move(pos):
+        return MoveAction(pos)
     
     @staticmethod 
     def create_from_tuple(x, y):
-        return MoveAction(Move(Pos(x, y)))
+        return MoveAction(Pos(x, y))
 
-    def __init__(self, move):
-        self.move = move
+    def __init__(self, pos):
+        self.move = pos
 
     def __eq__(self, other):
         return self.move == other.move

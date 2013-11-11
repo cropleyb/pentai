@@ -13,9 +13,9 @@ class Player():
     def __repr__(self):
         return self.name
 
-    def prompt_for_action(self, gui):
+    def prompt_for_action(self, game, gui):
         pass
 
-    def get_action(self, gui):
+    def get_action(self, game, gui):
         pass
 

@@ -45,8 +45,7 @@ class GameState():
     def set_captured(self, player_num, pieces):
         self.captured[player_num] = pieces
     
-    def make_move(self, move):
-        move_pos = move.pos
+    def make_move(self, move_pos):
         if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException("That position is already occupied")
 
@@ -134,8 +133,7 @@ class GameState():
         succ = []
         for x in range(self.BOARD_SIZE):
             for y in range(self.BOARD_SIZE):
-                pos = Pos(x, y)
-                action = Move(pos)
+                action = Pos(x, y)
                 try:
                     succ.append((action, State(self, action)))
                 except IllegalMoveException:

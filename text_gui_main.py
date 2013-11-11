@@ -29,9 +29,9 @@ if __name__ == "__main__":
 
     print "Please enter moves in the form 'd4'."
     while (not game.finished()):
-        print game.prompt_for_action(game, gui),
+        print game.prompt_for_action(gui),
         try:
-            action = game.get_action(game, gui)
+            action = game.get_action(gui)
             action.perform(game)
         except IllegalMoveException, e:
             print e.message

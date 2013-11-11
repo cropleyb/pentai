@@ -83,7 +83,7 @@ class ABState():
         ab_child.set_state(base_child)
 
         # make the move for the base (which updates ab_child)
-        base_child.make_move(game.Move(move_pos))
+        base_child.make_move(move_pos)
 
         return ab_child
 
