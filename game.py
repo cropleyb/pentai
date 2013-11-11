@@ -11,6 +11,9 @@ class Move():
     def __eq__(self, other):
         return self.pos == other.pos
 
+    def __repr__(self):
+        return self.pos.__repr__()
+
 class Game():
 
     def __init__(self, rules, player1, player2):
@@ -20,6 +23,9 @@ class Game():
 
     def size(self):
         return self.rules.size
+
+    def get_board(self):
+        return self.current_state.board
 
     def get_player(self, player_number):
         return self.player[player_number]

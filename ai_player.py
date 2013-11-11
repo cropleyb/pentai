@@ -1,5 +1,6 @@
 import ab_bridge
 import alpha_beta
+from gui import *
 
 from player import *
 
@@ -18,9 +19,9 @@ class AIPlayer(Player):
 
         # pdb.set_trace()
 
-        res = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
+        move, value = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
                 max_depth=self.max_depth)
-        self.action = res
+        self.action = move[0]
 
     def get_action(self, game, gui):
         # TODO: make move chosen by the search

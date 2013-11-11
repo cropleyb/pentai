@@ -29,6 +29,9 @@ class GameState():
         return "TODO: game representation."
         #return self.game.__repr__()
 
+    def get_board(self):
+        return self.board
+
     def get_move_number(self):
         return self.move_number
 
