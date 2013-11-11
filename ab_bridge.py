@@ -67,9 +67,10 @@ class ABState():
 
     def _set_or_reset_occ(self, pos):
         # update substrips
+        brd = self.board()
         for direction in DIRECTIONS[:4]:
-            l = self.board().get_positions_in_line_through_pos(pos, direction, 4)
-            occs = [self.board().get_occ(i) for i in l]
+            l = brd.get_positions_in_line_through_pos(pos, direction, 4)
+            occs = [brd.get_occ(i) for i in l]
             add_substrips(occs, self.black_lines, self.white_lines)
 
     def create_state(self, move_pos):
