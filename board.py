@@ -1,9 +1,6 @@
 
 from pos import *
-
-EMPTY = 0
-BLACK = 1
-WHITE = 2
+from board_strip import *
 
 class BoardObserver():
 
@@ -69,12 +66,11 @@ class Board():
             o.after_set_occ(pos, colour)
 
     # TODO - use yield?
-    def get_occs_in_a_line_for_capture_test(self, pos, direction, length):
+    def get_occs_in_a_line_for_capture_test(self, start_pos, direction, length):
         """ Return a list of the colours of the stones in a line 
             starting at 'pos'.
         """
         ret = []
-        start_pos = pos # Pos(move[0], move[1])
         for distance in range(length):
             test_pos = start_pos.shift(direction, distance)
             if test_pos.off_board(self.size):
