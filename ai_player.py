@@ -20,8 +20,7 @@ class AIPlayer(Player):
 
         res = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
                 max_depth=self.max_depth)
-
-        #TODO: Create MoveAction from res
+        self.action = res
 
     def get_action(self, game, gui):
         # TODO: make move chosen by the search
