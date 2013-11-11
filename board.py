@@ -13,20 +13,29 @@ class BoardObserver():
     def after_set_occ(self, pos, colour):
         pass
 
+import array
+
 class Board():
-    def __init__(self, size):
+    def __init__(self, size, clone_it=False):
         self.size = size
-        self.board_black = [0 for k in range(size+1)]
-        self.board_white = [0 for k in range(size+1)]
         self.observers = []
+        if not clone_it:
+            self.set_to_empty()
+
+    def set_to_empty(self):
+        self.board_black = array.array('L')
+        self.board_black.extend([0] * (self.size + 1))
+
+        self.board_white = array.array('L')
+        self.board_white.extend([0] * (self.size + 1))
     
     def add_observer(self, o):
         self.observers.append(o)
 
     def clone(self):
-        new_board = Board(self.size)
-        new_board.board_black = self.board_black[:]
-        new_board.board_white = self.board_white[:]
+        new_board = Board(self.size, clone_it=True)
+        new_board.board_black = self.board_black.__copy__()
+        new_board.board_white = self.board_white.__copy__()
         return new_board
 
     def get_size(self):
