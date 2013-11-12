@@ -45,45 +45,104 @@ class BoardStripTest(unittest.TestCase):
         self.assertEquals(strip.get_occ(1), BLACK)
         self.assertEquals(strip.get_occ(21), WHITE)
         self.assertEquals(strip.get_occ(13), EMPTY)
-'''
-    def test_empty_board_place_one_piece_in_zero_corner(self):
-        board = Board(size = 7)
-        board.set_occ(Pos(0, 0), BLACK)
-        self.assertEquals(board.get_occ(Pos(0, 0)), BLACK)
 
-    def test_empty_board_place_one_piece_in_big_corner(self):
-        board = Board(size = 7)
-        board.set_occ(Pos(7, 7), WHITE)
-        self.assertEquals(board.get_occ(Pos(7, 7)), WHITE)
+    #####################################
 
-    #########################################
-    # pos in line through pos for substrips #
-    #########################################
-    def test_get_positions_in_E_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (1,0), 4)
-        self.assertEquals(piltp,
-                [(3,7),(4,7),(5,7),(6,7),(7,7),(8,7),(9,7),(10,7),(11,7)])
+    def test_match_black_capture_left(self):
+        strip = BoardStrip()
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, WHITE)
+        strip.set_occ(3, WHITE)
+        strip.set_occ(7, BLACK) # Not involved in the capture
+        self.assertEquals(strip.match_capture_left(4, BLACK), True)
+        
+    def test_dont_match_black_capture_left(self):
+        strip = BoardStrip()
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, WHITE)
+        strip.set_occ(3, EMPTY)
+        self.assertEquals(strip.match_capture_left(4, BLACK), False)
 
-    def test_get_positions_in_SE_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (1,1), 4)
-        self.assertEquals(piltp,
-                [(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(10,10),(11,11)])
+    def test_match_black_capture_mid_strip_left(self):
+        strip = BoardStrip()
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, WHITE)
+        strip.set_occ(5, WHITE)
+        self.assertEquals(strip.match_capture_left(6, BLACK), True)
 
-    def test_get_positions_in_S_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (0,1), 4)
-        self.assertEquals(piltp,
-                [(7,3),(7,4),(7,5),(7,6),(7,7),(7,8),(7,9),(7,10),(7,11)])
+    def test_dont_match_black_capture_left_mid_strip(self):
+        strip = BoardStrip()
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, EMPTY)
+        strip.set_occ(5, WHITE)
+        self.assertEquals(strip.match_capture_left(6, BLACK), False)
 
-    def test_get_positions_in_SW_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (-1,1), 4)
-        self.assertEquals(piltp,
-                [(11,3),(10,4),(9,5),(8,6),(7,7),(6,8),(5,9),(4,10),(3,11)])
-'''
+    def test_dont_match_black_capture_left_off_board(self):
+        strip = BoardStrip()
+        strip.set_occ(0, WHITE)
+        strip.set_occ(1, WHITE)
+        self.assertEquals(strip.match_capture_left(2, BLACK), False)
 
+    #####################################
+
+    def test_match_black_capture_right(self):
+        strip = BoardStrip()
+        strip.set_occ(2, WHITE)
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.match_capture_right(1, BLACK), True)
+        
+    def test_dont_match_black_capture_right(self):
+        strip = BoardStrip()
+        strip.set_occ(1, EMPTY)
+        strip.set_occ(2, WHITE)
+        strip.set_occ(3, BLACK)
+        self.assertEquals(strip.match_capture_right(0, BLACK), False)
+
+    def test_match_black_capture_mid_strip_right(self):
+        strip = BoardStrip()
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, WHITE)
+        strip.set_occ(5, BLACK)
+        self.assertEquals(strip.match_capture_right(2, BLACK), True)
+
+    def test_dont_match_black_capture_right_mid_strip(self):
+        strip = BoardStrip()
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, EMPTY)
+        strip.set_occ(5, BLACK)
+        self.assertEquals(strip.match_capture_right(2, BLACK), False)
+
+    #####################################
+
+    def test_match_white_capture_right(self):
+        strip = BoardStrip()
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, WHITE)
+        strip.set_occ(8, BLACK) # Not involved in the capture
+        self.assertEquals(strip.match_capture_right(1, WHITE), True)
+        
+    def test_dont_match_white_capture_right(self):
+        strip = BoardStrip()
+        strip.set_occ(1, EMPTY)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, WHITE)
+        self.assertEquals(strip.match_capture_right(0, WHITE), False)
+
+    def test_match_white_capture_mid_strip_right(self):
+        strip = BoardStrip()
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, BLACK)
+        strip.set_occ(5, WHITE)
+        self.assertEquals(strip.match_capture_right(2, WHITE), True)
+
+    def test_dont_match_white_capture_right_mid_strip(self):
+        strip = BoardStrip()
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, EMPTY)
+        strip.set_occ(5, WHITE)
+        self.assertEquals(strip.match_capture_right(2, WHITE), False)
 
 if __name__ == "__main__":
     unittest.main()
