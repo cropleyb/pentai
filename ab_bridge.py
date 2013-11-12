@@ -71,7 +71,7 @@ class ABState():
         for direction in DIRECTIONS[:4]:
             l = brd.get_positions_in_line_through_pos(pos, direction, 4)
             occs = [brd.get_occ(i) for i in l]
-            add_substrips(occs, self.black_lines, self.white_lines)
+            process_substrips(occs, self.black_lines, self.white_lines)
 
     def create_state(self, move_pos):
         ab_child = ABState()

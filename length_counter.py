@@ -33,15 +33,6 @@ class LengthCounter():
     def __getitem__(self, i):
         return self.counts[i]
 
-
-
-# TODO give this a better home
-def add_substrips(pattern, us_counter, them_counter):
-    process_substrips(pattern, us_counter, them_counter)
-
-def remove_substrips(pattern, us_counter, them_counter):
-    process_substrips(pattern, us_counter, them_counter)
-
 def process_substrips(pattern, us_counter, them_counter):
     seen = [0, 0]
 
