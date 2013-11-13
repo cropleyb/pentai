@@ -25,6 +25,64 @@ class DirectionStripsTest(unittest.TestCase):
         ds.set_occ(Pos(0,0), WHITE)
         self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
     
+    #########################################
+    # South East
+    def test_se_create_direction_strips(self):
+        ds = SEDirectionStrips(board_size = 13)
+    
+    def test_se_unset_is_empty(self):
+        ds = SEDirectionStrips(board_size = 9)
+        self.assertEquals(ds.get_occ(Pos(1,5)), EMPTY)
+
+    def test_se_set_and_get_black(self):
+        ds = SEDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), BLACK)
+        self.assertEquals(ds.get_occ(Pos(0,0)), BLACK)
+    
+    def test_se_set_and_get_white(self):
+        ds = SEDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), WHITE)
+        self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
+
+    #########################################
+    # South
+    def test_s_create_direction_strips(self):
+        ds = SDirectionStrips(board_size = 13)
+    
+    def test_s_unset_is_empty(self):
+        ds = SDirectionStrips(board_size = 9)
+        self.assertEquals(ds.get_occ(Pos(1,5)), EMPTY)
+
+    def test_s_set_and_get_black(self):
+        ds = SDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), BLACK)
+        self.assertEquals(ds.get_occ(Pos(0,0)), BLACK)
+    
+    def test_s_set_and_get_white(self):
+        ds = SDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), WHITE)
+        self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
+
+    #########################################
+    # South West
+    def test_sw_create_direction_strips(self):
+        ds = SWDirectionStrips(board_size = 13)
+    
+    def test_sw_unset_is_empty(self):
+        ds = SWDirectionStrips(board_size = 9)
+        self.assertEquals(ds.get_occ(Pos(1,5)), EMPTY)
+
+    def test_sw_set_and_get_black(self):
+        ds = SWDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), BLACK)
+        self.assertEquals(ds.get_occ(Pos(0,0)), BLACK)
+    
+    def test_sw_set_and_get_white(self):
+        ds = SWDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), WHITE)
+        self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
+    
+    #########################################
     '''
     #########################################
     # pos in line through pos for substrips #
