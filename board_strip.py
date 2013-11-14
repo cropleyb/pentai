@@ -27,21 +27,25 @@ class BoardStrip():
         # BWWx
         if ind < 3:
             # Cannot capture to the left - off the board
-            return False
+            return ()
         shift = 4 ** (ind - 3)
         occs = (self.occs / shift) & (4 ** 3 - 1)
         pattern = BLACK + (4 * WHITE) + (16 * WHITE)
-        return occs == pattern
+        if occs == pattern:
+            return (ind-1, ind-2)
+        return ()
 
-    def match_white_capture_left(self, ind, colour):
+    def match_white_capture_left(self, ind):
         # WBBx
         if ind < 3:
             # Cannot capture to the left - off the board
-            return False
+            return ()
         shift = 4 ** (ind - 3)
         occs = (self.occs / shift) & (4 ** 3 - 1)
         pattern = WHITE + (4 * BLACK) + (16 * BLACK)
-        return occs == pattern
+        if occs == pattern:
+            return (ind-1, ind-2)
+        return ()
 
     def match_capture_right(self, ind, colour):
         if colour == BLACK:
@@ -54,11 +58,28 @@ class BoardStrip():
         shift = 4 ** (ind + 1)
         occs = (self.occs / shift) & (4 ** 3 - 1)
         pattern = WHITE + (4 * WHITE) + (16 * BLACK)
-        return occs == pattern
+        if occs == pattern:
+            return (ind+1, ind+2)
+        return ()
 
     def match_white_capture_right(self, ind):
         # xBBW
         shift = 4 ** (ind + 1)
         occs = (self.occs / shift) & (4 ** 3 - 1)
         pattern = BLACK + (4 * BLACK) + (16 * WHITE)
-        return occs == pattern
+        if occs == pattern:
+            return (ind+1, ind+2)
+        return ()
+
+    def get_capture_indices(self, ind, colour):
+        captures = []
+        if colour == BLACK:
+            captures.extend(self.match_black_capture_left(ind))
+            captures.extend(self.match_black_capture_right(ind))
+        else:
+            # WHITE
+            captures.extend(self.match_white_capture_left(ind))
+            captures.extend(self.match_white_capture_right(ind))
+        return captures
+
+

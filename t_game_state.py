@@ -7,6 +7,8 @@ from human_player import *
 from rules import *
 from game import *
 
+import pdb
+
 B = BLACK
 W = WHITE
 
@@ -36,6 +38,8 @@ class GameStateTest(unittest.TestCase):
         self.aE(self.gs.get_captured(W), 0)
 
     def test_make_one_move(self):
+        #pdb.set_trace()
+        #print "HELLO?"
         self.move(2,4)
         self.aE(self.gs.get_move_number(), 2)
         self.aE(self.gs.get_captured(B), 0)

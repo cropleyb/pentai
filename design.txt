@@ -1,5 +1,7 @@
 Classes
 -------
+detect 5 in a row from substrip?
+
 GameState - should mark a particular state of the board - LengthCounter, captures (W/B)
 Board - part of a game state object, just the pieces on the board, no knowledge of pente
 Rules - board size, capture rules, first move constraints
