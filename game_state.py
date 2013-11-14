@@ -61,29 +61,11 @@ class GameState():
         OC = other_colour
 
         # Process captures
-        # TODO: keryo pente capture 3s
-        for direction in DIRECTIONS:
-            # OLD
-            occs = self.board.get_occs_in_a_line_for_capture_test(move_pos, direction, 4)
-            if occs == [MC, OC, OC, MC]:
-                capture_pos1 = move_pos.shift(direction, 1)
-                capture_pos2 = move_pos.shift(direction, 2)
-
-                # Remove stones
-                self.board.set_occ(capture_pos1, EMPTY)
-                self.board.set_occ(capture_pos2, EMPTY)
-
-                # Keep track of capture count
-                self.captured[my_colour] += 2
-                if self.captured[my_colour] >= 10:
-                    self.set_won_by(MC)
-                    #self.won_by = MC
-        # NEW
         for ds in self.board.get_direction_strips():
             captures = ds.get_captures(move_pos, MC)
             for capture_pos in captures:
                 # Remove stone
-                self.board.set_occ(capture, EMPTY)
+                self.board.set_occ(capture_pos, EMPTY)
 
                 # Keep track of capture count
                 self.captured[my_colour] += 1

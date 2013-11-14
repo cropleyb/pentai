@@ -1,4 +1,5 @@
 from board_strip import *
+from pos import *
 
 class DirectionStrips():
     """ A list of BoardStrips for those going in a particular direction.
