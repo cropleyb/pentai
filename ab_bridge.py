@@ -14,9 +14,19 @@ import pdb
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
-    def __init__(self):
-        self.black_lines = LengthCounter()
-        self.white_lines = LengthCounter()
+    def __init__(self, parent=None):
+        if parent == None:
+            self.black_lines = LengthCounter()
+            self.white_lines = LengthCounter()
+        else:
+            self.black_lines = LengthCounter(parent.black_lines) # TODO: clone method
+            self.white_lines = LengthCounter(parent.white_lines)
+
+    def get_black_line_counts(self):
+        return self.black_lines
+
+    def get_white_line_counts(self):
+        return self.white_lines
 
     def set_state(self, s):
         self.state = s
@@ -71,7 +81,7 @@ class ABState():
             process_substrips(occs, self.black_lines, self.white_lines, add)
 
     def create_state(self, move_pos):
-        ab_child = ABState()
+        ab_child = ABState(self)
 
         # clone the base level state object
         base_child = game_state.GameState(self.state.game, self.state)

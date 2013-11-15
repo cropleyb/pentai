@@ -1,10 +1,7 @@
 
+from pente_exceptions import *
 from board import *
 from pos import *
-
-# TODO: cloned in GUI
-class IllegalMoveException(Exception):
-    pass
 
 class GameState():
     """ This is for the state of a game as of a particular move. 
@@ -46,6 +43,8 @@ class GameState():
         self.captured[player_num] = pieces
     
     def make_move(self, move_pos):
+        if self.board.off_board(move_pos):
+            raise IllegalMoveException("That position is off the board")
         if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException("That position is already occupied")
 

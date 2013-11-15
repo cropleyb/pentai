@@ -1,10 +1,9 @@
 
 from pos import *
-#from board_strip import *
 from direction_strips import *
+from pente_exceptions import *
 
 class BoardObserver():
-
     def before_set_occ(self, pos, colour):
         pass
 
@@ -40,6 +39,10 @@ class Board():
 
     def get_size(self):
         return self.size
+
+    def off_board(self, move_pos):
+        return move_pos.off_board(self.size)
+        #raise IllegalMoveException("That position is off the board")
 
     def get_occ(self, pos):
         colour_new = self.strips[0].get_occ(pos)

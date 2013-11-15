@@ -5,6 +5,7 @@ import unittest
 from game import *
 from rules import *
 from text_gui import *
+from pente_exceptions import *
 from human_player import *
 
 import pdb

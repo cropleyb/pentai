@@ -2,6 +2,7 @@
 
 import unittest
 
+from pente_exceptions import IllegalMoveException
 from game_state import *
 from human_player import *
 from rules import *
@@ -132,99 +133,99 @@ class GameStateTest(unittest.TestCase):
 
     def test_N_5_in_a_row_detected(self):
         self.aE(self.game.finished(), False)
-        self.move(1,1,False) # B
-        self.move(3,1,False) # W
-        self.move(1,2,False) # B
-        self.move(2,1,False) # W
-        self.move(1,3,False) # B
-        self.move(5,4,False) # W
-        self.move(1,4,False) # B
-        self.move(2,4,False) # W
-        self.move(1,5,True) # B
+        self.move(0,0,False) # B
+        self.move(2,0,False) # W
+        self.move(0,1,False) # B
+        self.move(1,0,False) # W
+        self.move(0,2,False) # B
+        self.move(4,3,False) # W
+        self.move(0,3,False) # B
+        self.move(1,3,False) # W
+        self.move(0,4,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_NE_5_in_a_row_detected(self):
+        self.move(0,0,False) # B
+        self.move(2,0,False) # W
         self.move(1,1,False) # B
-        self.move(3,1,False) # W
+        self.move(1,0,False) # W
         self.move(2,2,False) # B
-        self.move(2,1,False) # W
+        self.move(4,3,False) # W
         self.move(3,3,False) # B
-        self.move(5,4,False) # W
-        self.move(4,4,False) # B
-        self.move(2,4,False) # W
-        self.move(5,5,True) # B
+        self.move(1,3,False) # W
+        self.move(4,4,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_E_5_in_a_row_detected(self):
-        self.move(1,1,False) # B
-        self.move(3,2,False) # W
-        self.move(2,1,False) # B
-        self.move(2,3,False) # W
-        self.move(3,1,False) # B
-        self.move(5,4,False) # W
-        self.move(4,1,False) # B
-        self.move(2,4,False) # W
-        self.move(5,1,True) # B
+        self.move(0,0,False) # B
+        self.move(2,1,False) # W
+        self.move(1,0,False) # B
+        self.move(1,2,False) # W
+        self.move(2,0,False) # B
+        self.move(4,3,False) # W
+        self.move(3,0,False) # B
+        self.move(1,3,False) # W
+        self.move(4,0,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_SE_5_in_a_row_detected(self):
-        self.move(1,5,False) # B
-        self.move(3,2,False) # W
-        self.move(2,4,False) # B
-        self.move(2,3,False) # W
-        self.move(3,3,False) # B
-        self.move(5,4,False) # W
-        self.move(4,2,False) # B
-        self.move(2,5,False) # W
-        self.move(5,1,True) # B
+        self.move(0,4,False) # B
+        self.move(2,1,False) # W
+        self.move(1,3,False) # B
+        self.move(1,2,False) # W
+        self.move(2,2,False) # B
+        self.move(4,3,False) # W
+        self.move(3,1,False) # B
+        self.move(1,4,False) # W
+        self.move(4,0,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_S_5_in_a_row_detected(self):
-        self.move(1,5,False) # B
-        self.move(3,2,False) # W
-        self.move(1,4,False) # B
-        self.move(2,3,False) # W
-        self.move(1,3,False) # B
-        self.move(5,4,False) # W
-        self.move(1,2,False) # B
-        self.move(2,5,False) # W
-        self.move(1,1,True) # B
+        self.move(0,4,False) # B
+        self.move(2,1,False) # W
+        self.move(0,3,False) # B
+        self.move(1,2,False) # W
+        self.move(0,2,False) # B
+        self.move(4,3,False) # W
+        self.move(0,1,False) # B
+        self.move(1,4,False) # W
+        self.move(0,0,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_SW_5_in_a_row_detected(self):
-        self.move(5,5,False) # B
-        self.move(3,2,False) # W
         self.move(4,4,False) # B
-        self.move(2,3,False) # W
+        self.move(2,1,False) # W
         self.move(3,3,False) # B
-        self.move(5,4,False) # W
+        self.move(1,2,False) # W
         self.move(2,2,False) # B
-        self.move(2,5,False) # W
-        self.move(1,1,True) # B
+        self.move(4,3,False) # W
+        self.move(1,1,False) # B
+        self.move(1,4,False) # W
+        self.move(0,0,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_W_5_in_a_row_detected(self):
-        self.move(5,1,False) # B
-        self.move(3,2,False) # W
-        self.move(4,1,False) # B
-        self.move(2,3,False) # W
-        self.move(3,1,False) # B
-        self.move(5,4,False) # W
-        self.move(2,1,False) # B
-        self.move(2,5,False) # W
-        self.move(1,1,True) # B
+        self.move(4,0,False) # B
+        self.move(2,1,False) # W
+        self.move(3,0,False) # B
+        self.move(1,2,False) # W
+        self.move(2,0,False) # B
+        self.move(4,3,False) # W
+        self.move(1,0,False) # B
+        self.move(1,4,False) # W
+        self.move(0,0,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_NW_5_in_a_row_detected(self):
-        self.move(5,1,False) # B
-        self.move(3,2,False) # W
-        self.move(4,2,False) # B
-        self.move(2,3,False) # W
-        self.move(3,3,False) # B
-        self.move(5,4,False) # W
-        self.move(2,4,False) # B
-        self.move(2,5,False) # W
-        self.move(1,5,True) # B
+        self.move(4,0,False) # B
+        self.move(2,1,False) # W
+        self.move(3,1,False) # B
+        self.move(1,2,False) # W
+        self.move(2,2,False) # B
+        self.move(4,3,False) # W
+        self.move(1,3,False) # B
+        self.move(1,4,False) # W
+        self.move(0,4,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_for_5_captures(self):

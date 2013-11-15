@@ -1,7 +1,5 @@
-class IllegalMoveException(Exception):
-    pass
-
 from game import *
+from pente_exceptions import *
 
 class MoveAction():
     @staticmethod 
