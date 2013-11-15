@@ -7,19 +7,16 @@ class LengthCounter():
             self.counts = [0] * COUNT_LENGTH
         else:
             self.counts = arr[:]
-        self.add_mode = True
 
     def tup(self):
         return tuple(self.counts)
 
-    def set_add_mode(self, m):
-        self.add_mode = m
-
-    def process(self, length):
-        if self.add_mode:
+    def process(self, length, add):
+        if add:
             self.counts[length-1] += 1
         else:
             self.counts[length-1] -= 1
+        assert self.counts[length-1] >= 0
 
     def __eq__(self, other):
         return self.counts == other
@@ -33,7 +30,7 @@ class LengthCounter():
     def __getitem__(self, i):
         return self.counts[i]
 
-def process_substrips(pattern, us_counter, them_counter):
+def process_substrips(pattern, us_counter, them_counter, add):
     seen = [0, 0]
 
     i = 0
@@ -45,9 +42,9 @@ def process_substrips(pattern, us_counter, them_counter):
         i += 1
         if i >= COUNT_LENGTH:
             if seen[0] > 0 and seen[1] == 0:
-                us_counter.process(seen[0])
+                us_counter.process(seen[0],add)
             elif seen[1] > 0 and seen[0] == 0:
-                them_counter.process(seen[1])
+                them_counter.process(seen[1],add)
             old_occ = old[i-COUNT_LENGTH]
             if old_occ > 0:
                 seen[old_occ-1] -= 1

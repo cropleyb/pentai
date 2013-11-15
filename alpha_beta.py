@@ -9,6 +9,7 @@ def argmax(aspl, fn):
 
     vals = [(fn(item), item) for item in aspl]
     vals.sort()
+    # print vals
     best = max(vals)
     return best[1], best[0]
 

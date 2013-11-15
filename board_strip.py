@@ -4,9 +4,12 @@ BLACK = 1
 WHITE = 2
 
 class BoardStrip():
-    def __init__(self):
-        #self.size = size
-        self.occs = 0
+    def __init__(self, initial_val=0):
+        self.occs = initial_val
+
+    def clone(self):
+        bs = BoardStrip(self.occs)
+        return bs
         
     def get_occ(self, ind):
         ret = self.occs >> (2 * ind)

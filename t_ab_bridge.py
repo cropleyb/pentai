@@ -89,13 +89,24 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         self.assertEquals(self.s.black_lines, [12, 1, 1, 1, 1])
         self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
 
+    ###############
+
+class MoreAlphaBetaBridgeTests(unittest.TestCase):
+    def setUp(self):
+        player1 = human_player.HumanPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
+        r = rules.Rules(5, "standard")
+        my_game = game.Game(r, player1, player2)
+        self.s = ABState()
+        self.s.set_state(my_game.current_state)
+
+    def test_initial_state_black_to_move(self):
+        self.assertEquals(self.s.to_move(), BLACK)
+
     '''
-    def test_one_level_search(self):
-        r = rules.Rules(7, "standard")
-        
-        # TODO
-        alpha_beta.alphabeta_search(g.current_state, g, max_depth=1)
-        # self.assertEquals() # TODO
+    def test_create_state(self):
+        child = self.s.create_state(Pos(2,2))
+        self.assertEquals(child.to_move(), WHITE)
     '''
 
 if __name__ == "__main__":

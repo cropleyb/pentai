@@ -27,7 +27,7 @@ class SubStripCountingTest(unittest.TestCase):
     # Helper
     def process_substrips_for_str(self, ss_str):
         pattern = pattern_string_to_int_list(ss_str)
-        process_substrips(pattern, self.black_counter, self.white_counter)
+        process_substrips(pattern, self.black_counter, self.white_counter, True)
 
     # Tests
     def test_count_empty(self):

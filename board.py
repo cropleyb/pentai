@@ -35,9 +35,7 @@ class Board():
 
     def clone(self):
         new_board = Board(self.size, clone_it=True)
-        # TODO: test
-        pdb.set_trace()
-        new_board.strips = self.strips.clone()
+        new_board.strips = [s.clone() for s in self.strips]
         return new_board
 
     def get_size(self):

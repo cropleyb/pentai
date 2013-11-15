@@ -30,6 +30,11 @@ class DirectionStrips():
 
 
 class EDirectionStrips(DirectionStrips):
+    def clone(self):
+        new_one = EDirectionStrips(board_size=0, clone=True)
+        new_one.strips = [s.clone() for s in self.strips]
+        return new_one
+
     def set_up_strips(self, board_size):
         for i in range(board_size+1):
             self.strips.append(BoardStrip())
@@ -59,6 +64,12 @@ class EDirectionStrips(DirectionStrips):
             pos_list.append(p)
 
 class SEDirectionStrips(DirectionStrips):
+    def clone(self):
+        new_one = SEDirectionStrips(self.board_size, clone=True)
+        new_one.strips = [s.clone() for s in self.strips]
+        new_one.board_size = self.board_size
+        return new_one
+
     def set_up_strips(self, board_size):
         self.board_size = board_size
         for i in range(board_size*2):
@@ -87,6 +98,11 @@ class SEDirectionStrips(DirectionStrips):
         self.get_strip(pos)[0].set_occ(pos[0], occ)
 
 class SDirectionStrips(DirectionStrips):
+    def clone(self):
+        new_one = SDirectionStrips(board_size=0, clone=True)
+        new_one.strips = [s.clone() for s in self.strips]
+        return new_one
+
     def set_up_strips(self, board_size):
         for i in range(board_size+1):
             self.strips.append(BoardStrip())
@@ -111,6 +127,11 @@ class SDirectionStrips(DirectionStrips):
         self.get_strip(pos)[0].set_occ(pos[1], occ)
 
 class SWDirectionStrips(DirectionStrips):
+    def clone(self):
+        new_one = SWDirectionStrips(board_size=0, clone=True)
+        new_one.strips = [s.clone() for s in self.strips]
+        return new_one
+
     def set_up_strips(self, board_size):
         for i in range(board_size*2+1):
             self.strips.append(BoardStrip())

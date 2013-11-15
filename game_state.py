@@ -49,11 +49,10 @@ class GameState():
         if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException("That position is already occupied")
 
-        other_colour = self.to_move_colour()
+        my_colour = self.to_move_colour()
         # Place a stone
         self.move_number += 1
-        # FIXME: this should go before the move inc., but it breaks
-        my_colour = self.to_move_colour()
+        other_colour = self.to_move_colour()
         self.board.set_occ(move_pos, my_colour)
         board_size = self.board.get_size()
 
@@ -71,6 +70,10 @@ class GameState():
                 self.captured[my_colour] += 1
                 if self.captured[my_colour] >= 10:
                     self.set_won_by(MC)
+
+        # OLD. We only need to check for 5 in a row wins if we are not
+        # an AI player - the AI data structure detects this already,
+        # so it's duplicate work.
 
         # Check for a win by checking all the lines that run through
         # the move position.
@@ -117,11 +120,8 @@ class GameState():
     def get_won_by(self):
         return self._won_by
 
-    def to_move(self):
-        return not self.move_number % 2
-
     def to_move_colour(self):
-        return (self.move_number % 2) + 1
+        return (self.move_number + 1) % 2 + 1 # BLACK is first on move 1
 
     def successors(self):
         succ = []

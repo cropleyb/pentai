@@ -24,7 +24,7 @@ class ABState():
         # TODO: Remove us as an observer from previous self.state
 
     def to_move(self):
-        return self.state.to_move()
+        return self.state.to_move_colour()
 
     def __repr__(self):
         return self.state.__repr__()
@@ -47,6 +47,7 @@ class ABState():
             score += bl[rev]
             score -= wl[rev]
             score *= 100
+        #print "black: %s, white: %s, score: %s" % (bl, wl, score)
         return score
 
     def score(self):
@@ -56,22 +57,18 @@ class ABState():
         return self.state.board
 
     def before_set_occ(self, pos, colour):
-        self.black_lines.set_add_mode(False)
-        self.white_lines.set_add_mode(False)
-        self._set_or_reset_occ(pos)
+        self._set_or_reset_occ(pos, False)
 
     def after_set_occ(self, pos, colour):
-        self.black_lines.set_add_mode(True)
-        self.white_lines.set_add_mode(True)
-        self._set_or_reset_occ(pos)
+        self._set_or_reset_occ(pos, True)
 
-    def _set_or_reset_occ(self, pos):
+    def _set_or_reset_occ(self, pos, add):
         # update substrips
         brd = self.board()
         for direction in DIRECTIONS[:4]:
             l = brd.get_positions_in_line_through_pos(pos, direction, 4)
             occs = [brd.get_occ(i) for i in l]
-            process_substrips(occs, self.black_lines, self.white_lines)
+            process_substrips(occs, self.black_lines, self.white_lines, add)
 
     def create_state(self, move_pos):
         ab_child = ABState()
@@ -103,9 +100,6 @@ class ABGame():
             state = self.current_state
         return state.to_move()
 
-    def make_move(self, x, y):
-        self.current_state.set_colour(Pos(x,y), 1)
-
     def utility(self, state, player):
         return state.utility(player)
 
@@ -114,7 +108,7 @@ class ABGame():
             # create a AB_State for each possible move from state
             try:
                 succ = state.create_state(pos)
-                yield gui.MoveAction(game.Move(pos)), succ
+                yield gui.MoveAction(pos), succ
             except game_state.IllegalMoveException:
                 # Ignore these
                 pass
