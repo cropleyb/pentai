@@ -10,8 +10,6 @@ from pos import *
 
 from length_counter import *
 
-import pdb
-
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None):

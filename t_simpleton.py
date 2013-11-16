@@ -2,7 +2,6 @@
 
 import unittest
 
-import pdb
 import gui
 import human_player
 import rules
@@ -26,7 +25,6 @@ class SimpletonPlayerTest(unittest.TestCase):
 
     def test_find_one_move(self):
         p = SimpletonPlayer("Dur")
-        #pdb.set_trace()
         p.prompt_for_action(self.game, self.gui)
         ma = p.get_action(self.game, self.gui)
         self.assertEquals(ma, gui.MoveAction.create_from_tuple(2,2))

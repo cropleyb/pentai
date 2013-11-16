@@ -7,8 +7,6 @@ from game import *
 from text_gui import *
 from human_player import *
 
-import pdb
-
 """ txt_gui_main.py creates the Game, Players and contains the game turn loop """
 
 if __name__ == "__main__":
@@ -36,7 +34,6 @@ if __name__ == "__main__":
         except IllegalMoveException, e:
             print e.message
     print gui.board_to_string()
-    #pdb.set_trace()
     winner = game.winner_name()
     print "Won by %s" % winner
 

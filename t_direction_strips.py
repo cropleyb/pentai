@@ -24,6 +24,15 @@ class DirectionStripsTest(unittest.TestCase):
         ds = EDirectionStrips(board_size = 9)
         ds.set_occ(Pos(0,0), WHITE)
         self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
+
+    def test_e_capture(self):
+        ds = EDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), BLACK)
+        ds.set_occ(Pos(1,0), WHITE)
+        ds.set_occ(Pos(2,0), WHITE)
+        captures = ds.get_captures(Pos(3,0), BLACK)
+        self.assertEquals(len(captures),2)
+        self.assertEquals(captures,[(2,0),(1,0)])
     
     #########################################
     # South East
@@ -44,6 +53,24 @@ class DirectionStripsTest(unittest.TestCase):
         ds.set_occ(Pos(0,0), WHITE)
         self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
 
+    def test_se_capture(self):
+        ds = SEDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,4), BLACK)
+        ds.set_occ(Pos(1,3), WHITE)
+        ds.set_occ(Pos(2,2), WHITE)
+        captures = ds.get_captures(Pos(3,1), BLACK)
+        self.assertEquals(len(captures),2)
+        self.assertEquals(captures,[(2,2),(1,3)])
+
+    def test_another_se_capture(self):
+        ds = SEDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(2,4), BLACK)
+        ds.set_occ(Pos(3,3), WHITE)
+        ds.set_occ(Pos(4,2), WHITE)
+        captures = ds.get_captures(Pos(5,1), BLACK)
+        self.assertEquals(len(captures),2)
+        self.assertEquals(captures,[(4,2),(3,3)])
+
     #########################################
     # South
     def test_s_create_direction_strips(self):
@@ -63,6 +90,25 @@ class DirectionStripsTest(unittest.TestCase):
         ds.set_occ(Pos(0,0), WHITE)
         self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
 
+    def test_s_capture(self):
+        ds = SDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,4), BLACK)
+        ds.set_occ(Pos(0,3), WHITE)
+        ds.set_occ(Pos(0,2), WHITE)
+        captures = ds.get_captures(Pos(0,1), BLACK)
+        self.assertEquals(len(captures),2)
+        self.assertEquals(captures,[(0,2),(0,3)])
+
+    def test_another_s_capture(self):
+        ds = SDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(2,6), BLACK)
+        ds.set_occ(Pos(2,5), WHITE)
+        ds.set_occ(Pos(2,4), WHITE)
+        captures = ds.get_captures(Pos(2,3), BLACK)
+        self.assertEquals(len(captures),2)
+        self.assertEquals(captures,[(2,4),(2,5)])
+    
+
     #########################################
     # South West
     def test_sw_create_direction_strips(self):
@@ -81,6 +127,24 @@ class DirectionStripsTest(unittest.TestCase):
         ds = SWDirectionStrips(board_size = 9)
         ds.set_occ(Pos(0,0), WHITE)
         self.assertEquals(ds.get_occ(Pos(0,0)), WHITE)
+
+    def test_sw_capture(self):
+        ds = SWDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(4,4), BLACK)
+        ds.set_occ(Pos(3,3), WHITE)
+        ds.set_occ(Pos(2,2), WHITE)
+        captures = ds.get_captures(Pos(1,1), BLACK)
+        self.assertEquals(len(captures),2)
+        self.assertEquals(captures,[(2,2),(3,3)])
+
+    def test_another_sw_capture(self):
+        ds = SWDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(4,6), BLACK)
+        ds.set_occ(Pos(3,5), WHITE)
+        ds.set_occ(Pos(2,4), WHITE)
+        captures = ds.get_captures(Pos(1,3), BLACK)
+        self.assertEquals(len(captures),2)
+        self.assertEquals(captures,[(2,4),(3,5)])
     
     #########################################
     '''

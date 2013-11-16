@@ -1,5 +1,3 @@
-import pdb
-
 infinity = 1e+31
 
 def argmax(aspl, fn):

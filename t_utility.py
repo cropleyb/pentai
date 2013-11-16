@@ -6,8 +6,6 @@ from length_counter import *
 from ab_bridge import *
 #from utility import *
 
-import pdb
-
 class UtilityTest(unittest.TestCase):
     def setUp(self):
         self.s = ABState()

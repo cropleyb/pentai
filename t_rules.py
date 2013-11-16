@@ -3,8 +3,6 @@
 import unittest
 from rules import *
 
-import pdb
-
 class RulesTest(unittest.TestCase):
     #def setUp(self):
 

@@ -42,10 +42,18 @@ class Board():
 
     def off_board(self, move_pos):
         return move_pos.off_board(self.size)
-        #raise IllegalMoveException("That position is off the board")
 
     def get_occ(self, pos):
         colour_new = self.strips[0].get_occ(pos)
+
+        # TEMP tests
+        colour_new2 = self.strips[1].get_occ(pos)
+        colour_new3 = self.strips[2].get_occ(pos)
+        colour_new4 = self.strips[3].get_occ(pos)
+        assert colour_new == colour_new2
+        assert colour_new3 == colour_new4
+        assert colour_new == colour_new3
+        
         return colour_new
 
     def set_occ(self, pos, colour):

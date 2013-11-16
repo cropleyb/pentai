@@ -2,8 +2,6 @@
 
 import unittest
 
-import pdb
-
 from board_strip import *
 
 class BoardStripTest(unittest.TestCase):

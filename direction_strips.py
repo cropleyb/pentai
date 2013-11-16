@@ -63,9 +63,9 @@ class EDirectionStrips(DirectionStrips):
             p = Pos(i, strip_num)
             pos_list.append(p)
 
-class SEDirectionStrips(DirectionStrips):
+class SWDirectionStrips(DirectionStrips):
     def clone(self):
-        new_one = SEDirectionStrips(self.board_size, clone=True)
+        new_one = SWDirectionStrips(self.board_size, clone=True)
         new_one.strips = [s.clone() for s in self.strips]
         new_one.board_size = self.board_size
         return new_one
@@ -89,7 +89,10 @@ class SEDirectionStrips(DirectionStrips):
 
     def get_pos(self, ind, s_num):
         """ Get the position for a given index of a given strip number """
-        return Pos(ind, s_num)
+        # s_num = size + x - y - 1, so:
+        # y = size + x - s_num - 1
+        y = self.board_size + ind - s_num - 1
+        return Pos(ind, y)
 
     def get_occ(self, pos):
         return self.get_strip(pos)[0].get_occ(pos[0])
@@ -118,7 +121,7 @@ class SDirectionStrips(DirectionStrips):
 
     def get_pos(self, ind, s_num):
         """ Get the position for a given index of a given strip number """
-        return Pos(ind, s_num)
+        return Pos(s_num, ind)
 
     def get_occ(self, pos):
         return self.get_strip(pos)[0].get_occ(pos[1])
@@ -126,9 +129,9 @@ class SDirectionStrips(DirectionStrips):
     def set_occ(self, pos, occ):
         self.get_strip(pos)[0].set_occ(pos[1], occ)
 
-class SWDirectionStrips(DirectionStrips):
+class SEDirectionStrips(DirectionStrips):
     def clone(self):
-        new_one = SWDirectionStrips(board_size=0, clone=True)
+        new_one = SEDirectionStrips(board_size=0, clone=True)
         new_one.strips = [s.clone() for s in self.strips]
         return new_one
 
@@ -149,7 +152,7 @@ class SWDirectionStrips(DirectionStrips):
 
     def get_pos(self, ind, s_num):
         """ Get the position for a given index of a given strip number """
-        return Pos(ind, s_num)
+        return Pos(ind, s_num-ind)
 
     def get_occ(self, pos):
         return self.get_strip(pos)[0].get_occ(pos[0])

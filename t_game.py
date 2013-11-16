@@ -18,7 +18,6 @@ class GameTest(unittest.TestCase):
         self.them_counter = LengthCounter()
 
         board = Board(size = 13)
-        #pdb.set_trace()
         board.make_move(7,7)
         #self.assertEquals() TODO
 

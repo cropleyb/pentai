@@ -2,8 +2,6 @@
 
 import unittest
 
-import pdb
-
 import alpha_beta
 
 import game
@@ -134,33 +132,57 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         except game.IllegalMoveException:
             return
         self.assertFail()
-    '''
+    
     def test_length_counters_after_two_moves(self):
-        pdb.set_trace()
-        g1 = self.s.create_state(Pos(1,1)) # B
-        g2 =     g1.create_state(Pos(2,2)) # W
+        g1 = self.s.create_state(Pos(0,0)) # B
+        g2 =     g1.create_state(Pos(1,1)) # W
         self.assertEquals(g2.get_black_line_counts().tup(), (2, 0, 0, 0, 0))
         self.assertEquals(g2.get_white_line_counts().tup(), (2, 0, 0, 0, 0))
 
+    def test_length_counters_after_two_moves_b(self):
+        g1 = self.s.create_state(Pos(1,1)) # B
+        g2 =     g1.create_state(Pos(2,2)) # W
+        self.assertEquals(g2.get_black_line_counts().tup(), (2, 0, 0, 0, 0))
+        # One across the other diagonal
+        self.assertEquals(g2.get_white_line_counts().tup(), (3, 0, 0, 0, 0))
+
+    def test_length_counters_after_five_moves(self):
+        # along the NE diagonal
+        g1 = self.s.create_state(Pos(1,1)) # B
+        g2 =     g1.create_state(Pos(2,2)) # W
+        g3 =     g2.create_state(Pos(3,3)) # B
+        g4 =     g3.create_state(Pos(4,4)) # W
+        g5 =     g4.create_state(Pos(0,0)) # B
+        self.assertEquals(g5.get_black_line_counts().tup(), (6, 0, 0, 0, 0))
+        self.assertEquals(g5.get_white_line_counts().tup(), (5, 0, 0, 0, 0))
+
+    def test_length_counters_after_five_moves_in_cnrs_and_middle(self):
+        # four in the corners and one in the middle
+        g1 = self.s.create_state(Pos(0,0)) # B
+        g2 =     g1.create_state(Pos(0,4)) # W
+        g3 =     g2.create_state(Pos(4,4)) # B
+        g4 =     g3.create_state(Pos(4,0)) # W
+        g5 =     g4.create_state(Pos(2,2)) # B
+        self.assertEquals(g5.get_black_line_counts().tup(), (2, 0, 1, 0, 0))
+        self.assertEquals(g5.get_white_line_counts().tup(), (0, 0, 0, 0, 0))
+
     def test_make_a_capture(self):
-        pdb.set_trace()
-        g1 = self.s.create_state(Pos(1,2)) # B
-        g2 =     g1.create_state(Pos(2,3)) # W
-        g3 =     g2.create_state(Pos(2,4)) # B
-        g4 =     g3.create_state(Pos(3,4)) # W
-        g5 =     g4.create_state(Pos(4,5)) # B
-        self.assertEquals(child.to_move(), WHITE)
-        self.assertEquals(child.terminal(), False)
-        board = child.board()
-        self.assertEquals(board.get_occ(Pos(1,2)), BLACK)
-        self.assertEquals(board.get_occ(Pos(2,4)), BLACK)
-        self.assertEquals(board.get_occ(Pos(4,5)), BLACK)
+        g1 = self.s.create_state(Pos(0,1)) # B
+        g2 =     g1.create_state(Pos(1,2)) # W
+        g3 =     g2.create_state(Pos(1,3)) # B
+        g4 =     g3.create_state(Pos(2,3)) # W
+        g5 =     g4.create_state(Pos(3,4)) # B
+        self.assertEquals(g5.to_move(), WHITE)
+        self.assertEquals(g5.terminal(), False)
+        board = g5.board()
+        self.assertEquals(board.get_occ(Pos(0,1)), BLACK)
+        self.assertEquals(board.get_occ(Pos(1,3)), BLACK)
+        self.assertEquals(board.get_occ(Pos(3,4)), BLACK)
+        self.assertEquals(board.get_occ(Pos(1,2)), EMPTY)
         self.assertEquals(board.get_occ(Pos(2,3)), EMPTY)
-        self.assertEquals(board.get_occ(Pos(3,4)), EMPTY)
+    '''
     '''
 
 if __name__ == "__main__":
     unittest.main()
-
-
 

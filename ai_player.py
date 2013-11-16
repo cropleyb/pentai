@@ -17,8 +17,6 @@ class AIPlayer(Player):
         # TODO: set up and execute AB search
         ab_game = ab_bridge.ABGame(base_game)
 
-        # pdb.set_trace()
-
         move, value = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
                 max_depth=self.max_depth)
         self.action = move[0]
