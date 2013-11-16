@@ -121,6 +121,9 @@ class GameState():
 
     def to_move_colour(self):
         return (self.move_number + 1) % 2 + 1 # BLACK is first on move 1
+    
+    def to_move_player(self):
+        return (self.move_number + 1) % 2
 
     def successors(self):
         succ = []
