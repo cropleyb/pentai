@@ -15,8 +15,8 @@ class GameStateTest(unittest.TestCase):
     def setUp(self):
         self.setUpWithOverrides(
                 size=5,
-                player1=HumanPlayer("Fred"),
-                player2=HumanPlayer("Wilma"))
+                player1=HumanPlayer("Fred", BLACK),
+                player2=HumanPlayer("Wilma", WHITE))
 
     def setUpWithOverrides(self, size=5, player1=None, player2=None, rules_str="standard"):
         rules = Rules(size, rules_str)

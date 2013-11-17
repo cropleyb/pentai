@@ -14,8 +14,8 @@ from ab_bridge import *
 class AlphaBetaBridgeTest(unittest.TestCase):
 
     def setUp(self):
-        player1 = human_player.HumanPlayer("Blomp")
-        player2 = human_player.HumanPlayer("Kubba")
+        player1 = human_player.HumanPlayer("Blomp", BLACK)
+        player2 = human_player.HumanPlayer("Kubba", WHITE)
         r = rules.Rules(13, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
@@ -91,19 +91,19 @@ class AlphaBetaBridgeTest(unittest.TestCase):
 
 class MoreAlphaBetaBridgeTests(unittest.TestCase):
     def setUp(self):
-        player1 = human_player.HumanPlayer("Blomp")
-        player2 = human_player.HumanPlayer("Kubba")
+        player1 = human_player.HumanPlayer("Blomp", BLACK)
+        player2 = human_player.HumanPlayer("Kubba", WHITE)
         r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
         self.s.set_state(my_game.current_state)
 
     def test_initial_state_black_to_move(self):
-        self.assertEquals(self.s.to_move(), BLACK)
+        self.assertEquals(self.s.to_move_colour(), BLACK)
 
     def test_create_state(self):
         child = self.s.create_state(Pos(2,2))
-        self.assertEquals(child.to_move(), WHITE)
+        self.assertEquals(child.to_move_colour(), WHITE)
         self.assertEquals(child.terminal(), False)
         board = child.board()
         self.assertEquals(board.get_occ(Pos(2,2)), BLACK)
@@ -172,7 +172,7 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         g3 =     g2.create_state(Pos(1,3)) # B
         g4 =     g3.create_state(Pos(2,3)) # W
         g5 =     g4.create_state(Pos(3,4)) # B
-        self.assertEquals(g5.to_move(), WHITE)
+        self.assertEquals(g5.to_move_colour(), WHITE)
         self.assertEquals(g5.terminal(), False)
         board = g5.board()
         self.assertEquals(board.get_occ(Pos(0,1)), BLACK)

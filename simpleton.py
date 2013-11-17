@@ -9,10 +9,8 @@ from player import *
 class SimpletonPlayer(Player):
     """ Yes there is a circular dependancy between SimpletonPlayer and Game """
 
-    def __init__(self, name):
-        #TODO fix hack
-        Player.__init__(self, name)
-
+    def __init__(self, name, colour):
+        Player.__init__(self, name, colour)
         self.max_depth = 1
 
     def prompt_for_action(self, base_game, gui):

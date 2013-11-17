@@ -7,6 +7,7 @@ import search_order
 import game
 import gui
 from pos import *
+from board_strip import *
 
 from length_counter import *
 
@@ -31,13 +32,23 @@ class ABState():
         self.board().add_observer(self)
         # TODO: Remove us as an observer from previous self.state
 
-    def to_move(self):
+    def to_move_colour(self):
         return self.state.to_move_colour()
+
+    def to_move(self):
+        player = self.state.to_move_player()
+        return player
 
     def __repr__(self):
         return self.state.__repr__()
 
     def utility(self, player):
+        if player.get_colour() == BLACK:
+            return self.black_util()
+        if player.get_colour() == WHITE:
+            return -self.black_util()
+
+    def black_util(self):
         bl = self.black_lines
         wl = self.white_lines
         score = 0

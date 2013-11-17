@@ -7,9 +7,9 @@ from player import *
 class AIPlayer(Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
-    def __init__(self, name):
-        #TODO fix hack
-        Player.__init__(self, name)
+    def __init__(self, *args, **vargs):
+        #TODO use super?
+        Player.__init__(self, *args, **vargs)
 
         self.max_depth = 1
 

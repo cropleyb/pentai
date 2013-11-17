@@ -14,8 +14,8 @@ class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
         # TODO
-        player1 = AIPlayer("Blomp")
-        player2 = human_player.HumanPlayer("Kubba")
+        player1 = AIPlayer("Blomp", BLACK)
+        player2 = human_player.HumanPlayer("Kubba", WHITE)
         r = rules.Rules(5, "standard")
         self.game = game.Game(r, player1, player2)
         self.gui = None

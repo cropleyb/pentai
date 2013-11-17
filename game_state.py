@@ -123,7 +123,8 @@ class GameState():
         return (self.move_number + 1) % 2 + 1 # BLACK is first on move 1
     
     def to_move_player(self):
-        return (self.move_number + 1) % 2
+        pn = (self.move_number + 1) % 2 # Player zero is BLACK
+        return self.game.get_player(pn)
 
     def successors(self):
         succ = []
