@@ -167,15 +167,23 @@ class TextGuiTest(unittest.TestCase):
 
     def test_move_action(self):
         action = self.gui.get_action_from_string("b3")
-        self.assertEquals(action, MoveAction(Pos(2,3)))
+        self.assertEquals(action, MoveAction(Pos(1,2)))
+
+    def test_move_action_illegal_char(self):
+        try:
+            action = self.gui.get_action_from_string("@1")
+        except IllegalMoveException, e:
+            self.assertEquals(e.message, "That position is not on the board")
+            return
+        self.fail()
 
     def test_move_action_L_front(self):
         action = self.gui.get_action_from_string("a1")
-        self.assertEquals(action, MoveAction(Pos(1,1)))
+        self.assertEquals(action, MoveAction(Pos(0,0)))
 
     def test_move_action_R_back(self):
         action = self.gui.get_action_from_string("e5")
-        self.assertEquals(action, MoveAction(Pos(5,5)))
+        self.assertEquals(action, MoveAction(Pos(4,4)))
 
     def test_off_board_move_R(self):
         try:
@@ -207,6 +215,13 @@ class TextGuiTest(unittest.TestCase):
             self.assertEquals(e.message, "That position is not on the board")
             return
         self.fail()
+
+    def test_off_board_move_right(self):
+        try:
+            action = self.gui.get_action_from_string("f3")
+        except IllegalMoveException, e:
+            self.assertEquals(e.message, "That position is not on the board")
+            return
         self.fail()
 
 # TODO: captures? clocks?

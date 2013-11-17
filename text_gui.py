@@ -75,10 +75,10 @@ class TextGui(Gui):
 
     def get_action_from_string(self, s):
         try:
-            col = self.col_names.find(s[0]) + 1
-            row = string.atoi(s[1:])
-            if col > 0 and col <= self.game.size() and \
-               row > 0 and row <= self.game.size():
+            col = self.col_names.find(s[0])
+            row = string.atoi(s[1:]) - 1
+            if col >= 0 and col < self.game.size() and \
+               row >= 0 and row < self.game.size():
                 return MoveAction.create_from_tuple(col, row)
         except:
             pass
