@@ -33,7 +33,7 @@ class TextGuiTest(unittest.TestCase):
 "   abcde\n")
 
     def test_place_one_stone(self):
-        self.gui.after_set_occ(Pos(4,2), black)
+        self.gui.after_set_occ(Pos(3,1), black)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   abcde\n"
@@ -59,7 +59,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_place_one_stone_different_size(self):
         self.setUpWithOverrides(7)
-        self.gui.after_set_occ(Pos(4,2),black)
+        self.gui.after_set_occ(Pos(3,1),black)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   abcdefg\n"
@@ -115,9 +115,9 @@ class TextGuiTest(unittest.TestCase):
         self.assertEquals(game_string,
 "   abcde\n"
 " 5      \n"
-" 4      \n"
-" 3    W \n"
-" 2    B \n"
+" 4     W\n"
+" 3     B\n"
+" 2      \n"
 " 1      \n"
 "   abcde\n")
 

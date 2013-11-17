@@ -36,7 +36,7 @@ if __name__ == "__main__":
     print gui.board_to_string()
     pdb.set_trace()
     while (not game.finished()):
-        print game.prompt_for_action(gui),
+        print game.prompt_for_action(gui)
         try:
             action = game.get_action(gui)
             action.perform(game)

@@ -37,7 +37,7 @@ class TextGui(Gui):
             col_char = " "
         x = pos[0]
         y = pos[1]
-        self.board_chars[1+self.game.size()-y][x] = col_char
+        self.board_chars[self.game.size()-y][x+1] = col_char
 
     def board_to_string(self):
         ret = []

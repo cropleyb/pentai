@@ -21,6 +21,7 @@ class AIPlayer(Player):
         move, value = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
                 max_depth=self.max_depth)
         self.action = move[0]
+        return self.action
 
     def get_action(self, game, gui):
         # TODO: make move chosen by the search
