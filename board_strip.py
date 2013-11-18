@@ -20,6 +20,29 @@ class BoardStrip():
         self.occs &= ~(shift + shift * 2)
         self.occs |= (occ * shift)
 
+    def match_five_in_a_row(self, move_ind, my_colour):
+        l = 1
+        while l < 5:
+            test_ind = move_ind + l
+            next_occ = self.get_occ(test_ind)
+            if next_occ != my_colour:
+                break
+            l += 1
+
+        # Now see how far the line goes in the opposite direction.
+        m = -1
+        while m > -5:
+            test_ind = move_ind + m
+            if test_ind < 0:
+                # Other end of a potential line is off the edge of the board
+                break
+            next_occ = self.get_occ(test_ind)
+            if next_occ != my_colour:
+                break
+            m -= 1
+        total_line_length = 1 + (l-1) - (m+1)
+        return total_line_length >= 5
+
     def match_capture_left(self, ind, colour):
         if colour == BLACK:
             return self.match_black_capture_left(ind)

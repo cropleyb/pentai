@@ -142,6 +142,78 @@ class BoardStripTest(unittest.TestCase):
         strip.set_occ(5, WHITE)
         self.assertEquals(strip.match_capture_right(2, WHITE), ())
 
+import pdb
+
+class BoardStrip5sTest(unittest.TestCase):
+    def test_dont_match_5_from_empty(self):
+        strip = BoardStrip()
+        self.assertEquals(strip.match_five_in_a_row(2, BLACK), False)
+
+    def test_match_5_left(self):
+        strip = BoardStrip()
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, BLACK)
+        strip.set_occ(5, BLACK)
+        self.assertEquals(strip.match_five_in_a_row(5, BLACK), True)
+
+    def test_dont_match_4_left(self):
+        strip = BoardStrip()
+        #pdb.set_trace()
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, BLACK)
+        strip.set_occ(5, BLACK)
+        self.assertEquals(strip.match_five_in_a_row(5, BLACK), False)
+
+    def test_match_5_right(self):
+        strip = BoardStrip()
+        strip.set_occ(0, BLACK)
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.match_five_in_a_row(0, BLACK), True)
+
+    def test_dont_match_5_right_with_gap(self):
+        strip = BoardStrip()
+        strip.set_occ(0, BLACK)
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.match_five_in_a_row(0, BLACK), False)
+
+    def test_match_5_in_middle(self):
+        strip = BoardStrip()
+        #pdb.set_trace()
+        strip.set_occ(0, BLACK)
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.match_five_in_a_row(2, BLACK), True)
+
+    def test_match_5_white_in_middle(self):
+        strip = BoardStrip()
+        #pdb.set_trace()
+        strip.set_occ(0, WHITE)
+        strip.set_occ(1, WHITE)
+        strip.set_occ(2, WHITE)
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, WHITE)
+        self.assertEquals(strip.match_five_in_a_row(2, WHITE), True)
+
+    def test_dont_match_5_zebra_in_middle(self):
+        strip = BoardStrip()
+        #pdb.set_trace()
+        strip.set_occ(0, BLACK)
+        strip.set_occ(1, WHITE)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.match_five_in_a_row(2, BLACK), False)
+
 if __name__ == "__main__":
     unittest.main()
 

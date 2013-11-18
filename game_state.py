@@ -79,39 +79,14 @@ class GameState():
         # We only need to check half of the directions,
         # because for each we need to check the opposite direction
         # in case the last stone was not placed at an end.
-        for direction in DIRECTIONS[:4]:
-            l = 1
-            while l < 5:
-                test_pos = move_pos.shift(direction, l)
-                if test_pos[0] < 0 or \
-                   test_pos[0] > board_size or \
-                   test_pos[1] < 0 or \
-                   test_pos[1] > board_size:
-                    # Other end of a potential line is off the edge of the board
-                    break
-                next_col = self.board.get_occ(test_pos)
-                if next_col != my_colour:
-                    break
-                l += 1
+        for ds in self.board.get_direction_strips():
+            self.check_direction_for_5_in_a_row(ds, move_pos, my_colour)
 
-            # Now see how far the line goes in the opposite direction.
-            m = -1
-            while m > -5:
-                test_pos = move_pos.shift(direction, m)
-                if test_pos[0] < 0 or \
-                   test_pos[0] > board_size or \
-                   test_pos[1] < 0 or \
-                   test_pos[1] > board_size:
-                    # Other end of a potential line is off the edge of the board
-                    break
-                next_col = self.board.get_occ(test_pos)
-                if next_col != my_colour:
-                    break
-                m -= 1
-            total_line_length = 1 + (l-1) - (m+1)
-            # TODO: check rules to see if lines longer than 5 also win
-            if total_line_length >= 5:
-                self.set_won_by(my_colour)
+    def check_direction_for_5_in_a_row(self, ds, move_pos, my_colour):
+        s, strip_num = ds.get_strip(move_pos)
+        move_ind = ds.get_index(move_pos)
+        if s.match_five_in_a_row(move_ind, my_colour):
+            self.set_won_by(my_colour)
 
     def set_won_by(self, wb):
         self._won_by = wb
