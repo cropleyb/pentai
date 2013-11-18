@@ -88,6 +88,7 @@ class ABState():
 
     def after_set_occ(self, pos, colour):
         self._set_or_reset_occ(pos, True)
+        # Reduce the move filtering
         self.filter_iterator.widen(pos)
 
     def _set_or_reset_occ(self, pos, add):
@@ -97,6 +98,13 @@ class ABState():
             l = brd.get_positions_in_line_through_pos(pos, direction, 4)
             occs = [brd.get_occ(i) for i in l]
             process_substrips(occs, self.black_lines, self.white_lines, add)
+        '''
+        # TODO next - still got some bugs to fix
+        for ds in brd.get_direction_strips():
+            # TODO: Fetch this just once, share between before and after.
+            occs = ds.get_occ_list(pos, brd.get_size())
+            process_substrips(occs, self.black_lines, self.white_lines, add)
+        '''
 
     def create_state(self, move_pos):
         ab_child = ABState(self)
@@ -121,7 +129,6 @@ class ABGame():
         s = self.current_state = ABState()
         s.set_state(base_game.current_state)
         self.base_game = base_game
-        #self.pos_iter = search_order.PosIterator(base_game.size())
 
     def to_move(self, state=None):
         if state is None:

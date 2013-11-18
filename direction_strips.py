@@ -13,6 +13,14 @@ class DirectionStrips():
         if not clone:
             self.set_up_strips(board_size)
 
+    def get_occ_list(self, move_pos, board_size):
+        # We only want the strip (in this direction) that goes through 'pos'
+        s, s_num = self.get_strip(move_pos)
+        move_ind = self.get_index(move_pos)
+        min_ind = max(0, move_ind-4) # TODO: constant
+        max_ind = min(move_ind+4, board_size-1)
+        return s.get_occ_list(min_ind, max_ind)
+
     def get_captures(self, move_pos, colour):
         captures = []
         # We only want the strip (in this direction) that goes through 'pos'

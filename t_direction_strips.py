@@ -146,36 +146,42 @@ class DirectionStripsTest(unittest.TestCase):
         self.assertEquals(len(captures),2)
         self.assertEquals(captures,[(2,4),(3,5)])
     
-    #########################################
-    '''
-    #########################################
-    # pos in line through pos for substrips #
-    #########################################
-    def test_get_positions_in_E_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (1,0), 4)
-        self.assertEquals(piltp,
-                [(3,7),(4,7),(5,7),(6,7),(7,7),(8,7),(9,7),(10,7),(11,7)])
+    ###############################################
+    # pos in line through pos for length counters #
+    ###############################################
+    def test_empty_positions_in_E_line_through_pos(self):
+        ds = SWDirectionStrips(board_size = 9)
+        occ_list = ds.get_occ_list(Pos(3,4), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
 
-    def test_get_positions_in_SE_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (1,1), 4)
-        self.assertEquals(piltp,
-                [(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(10,10),(11,11)])
+    def test_one_occ_position_in_E_line_through_pos(self):
+        ds = EDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(2,4), WHITE)
+        occ_list = ds.get_occ_list(Pos(3,4), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, EMPTY, WHITE, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
 
-    def test_get_positions_in_S_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (0,1), 4)
-        self.assertEquals(piltp,
-                [(7,3),(7,4),(7,5),(7,6),(7,7),(7,8),(7,9),(7,10),(7,11)])
+    def test_one_occ_position_in_SE_line_through_pos(self):
+        ds = SEDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(2,4), BLACK)
+        occ_list = ds.get_occ_list(Pos(3,3), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, EMPTY, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
 
-    def test_get_positions_in_SW_line_through_pos(self):
-        board = Board(size = 13)
-        piltp = board.get_positions_in_line_through_pos(Pos(7,7), (-1,1), 4)
-        self.assertEquals(piltp,
-                [(11,3),(10,4),(9,5),(8,6),(7,7),(6,8),(5,9),(4,10),(3,11)])
-    '''
+    def test_one_occ_position_in_S_line_through_pos(self):
+        ds = SDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(2,4), BLACK)
+        occ_list = ds.get_occ_list(Pos(2,3), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, EMPTY, EMPTY, EMPTY, BLACK, EMPTY, EMPTY, EMPTY])
 
+    def test_one_occ_position_in_SW_line_through_pos(self):
+        ds = SWDirectionStrips(board_size=5)
+        ds.set_occ(Pos(2,4), BLACK)
+        occ_list = ds.get_occ_list(Pos(1,3), board_size=5)
+        self.assertEquals(occ_list, \
+                [EMPTY, EMPTY, BLACK, EMPTY, EMPTY])
 
 if __name__ == "__main__":
     unittest.main()

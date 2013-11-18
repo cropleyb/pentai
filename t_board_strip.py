@@ -142,8 +142,6 @@ class BoardStripTest(unittest.TestCase):
         strip.set_occ(5, WHITE)
         self.assertEquals(strip.match_capture_right(2, WHITE), ())
 
-import pdb
-
 class BoardStrip5sTest(unittest.TestCase):
     def test_dont_match_5_from_empty(self):
         strip = BoardStrip()
@@ -213,6 +211,22 @@ class BoardStrip5sTest(unittest.TestCase):
         strip.set_occ(3, WHITE)
         strip.set_occ(4, BLACK)
         self.assertEquals(strip.match_five_in_a_row(2, BLACK), False)
+
+import pdb
+
+class BoardStripGetOccsTest(unittest.TestCase):
+    def test_get_empty_occs(self):
+        strip = BoardStrip()
+        self.assertEquals(strip.get_occ_list(3, 7), [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
+
+    def test_get_empty_occs(self):
+        strip = BoardStrip()
+        strip.set_occ(0, BLACK)
+        strip.set_occ(1, WHITE)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.get_occ_list(3, 5), [WHITE, BLACK, EMPTY])
 
 if __name__ == "__main__":
     unittest.main()

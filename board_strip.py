@@ -20,6 +20,10 @@ class BoardStrip():
         self.occs &= ~(shift + shift * 2)
         self.occs |= (occ * shift)
 
+    def get_occ_list(self, min_ind, max_ind):
+        ol = [self.get_occ(i) for i in range(min_ind, 1+max_ind)]
+        return ol
+
     def match_five_in_a_row(self, move_ind, my_colour):
         l = 1
         while l < 5:
@@ -107,5 +111,4 @@ class BoardStrip():
             captures.extend(self.match_white_capture_left(ind))
             captures.extend(self.match_white_capture_right(ind))
         return captures
-
 
