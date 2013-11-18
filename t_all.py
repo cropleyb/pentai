@@ -10,6 +10,7 @@ import t_rules
 import t_text_gui
 import t_game_state
 import t_search_order
+import t_search_filter
 import t_utility
 import t_ai_player
 import t_simpleton
@@ -30,6 +31,7 @@ def suite():
     suite11 = unittest.defaultTestLoader.loadTestsFromModule(t_simpleton)
     suite12 = unittest.defaultTestLoader.loadTestsFromModule(t_board_strip)
     suite13 = unittest.defaultTestLoader.loadTestsFromModule(t_direction_strips)
+    suite14 = unittest.defaultTestLoader.loadTestsFromModule(t_search_filter)
 
     allTests = unittest.TestSuite()
     allTests.addTest(suite1)
@@ -45,6 +47,7 @@ def suite():
     allTests.addTest(suite11)
     allTests.addTest(suite12)
     allTests.addTest(suite13)
+    allTests.addTest(suite14)
     return allTests
 
 if __name__ == "__main__":
