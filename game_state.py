@@ -60,15 +60,7 @@ class GameState():
 
         # Process captures
         for ds in self.board.get_direction_strips():
-            captures = ds.get_captures(move_pos, MC)
-            for capture_pos in captures:
-                # Remove stone
-                self.board.set_occ(capture_pos, EMPTY)
-
-                # Keep track of capture count
-                self.captured[my_colour] += 1
-                if self.captured[my_colour] >= 10:
-                    self.set_won_by(MC)
+            self.process_direction_captures(ds, move_pos, MC)
 
         # OLD. We only need to check for 5 in a row wins if we are not
         # an AI player - the AI data structure detects this already,
@@ -76,9 +68,6 @@ class GameState():
 
         # Check for a win by checking all the lines that run through
         # the move position.
-        # We only need to check half of the directions,
-        # because for each we need to check the opposite direction
-        # in case the last stone was not placed at an end.
         for ds in self.board.get_direction_strips():
             self.check_direction_for_5_in_a_row(ds, move_pos, my_colour)
 
@@ -87,6 +76,17 @@ class GameState():
         move_ind = ds.get_index(move_pos)
         if s.match_five_in_a_row(move_ind, my_colour):
             self.set_won_by(my_colour)
+
+    def process_direction_captures(self, ds, move_pos, my_colour):
+        captures = ds.get_captures(move_pos, my_colour)
+        for capture_pos in captures:
+            # Remove stone
+            self.board.set_occ(capture_pos, EMPTY)
+
+            # Keep track of capture count
+            self.captured[my_colour] += 1
+            if self.captured[my_colour] >= 10:
+                self.set_won_by(my_colour)
 
     def set_won_by(self, wb):
         self._won_by = wb
