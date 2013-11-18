@@ -4,6 +4,7 @@ import board
 import game_state
 import alpha_beta
 import search_order
+import search_filter
 import game
 import gui
 from pos import *
@@ -17,9 +18,11 @@ class ABState():
         if parent == None:
             self.black_lines = LengthCounter()
             self.white_lines = LengthCounter()
+            self.filter_iterator = None
         else:
             self.black_lines = LengthCounter(parent.black_lines) # TODO: clone method
             self.white_lines = LengthCounter(parent.white_lines)
+            self.filter_iterator = parent.filter_iterator.clone()
 
     def get_black_line_counts(self):
         return self.black_lines
@@ -27,9 +30,14 @@ class ABState():
     def get_white_line_counts(self):
         return self.white_lines
 
+    def get_iter(self):
+        return self.filter_iterator
+
     def set_state(self, s):
         self.state = s
         self.board().add_observer(self)
+        if self.filter_iterator is None:
+            self.filter_iterator = search_filter.FilterIterator(self.board().get_size())
         # TODO: Remove us as an observer from previous self.state
 
     def to_move_colour(self):
@@ -80,6 +88,7 @@ class ABState():
 
     def after_set_occ(self, pos, colour):
         self._set_or_reset_occ(pos, True)
+        self.filter_iterator.widen(pos)
 
     def _set_or_reset_occ(self, pos, add):
         # update substrips
@@ -112,7 +121,7 @@ class ABGame():
         s = self.current_state = ABState()
         s.set_state(base_game.current_state)
         self.base_game = base_game
-        self.pos_iter = search_order.PosIterator(base_game.size())
+        #self.pos_iter = search_order.PosIterator(base_game.size())
 
     def to_move(self, state=None):
         if state is None:
@@ -122,8 +131,10 @@ class ABGame():
     def utility(self, state, player):
         return state.utility(player)
 
+    # TODO: unit test
     def successors(self, state):
-        for pos in self.pos_iter.get_iter():
+        pos_iter = state.get_iter()
+        for pos in pos_iter.get_iter():
             # create a AB_State for each possible move from state
             try:
                 succ = state.create_state(pos)

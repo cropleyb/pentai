@@ -21,13 +21,13 @@ if __name__ == "__main__":
         print "(without psyco)"
     """
 
-    #pdb.set_trace()
-    rules = Rules(5, "standard")
+    pdb.set_trace()
+    rules = Rules(9, "standard")
     player1 = HumanPlayer("Bruce", BLACK)
     '''
     player2 = HumanPlayer("B2", WHITE)
     '''
-    player2 = AIPlayer("B2", WHITE)
+    player2 = AIPlayer("Deep Thunk", WHITE)
     game = Game(rules, player1, player2)
     player2.attach_to_game(game)
 

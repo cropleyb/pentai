@@ -10,6 +10,8 @@ class SearchFilterTest(unittest.TestCase):
         i = FilterIterator(13)
         l = list(i.get_iter())
         self.assertEquals(len(l), 5*5)
+        self.assertEquals(l[0],Pos(6,6))
+        self.assertIn(Pos(8,8),l[-4:])
 
     def test_set_left_min(self):
         i = FilterIterator(13)
@@ -25,7 +27,6 @@ class SearchFilterTest(unittest.TestCase):
 
     def test_set_lower_min(self):
         i = FilterIterator(13)
-        #pdb.set_trace()
         i.widen(Pos(6,2))
         l = list(i.get_iter())
         self.assertEquals(len(l), 9*5)

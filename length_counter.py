@@ -31,6 +31,9 @@ class LengthCounter():
         return self.counts[i]
 
 def process_substrips(pattern, us_counter, them_counter, add):
+    """ This complex little algorithm calculates the contributions
+    of a given line of pieces ("pattern") to the totals count.
+    We only count the number of ways in which a line of 5 is possible. """
     seen = [0, 0]
 
     i = 0
