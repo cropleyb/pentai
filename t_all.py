@@ -16,6 +16,7 @@ import t_ai_player
 import t_simpleton
 import t_board_strip
 import t_direction_strips
+import t_nearby_filter
 
 def suite():
     suite1 = unittest.defaultTestLoader.loadTestsFromModule(t_board)
@@ -32,6 +33,7 @@ def suite():
     suite12 = unittest.defaultTestLoader.loadTestsFromModule(t_board_strip)
     suite13 = unittest.defaultTestLoader.loadTestsFromModule(t_direction_strips)
     suite14 = unittest.defaultTestLoader.loadTestsFromModule(t_search_filter)
+    suite15 = unittest.defaultTestLoader.loadTestsFromModule(t_nearby_filter)
 
     allTests = unittest.TestSuite()
     allTests.addTest(suite1)
@@ -39,7 +41,7 @@ def suite():
     allTests.addTest(suite3)
     allTests.addTest(suite4)
     allTests.addTest(suite5)
-    allTests.addTest(suite6)
+    #allTests.addTest(suite6)
     allTests.addTest(suite7)
     allTests.addTest(suite8)
     allTests.addTest(suite9)
@@ -48,6 +50,7 @@ def suite():
     allTests.addTest(suite12)
     allTests.addTest(suite13)
     allTests.addTest(suite14)
+    allTests.addTest(suite15)
     return allTests
 
 if __name__ == "__main__":
