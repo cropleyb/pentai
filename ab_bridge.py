@@ -10,6 +10,9 @@ from board_strip import *
 
 from length_counter import *
 
+CAPTURE_SCORE_BASE = 120 ** 3
+
+
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None):
@@ -79,8 +82,18 @@ class ABState():
             score += bl[rev]
             score -= wl[rev]
             score *= 100
+
+
+        score += self.capture_contrib(captured[BLACK])
+        score -= self.capture_contrib(captured[WHITE])
         #print "black: %s, white: %s, score: %s" % (bl, wl, score)
         return score
+
+    def capture_contrib(self, captures):
+        """ captures become increasingly important as we approach 5 """
+        # TODO: Use rules
+        contrib = captures ** 2 * CAPTURE_SCORE_BASE
+        return contrib
 
     def score(self):
         return self.utility(None)

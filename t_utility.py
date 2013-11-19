@@ -73,12 +73,33 @@ class UtilityTest(unittest.TestCase):
         self.assertGreaterEqual(u, alpha_beta.infinity)
 
     def test_black_win_by_captures(self):
-        pdb.set_trace()
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
         self.set_captured(10, 0)
         u = self.s.utility(self.black_player)
         self.assertGreaterEqual(u, alpha_beta.infinity)
+
+    def test_white_win_by_captures(self):
+        self.s.black_lines = LengthCounter([0,0,0,0,0])
+        self.s.white_lines = LengthCounter([0,0,0,0,0])
+        self.set_captured(0, 10)
+        u = self.s.utility(self.black_player)
+        self.assertLessEqual(u, -alpha_beta.infinity)
+
+    def test_one_capture_worth_more_than_a_three(self):
+        self.s.black_lines = LengthCounter([0,0,0,0,0])
+        self.s.white_lines = LengthCounter([0,0,1,0,0])
+        self.set_captured(1, 0)
+        u = self.s.utility(self.black_player)
+        self.assertGreaterEqual(u, 0)
+
+    def test_one_capture_worth_less_than_a_four(self):
+        #pdb.set_trace()
+        self.s.black_lines = LengthCounter([0,0,0,0,0])
+        self.s.white_lines = LengthCounter([0,0,0,1,0])
+        self.set_captured(1, 0)
+        u = self.s.utility(self.black_player)
+        self.assertLessEqual(u, 0)
 
 if __name__ == "__main__":
     unittest.main()
