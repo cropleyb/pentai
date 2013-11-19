@@ -1,5 +1,4 @@
 from board_strip import *
-from pos import *
 
 class DirectionStrips():
     """ A list of BoardStrips for those going in a particular direction.
@@ -66,7 +65,7 @@ class EDirectionStrips(DirectionStrips):
 
     def get_pos(self, ind, s_num):
         """ Get the position for a given index of a given strip number """
-        return Pos(ind, s_num)
+        return (ind, s_num)
 
     def get_occ(self, pos):
         return self.get_strip(pos)[0].get_occ(pos[0])
@@ -76,7 +75,7 @@ class EDirectionStrips(DirectionStrips):
 
     def append_pos_for_indices(self, pos_list, indices, strip_num):
         for i in indices:
-            p = Pos(i, strip_num)
+            p = (i, strip_num)
             pos_list.append(p)
 
 class SWDirectionStrips(DirectionStrips):
@@ -127,7 +126,7 @@ class SWDirectionStrips(DirectionStrips):
         # s_num = size + x - y - 1, so:
         # y = size + x - s_num - 1
         y = self.board_size + ind - s_num - 1
-        return Pos(ind, y)
+        return (ind, y)
 
     def get_occ(self, pos):
         return self.get_strip(pos)[0].get_occ(pos[0])
@@ -170,7 +169,7 @@ class SDirectionStrips(DirectionStrips):
 
     def get_pos(self, ind, s_num):
         """ Get the position for a given index of a given strip number """
-        return Pos(s_num, ind)
+        return (s_num, ind)
 
     def get_occ(self, pos):
         return self.get_strip(pos)[0].get_occ(pos[1])
@@ -221,7 +220,7 @@ class SEDirectionStrips(DirectionStrips):
 
     def get_pos(self, ind, s_num):
         """ Get the position for a given index of a given strip number """
-        return Pos(ind, s_num-ind)
+        return (ind, s_num-ind)
 
     def get_occ(self, pos):
         return self.get_strip(pos)[0].get_occ(pos[0])

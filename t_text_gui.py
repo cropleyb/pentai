@@ -33,7 +33,7 @@ class TextGuiTest(unittest.TestCase):
 "   abcde\n")
 
     def test_place_one_stone(self):
-        self.gui.after_set_occ(Pos(3,1), black)
+        self.gui.after_set_occ((3,1), black)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   abcde\n"
@@ -45,8 +45,8 @@ class TextGuiTest(unittest.TestCase):
 "   abcde\n")
 
     def test_place_and_remove_stone(self):
-        self.gui.after_set_occ(Pos(4,2),black)
-        self.gui.after_set_occ(Pos(4,2),empty)
+        self.gui.after_set_occ((4,2),black)
+        self.gui.after_set_occ((4,2),empty)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   abcde\n"
@@ -59,7 +59,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_place_one_stone_different_size(self):
         self.setUpWithOverrides(7)
-        self.gui.after_set_occ(Pos(3,1),black)
+        self.gui.after_set_occ((3,1),black)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   abcdefg\n"
@@ -74,8 +74,8 @@ class TextGuiTest(unittest.TestCase):
 
     def test_place_and_remove_one_stone_different_size(self):
         self.setUpWithOverrides(7)
-        self.gui.after_set_occ(Pos(4,2),black)
-        self.gui.after_set_occ(Pos(4,2),empty)
+        self.gui.after_set_occ((4,2),black)
+        self.gui.after_set_occ((4,2),empty)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   abcdefg\n"
@@ -109,8 +109,8 @@ class TextGuiTest(unittest.TestCase):
 "   abcdefghjklmn\n")
 
     def test_place_two_stones(self):
-        self.gui.after_set_occ(Pos(4,2),black)
-        self.gui.after_set_occ(Pos(4,3),white)
+        self.gui.after_set_occ((4,2),black)
+        self.gui.after_set_occ((4,3),white)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   abcde\n"
@@ -167,7 +167,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_move_action(self):
         action = self.gui.get_action_from_string("b3")
-        self.assertEquals(action, MoveAction(Pos(1,2)))
+        self.assertEquals(action, MoveAction((1,2)))
 
     def test_move_action_illegal_char(self):
         try:
@@ -179,11 +179,11 @@ class TextGuiTest(unittest.TestCase):
 
     def test_move_action_L_front(self):
         action = self.gui.get_action_from_string("a1")
-        self.assertEquals(action, MoveAction(Pos(0,0)))
+        self.assertEquals(action, MoveAction((0,0)))
 
     def test_move_action_R_back(self):
         action = self.gui.get_action_from_string("e5")
-        self.assertEquals(action, MoveAction(Pos(4,4)))
+        self.assertEquals(action, MoveAction((4,4)))
 
     def test_off_board_move_R(self):
         try:

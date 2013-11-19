@@ -17,12 +17,12 @@ class SearchOrderTest(unittest.TestCase):
     def test_centre_first(self):
         i = PosIterator(13)
         l = list(i.get_iter())
-        self.assertEquals(l[0], Pos(6,6))
+        self.assertEquals(l[0], (6,6))
 
     def test_corners_last(self):
         i = PosIterator(13)
         l = list(i.get_iter())
-        corners = (Pos(0,0), Pos(0,12), Pos(12,12), Pos(12,0))
+        corners = ((0,0), (0,12), (12,12), (12,0))
         self.assertIn(l[-1], corners)
         self.assertIn(l[-2], corners)
         self.assertIn(l[-3], corners)
@@ -31,12 +31,12 @@ class SearchOrderTest(unittest.TestCase):
     def test_centre_first_big(self):
         i = PosIterator(19)
         l = list(i.get_iter())
-        self.assertEquals(l[0], Pos(9,9))
+        self.assertEquals(l[0], (9,9))
 
     def test_corners_last_big(self):
         i = PosIterator(19)
         l = list(i.get_iter())
-        corners = (Pos(0,0), Pos(0,18), Pos(18,18), Pos(18,0))
+        corners = ((0,0), (0,18), (18,18), (18,0))
         self.assertIn(l[-1], corners)
         self.assertIn(l[-2], corners)
         self.assertIn(l[-3], corners)

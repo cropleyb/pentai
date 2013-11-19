@@ -7,7 +7,6 @@ import search_order
 import search_filter
 import game
 import gui
-from pos import *
 from board_strip import *
 
 from length_counter import *
@@ -94,13 +93,6 @@ class ABState():
     def _set_or_reset_occ(self, pos, add):
         # update substrips
         brd = self.board()
-        '''
-        for direction in DIRECTIONS[:4]:
-            l = brd.get_positions_in_line_through_pos(pos, direction, 4)
-            occs = [brd.get_occ(i) for i in l]
-            print "%s: %s" % (direction, occs)
-            process_substrips(occs, self.black_lines, self.white_lines, add)
-        '''
         for ds in brd.get_direction_strips():
             # TODO: Fetch this just once, share between before and after.
             occs = ds.get_occ_list(pos, brd.get_size())

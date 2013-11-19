@@ -8,7 +8,7 @@ class MoveAction():
     
     @staticmethod 
     def create_from_tuple(x, y):
-        return MoveAction(Pos(x, y))
+        return MoveAction((x, y))
 
     def __init__(self, pos):
         self.move = pos

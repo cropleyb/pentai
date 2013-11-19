@@ -1,7 +1,6 @@
 
 from pente_exceptions import *
 from board import *
-from pos import *
 
 class GameState():
     """ This is for the state of a game as of a particular move. 
@@ -105,7 +104,7 @@ class GameState():
         succ = []
         for x in range(self.BOARD_SIZE):
             for y in range(self.BOARD_SIZE):
-                action = Pos(x, y)
+                action = (x, y)
                 try:
                     succ.append((action, State(self, action)))
                 except IllegalMoveException:

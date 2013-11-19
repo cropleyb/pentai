@@ -1,4 +1,3 @@
-from pos import *
 
 class PosIterator:
     """ Iterate over all the positions on the board. Central positions are visited first.
@@ -8,7 +7,7 @@ class PosIterator:
         centre_coord = board_size / 2
         for x in range(board_size):
             for y in range(board_size):
-                p = Pos(x, y)
+                p = (x, y)
                 dist_sqr_from_centre = (x - centre_coord) ** 2 + (y - centre_coord) ** 2
                 sqr_list.append((dist_sqr_from_centre, p))
 

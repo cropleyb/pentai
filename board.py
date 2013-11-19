@@ -1,5 +1,4 @@
 
-from pos import *
 from direction_strips import *
 from pente_exceptions import *
 
@@ -41,12 +40,16 @@ class Board():
         return self.size
 
     def off_board(self, move_pos):
-        return move_pos.off_board(self.size)
+        x,y = move_pos
+        size = self.size
+        return x < 0 or \
+               x >= size or \
+               y < 0 or \
+               y >= size
 
     def get_occ(self, pos):
         colour_new = self.strips[0].get_occ(pos)
-
-        # TEMP tests
+        # TEMP assertions 
         '''
         colour_new2 = self.strips[1].get_occ(pos)
         colour_new3 = self.strips[2].get_occ(pos)
@@ -55,7 +58,6 @@ class Board():
         assert colour_new3 == colour_new4
         assert colour_new == colour_new3
         '''
-        
         return colour_new
 
     def set_occ(self, pos, colour):
@@ -69,16 +71,3 @@ class Board():
         for o in self.observers:
             o.after_set_occ(pos, colour)
 
-    def get_positions_in_line_through_pos(self, pos, direction, length):
-        """ Return a list of the colours of the stones in a line 
-            going through 'pos', 'length' in each direction.
-        """
-        ret = []
-        start_pos = pos.shift(direction, -length)
-        for distance in range(1 + 2*length):
-            test_pos = start_pos.shift(direction, distance)
-            if test_pos.off_board(self.size):
-                continue
-            # yield test_pos
-            ret.append(test_pos)
-        return ret
