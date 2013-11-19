@@ -8,6 +8,8 @@ from text_gui import *
 from pente_exceptions import *
 from human_player import *
 
+import pdb
+
 class TextGuiTest(unittest.TestCase):
 
     def setUp(self):
@@ -21,56 +23,58 @@ class TextGuiTest(unittest.TestCase):
         self.game = Game(rules, player1, player2)
         self.gui = TextGui(self.game)
 
+    # ./t_text_gui.py TextGuiTest.test_show_empty_board
     def test_show_empty_board(self):
+        pdb.set_trace()
         empty_game_string = self.gui.board_to_string()
         self.assertEquals(empty_game_string,
-"   abcde\n"
-" 5      \n"
-" 4      \n"
-" 3      \n"
-" 2      \n"
-" 1      \n"
-"   abcde\n")
+"   a b c d e\n"
+" 5          \n"
+" 4          \n"
+" 3          \n"
+" 2          \n"
+" 1          \n"
+"   a b c d e\n")
 
     def test_place_one_stone(self):
         self.gui.after_set_occ((3,1), black)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
-"   abcde\n"
-" 5      \n"
-" 4      \n"
-" 3      \n"
-" 2    B \n"
-" 1      \n"
-"   abcde\n")
+"   a b c d e\n"
+" 5          \n"
+" 4          \n"
+" 3          \n"
+" 2       B  \n"
+" 1          \n"
+"   a b c d e\n")
 
     def test_place_and_remove_stone(self):
         self.gui.after_set_occ((4,2),black)
         self.gui.after_set_occ((4,2),empty)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
-"   abcde\n"
-" 5      \n"
-" 4      \n"
-" 3      \n"
-" 2      \n"
-" 1      \n"
-"   abcde\n")
+"   a b c d e\n"
+" 5          \n"
+" 4          \n"
+" 3          \n"
+" 2          \n"
+" 1          \n"
+"   a b c d e\n")
 
     def test_place_one_stone_different_size(self):
         self.setUpWithOverrides(7)
         self.gui.after_set_occ((3,1),black)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
-"   abcdefg\n"
-" 7        \n"
-" 6        \n"
-" 5        \n"
-" 4        \n"
-" 3        \n"
-" 2    B   \n"
-" 1        \n"
-"   abcdefg\n")
+"   a b c d e f g\n"
+" 7              \n"
+" 6              \n"
+" 5              \n"
+" 4              \n"
+" 3              \n"
+" 2       B      \n"
+" 1              \n"
+"   a b c d e f g\n")
 
     def test_place_and_remove_one_stone_different_size(self):
         self.setUpWithOverrides(7)
@@ -78,27 +82,7 @@ class TextGuiTest(unittest.TestCase):
         self.gui.after_set_occ((4,2),empty)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
-"   abcdefg\n"
-" 7        \n"
-" 6        \n"
-" 5        \n"
-" 4        \n"
-" 3        \n"
-" 2        \n"
-" 1        \n"
-"   abcdefg\n")
-
-    def test_big_empty_board(self):
-        self.setUpWithOverrides(13)
-        game_string = self.gui.board_to_string()
-        self.assertEquals(game_string,
-"   abcdefghjklmn\n"
-"13              \n"
-"12              \n"
-"11              \n"
-"10              \n"
-" 9              \n"
-" 8              \n"
+"   a b c d e f g\n"
 " 7              \n"
 " 6              \n"
 " 5              \n"
@@ -106,20 +90,40 @@ class TextGuiTest(unittest.TestCase):
 " 3              \n"
 " 2              \n"
 " 1              \n"
-"   abcdefghjklmn\n")
+"   a b c d e f g\n")
+
+    def test_big_empty_board(self):
+        self.setUpWithOverrides(13)
+        game_string = self.gui.board_to_string()
+        self.assertEquals(game_string,
+"   a b c d e f g h j k l m n\n"
+"13                          \n"
+"12                          \n"
+"11                          \n"
+"10                          \n"
+" 9                          \n"
+" 8                          \n"
+" 7                          \n"
+" 6                          \n"
+" 5                          \n"
+" 4                          \n"
+" 3                          \n"
+" 2                          \n"
+" 1                          \n"
+"   a b c d e f g h j k l m n\n")
 
     def test_place_two_stones(self):
         self.gui.after_set_occ((4,2),black)
         self.gui.after_set_occ((4,3),white)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
-"   abcde\n"
-" 5      \n"
-" 4     W\n"
-" 3     B\n"
-" 2      \n"
-" 1      \n"
-"   abcde\n")
+"   a b c d e\n"
+" 5          \n"
+" 4         W\n"
+" 3         B\n"
+" 2          \n"
+" 1          \n"
+"   a b c d e\n")
 
     def test_player_names(self):
         self.setUpWithOverrides(player1=HumanPlayer("Bruce", BLACK),
@@ -155,13 +159,13 @@ class TextGuiTest(unittest.TestCase):
         p = self.game.get_player(0)
         promptStr = p.prompt_for_action(self.game, self.gui)
         self.assertEquals(promptStr,
-'   abcde\n'
-' 5      \n'
-' 4      \n'
-' 3      \n'
-' 2      \n'
-' 1      \n'
-'   abcde\n'
+'   a b c d e\n'
+' 5          \n'
+' 4          \n'
+' 3          \n'
+' 2          \n'
+' 1          \n'
+'   a b c d e\n'
 '* Fred (0p) vs. Wilma (0p)\n'
 'Your move, Fred:\n')
 

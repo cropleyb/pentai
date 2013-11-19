@@ -11,16 +11,16 @@ class TextGui(Gui):
         self.game = game
         self.board_chars = []
         self.col_names = string.ascii_letters.replace('i','')[:game.size()]
-        padding = '   '
+        padding = '  '
         first_row = [padding]
         first_row.extend(self.col_names)
         self.board_chars.append(first_row)
         for i in range(game.size()):
             row = []
             self.board_chars.append(row)
-            row_num_str = "%2d " % (game.size()-i)
+            row_num_str = "%2d" % (game.size()-i)
             row.append(row_num_str)
-            for j in range(game.size()):
+            for j in range(game.size() - 1):
                 row.append(' ')
         self.board_chars.append(first_row)
 
@@ -41,8 +41,9 @@ class TextGui(Gui):
 
     def board_to_string(self):
         ret = []
-        for r in self.board_chars:
-            ret.append("".join(r))
+        for row in self.board_chars:
+            #row = row[:-1]
+            ret.append(" ".join(row))
             ret.append("\n")
         return "".join(ret)
 
