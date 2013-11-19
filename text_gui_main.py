@@ -27,7 +27,7 @@ if __name__ == "__main__":
     '''
     player2 = HumanPlayer("B2", WHITE)
     '''
-    player2 = AIPlayer("Deep Thunk", WHITE)
+    player2 = AIPlayer(2, "Deep Thunk", WHITE)
     game = Game(rules, player1, player2)
     player2.attach_to_game(game)
 

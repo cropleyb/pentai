@@ -14,14 +14,14 @@ class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
         # TODO
-        player1 = AIPlayer("Blomp", BLACK)
+        player1 = AIPlayer(2, "Blomp", BLACK)
         player2 = human_player.HumanPlayer("Kubba", WHITE)
         r = rules.Rules(5, "standard")
         self.game = game.Game(r, player1, player2)
         self.gui = None
 
     def test_find_one_move(self):
-        p = AIPlayer("Deep thunk", BLACK)
+        p = AIPlayer(2, "Deep thunk", BLACK)
         p.attach_to_game(self.game)
         p.prompt_for_action(self.game, self.gui)
         ma = p.get_action(self.game, self.gui)

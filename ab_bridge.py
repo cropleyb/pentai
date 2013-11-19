@@ -3,8 +3,7 @@
 import board
 import game_state
 import alpha_beta
-import search_order
-import search_filter
+import nearby_filter
 import game
 import gui
 from board_strip import *
@@ -17,11 +16,11 @@ class ABState():
         if parent == None:
             self.black_lines = LengthCounter()
             self.white_lines = LengthCounter()
-            self.filter_iterator = None
+            self.search_filter = None
         else:
             self.black_lines = LengthCounter(parent.black_lines) # TODO: clone method
             self.white_lines = LengthCounter(parent.white_lines)
-            self.filter_iterator = parent.filter_iterator.clone()
+            self.search_filter = parent.search_filter.clone()
 
     def get_black_line_counts(self):
         return self.black_lines
@@ -30,13 +29,13 @@ class ABState():
         return self.white_lines
 
     def get_iter(self):
-        return self.filter_iterator
+        return self.search_filter
 
     def set_state(self, s):
         self.state = s
         self.board().add_observer(self)
-        if self.filter_iterator is None:
-            self.filter_iterator = search_filter.FilterIterator(self.board().get_size())
+        if self.search_filter is None:
+            self.search_filter = nearby_filter.NearbyFilter(self.board())
         # TODO: Remove us as an observer from previous self.state
 
     def to_move_colour(self):
@@ -53,20 +52,27 @@ class ABState():
         if player.get_colour() == BLACK:
             return self.black_util()
         if player.get_colour() == WHITE:
-            return -self.black_util()
+            return -self.black_util() # NB negative
 
     def black_util(self):
         bl = self.black_lines
         wl = self.white_lines
-        score = 0
+
+        # Check for a win first
+        # TODO: check rules
+        captured = self.state.get_all_captured()
+        if captured[BLACK] >= 10:
+            return alpha_beta.infinity
+        if captured[WHITE] >= 10:
+            return -alpha_beta.infinity
+
         if bl[4] > 0:
             return alpha_beta.infinity
         if wl[4] > 0:
             return -alpha_beta.infinity
-        # TODO: use an accessor
-        # captures = self.state.captured
 
-        # TODO: check rules, use captures
+        # No win found, fudge up a score
+        score = 0
 
         for i in range(len(bl)):
             rev = 4 - i
@@ -88,7 +94,10 @@ class ABState():
     def after_set_occ(self, pos, colour):
         self._set_or_reset_occ(pos, True)
         # Reduce the move filtering
-        self.filter_iterator.widen(pos)
+        if colour == EMPTY:
+            self.search_filter.capture(pos)
+        else:
+            self.search_filter.move(pos)
 
     def _set_or_reset_occ(self, pos, add):
         # update substrips

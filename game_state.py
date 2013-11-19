@@ -34,6 +34,9 @@ class GameState():
     def get_captured(self, player_num):
         return self.captured[player_num]
 
+    def get_all_captured(self):
+        return self.captured
+
     # these two should only be used for testing
     def set_move_number(self, turn):
         self.move_number = turn

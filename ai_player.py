@@ -7,11 +7,11 @@ from player import *
 class AIPlayer(Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
-    def __init__(self, *args, **vargs):
+    def __init__(self, max_depth, *args, **vargs):
         #TODO use super?
         Player.__init__(self, *args, **vargs)
 
-        self.max_depth = 1
+        self.max_depth = max_depth
 
     def attach_to_game(self, base_game):
         self.ab_game = ab_bridge.ABGame(base_game)
