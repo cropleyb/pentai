@@ -21,7 +21,8 @@ class AIPlayerTest(unittest.TestCase):
         self.gui = None
 
     def test_find_one_move(self):
-        p = AIPlayer("Deep thunk")
+        p = AIPlayer("Deep thunk", BLACK)
+        p.attach_to_game(self.game)
         p.prompt_for_action(self.game, self.gui)
         ma = p.get_action(self.game, self.gui)
         self.assertEquals(ma, gui.MoveAction.create_from_tuple(2,2))
