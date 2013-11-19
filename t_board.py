@@ -30,8 +30,16 @@ class BoardTest(unittest.TestCase):
 
     def test_empty_board_place_one_piece_in_big_corner(self):
         board = Board(size = 7)
-        board.set_occ((7, 7), WHITE)
-        self.assertEquals(board.get_occ((7, 7)), WHITE)
+        board.set_occ((6, 6), WHITE)
+        self.assertEquals(board.get_occ((6, 6)), WHITE)
+
+    def test_place_off_board_raises_exception(self):
+        board = Board(size = 7)
+        try:
+            board.set_occ((7,7), WHITE)
+        except OffBoardException:
+            return
+        self.fail()
 
 if __name__ == "__main__":
     unittest.main()
