@@ -12,32 +12,38 @@ class TextGui(Gui):
         self.board_chars = []
         self.col_names = string.ascii_letters.replace('i','')[:game.size()]
         padding = '  '
-        first_row = [padding]
-        first_row.extend(self.col_names)
-        self.board_chars.append(first_row)
-        for i in range(game.size()):
+        horiz_grid = [padding]
+        horiz_grid.extend(self.col_names)
+
+        # Horizontal grid
+        self.board_chars.append(horiz_grid)
+
+        for r in range(game.size()):
             row = []
-            self.board_chars.append(row)
-            row_num_str = "%2d" % (game.size()-i)
+            # Vertical grid on the left
+            row_num_str = "%2d" % (game.size()-r)
             row.append(row_num_str)
-            for j in range(game.size() - 1):
+
+            # Create a row of empty places for the stones to go
+            for j in range(game.size()):
                 row.append(' ')
-        self.board_chars.append(first_row)
+            self.board_chars.append(row)
+
+        # Horizontal grid is repeated at the bottom
+        self.board_chars.append(horiz_grid)
 
         # We must watch what happens to the logical board, and update accordingly
         board = game.current_state.board
         board.add_observer(self)
 
     def after_set_occ(self, pos, colour):
-        if colour == 1:
-            col_char = "B"
-        elif colour == 2:
-            col_char = "W"
-        else:
-            col_char = " "
-        x = pos[0]
-        y = pos[1]
-        self.board_chars[self.game.size()-y][x+1] = col_char
+        col_char = " BW"[colour]
+        x, y = pos
+
+        # first and last rows are the horizontal grid
+        row = self.board_chars[self.game.size()-y]
+
+        row[x+1] = col_char
 
     def board_to_string(self):
         ret = []

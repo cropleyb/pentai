@@ -41,7 +41,7 @@ def suite():
     allTests.addTest(suite3)
     allTests.addTest(suite4)
     allTests.addTest(suite5)
-    #allTests.addTest(suite6)
+    allTests.addTest(suite6)
     allTests.addTest(suite7)
     allTests.addTest(suite8)
     allTests.addTest(suite9)

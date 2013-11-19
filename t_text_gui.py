@@ -23,9 +23,7 @@ class TextGuiTest(unittest.TestCase):
         self.game = Game(rules, player1, player2)
         self.gui = TextGui(self.game)
 
-    # ./t_text_gui.py TextGuiTest.test_show_empty_board
     def test_show_empty_board(self):
-        pdb.set_trace()
         empty_game_string = self.gui.board_to_string()
         self.assertEquals(empty_game_string,
 "   a b c d e\n"
