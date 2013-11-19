@@ -39,8 +39,8 @@ class Board():
     def get_size(self):
         return self.size
 
-    def off_board(self, move_pos):
-        x,y = move_pos
+    def off_board(self, pos):
+        x,y = pos
         size = self.size
         return x < 0 or \
                x >= size or \
@@ -48,6 +48,8 @@ class Board():
                y >= size
 
     def get_occ(self, pos):
+        if self.off_board(pos):
+            raise OffBoardException
         colour_new = self.strips[0].get_occ(pos)
         # TEMP assertions 
         '''
@@ -61,6 +63,9 @@ class Board():
         return colour_new
 
     def set_occ(self, pos, colour):
+        if self.off_board(pos):
+            raise OffBoardException
+
         for o in self.observers:
             o.before_set_occ(pos, colour)
 
