@@ -162,12 +162,44 @@ class DirectionStripsTest(unittest.TestCase):
         self.assertEquals(occ_list, \
                 [EMPTY, EMPTY, WHITE, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
 
+    def test_one_occ_border_position_in_E_line_through_pos(self):
+        ds = EDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,4), WHITE)
+        occ_list = ds.get_occ_list(Pos(1,4), board_size=9)
+        self.assertEquals(occ_list, \
+                [WHITE, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
+
+    def test_one_occ_border_position_in_E_line_through_pos_b(self):
+        ds = EDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(1,4), WHITE)
+        occ_list = ds.get_occ_list(Pos(0,4), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, WHITE, EMPTY, EMPTY, EMPTY])
+
+    #########
+
     def test_one_occ_position_in_SE_line_through_pos(self):
         ds = SEDirectionStrips(board_size = 9)
         ds.set_occ(Pos(2,4), BLACK)
         occ_list = ds.get_occ_list(Pos(3,3), board_size=9)
         self.assertEquals(occ_list, \
-                [EMPTY, EMPTY, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
+                [EMPTY, EMPTY, BLACK, EMPTY, EMPTY, EMPTY, EMPTY])
+
+    def test_one_occ_border_position_in_SE_line_through_pos(self):
+        ds = SEDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,4), WHITE)
+        occ_list = ds.get_occ_list(Pos(1,3), board_size=9)
+        self.assertEquals(occ_list, \
+                [WHITE, EMPTY, EMPTY, EMPTY, EMPTY])
+
+    def test_one_occ_border_position_in_SE_line_through_pos_b(self):
+        ds = SEDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(1,3), WHITE)
+        occ_list = ds.get_occ_list(Pos(0,4), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, WHITE, EMPTY, EMPTY, EMPTY])
+
+    #########
 
     def test_one_occ_position_in_S_line_through_pos(self):
         ds = SDirectionStrips(board_size = 9)
@@ -176,12 +208,42 @@ class DirectionStripsTest(unittest.TestCase):
         self.assertEquals(occ_list, \
                 [EMPTY, EMPTY, EMPTY, EMPTY, BLACK, EMPTY, EMPTY, EMPTY])
 
+    def test_one_occ_border_position_in_S_line_through_pos(self):
+        ds = SDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(4,0), WHITE)
+        occ_list = ds.get_occ_list(Pos(4,1), board_size=9)
+        self.assertEquals(occ_list, \
+                [WHITE, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
+
+    def test_one_occ_border_position_in_S_line_through_pos_b(self):
+        ds = SDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(4,1), WHITE)
+        occ_list = ds.get_occ_list(Pos(4,0), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, WHITE, EMPTY, EMPTY, EMPTY])
+
+    #########
+
     def test_one_occ_position_in_SW_line_through_pos(self):
         ds = SWDirectionStrips(board_size=5)
         ds.set_occ(Pos(2,4), BLACK)
         occ_list = ds.get_occ_list(Pos(1,3), board_size=5)
         self.assertEquals(occ_list, \
-                [EMPTY, EMPTY, BLACK, EMPTY, EMPTY])
+                [EMPTY, EMPTY, BLACK])
+
+    def test_one_occ_border_position_in_SW_line_through_pos(self):
+        ds = SWDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(0,0), WHITE)
+        occ_list = ds.get_occ_list(Pos(1,1), board_size=9)
+        self.assertEquals(occ_list, \
+                [WHITE, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
+
+    def test_one_occ_border_position_in_SW_line_through_pos_b(self):
+        ds = SWDirectionStrips(board_size = 9)
+        ds.set_occ(Pos(1,1), WHITE)
+        occ_list = ds.get_occ_list(Pos(0,0), board_size=9)
+        self.assertEquals(occ_list, \
+                [EMPTY, WHITE, EMPTY, EMPTY, EMPTY])
 
 if __name__ == "__main__":
     unittest.main()
