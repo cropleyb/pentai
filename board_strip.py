@@ -1,7 +1,4 @@
-
-EMPTY = 0
-BLACK = 1
-WHITE = 2
+from defines import *
 
 class BoardStrip():
     def __init__(self, initial_val=0):
