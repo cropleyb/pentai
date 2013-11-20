@@ -12,13 +12,18 @@
 
 # Top level
 
-FloatLayout:
+BoxLayout:
+#FloatLayout:
     canvas:
         #Color:
         #    rgb: .1, 1, 1
         Rectangle:
-            source: 'images/board.png'
+            #source: 'images/board.png'
+            source: 'images/41-old-wooden-board.jpg'
             size: self.size
+        #Rectangle:
+            #pos: self.center_x - 5, root.
+            #size: 5, self.height
 
 #<PanelInfo>:
 	#GridLayout:
@@ -56,7 +61,6 @@ FloatLayout:
 	# as soon as the image is loaded, ensure that the center is changed
 	# to the center of the screen.
 	on_size: self.center = win.Window.center
-	#size_hint: None, None
 
 	Image:
 		id: image
