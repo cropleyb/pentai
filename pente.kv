@@ -12,14 +12,29 @@
 
 # Top level
 
+#Demo
+    #FloatLayout:
+    #cols = 2
+    #BoxLayout:
+    #    size_hint_x: 0.1
+    #    pos_hint: {'x':80}
+    #    canvas:
+    #        Rectangle:
+    #            #source: 'images/board.png'
+    #            #source: 'images/41-old-wooden-board.jpg'
+    #            source: 'images/X_transparent.png'
+    #            #size: 500, 500
+    #            size: self.size
+
 BoxLayout:
-#FloatLayout:
+    #size_hint_x: 0.7
+    #pos_hint: {'right':1}
     canvas:
         #Color:
         #    rgb: .1, 1, 1
         Rectangle:
-            #source: 'images/board.png'
             source: 'images/41-old-wooden-board.jpg'
+            #size: 500, 500
             size: self.size
         #Rectangle:
             #pos: self.center_x - 5, root.
