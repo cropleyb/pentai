@@ -24,6 +24,19 @@ class Board(Widget):
         self.stones_by_board_pos = {}
         super(Board, self).__init__(*args, **kwargs)
 
+    def set_game(self, game):
+        self.game = game
+
+        # We must watch what happens to the logical board, and update accordingly
+        board = game.get_board()
+        board.add_observer(self)
+
+    def after_set_occ(self, pos, colour):
+        # TODO look up self.stones_by_board_pos.
+        # If it is unoccupied, create a piece of the appropriate colour.
+        # If it is occupied, remove it.
+        self.make_move_on_the_board(pos, colour)
+
     def set_up_grid(self, _dt):
         """ Create black grid lines """
         size_x = self.size[0]
@@ -79,29 +92,39 @@ class Board(Widget):
         # If there is an active marker:
         # Replace the marker to a piece of the appropriate colour
         # TODO: make the move with the appropriate board position
+        # TODO: Check that it is a human's turn.
         if self.marker != None:
             self.remove_widget(self.marker)
             # Quick hack to get both coloured stones on the board
             board_pos = self.screen_to_board(touch.pos)
 
             # TODO: use game, board, check for off board, illegal move exceptions
-            if self.stones_by_board_pos.has_key(board_pos):
-                # There is a piece there already, remove it.
-                current_piece = self.stones_by_board_pos[board_pos]
-                self.remove_widget(current_piece)
-            else:
-                # Nothing there yet, place a stone
-                to_move = self.move_number % 2
-                filename = [white_filename, black_filename][to_move]
-                self.move_number += 1
-                try:
-                    # load the image
-                    new_piece = Piece(source=filename)
-                    self.stones_by_board_pos[board_pos] = new_piece
-                    new_piece.pos = self.board_to_screen(board_pos)
-                    self.add_widget(new_piece)
-                except Exception, e:
-                    Logger.exception('Board: Unable to load <%s>' % filename)
+            # TEMP HACK
+            to_move = (self.move_number + 1) % 2
+            colour = to_move + 1
+
+            self.make_move_on_the_board(board_pos, colour)
+
+    def make_move_on_the_board(self, board_pos, colour): # TODO: Colour
+        if self.stones_by_board_pos.has_key(board_pos) or colour == EMPTY:
+            # There is a piece there already, remove it.
+            assert colour == EMPTY
+            current_piece = self.stones_by_board_pos[board_pos]
+            self.remove_widget(current_piece)
+        else:
+            # Nothing there yet, place a stone
+            filename = ["", white_filename, black_filename][colour]
+
+            # TEMP HACK
+            self.move_number += 1
+            try:
+                # load the image
+                new_piece = Piece(source=filename)
+                self.stones_by_board_pos[board_pos] = new_piece
+                new_piece.pos = self.board_to_screen(board_pos)
+                self.add_widget(new_piece)
+            except Exception, e:
+                Logger.exception('Board: Unable to load <%s>' % filename)
 
     def on_touch_move(self, touch):
         # TODO: Check for off board, remove marker
