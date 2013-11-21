@@ -35,7 +35,7 @@ class TextGuiTest(unittest.TestCase):
 "   a b c d e\n")
 
     def test_place_one_stone(self):
-        self.gui.after_set_occ((3,1), black)
+        self.gui.after_set_occ((3,1), BLACK)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e\n"
@@ -47,8 +47,8 @@ class TextGuiTest(unittest.TestCase):
 "   a b c d e\n")
 
     def test_place_and_remove_stone(self):
-        self.gui.after_set_occ((4,2),black)
-        self.gui.after_set_occ((4,2),empty)
+        self.gui.after_set_occ((4,2),BLACK)
+        self.gui.after_set_occ((4,2),EMPTY)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e\n"
@@ -61,7 +61,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_place_one_stone_different_size(self):
         self.setUpWithOverrides(7)
-        self.gui.after_set_occ((3,1),black)
+        self.gui.after_set_occ((3,1),BLACK)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e f g\n"
@@ -76,8 +76,8 @@ class TextGuiTest(unittest.TestCase):
 
     def test_place_and_remove_one_stone_different_size(self):
         self.setUpWithOverrides(7)
-        self.gui.after_set_occ((4,2),black)
-        self.gui.after_set_occ((4,2),empty)
+        self.gui.after_set_occ((4,2),BLACK)
+        self.gui.after_set_occ((4,2),EMPTY)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e f g\n"
@@ -111,8 +111,8 @@ class TextGuiTest(unittest.TestCase):
 "   a b c d e f g h j k l m n\n")
 
     def test_place_two_stones(self):
-        self.gui.after_set_occ((4,2),black)
-        self.gui.after_set_occ((4,3),white)
+        self.gui.after_set_occ((4,2),BLACK)
+        self.gui.after_set_occ((4,3),WHITE)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e\n"

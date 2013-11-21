@@ -2,10 +2,6 @@
 import string
 from gui import *
 
-empty = 0
-black = 1
-white = 2
-
 class TextGui(Gui):
     def __init__(self, game):
         self.game = game
@@ -48,7 +44,6 @@ class TextGui(Gui):
     def board_to_string(self):
         ret = []
         for row in self.board_chars:
-            #row = row[:-1]
             ret.append(" ".join(row))
             ret.append("\n")
         return "".join(ret)
