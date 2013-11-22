@@ -10,12 +10,13 @@ black_filename = "./images/black_transparent.png"
 white_filename = "./images/white_transparent.png"
 x_filename = "./images/X_transparent.png"
 
+import pdb
+
 class BoardWidget(Widget):
     source = StringProperty(None)
 
     def __init__(self, *args, **kwargs):
         self.marker = None
-        self.move_number = 0
 
         self.stones_by_board_pos = {}
         super(BoardWidget, self).__init__(*args, **kwargs)
@@ -33,6 +34,9 @@ class BoardWidget(Widget):
     def grid_size(self):
         ''' The Grid on the screen allows extra space at the edges '''
         return self.game.size() + 1
+
+    def before_set_occ(self, pos, colour):
+        pass
 
     def after_set_occ(self, pos, colour):
         # TODO look up self.stones_by_board_pos.
@@ -67,20 +71,23 @@ class BoardWidget(Widget):
             dependant on the size of the board """
         size_x, size_y = self.size
         GS = self.grid_size()
-        board_x = round(GS * screen_pos[0] / size_x) - 1
-        board_y = round(GS * screen_pos[1] / size_y) - 1
+        board_x = int(round(GS * screen_pos[0] / size_x) - 1)
+        board_y = int(round(GS * screen_pos[1] / size_y) - 1)
         return board_x, board_y
 
     def board_to_screen(self, board_pos):
         """ Convert a board coordinate pair to a screen position (in pixels),
             dependant on the size of the board """
         size_x, size_y = self.size
-        GS = self.grid_size()
+
+        # Use float() to avoid python int / int = int prob
+        GS = float(self.grid_size())
         screen_x = ((board_pos[0] + 1) / GS) * size_x
         screen_y = ((board_pos[1] + 1) / GS) * size_y
         return screen_x, screen_y
 
     def on_touch_down(self, touch):
+        # TODO: Check that it is a human's turn.
         # Place a marker at the (snapped) cursor position.
         if self.marker == None:
             try:
@@ -94,22 +101,21 @@ class BoardWidget(Widget):
 
     def on_touch_up(self, touch):
         # If there is an active marker:
-        # Replace the marker to a piece of the appropriate colour
-        # TODO: make the move with the appropriate board position
-        # TODO: Check that it is a human's turn.
+        # Replace the marker with a piece of the appropriate colour
         if self.marker != None:
             self.remove_widget(self.marker)
             # Quick hack to get both coloured stones on the board
             board_pos = self.screen_to_board(touch.pos)
 
-            # TODO: use game, board, check for off board, illegal move exceptions
-            # TEMP HACK
-            to_move = (self.move_number + 1) % 2
-            colour = to_move + 1
+            # This should trigger the callback to draw the piece on the screen
+            try:
+                self.game.make_move(board_pos)
+            except Exception, e:
+                # TODO: Better display of off board & illegal move exceptions
+                print e.message
 
-            self.make_move_on_the_board(board_pos, colour)
 
-    def make_move_on_the_board(self, board_pos, colour): # TODO: Colour
+    def make_move_on_the_board(self, board_pos, colour):
         if self.stones_by_board_pos.has_key(board_pos) or colour == EMPTY:
             # There is a piece there already, remove it.
             assert colour == EMPTY
@@ -117,10 +123,8 @@ class BoardWidget(Widget):
             self.remove_widget(current_piece)
         else:
             # Nothing there yet, place a stone
-            filename = ["", white_filename, black_filename][colour]
+            filename = ["", black_filename, white_filename][colour]
 
-            # TEMP HACK
-            self.move_number += 1
             try:
                 # load the image
                 new_piece = Piece(source=filename)

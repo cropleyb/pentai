@@ -20,6 +20,9 @@ class Game():
     def get_current_player(self):
         return self.current_state.to_move_player()
 
+    def to_move_colour(self):
+        return self.current_state.to_move_colour()
+
     def prompt_for_action(self, gui):
         return self.get_current_player().prompt_for_action(self, gui)
 
