@@ -21,20 +21,30 @@ class AIPlayer(Player):
     def attach_to_game(self, base_game):
         self.ab_game = ab_bridge.ABGame(base_game)
 
-    def prompt_for_action(self, base_game, gui):
-        t = threading.Thread(target=self.search_thread, args=(gui,))
-        t.daemon = False
-        t.start()
+    def prompt_for_action(self, base_game, gui, test=False):
+        if test:
+            self.search_thread(gui, True)
+        else:
+            t = threading.Thread(target=self.search_thread, args=(gui,))
+            t.daemon = False
+            t.start()
         return "%s is thinking" % self.get_name()
 
     def get_type(self):
         return "computer"
 
-    def search_thread(self, gui):
+    def search_thread(self, gui, test=False):
         ab_game = self.ab_game
         move, value = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
                 max_depth=self.max_depth)
         action = move[0]
-        gui.enqueue_action(action)
-        gui.trig()
+        if test:
+            self.action = action
+        else:
+            gui.enqueue_action(action)
+            gui.trig()
+
+    # TODO This is only for testing!
+    def get_action(self, game, gui):
+        return self.action
 

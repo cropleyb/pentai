@@ -10,6 +10,8 @@ import game
 
 from ai_player import *
 
+import pdb
+
 class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
@@ -23,7 +25,8 @@ class AIPlayerTest(unittest.TestCase):
     def test_find_one_move(self):
         p = AIPlayer(2, "Deep thunk", BLACK)
         p.attach_to_game(self.game)
-        p.prompt_for_action(self.game, self.gui)
+        pdb.set_trace()
+        p.prompt_for_action(self.game, self.gui, test=True)
         ma = p.get_action(self.game, self.gui)
         self.assertEquals(ma, gui.MoveAction.create_from_tuple(2,2))
 
