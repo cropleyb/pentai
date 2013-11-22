@@ -60,8 +60,26 @@ kivy_gui_main.py creates the Game, Players and App
 
 player interface:
 player name property
-prompt_for_action() - delegates to AB search or Gui (depending on which subclass)
-Action get_action() - delegates to AB search or Gui.
+
+AI player: prompt_for_action() - Calls AB search in a separate thread,
+           which triggers GUI perform action when it is finished.
+           calls the GUI to display "<Px> is thinking"
+GUI places this in a queue to be accessed by GUI: enqueue_action
+GUI perform() calls
+    GUI Action get_action() - fetches the action from the queue then calls
+    board.make_move
+    which calls make_move_on_the_board at least once via callback
+GUI perform then calls prompt_for_action, and sets a timer to call
+         perform again if there is anything in the queue
+
+For human:
+Human: prompt_for_action() calls the GUI to display "Your move <Py>"
+on_touch_up
+    Creates the MoveAction and puts it in the queue, then triggers Gui perform
+GUI perform() calls
+    board.make_move
+    which calls make_move_on_the_board at least once via callback
+GUI perform then calls prompt_for_action
 
 game gui interface
 make move?
@@ -77,3 +95,5 @@ implementation plan:
 1. human versus human, text GUI
 2. AI player move
 3. Kivy (acknowledge http://grungetextures.com/ for background, http://en.wikipedia.org/wiki/File:Realistic_White_Go_Stone.svg)
+
+

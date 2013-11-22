@@ -2,9 +2,12 @@ from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
 from kivy.uix.widget import Widget
 from kivy.properties import StringProperty
+from kivy.clock import Clock
 from kivy.graphics import *
 
 from gui import *
+
+import Queue
 
 black_filename = "./images/black_transparent.png"
 white_filename = "./images/white_transparent.png"
@@ -17,8 +20,9 @@ class BoardWidget(Widget):
 
     def __init__(self, *args, **kwargs):
         self.marker = None
-
         self.stones_by_board_pos = {}
+        self.action_queue = Queue.Queue()
+
         super(BoardWidget, self).__init__(*args, **kwargs)
 
     def set_game(self, game):
@@ -28,21 +32,45 @@ class BoardWidget(Widget):
         board = game.get_board()
         board.add_observer(self)
 
+        self.trig = Clock.create_trigger(self.perform)
+
+        # start the game
+        prompt = game.prompt_for_action(self)
+        self.display_feedback_string(prompt)
+
+    def display_feedback_string(self, message):
+        # TODO: Update screen
+        print message
+
+    def request_move(self, name):
+        # TODO: Update side panel instead, use player object param instead of name
+        your_move = "Your move, %s" % name
+        return your_move
+
+    def enqueue_action(self, action):
+        self.action_queue.put(action)
+        self.trig()
+
+    def perform(self, dt):
+        if self.action_queue.empty():
+            return
+        action = self.action_queue.get()
+        action.perform(self.game)
+        prompt = self.game.prompt_for_action(self)
+        self.display_feedback_string(prompt)
+
     def board_size(self):
         return self.game.size()
 
     def grid_size(self):
-        ''' The Grid on the screen allows extra space at the edges '''
+        """ The Grid on the screen allows extra space at the edges """
         return self.game.size() + 1
 
     def before_set_occ(self, pos, colour):
         pass
 
     def after_set_occ(self, pos, colour):
-        # TODO look up self.stones_by_board_pos.
-        # If it is unoccupied, create a piece of the appropriate colour.
-        # If it is occupied, remove it.
-        self.make_move_on_the_board(pos, colour)
+        self.make_move_on_the_gui_board(pos, colour)
 
     def set_up_grid(self, _dt):
         """ Create black grid lines """
@@ -100,26 +128,22 @@ class BoardWidget(Widget):
         self.add_widget(self.marker)
 
     def on_touch_up(self, touch):
-        # If there is an active marker:
-        # Replace the marker with a piece of the appropriate colour
+        # If there is an active marker,
+        # replace the marker with a piece of the appropriate colour
         if self.marker != None:
             self.remove_widget(self.marker)
             # Quick hack to get both coloured stones on the board
             board_pos = self.screen_to_board(touch.pos)
 
-            # This should trigger the callback to draw the piece on the screen
-            try:
-                self.game.make_move(board_pos)
-            except Exception, e:
-                # TODO: Better display of off board & illegal move exceptions
-                print e.message
+            # Make and Queue MoveAction
+            ma = MoveAction.create_from_move(board_pos)
+            self.enqueue_action(ma)
 
-
-    def make_move_on_the_board(self, board_pos, colour):
+    def make_move_on_the_gui_board(self, board_pos, colour):
         if self.stones_by_board_pos.has_key(board_pos) or colour == EMPTY:
             # There is a piece there already, remove it.
             assert colour == EMPTY
-            current_piece = self.stones_by_board_pos[board_pos]
+            current_piece = self.stones_by_board_pos.pop(board_pos)
             self.remove_widget(current_piece)
         else:
             # Nothing there yet, place a stone
@@ -135,7 +159,7 @@ class BoardWidget(Widget):
                 Logger.exception('Board: Unable to load <%s>' % filename)
 
     def on_touch_move(self, touch):
-        # TODO: Check for off board, remove marker
+        # TODO: Check for off board? remove marker?
         if self.marker != None:
             # Move the marker position
             self.marker.pos = self.snap_to_grid(touch.pos)
@@ -143,67 +167,3 @@ class BoardWidget(Widget):
 class Piece(Scatter):
     source = StringProperty(None)
 
-'''
-class KivyGui(Gui):
-    def __init__(self, game):
-        self.game = game
-
-        # We must watch what happens to the logical board, and update accordingly
-        board = game.current_state.board
-        board.add_observer(self)
-
-    def after_set_occ(self, pos, colour):
-        col_char = " BW"[colour]
-        x, y = pos
-
-        # first and last rows are the horizontal grid
-        row = self.board_chars[self.game.size()-y]
-
-        row[x+1] = col_char
-
-    def board_to_string(self):
-        ret = []
-        for row in self.board_chars:
-            ret.append(" ".join(row))
-            ret.append("\n")
-        return "".join(ret)
-
-    def player_detail(self, player_num):
-        ret = ""
-        if self.game.get_move_number() % 2 != player_num:
-            ret = "* "
-        ret = ret + self.game.get_player(player_num).name
-        num_captured = self.game.get_captured(player_num)
-        if not self.game.rules.can_capture_threes:
-            num_captured /= 2
-            captured = str(num_captured) + 'p'
-        else:
-            captured = str(num_captured)
-        ret = ret + " (" + captured + ")"
-        return ret
-
-    def aux_to_string(self):
-        return self.player_detail(0) + " vs. " + self.player_detail(1) + "\n"
-
-    def request_move(self, name):
-        ret = [self.board_to_string()]
-        ret.append(self.aux_to_string())
-        ret.append("Your move, " + name + ":\n")
-        return "".join(ret)
-
-    def get_action(self):
-        s = raw_input().strip()
-        return self.get_action_from_string(s)
-
-    def get_action_from_string(self, s):
-        try:
-            col = self.col_names.find(s[0])
-            row = string.atoi(s[1:]) - 1
-            if col >= 0 and col < self.game.size() and \
-               row >= 0 and row < self.game.size():
-                return MoveAction.create_from_tuple(col, row)
-        except:
-            pass
-        off_board_msg = "That position is not on the board"
-        raise IllegalMoveException(off_board_msg)
-'''

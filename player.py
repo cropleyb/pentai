@@ -17,6 +17,9 @@ class Player():
     def get_colour(self):
         return self.colour
 
+    def get_name(self):
+        return self.name
+
     def prompt_for_action(self, game, gui):
         pass
 

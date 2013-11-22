@@ -10,6 +10,8 @@ from board_strip import *
 
 from length_counter import *
 
+import pdb
+
 CAPTURE_SCORE_BASE = 120 ** 3
 
 
@@ -52,6 +54,7 @@ class ABState():
         return self.state.__repr__()
 
     def utility(self, player):
+        #pdb.set_trace()
         if player.get_colour() == BLACK:
             return self.black_util()
         if player.get_colour() == WHITE:

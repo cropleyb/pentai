@@ -4,6 +4,8 @@ from gui import *
 
 from player import *
 
+import threading
+
 class AIPlayer(Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
@@ -20,12 +22,16 @@ class AIPlayer(Player):
         self.ab_game = ab_bridge.ABGame(base_game)
 
     def prompt_for_action(self, base_game, gui):
+        t = threading.Thread(target=self.search_thread, args=(gui,))
+        t.daemon = False
+        t.start()
+        return "%s is thinking" % self.get_name()
+
+    def search_thread(self, gui):
         ab_game = self.ab_game
         move, value = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
                 max_depth=self.max_depth)
-        self.action = move[0]
-        return self.action
+        action = move[0]
+        gui.enqueue_action(action)
+        gui.trig()
 
-    def get_action(self, game, gui):
-        # TODO: make move chosen by the search
-        return self.action
