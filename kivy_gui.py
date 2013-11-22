@@ -115,23 +115,28 @@ class BoardWidget(Widget):
         return screen_x, screen_y
 
     def on_touch_down(self, touch):
-        # TODO: Check that it is a human's turn.
-        # Place a marker at the (snapped) cursor position.
-        if self.marker == None:
-            try:
-                # load the image
-                # TODO: Separate class?
-                self.marker = Piece(source=x_filename)
-            except Exception, e:
-                Logger.exception('Board: Unable to load <%s>' % x_filename)
-        self.marker.pos = self.snap_to_grid(touch.pos)
-        self.add_widget(self.marker)
+        # Check that it is a human's turn.
+        current_player = self.game.get_current_player()
+        if current_player.get_type() == "human":
+            # Place a marker at the (snapped) cursor position.
+            if self.marker == None:
+                try:
+                    # load the image
+                    # TODO: Separate class?
+                    self.marker = Piece(source=x_filename)
+                except Exception, e:
+                    Logger.exception('Board: Unable to load <%s>' % x_filename)
+            self.marker.pos = self.snap_to_grid(touch.pos)
+            self.add_widget(self.marker)
+        else:
+            self.display_feedback_string("It is not your turn!")
 
     def on_touch_up(self, touch):
         # If there is an active marker,
         # replace the marker with a piece of the appropriate colour
         if self.marker != None:
             self.remove_widget(self.marker)
+            self.marker = None
             # Quick hack to get both coloured stones on the board
             board_pos = self.screen_to_board(touch.pos)
 

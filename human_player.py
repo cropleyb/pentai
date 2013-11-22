@@ -7,3 +7,6 @@ class HumanPlayer(Player):
     def get_action(self, game, gui):
         return gui.get_action()
 
+    def get_type(self):
+        return "human"
+

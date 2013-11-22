@@ -27,6 +27,9 @@ class AIPlayer(Player):
         t.start()
         return "%s is thinking" % self.get_name()
 
+    def get_type(self):
+        return "computer"
+
     def search_thread(self, gui):
         ab_game = self.ab_game
         move, value = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
