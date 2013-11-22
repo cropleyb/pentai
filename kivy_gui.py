@@ -10,19 +10,15 @@ black_filename = "./images/black_transparent.png"
 white_filename = "./images/white_transparent.png"
 x_filename = "./images/X_transparent.png"
 
-class Board(Widget):
+class BoardWidget(Widget):
     source = StringProperty(None)
 
     def __init__(self, *args, **kwargs):
         self.marker = None
         self.move_number = 0
-        self.BOARD_SIZE = 9
-
-        # The Grid on the screen allows extra space at the edges
-        self.GRID_SIZE = self.BOARD_SIZE + 1
 
         self.stones_by_board_pos = {}
-        super(Board, self).__init__(*args, **kwargs)
+        super(BoardWidget, self).__init__(*args, **kwargs)
 
     def set_game(self, game):
         self.game = game
@@ -30,6 +26,13 @@ class Board(Widget):
         # We must watch what happens to the logical board, and update accordingly
         board = game.get_board()
         board.add_observer(self)
+
+    def board_size(self):
+        return self.game.size()
+
+    def grid_size(self):
+        ''' The Grid on the screen allows extra space at the edges '''
+        return self.game.size() + 1
 
     def after_set_occ(self, pos, colour):
         # TODO look up self.stones_by_board_pos.
@@ -44,16 +47,17 @@ class Board(Widget):
 
         with self.canvas:
             Color(0, 0, 0)
-            grid_size_x = float(size_x) / (self.GRID_SIZE)
-            grid_size_y = float(size_y) / (self.GRID_SIZE)
+            grid_size_x = float(size_x) / (self.grid_size())
+            grid_size_y = float(size_y) / (self.grid_size())
+            GS = self.grid_size()
             # horizontal lines
-            for y in range(1,self.GRID_SIZE):
+            for y in range(1,GS):
                 Rectangle(pos=(grid_size_x-1, grid_size_y*y-1), \
-                          size=(grid_size_x * (self.GRID_SIZE-2), 3))
+                          size=(grid_size_x * (self.grid_size()-2), 3))
             # vertical lines
-            for x in range(1,self.GRID_SIZE):
+            for x in range(1,GS):
                 Rectangle(pos=(grid_size_x*x-1, grid_size_y-1), \
-                          size=(3, grid_size_y * (self.GRID_SIZE-2)))
+                          size=(3, grid_size_y * (self.grid_size()-2)))
 
     def snap_to_grid(self, screen_pos):
         return self.board_to_screen(self.screen_to_board(screen_pos))
@@ -62,7 +66,7 @@ class Board(Widget):
         """ Convert a screen position (in pixels) to a board coordinate pair,
             dependant on the size of the board """
         size_x, size_y = self.size
-        GS = self.GRID_SIZE
+        GS = self.grid_size()
         board_x = round(GS * screen_pos[0] / size_x) - 1
         board_y = round(GS * screen_pos[1] / size_y) - 1
         return board_x, board_y
@@ -71,7 +75,7 @@ class Board(Widget):
         """ Convert a board coordinate pair to a screen position (in pixels),
             dependant on the size of the board """
         size_x, size_y = self.size
-        GS = self.GRID_SIZE
+        GS = self.grid_size()
         screen_x = ((board_pos[0] + 1) / GS) * size_x
         screen_y = ((board_pos[1] + 1) / GS) * size_y
         return screen_x, screen_y

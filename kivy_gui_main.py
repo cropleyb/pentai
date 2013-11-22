@@ -3,6 +3,11 @@ from kivy.app import App
 from kivy.config import Config
 from kivy.clock import *
 
+import rules
+import game
+import human_player
+import ai_player
+
 from kivy_gui import *
 
 class PenteApp(App):
@@ -15,15 +20,29 @@ class PenteApp(App):
         # get any files into images directory
         curdir = dirname(__file__)
 
-        # load the image
-        board = Board()
+        self.set_up_game()
+
+        # load the board image
+        board_widget = BoardWidget()
+
+        board_widget.set_game(self.game)
 
         # add to the main field
-        root.add_widget(board)
+        root.add_widget(board_widget)
 
         # TODO: It would be nice if the board did not display until the grid was
         # correctly positioned
-        Clock.schedule_once(board.set_up_grid, 1)
+        Clock.schedule_once(board_widget.set_up_grid, 1)
+
+    def set_up_game(self):
+        r = rules.Rules(9, "standard")
+        player1 = human_player.HumanPlayer("Bruce", BLACK)
+        '''
+        player2 = human_player.HumanPlayer("B2", WHITE)
+        '''
+        player2 = ai_player.AIPlayer(2, "Deep Thunk", WHITE)
+        self.game = game.Game(r, player1, player2)
+        player2.attach_to_game(self.game)
 
     def on_pause(self):
         return True
