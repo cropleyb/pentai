@@ -24,6 +24,8 @@ class Game():
         return self.current_state.to_move_colour()
 
     def prompt_for_action(self, gui):
+        if self.finished():
+            return "Game was won by: %s" % self.winner_name()
         return self.get_current_player().prompt_for_action(self, gui)
 
     def get_action(self, gui):
