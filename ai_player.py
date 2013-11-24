@@ -26,7 +26,10 @@ class AIPlayer(Player):
             self.search_thread(gui, True)
         else:
             t = threading.Thread(target=self.search_thread, args=(gui,))
-            t.daemon = False
+
+            # Allow the program to be exited quickly
+            t.daemon = True
+
             t.start()
         return "%s is thinking" % self.get_name()
 
