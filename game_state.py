@@ -18,11 +18,16 @@ class GameState():
             self.board = parent.board.clone()
             self.captured = parent.captured[:]
             self.set_won_by(parent.get_won_by())
-            self.move_number = parent.move_number # not + 1, that will be triggered by a move
+
+            # not + 1, that will be triggered by a move
+            self.move_number = parent.move_number
+
             # TODO: copy AI observer manually
+        self.last_move = "No move yet"
 
     def __repr__(self):
-        return "TODO: game representation."
+        # TEMP for debugging
+        return str(self.last_move)
         #return self.game.__repr__()
 
     def get_board(self):
@@ -72,6 +77,9 @@ class GameState():
         # the move position.
         for ds in self.board.get_direction_strips():
             self.check_direction_for_5_in_a_row(ds, move_pos, my_colour)
+
+        # TEMP for debugging
+        self.last_move = move_pos
 
     def check_direction_for_5_in_a_row(self, ds, move_pos, my_colour):
         s, strip_num = ds.get_strip(move_pos)
