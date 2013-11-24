@@ -40,7 +40,7 @@ class PenteApp(App):
         '''
         player2 = human_player.HumanPlayer("B2", WHITE)
         '''
-        player2 = ai_player.AIPlayer(1, "Deep Thunk", WHITE)
+        player2 = ai_player.AIPlayer(2, "Deep Thunk", WHITE)
         self.game = game.Game(r, player1, player2)
         player2.attach_to_game(self.game)
 
