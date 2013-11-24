@@ -53,49 +53,64 @@ class ABState():
     def __repr__(self):
         return self.state.__repr__()
 
-    def utility(self, player):
+    def search_player_colour(self):
+        """ The AI player who is performing the search """
+        game = self.game()
+        return game.to_move_colour()
+
+    def game(self):
+        return self.state.game
+
+    def utility(self, turn_player):
         #pdb.set_trace()
-        if player.get_colour() == BLACK:
-            return self.black_util()
-        if player.get_colour() == WHITE:
-            return -self.black_util() # NB negative
+        # TODO: Cache this somehow?
+        search_player = self.search_player_colour()
 
-    def black_util(self):
-        bl = self.black_lines
-        wl = self.white_lines
+        turn_colour = turn_player.get_colour()
+        black_contrib = self.utility_contrib(self.black_lines, BLACK)
+        white_contrib = self.utility_contrib(self.white_lines, WHITE)
 
+        if turn_colour == BLACK:
+            # We're actually looking at the position after 1 move
+            white_contrib *= 10
+        else:
+            black_contrib *= 10
+
+        #print "B/W contrib: %s, %s, %s" % (black_contrib, white_contrib, self)
+        if search_player == BLACK:
+            return black_contrib - white_contrib
+        else:
+            return white_contrib - black_contrib
+
+    def utility_contrib(self, lines, colour):
         # Check for a win first
         # TODO: check rules
         captured = self.state.get_all_captured()
-        if captured[BLACK] >= 10:
+        if captured[colour] >= 10:
             return alpha_beta.infinity
-        if captured[WHITE] >= 10:
-            return -alpha_beta.infinity
 
-        if bl[4] > 0:
+        if lines[4] > 0:
             return alpha_beta.infinity
-        if wl[4] > 0:
-            return -alpha_beta.infinity
 
-        # No win found, fudge up a score
+        # No win by "colour" found, fudge up a score
         score = 0
 
-        for i in range(len(bl)):
-            rev = 4 - i
-            score += bl[rev]
-            score -= wl[rev]
+        for i in range(len(lines)):
             score *= 100
+            rev = 4 - i
+            score += lines[rev]
 
-
-        score += self.capture_contrib(captured[BLACK])
-        score -= self.capture_contrib(captured[WHITE])
-        #print "black: %s, white: %s, score: %s" % (bl, wl, score)
+        cc = self.capture_contrib(captured[colour])
+        score += cc
+        # score += self.capture_contrib(captured[colour])
+        #print "black: %s, white: %s, score: %s" % (self.black_lines, self.white_lines, \
+        #        score)
         return score
 
     def capture_contrib(self, captures):
         """ captures become increasingly important as we approach 5 """
         # TODO: Use rules
-        contrib = captures ** 2 * CAPTURE_SCORE_BASE
+        contrib = captures * CAPTURE_SCORE_BASE
         return contrib
 
     def score(self):
