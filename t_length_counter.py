@@ -138,6 +138,12 @@ class SubStripCountingTest(unittest.TestCase):
         self.assertEquals(self.black_counter.tup(), (0,0,0,0,0))
         self.assertEquals(self.white_counter.tup(), (0,0,0,0,0))
 
+    def test_diagonal_weirdness(self):
+        self.process_substrips_for_str("  W  ")
+        self.assertEquals(self.black_counter.tup(), (0,0,0,0,0))
+        self.assertEquals(self.white_counter.tup(), (1,0,0,0,0))
+
+
 if __name__ == "__main__":
     unittest.main()
 
