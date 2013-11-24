@@ -42,6 +42,7 @@ class NearbyFilter():
             half_board = brd.get_size() / 2
             yield (half_board, half_board)
             return
+        # TODO: use a dict and sort by freq?
         successors = set()
         all_captures = []
         for cs in self.captures:
@@ -58,6 +59,7 @@ class NearbyFilter():
     def move(self, pos):
         self.moves.append(pos)
         self.captures.append([])
+        # TODO: make this 2 into self.num_moves
         if len(self.moves) > 2:
             self.moves = self.moves[-2:]
         if len(self.captures) > 2:
