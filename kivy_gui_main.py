@@ -14,9 +14,6 @@ class PenteApp(App):
 
     def build(self):
 
-        # the root is created in pictures.kv
-        root = self.root
-
         # get any files into images directory
         curdir = dirname(__file__)
 
@@ -27,12 +24,12 @@ class PenteApp(App):
 
         board_widget.set_game(self.game)
 
-        # add to the main field
-        root.add_widget(board_widget)
-
         # TODO: It would be nice if the board did not display until the grid was
         # correctly positioned
         Clock.schedule_once(board_widget.set_up_grid, 1)
+
+        # Returning the widget assigns the "root" variable
+        return board_widget
 
     def set_up_game(self):
         r = rules.Rules(9, "standard")
@@ -54,8 +51,7 @@ if __name__ == '__main__':
     Config.set('kivy', 'log_dir', 'logs')
     Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
 
-    # Set the screen to a square for now
     Config.set('graphics', 'width', '600')
-    Config.set('graphics', 'height', '600')
+    Config.set('graphics', 'height', '700')
     PenteApp().run()
 
