@@ -44,6 +44,9 @@ class BoardWidget(RelativeLayout):
         self.trig = Clock.create_trigger(self.perform)
         self.set_up_grid()
 
+        self.player1 = game.get_player_name(0)
+        self.player2 = game.get_player_name(1)
+
         # start the game
         prompt = game.prompt_for_action(self)
         self.display_feedback_string(prompt)

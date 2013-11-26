@@ -16,6 +16,9 @@ class Game():
 
     def get_player(self, player_number):
         return self.player[player_number]
+    
+    def get_player_name(self, player_number):
+        return self.player[player_number].get_name()
 
     def get_current_player(self):
         return self.current_state.to_move_player()
