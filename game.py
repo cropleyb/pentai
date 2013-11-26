@@ -8,6 +8,7 @@ class Game():
         self.player = [player1, player2]
         self.current_state = GameState(self)
 
+    # TODO: get_size for consistency
     def size(self):
         return self.rules.size
 
