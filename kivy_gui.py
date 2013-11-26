@@ -26,6 +26,8 @@ class BoardWidget(RelativeLayout):
     gridlines = ListProperty([])
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,80.0])
+    black_to_move_marker = StringProperty("*")
+    white_to_move_marker = StringProperty("")
 
     def __init__(self, *args, **kwargs):
         self.marker = None
@@ -44,12 +46,13 @@ class BoardWidget(RelativeLayout):
         self.trig = Clock.create_trigger(self.perform)
         self.set_up_grid()
 
+        # TODO: convert to use convention of BLACK = 1
         self.player1 = game.get_player_name(0)
         self.player2 = game.get_player_name(1)
 
         # start the game
         prompt = game.prompt_for_action(self)
-        self.display_feedback_string(prompt)
+        # self.display_feedback_string(prompt)
 
     def display_feedback_string(self, message):
         # TODO: Update screen
@@ -70,7 +73,7 @@ class BoardWidget(RelativeLayout):
         action = self.action_queue.get()
         action.perform(self.game)
         prompt = self.game.prompt_for_action(self)
-        self.display_feedback_string(prompt)
+        #self.display_feedback_string(prompt)
 
     def board_size(self):
         return self.game.size()
@@ -84,6 +87,12 @@ class BoardWidget(RelativeLayout):
 
     def after_set_occ(self, pos, colour):
         self.make_move_on_the_gui_board(pos, colour)
+        if colour == BLACK:
+            self.black_to_move_marker = ""
+            self.white_to_move_marker = "*"
+        if colour == WHITE:
+            self.black_to_move_marker = "*"
+            self.white_to_move_marker = ""
 
     def setup_grid_lines(self):
         size_x, size_y = self.size

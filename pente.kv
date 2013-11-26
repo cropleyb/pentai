@@ -19,23 +19,36 @@
         cols: 2
         size_hint: 1, None
         height: 70
-
+        canvas.before:
+            Color:
+                rgba: 0, 0, .5, 1
+            Rectangle:
+                # self here refers to the widget i.e GridLayout
+                pos: self.pos
+                size: self.size
         GridLayout:
-            cols: 2
+            cols: 3
 
             Label:
                 # TODO: times
                 font_size: '30sp'
                 value: root.player1time
                 text: '0:00'
+			Label:
+                font_size: '30sp'
+                text: root.black_to_move_marker
             Label:
                 font_size: '30sp'
                 text: root.player1
+				halign: 'left'
             Label:
                 # TODO: times
                 font_size: '30sp'
                 value: root.player2time
                 text: '0:00'
+			Label:
+                font_size: '30sp'
+                text: root.white_to_move_marker
             Label:
                 font_size: '30sp'
                 text: root.player2
