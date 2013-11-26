@@ -16,22 +16,22 @@ inf = alpha_beta.infinity / 2
 class UtilityTest(unittest.TestCase):
     def setUp(self):
         self.s = ABState()
+        self.game = Mock()
         self.captured = [0, 0, 0]
-        self.set_search_player_colour(BLACK)
+        self.gs = Mock({"get_all_captured": self.captured}) 
+        self.gs.board = Board(13)
+        self.gs.game = self.game
+        self.set_turn_player_colour(BLACK)
         self.black_player = Player("Black Name", BLACK)
         self.white_player = Player("White Name", WHITE)
+        self.s.set_state(self.gs)
 
     def set_captured(self, black_captures, white_captures):
         self.captured[BLACK] = black_captures
         self.captured[WHITE] = white_captures
 
-    def set_search_player_colour(self, search_player_colour):
-        self.to_move_colour = BLACK
-        self.game = Mock({"to_move_colour":search_player_colour})
-        self.gs = Mock( {"add_observer": None, "get_all_captured": self.captured}) 
-        self.gs.board = Board(13)
-        self.s.set_state(self.gs)
-        self.gs.game = self.game
+    def set_turn_player_colour(self, turn_player_colour):
+        self.gs.mockAddReturnValues(to_move_colour=turn_player_colour)
         
     def test_utility_single_stone_better_than_none(self):
         self.s.black_lines = LengthCounter([20,0,0,0,0])
@@ -106,6 +106,7 @@ class UtilityTest(unittest.TestCase):
         #pdb.set_trace()
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,1,0])
+        self.set_turn_player_colour(WHITE)
         self.set_captured(1, 0)
         u = self.s.utility(self.black_player)
         self.assertLessEqual(u, 0)
@@ -115,7 +116,7 @@ class UtilityTest(unittest.TestCase):
     def test_white_search(self):
         """ Search by white """
         #pdb.set_trace()
-        self.set_search_player_colour(WHITE)
+        #self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,1,0,0])
         u = self.s.utility(self.white_player)
@@ -124,7 +125,7 @@ class UtilityTest(unittest.TestCase):
     def test_white_capture(self):
         """ Search by white """
         #pdb.set_trace()
-        self.set_search_player_colour(WHITE)
+        #self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
         self.set_captured(0, 1)
@@ -133,22 +134,26 @@ class UtilityTest(unittest.TestCase):
 
     def test_black_to_move_advantage(self):
         """ Search by white """
-        self.set_search_player_colour(WHITE)
+        self.set_turn_player_colour(BLACK)
         self.s.black_lines = LengthCounter([1,0,0,0,0])
         self.s.white_lines = LengthCounter([1,0,0,0,0])
         u = self.s.utility(self.white_player)
         self.assertLessEqual(u, 0)
 
-    '''
-    # I need to think about this...
-    def test_depth_turn_doesnt_invert_score(self):
+    ###########
+
+    def test_white_having_the_move_gets_a_higher_util(self):
         """ Search by white """
-        self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([1,0,0,0,0])
-        self.s.white_lines = LengthCounter([1,0,0,0,0])
-        u = self.s.utility(self.black_player)
-        self.assertLessEqual(u, 0)
-    '''
+        self.s.white_lines = LengthCounter([2,0,0,0,0])
+
+        self.set_turn_player_colour(WHITE)
+        u_with_move = self.s.utility(self.white_player)
+
+        self.set_turn_player_colour(BLACK)
+        u_not_to_move = self.s.utility(self.white_player)
+
+        self.assertGreater(u_with_move, u_not_to_move)
 
 if __name__ == "__main__":
     unittest.main()

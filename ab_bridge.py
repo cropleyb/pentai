@@ -51,7 +51,8 @@ class ABState():
         return player
 
     def __repr__(self):
-        return self.state.__repr__()
+        ret = str(self.black_lines) + str(self.white_lines) + self.state.__repr__()
+        return ret
 
     def search_player_colour(self):
         """ The AI player who is performing the search """
@@ -61,23 +62,23 @@ class ABState():
     def game(self):
         return self.state.game
 
-    def utility(self, turn_player):
+    # TODO: Cache stuff somehow?
+    def utility(self, search_player):
         #pdb.set_trace()
-        # TODO: Cache this somehow?
-        search_player = self.search_player_colour()
+        search_colour = search_player.get_colour()
+        turn_colour = self.to_move_colour()
 
-        turn_colour = turn_player.get_colour()
         black_contrib = self.utility_contrib(self.black_lines, BLACK)
         white_contrib = self.utility_contrib(self.white_lines, WHITE)
 
+        # Having the move is worth a lot.
         if turn_colour == BLACK:
-            # We're actually looking at the position after 1 move
-            white_contrib *= 10
-        else:
             black_contrib *= 10
+        else:
+            white_contrib *= 10
 
         #print "B/W contrib: %s, %s, %s" % (black_contrib, white_contrib, self)
-        if search_player == BLACK:
+        if search_colour == BLACK:
             return black_contrib - white_contrib
         else:
             return white_contrib - black_contrib
