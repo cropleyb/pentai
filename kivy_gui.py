@@ -111,11 +111,11 @@ class BoardWidget(RelativeLayout):
             # Mark who is to move. TODO: Underline?
             to_move = self.game.to_move_colour()
             if to_move == BLACK:
-                self.black_to_move_marker = ""
-                self.white_to_move_marker = "*"
-            elif to_move == WHITE:
                 self.black_to_move_marker = "*"
                 self.white_to_move_marker = ""
+            elif to_move == WHITE:
+                self.black_to_move_marker = ""
+                self.white_to_move_marker = "*"
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
