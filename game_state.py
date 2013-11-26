@@ -122,17 +122,3 @@ class GameState():
                     pass
         return succ
 
-    '''
-    # TODO: Move this to ABState, maybe use Rules object
-    def utility(self, player):
-        # 5+ in a row or 5+ pairs captured = infinity
-        if self.captured[BLACK] >= 10 or self.won_by == BLACK:
-            return alpha_beta.infinity
-        if self.captured[WHITE] >= 10 or self.won_by == WHITE:
-            return -alpha_beta.infinity
-        return self.captured[0] - self.captured[1]
-
-    def score(self):
-        return self.utility(None)
-    '''
-
