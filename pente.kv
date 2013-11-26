@@ -27,31 +27,36 @@
                 pos: self.pos
                 size: self.size
         GridLayout:
-            cols: 3
+            cols: 4
 
             Label:
                 # TODO: times
                 font_size: '30sp'
-                value: root.player1time
+                value: root.black_time
                 text: '0:00'
 			Label:
                 font_size: '30sp'
                 text: root.black_to_move_marker
             Label:
                 font_size: '30sp'
-                text: root.player1
-				halign: 'left'
+                text: root.black_name
+            Label:
+                font_size: '30sp'
+                text: root.black_captures
             Label:
                 # TODO: times
                 font_size: '30sp'
-                value: root.player2time
+                value: root.white_time
                 text: '0:00'
 			Label:
                 font_size: '30sp'
                 text: root.white_to_move_marker
             Label:
                 font_size: '30sp'
-                text: root.player2
+                text: root.white_name
+            Label:
+                font_size: '30sp'
+                text: root.white_captures
 
 <Piece>:
 	Image:

@@ -1,11 +1,12 @@
 from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
 from kivy.uix.widget import Widget
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.clock import Clock
 from kivy.graphics import *
 
+from defines import *
 from gui import *
 
 import Queue
@@ -19,15 +20,17 @@ import pdb
 class BoardWidget(RelativeLayout):
     source = StringProperty(None)
     # TODO: Get the names and times hooked up
-    player1 = StringProperty("Freddo")
-    player1time = StringProperty("0:00")
-    player2 = StringProperty("Deep Thunk")
-    player2time = StringProperty("0:00")
+    black_name = StringProperty("Freddo")
+    white_name = StringProperty("Deep Thunk")
+    black_time = StringProperty("0:00")
+    white_time = StringProperty("0:00")
+    black_to_move_marker = StringProperty("*")
+    white_to_move_marker = StringProperty("")
+    black_captures = StringProperty("0")
+    white_captures = StringProperty("0")
     gridlines = ListProperty([])
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,80.0])
-    black_to_move_marker = StringProperty("*")
-    white_to_move_marker = StringProperty("")
 
     def __init__(self, *args, **kwargs):
         self.marker = None
@@ -47,8 +50,8 @@ class BoardWidget(RelativeLayout):
         self.set_up_grid()
 
         # TODO: convert to use convention of BLACK = 1
-        self.player1 = game.get_player_name(0)
-        self.player2 = game.get_player_name(1)
+        self.black_name = game.get_player_name(0)
+        self.white_name = game.get_player_name(1)
 
         # start the game
         prompt = game.prompt_for_action(self)
@@ -72,6 +75,7 @@ class BoardWidget(RelativeLayout):
             return
         action = self.action_queue.get()
         action.perform(self.game)
+        self.update_captures_and_winner()
         prompt = self.game.prompt_for_action(self)
         #self.display_feedback_string(prompt)
 
@@ -87,12 +91,31 @@ class BoardWidget(RelativeLayout):
 
     def after_set_occ(self, pos, colour):
         self.make_move_on_the_gui_board(pos, colour)
-        if colour == BLACK:
-            self.black_to_move_marker = ""
-            self.white_to_move_marker = "*"
-        if colour == WHITE:
-            self.black_to_move_marker = "*"
-            self.white_to_move_marker = ""
+        self.update_captures_and_winner()
+
+    def update_captures_and_winner(self):
+        #pdb.set_trace()
+        self.black_captures = str(self.game.get_captured(BLACK))
+        self.white_captures = str(self.game.get_captured(WHITE))
+
+        if self.game.finished():
+            winner = self.game.winner_name()
+            if winner == BLACK:
+                self.black_to_move_marker = "won by"
+                self.white_to_move_marker = ""
+            elif winner == WHITE:
+                self.black_to_move_marker = ""
+                self.white_to_move_marker = "won by"
+            # draws are exceedingly unlikely...
+        else:
+            # Mark who is to move. TODO: Underline?
+            to_move = self.game.to_move_colour()
+            if to_move == BLACK:
+                self.black_to_move_marker = ""
+                self.white_to_move_marker = "*"
+            elif to_move == WHITE:
+                self.black_to_move_marker = "*"
+                self.white_to_move_marker = ""
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
