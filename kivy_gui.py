@@ -168,7 +168,7 @@ class BoardWidget(RelativeLayout):
                 try:
                     # load the image
                     # TODO: Separate class?
-                    self.marker = Piece(source=x_filename)
+                    self.marker = Piece(self.game, source=x_filename)
                 except Exception, e:
                     Logger.exception('Board: Unable to load <%s>' % x_filename)
             self.marker.pos = self.snap_to_grid(touch.pos)
@@ -201,7 +201,7 @@ class BoardWidget(RelativeLayout):
 
             try:
                 # load the image
-                new_piece = Piece(source=filename)
+                new_piece = Piece(self.game, source=filename)
                 self.stones_by_board_pos[board_pos] = new_piece
                 new_piece.pos = self.board_to_screen(board_pos)
                 self.add_widget(new_piece)
@@ -222,4 +222,9 @@ class BoardWidget(RelativeLayout):
 
 class Piece(Scatter):
     source = StringProperty(None)
+
+    def __init__(self, game, *args, **kwargs):
+        game_size = game.size()
+        self.scale = 9. / game_size
+        super(Piece, self).__init__(*args, **kwargs)
 
