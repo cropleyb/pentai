@@ -55,15 +55,15 @@ class GameState():
         if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException("That position is already occupied")
 
-        my_colour = self.to_move_colour()
-        # Place a stone
+        my_colour = self.to_move_colour() # Save it before the turn is changed
         self.move_number += 1
-        other_colour = self.to_move_colour()
+
+        # Place a stone
         self.board.set_occ(move_pos, my_colour)
         board_size = self.board.get_size()
 
         MC = my_colour
-        OC = other_colour
+        OC = self.to_move_colour() # Other Colour
 
         # Process captures
         for ds in self.board.get_direction_strips():
@@ -110,15 +110,4 @@ class GameState():
     def to_move_player(self):
         pn = (self.move_number + 1) % 2 # Player zero is BLACK
         return self.game.get_player(pn)
-
-    def successors(self):
-        succ = []
-        for x in range(self.BOARD_SIZE):
-            for y in range(self.BOARD_SIZE):
-                action = (x, y)
-                try:
-                    succ.append((action, State(self, action)))
-                except IllegalMoveException:
-                    pass
-        return succ
 
