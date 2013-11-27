@@ -94,12 +94,13 @@ class BoardWidget(RelativeLayout):
         self.update_captures_and_winner()
 
     def update_captures_and_winner(self):
+        """ Update fields in the panel from changes to the game state """
         #pdb.set_trace()
         self.black_captures = str(self.game.get_captured(BLACK))
         self.white_captures = str(self.game.get_captured(WHITE))
 
         if self.game.finished():
-            winner = self.game.winner_name()
+            winner = self.game.winner()
             if winner == BLACK:
                 self.black_to_move_marker = "won by"
                 self.white_to_move_marker = ""
@@ -223,7 +224,7 @@ class BoardWidget(RelativeLayout):
             filename = ["", black_filename, white_filename][colour]
 
             try:
-                # load the image
+                # load and place the appropriate stone image
                 new_piece = Piece(self.game, source=filename)
                 self.stones_by_board_pos[board_pos] = new_piece
                 new_piece.pos = self.board_to_screen(board_pos)
