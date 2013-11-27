@@ -64,8 +64,11 @@ class ABState():
 
     # TODO: Cache stuff somehow?
     def utility(self, search_player):
-        #pdb.set_trace()
+        """ The search_player is the AI player doing the search """
         search_colour = search_player.get_colour()
+
+        # The turn_colour is the colour of the player to move at the leaf state
+        # of the search.
         turn_colour = self.to_move_colour()
 
         black_contrib = self.utility_contrib(self.black_lines, BLACK)
