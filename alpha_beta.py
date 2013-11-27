@@ -41,11 +41,11 @@ def alphabeta_search(state, game, max_depth=4):
 
     def cutoff_test(state, depth):
         # The default test cuts off at depth d or at a terminal state
-        return depth>max_depth or game.terminal_test(state)
+        return depth>=max_depth or game.terminal_test(state)
 
     # print "***** Defining top_min_func"
     def top_min_func((a,s)):
-        return min_value(s, -infinity, infinity, 0)
+        return min_value(s, -infinity, infinity, 1)
 
     # Body of alphabeta_search starts here:
     action, value = argmax(game.successors(state), top_min_func)

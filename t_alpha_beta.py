@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import unittest
-import mock
 from alpha_beta import *
 
 class MockState(object):
@@ -74,6 +73,32 @@ class AlphaBetaTest(unittest.TestCase):
         self.assertEquals(action, (0, "S1"))
         self.assertEquals(value, 3)
 
+    def test_only_search_one_depth_level(self):
+        game = MockGame([
+            MockState("S0", 0, [(0,"S1")]),
+            MockState("S1", 1, [(0,"S2")]),
+            MockState("S2", 2, [(0,"S3")]),
+            MockState("S3", 3, [])])
+        action, value = alphabeta_search(state="S0", max_depth=1, game=game)
+        self.assertEquals(value, 1)
+
+    def test_only_search_two_depth_levels(self):
+        game = MockGame([
+            MockState("S0", 0, [(0,"S1")]),
+            MockState("S1", 1, [(0,"S2")]),
+            MockState("S2", 2, [(0,"S3")]),
+            MockState("S3", 3, [])])
+        action, value = alphabeta_search(state="S0", max_depth=2, game=game)
+        self.assertEquals(value, 2)
+
+    def test_terminal_state(self):
+        game = MockGame([
+            MockState("S0", 0, [(0,"S1")]),
+            MockState("S1", 1, [(0,"S2")]),
+            MockState("S2", 2, [(0,"S3")]),
+            MockState("S3", 3, [])])
+        action, value = alphabeta_search(state="S0", max_depth=4, game=game)
+        self.assertEquals(value, 3)
 
 if __name__ == "__main__":
     unittest.main()
