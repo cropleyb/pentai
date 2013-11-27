@@ -9,8 +9,6 @@ import game_state
 from board import *
 from mock import *
 
-import pdb
-
 inf = alpha_beta.infinity / 2
 
 class UtilityTest(unittest.TestCase):
@@ -31,6 +29,7 @@ class UtilityTest(unittest.TestCase):
         self.captured[WHITE] = white_captures
 
     def set_turn_player_colour(self, turn_player_colour):
+        """ Set whose move it is at the leaf state """
         self.gs.mockAddReturnValues(to_move_colour=turn_player_colour)
         
     def test_utility_single_stone_better_than_none(self):
@@ -103,7 +102,6 @@ class UtilityTest(unittest.TestCase):
         self.assertGreaterEqual(u, 0)
 
     def test_one_capture_worth_less_than_a_four(self):
-        #pdb.set_trace()
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,1,0])
         self.set_turn_player_colour(WHITE)
@@ -115,8 +113,6 @@ class UtilityTest(unittest.TestCase):
 
     def test_white_search(self):
         """ Search by white """
-        #pdb.set_trace()
-        #self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,1,0,0])
         u = self.s.utility(self.white_player)
@@ -124,8 +120,6 @@ class UtilityTest(unittest.TestCase):
 
     def test_white_capture(self):
         """ Search by white """
-        #pdb.set_trace()
-        #self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
         self.set_captured(0, 1)
@@ -154,6 +148,36 @@ class UtilityTest(unittest.TestCase):
         u_not_to_move = self.s.utility(self.white_player)
 
         self.assertGreater(u_with_move, u_not_to_move)
+
+    def test_black_having_the_move_gets_a_higher_util(self):
+        """ Search by black """
+        self.s.black_lines = LengthCounter([1,0,0,0,0])
+        self.s.white_lines = LengthCounter([2,0,0,0,0])
+
+        self.set_turn_player_colour(BLACK)
+        u_with_move = self.s.utility(self.black_player)
+
+        self.set_turn_player_colour(WHITE)
+        u_not_to_move = self.s.utility(self.black_player)
+
+        self.assertGreater(u_with_move, u_not_to_move)
+
+    def test_next_to_middle_is_better(self):
+        """ Search by white """
+        self.set_turn_player_colour(BLACK)
+
+        # (-783, [16, 0, 0, 0, 0][11, 0, 0, 0, 0] - (3, 3) next to 4,4
+        self.s.black_lines = LengthCounter([16,0,0,0,0])
+        self.s.white_lines = LengthCounter([11,0,0,0,0])
+        u_adjacent = self.s.utility(self.white_player)
+
+        # (-588, [17, 0, 0, 0, 0][7, 0, 0, 0, 0] - (6, 6) with a gap
+        self.s.black_lines = LengthCounter([17,0,0,0,0])
+        self.s.white_lines = LengthCounter([7,0,0,0,0])
+        u_dist = self.s.utility(self.white_player)
+
+        self.assertGreater(u_adjacent, u_dist)
+
 
 if __name__ == "__main__":
     unittest.main()
