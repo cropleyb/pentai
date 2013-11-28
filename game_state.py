@@ -108,6 +108,6 @@ class GameState():
         return (self.move_number + 1) % 2 + 1 # BLACK is first on move 1
     
     def to_move_player(self):
-        pn = (self.move_number + 1) % 2 # Player zero is BLACK
+        pn = (self.move_number + 1) % 2 + 1 # Player 1 is BLACK, 2 WHITE
         return self.game.get_player(pn)
 
