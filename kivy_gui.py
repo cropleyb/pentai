@@ -16,6 +16,7 @@ import Queue
 black_filename = "./images/black_transparent.png"
 white_filename = "./images/white_transparent.png"
 x_filename = "./images/X_transparent.png"
+moved_marker_filename = "./images/moved_marker.png"
 
 import pdb
 
@@ -38,6 +39,7 @@ class BoardWidget(RelativeLayout):
         self.marker = None
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
+        self.moved_marker = [None, None, None]
 
         super(BoardWidget, self).__init__(*args, **kwargs)
 
@@ -188,6 +190,22 @@ class BoardWidget(RelativeLayout):
         screen_y += self.board_offset[1]
         return screen_x, screen_y
 
+    def update_moved_marker(self, pos, colour):
+        #pdb.set_trace()
+        filename = moved_marker_filename
+        mm = self.moved_marker[colour]
+        if mm == None:
+            try:
+                mm = Piece(self.game, source=filename)
+                self.moved_marker[colour] = mm
+            except Exception, e:
+                Logger.exception('Board: Unable to load <%s>' % filename)
+                return
+        else:
+            self.remove_widget(mm)
+        mm.pos = pos
+        self.add_widget(mm)
+
     def on_touch_down(self, touch):
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
@@ -233,6 +251,7 @@ class BoardWidget(RelativeLayout):
                 self.stones_by_board_pos[board_pos] = new_piece
                 new_piece.pos = self.board_to_screen(board_pos)
                 self.add_widget(new_piece)
+                self.update_moved_marker(new_piece.pos, colour)
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
 
