@@ -5,7 +5,7 @@ class Game():
 
     def __init__(self, rules, player1, player2):
         self.rules = rules
-        self.player = [player1, player2]
+        self.player = [None, player1, player2]
         self.current_state = GameState(self)
 
     # TODO: get_size for consistency

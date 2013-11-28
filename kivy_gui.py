@@ -49,9 +49,8 @@ class BoardWidget(RelativeLayout):
         self.trig = Clock.create_trigger(self.perform)
         self.set_up_grid()
 
-        # TODO: convert to use convention of BLACK = 1
-        self.black_name = game.get_player_name(0)
-        self.white_name = game.get_player_name(1)
+        self.black_name = game.get_player_name(BLACK)
+        self.white_name = game.get_player_name(WHITE)
 
         # start the game
         prompt = game.prompt_for_action(self)

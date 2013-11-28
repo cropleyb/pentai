@@ -50,7 +50,7 @@ class TextGui(Gui):
 
     def player_detail(self, player_num):
         ret = ""
-        if self.game.get_move_number() % 2 != player_num:
+        if self.game.to_move_colour() == player_num:
             ret = "* "
         ret = ret + self.game.get_player(player_num).name
         num_captured = self.game.get_captured(player_num)
@@ -63,7 +63,8 @@ class TextGui(Gui):
         return ret
 
     def aux_to_string(self):
-        return self.player_detail(0) + " vs. " + self.player_detail(1) + "\n"
+        return self.player_detail(BLACK) + " vs. " \
+             + self.player_detail(WHITE) + "\n"
 
     def request_move(self, name):
         ret = [self.board_to_string()]

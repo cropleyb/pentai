@@ -140,7 +140,7 @@ class TextGuiTest(unittest.TestCase):
         self.setUpWithOverrides(player1=HumanPlayer("Bruce", BLACK),
                                 player2=HumanPlayer("DeepThunk", WHITE))
         self.game.set_move_number(6)
-        self.game.set_captured(0, 2)
+        self.game.set_captured(BLACK, 2)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce (1p) vs. * DeepThunk (0p)\n")
 
@@ -149,12 +149,12 @@ class TextGuiTest(unittest.TestCase):
                                 player2=HumanPlayer("DeepThunk", WHITE),
                                 rules_str="keryo")
         self.game.set_move_number(3)
-        self.game.set_captured(0, 3)
+        self.game.set_captured(BLACK, 3)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "* Bruce (3) vs. DeepThunk (0)\n")
 
     def test_player_move_prompt(self):
-        p = self.game.get_player(0)
+        p = self.game.get_player(BLACK)
         promptStr = p.prompt_for_action(self.game, self.gui)
         self.assertEquals(promptStr,
 '   a b c d e\n'
