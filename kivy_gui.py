@@ -167,6 +167,8 @@ class BoardWidget(RelativeLayout):
         GS = self.grid_size()
         board_x = int(round(GS * bsp[0] / size_x) - 1)
         board_y = int(round(GS * bsp[1] / size_y) - 1)
+        if self.game.off_board((board_x, board_y)):
+            raise IllegalMoveException
         return board_x, board_y
 
     def board_to_screen(self, board_pos):
@@ -235,7 +237,11 @@ class BoardWidget(RelativeLayout):
         # TODO: Check for off board? remove marker?
         if self.marker != None:
             # Move the marker position
-            self.marker.pos = self.snap_to_grid(touch.pos)
+            try:
+                self.marker.pos = self.snap_to_grid(touch.pos)
+            except IllegalMoveException:
+                self.remove_widget(self.marker)
+                self.marker = None
 
     def on_size(self,*args,**kwargs):
         self.set_up_grid()

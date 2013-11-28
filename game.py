@@ -15,6 +15,9 @@ class Game():
     def get_board(self):
         return self.current_state.board
 
+    def off_board(self, pos):
+        return self.get_board().off_board(pos)
+
     def get_player(self, player_number):
         return self.player[player_number]
     
