@@ -1,6 +1,8 @@
 from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
 from kivy.uix.widget import Widget
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.clock import Clock
@@ -19,7 +21,7 @@ import pdb
 
 class BoardWidget(RelativeLayout):
     source = StringProperty(None)
-    # TODO: Get the names and times hooked up
+    # TODO: Get the times hooked up
     black_name = StringProperty("Freddo")
     white_name = StringProperty("Deep Thunk")
     black_time = StringProperty("0:00")
@@ -53,17 +55,18 @@ class BoardWidget(RelativeLayout):
         self.white_name = game.get_player_name(WHITE)
 
         # start the game
-        prompt = game.prompt_for_action(self)
-        # self.display_feedback_string(prompt)
+        game.prompt_for_action(self)
 
-    def display_feedback_string(self, message):
+    def display_error(self, message):
         # TODO: Update screen
+        popup = Popup(title='Error', content=Label(text=message, font_size='25sp'), \
+                size_hint=(.7, .2))
+        popup.open()
         print message
 
     def request_move(self, name):
-        # TODO: Update side panel instead, use player object param instead of name
-        your_move = "Your move, %s" % name
-        return your_move
+        # TODO: Remove need for this - compat with Text GUI
+        return ""
 
     def enqueue_action(self, action):
         self.action_queue.put(action)
@@ -73,10 +76,12 @@ class BoardWidget(RelativeLayout):
         if self.action_queue.empty():
             return
         action = self.action_queue.get()
-        action.perform(self.game)
-        self.update_captures_and_winner()
-        prompt = self.game.prompt_for_action(self)
-        #self.display_feedback_string(prompt)
+        try:
+            action.perform(self.game)
+            self.update_captures_and_winner()
+            self.game.prompt_for_action(self)
+        except IllegalMoveException, e:
+            self.display_error(e.message)
 
     def board_size(self):
         return self.game.size()
@@ -94,7 +99,6 @@ class BoardWidget(RelativeLayout):
 
     def update_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
-        #pdb.set_trace()
         self.black_captures = str(self.game.get_captured(BLACK))
         self.white_captures = str(self.game.get_captured(WHITE))
 
@@ -192,14 +196,13 @@ class BoardWidget(RelativeLayout):
             if self.marker == None:
                 try:
                     # load the image
-                    # TODO: Separate class?
                     self.marker = Piece(self.game, source=x_filename)
                 except Exception, e:
                     Logger.exception('Board: Unable to load <%s>' % x_filename)
             self.marker.pos = self.snap_to_grid(touch.pos)
             self.add_widget(self.marker)
         else:
-            self.display_feedback_string("It is not your turn!")
+            self.display_error("It is not your turn!")
 
     def on_touch_up(self, touch):
         # If there is an active marker,
@@ -234,7 +237,6 @@ class BoardWidget(RelativeLayout):
                 Logger.exception('Board: Unable to load <%s>' % filename)
 
     def on_touch_move(self, touch):
-        # TODO: Check for off board? remove marker?
         if self.marker != None:
             # Move the marker position
             try:
