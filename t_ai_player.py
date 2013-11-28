@@ -9,23 +9,45 @@ import game
 
 from ai_player import *
 
+import pdb
+
+def MA(x, y):
+    return gui.MoveAction.create_from_tuple(x,y)
+
 class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
-        # TODO
-        player1 = AIPlayer(2, "Blomp", BLACK)
-        player2 = human_player.HumanPlayer("Kubba", WHITE)
-        r = rules.Rules(5, "standard")
-        self.game = game.Game(r, player1, player2)
+        self.p1 = AIPlayer(1, "Deep thunk", BLACK)
+        self.p2 = AIPlayer(1, "Deep thunk2", WHITE)
+        r = rules.Rules(9, "standard")
+        self.game = game.Game(r, self.p1, self.p2)
+        self.p1.attach_to_game(self.game)
+        self.p2.attach_to_game(self.game)
         self.gui = None
 
     def test_find_one_move(self):
-        p = AIPlayer(1, "Deep thunk", BLACK)
-        p.attach_to_game(self.game)
+        p = self.p1
         p.prompt_for_action(self.game, self.gui, test=True)
         ma = p.get_action(self.game, self.gui)
-        self.assertEquals(ma, gui.MoveAction.create_from_tuple(2,2))
+        self.assertEquals(ma, MA(4,4))
 
+    def test_respond_to_corner_start(self):
+        self.game.make_move((0,0))
+
+        p = self.p2
+        p.prompt_for_action(self.game, self.gui, test=True)
+        ma = p.get_action(self.game, self.gui)
+        self.assertEquals(ma, MA(2,2))
+
+    def test_respond_to_centre_start(self):
+        self.game.make_move((4,4))
+
+        p = self.p2
+        p.prompt_for_action(self.game, self.gui, test=True)
+        ma = p.get_action(self.game, self.gui)
+        self.assertEquals(ma, MA(3,4))
+
+        #pdb.set_trace()
 if __name__ == "__main__":
     unittest.main()
 
