@@ -14,8 +14,8 @@ from ab_bridge import *
 class AlphaBetaBridgeTest(unittest.TestCase):
 
     def setUp(self):
-        player1 = human_player.HumanPlayer("Blomp", BLACK)
-        player2 = human_player.HumanPlayer("Kubba", WHITE)
+        player1 = human_player.HumanPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
         r = rules.Rules(13, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
@@ -90,8 +90,8 @@ class AlphaBetaBridgeTest(unittest.TestCase):
 class LengthCounterTest(unittest.TestCase):
 
     def setUp(self):
-        player1 = human_player.HumanPlayer("Blomp", BLACK)
-        player2 = human_player.HumanPlayer("Kubba", WHITE)
+        player1 = human_player.HumanPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
         r = rules.Rules(9, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
@@ -136,8 +136,8 @@ class LengthCounterTest(unittest.TestCase):
 
 class MoreAlphaBetaBridgeTests(unittest.TestCase):
     def setUp(self):
-        player1 = human_player.HumanPlayer("Blomp", BLACK)
-        player2 = human_player.HumanPlayer("Kubba", WHITE)
+        player1 = human_player.HumanPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
         r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
@@ -228,8 +228,8 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
 
 class BoardUtilityTests(unittest.TestCase):
     def setUp(self):
-        player1 = human_player.HumanPlayer("Blomp", BLACK)
-        player2 = human_player.HumanPlayer("Kubba", WHITE)
+        player1 = human_player.HumanPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
         r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()

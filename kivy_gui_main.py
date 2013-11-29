@@ -32,12 +32,12 @@ class PenteApp(App):
         return board_widget
 
     def set_up_game(self):
-        r = rules.Rules(9, "standard")
-        player1 = human_player.HumanPlayer("Bruce", BLACK)
+        r = rules.Rules(13, "standard")
+        player1 = human_player.HumanPlayer("Bruce")
         '''
-        player2 = human_player.HumanPlayer("B2", WHITE)
+        player2 = human_player.HumanPlayer("B2")
         '''
-        player2 = ai_player.AIPlayer(2, "Deep Thunk", WHITE)
+        player2 = ai_player.AIPlayer(2, "Deep Thunk")
         self.game = game.Game(r, player1, player2)
         player2.attach_to_game(self.game)
 

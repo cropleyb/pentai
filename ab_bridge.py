@@ -41,14 +41,14 @@ class ABState():
         self.board().add_observer(self)
         if self.search_filter is None:
             self.search_filter = nearby_filter.NearbyFilter(self.board())
-        # TODO: Remove us as an observer from previous self.state
+        # TODO: Remove us as an observer from previous self.state?
 
     def to_move_colour(self):
         return self.state.to_move_colour()
 
     def to_move(self):
-        player = self.state.to_move_player()
-        return player
+        """ This is only to keep the AB code unchanged; the value is unused. """
+        return None
 
     def __repr__(self):
         ret = str(self.black_lines) + str(self.white_lines) + self.state.__repr__()
@@ -63,10 +63,8 @@ class ABState():
         return self.state.game
 
     # TODO: Cache stuff somehow?
-    def utility(self, search_player):
-        """ The search_player is the AI player doing the search """
-        search_colour = search_player.get_colour()
-
+    def utility(self, search_colour):
+        """ The search_colour is the colour of the AI player doing the search """
         # The turn_colour is the colour of the player to move at the leaf state
         # of the search.
         turn_colour = self.to_move_colour()
@@ -116,9 +114,6 @@ class ABState():
         # TODO: Use rules
         contrib = captures * CAPTURE_SCORE_BASE
         return contrib
-
-    def score(self):
-        return self.utility(None)
 
     def board(self):
         return self.state.board

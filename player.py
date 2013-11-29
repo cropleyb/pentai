@@ -7,15 +7,11 @@
 
 class Player():
     """ Interface only """
-    def __init__(self, name, colour):
+    def __init__(self, name):
         self.name = name
-        self.colour = colour
 
     def __repr__(self):
         return self.name
-
-    def get_colour(self):
-        return self.colour
 
     def get_name(self):
         return self.name

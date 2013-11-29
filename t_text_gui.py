@@ -15,8 +15,8 @@ class TextGuiTest(unittest.TestCase):
     def setUp(self):
         self.setUpWithOverrides(
                 size=5,
-                player1=HumanPlayer("Fred", BLACK),
-                player2=HumanPlayer("Wilma", WHITE))
+                player1=HumanPlayer("Fred"),
+                player2=HumanPlayer("Wilma"))
 
     def setUpWithOverrides(self, size=5, player1=None, player2=None, rules_str="standard"):
         rules = Rules(size, rules_str)
@@ -124,29 +124,29 @@ class TextGuiTest(unittest.TestCase):
 "   a b c d e\n")
 
     def test_player_names(self):
-        self.setUpWithOverrides(player1=HumanPlayer("Bruce", BLACK),
-                                player2=HumanPlayer("DeepThunk", WHITE))
+        self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
+                                player2=HumanPlayer("DeepThunk"))
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "* Bruce (0p) vs. DeepThunk (0p)\n")
 
     def test_player_names_after_move(self):
-        self.setUpWithOverrides(player1=HumanPlayer("Bruce", BLACK),
-                                player2=HumanPlayer("DeepThunk", WHITE))
+        self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
+                                player2=HumanPlayer("DeepThunk"))
         self.game.set_move_number(2)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce (0p) vs. * DeepThunk (0p)\n")
 
     def test_aux_after_moves_and_capture(self):
-        self.setUpWithOverrides(player1=HumanPlayer("Bruce", BLACK),
-                                player2=HumanPlayer("DeepThunk", WHITE))
+        self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
+                                player2=HumanPlayer("DeepThunk"))
         self.game.set_move_number(6)
         self.game.set_captured(BLACK, 2)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce (1p) vs. * DeepThunk (0p)\n")
 
     def test_aux_after_moves_and_capture_keryo(self):
-        self.setUpWithOverrides(player1=HumanPlayer("Bruce", BLACK),
-                                player2=HumanPlayer("DeepThunk", WHITE),
+        self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
+                                player2=HumanPlayer("DeepThunk"),
                                 rules_str="keryo")
         self.game.set_move_number(3)
         self.game.set_captured(BLACK, 3)

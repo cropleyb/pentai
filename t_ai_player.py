@@ -17,8 +17,8 @@ def MA(x, y):
 class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
-        self.p1 = AIPlayer(1, "Deep thunk", BLACK)
-        self.p2 = AIPlayer(1, "Deep thunk2", WHITE)
+        self.p1 = AIPlayer(1, "Deep thunk")
+        self.p2 = AIPlayer(1, "Deep thunk2")
         r = rules.Rules(9, "standard")
         self.game = game.Game(r, self.p1, self.p2)
         self.p1.attach_to_game(self.game)

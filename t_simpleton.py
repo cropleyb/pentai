@@ -13,8 +13,8 @@ class SimpletonPlayerTest(unittest.TestCase):
 
     def setUp(self):
         # TODO
-        player1 = SimpletonPlayer("Blomp", BLACK)
-        player2 = human_player.HumanPlayer("Kubba", WHITE)
+        player1 = SimpletonPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
         r = rules.Rules(5, "standard")
         self.game = game.Game(r, player1, player2)
         self.gui = None
@@ -24,7 +24,7 @@ class SimpletonPlayerTest(unittest.TestCase):
         '''
 
     def test_find_one_move(self):
-        p = SimpletonPlayer("Dur", BLACK)
+        p = SimpletonPlayer("Dur")
         p.prompt_for_action(self.game, self.gui)
         ma = p.get_action(self.game, self.gui)
         self.assertEquals(ma, gui.MoveAction.create_from_tuple(2,2))
