@@ -17,36 +17,42 @@ class Rules():
             self.can_capture_pairs = True
             self.can_capture_threes = False
             self.exactly_five = False
+            self.border_colour = (.5,0,0,1)
         elif ts == "tournament":
             self.center_first = True
             self.stones_for_capture_win = 10
             self.can_capture_pairs = True
             self.can_capture_threes = False
             self.exactly_five = False
+            self.border_colour = (0,0,0,1)
         elif ts[:5] == "keryo":
             self.center_first = True
             self.stones_for_capture_win = 15
             self.can_capture_pairs = True
             self.can_capture_threes = True
             self.exactly_five = False
+            self.border_colour = (0,0,0,1)
         elif ts == "freestyle":
             self.center_first = False
             self.stones_for_capture_win = 10
             self.can_capture_pairs = True
             self.can_capture_threes = False
             self.exactly_five = False
+            self.border_colour = (0,0,0,1)
         elif ts[:4] == "five":
             self.center_first = False
             self.stones_for_capture_win = 0 # can capture, but wins are only from 5
             self.can_capture_pairs = True
             self.can_capture_threes = False
             self.exactly_five = True
+            self.border_colour = (0,0,0,1)
         elif ts[:2] == "no": # no captures
             self.center_first = False
             self.stones_for_capture_win = 0
             self.can_capture_pairs = False
             self.can_capture_threes = False
             self.exactly_five = False
+            self.border_colour = (0,0,0,1)
         else:
             raise UnknownRuleType
      

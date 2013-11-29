@@ -7,16 +7,19 @@ from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.clock import Clock
 from kivy.graphics import *
+#from kivy.core.audio import SoundLoader TODO
 
 from defines import *
 from gui import *
 
 import Queue
 
-black_filename = "./images/black_transparent.png"
-white_filename = "./images/white_transparent.png"
-x_filename = "./images/X_transparent.png"
-moved_marker_filename = "./images/moved_marker.png"
+black_filename = "./media/black_transparent.png"
+white_filename = "./media/white_transparent.png"
+x_filename = "./media/X_transparent.png"
+moved_marker_filename_w = "./media/moved_marker_w.png"
+moved_marker_filename_b = "./media/moved_marker_b.png"
+stone_sound = "./media/click.mp3"
 
 import pdb
 
@@ -32,6 +35,8 @@ class BoardWidget(RelativeLayout):
     black_captures = StringProperty("0")
     white_captures = StringProperty("0")
     gridlines = ListProperty([])
+    border_lines = ListProperty([0,0,0,0])
+    border_colour = ListProperty([20,0,0,1])
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,80.0])
 
@@ -99,6 +104,13 @@ class BoardWidget(RelativeLayout):
         self.make_move_on_the_gui_board(pos, colour)
         self.update_captures_and_winner()
 
+    def play_sound(self):
+        self.sound = SoundLoader.load(stone_sound)
+        if self.sound:
+            print("Sound found at %s" % self.sound.source)
+            print("Sound is %.3f seconds" % self.sound.length)
+        self.sound.play()
+
     def update_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
         self.black_captures = str(self.game.get_captured(BLACK))
@@ -151,7 +163,15 @@ class BoardWidget(RelativeLayout):
             lines.extend(this_end)
             lines.extend((grid_size_x*x, size_y-grid_size_y))
             lines.extend(this_end)
+        self.setup_colour_border(size_x, size_y)
         return lines
+
+    def setup_colour_border(self, size_x, size_y):
+        w = 10
+        # This is ugly, but using the "rectangle" feature causes issues in the corners
+        self.border_lines = [0,w, size_x,w, w,w, w,size_y, 0,size_y-w, size_x,size_y-w]
+        self.border_lines.extend([size_x-w,size_y, size_x-w,w])
+        self.border_colour = self.game.rules.border_colour
 
     def set_up_grid(self, _dt=None):
         if hasattr(self, "game"):
@@ -192,7 +212,9 @@ class BoardWidget(RelativeLayout):
 
     def update_moved_marker(self, pos, colour):
         #pdb.set_trace()
-        filename = moved_marker_filename
+        filename = moved_marker_filename_w
+        if colour == BLACK:
+            filename = moved_marker_filename_b
         mm = self.moved_marker[colour]
         if mm == None:
             try:
@@ -254,6 +276,7 @@ class BoardWidget(RelativeLayout):
                 self.update_moved_marker(new_piece.pos, colour)
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
+            #self.play_sound() TODO
 
     def on_touch_move(self, touch):
         if self.marker != None:

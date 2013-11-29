@@ -7,13 +7,21 @@
         pos: self.parent.board_offset
         canvas:
             Rectangle:
-                source: 'images/41-old-wooden-board.jpg'
+                source: 'media/41-old-wooden-board.jpg'
                 size: self.size
             Color:
                 rgba: 0, 0, 0, 1
             Line:
                 points: root.gridlines
                 width: 2.0
+            Color:
+                rgba: root.border_colour
+                #rgba: 1,1,0,0
+            Line:
+                #rectangle: root.border_lines
+                points: root.border_lines
+                joint: 'none'
+                width: 10
 
     GridLayout:
         cols: 2
