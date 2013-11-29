@@ -22,3 +22,6 @@ class Player():
     def get_action(self, game, gui):
         pass
 
+    def attach_to_game(self, base_game):
+        pass
+

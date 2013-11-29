@@ -3,8 +3,8 @@ from kivy.uix.scatter import Scatter
 from kivy.uix.widget import Widget
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ListProperty, NumericProperty
-from kivy.uix.relativelayout import RelativeLayout
 from kivy.clock import Clock
 from kivy.graphics import *
 #from kivy.core.audio import SoundLoader TODO
@@ -23,7 +23,7 @@ stone_sound = "./media/click.mp3"
 
 import pdb
 
-class BoardWidget(RelativeLayout):
+class PenteScreen(Screen):
     source = StringProperty(None)
     # TODO: Get the times hooked up
     black_name = StringProperty("Freddo")
@@ -46,7 +46,7 @@ class BoardWidget(RelativeLayout):
         self.action_queue = Queue.Queue()
         self.moved_marker = [None, None, None]
 
-        super(BoardWidget, self).__init__(*args, **kwargs)
+        super(PenteScreen, self).__init__(*args, **kwargs)
 
     def set_game(self, game):
         self.game = game

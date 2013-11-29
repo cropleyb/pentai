@@ -2,7 +2,17 @@
 #:import kivy kivy
 #:import win kivy.core.window
 
-<BoardWidget>:
+<SetupWidget>:
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: 70
+		Label:
+			text: 'Black player name'
+		TextInput:
+			text: 'Blomp'
+
+<PenteScreen>:
     RelativeLayout:
         pos: self.parent.board_offset
         canvas:

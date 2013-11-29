@@ -7,6 +7,10 @@ class Game():
         self.rules = rules
         self.player = [None, player1, player2]
         self.current_state = GameState(self)
+        if player1 != None:
+            player1.attach_to_game(self)
+        if player2 != None:
+            player2.attach_to_game(self)
 
     # TODO: get_size for consistency
     def size(self):
