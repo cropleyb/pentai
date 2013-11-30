@@ -2,15 +2,30 @@
 #:import kivy kivy
 #:import win kivy.core.window
 
-<SetupWidget>:
-    GridLayout:
-        cols: 2
-        size_hint: 1, None
-        height: 70
-		Label:
-			text: 'Black player name'
-		TextInput:
-			text: 'Blomp'
+#SetupScreen:
+    #GridLayout:
+        #cols: 1
+        #GridLayout:
+            #cols: 2
+            #size_hint: 1, None
+            #height: 200
+            #MyCheckBoxList:
+                #text: 'Rules'
+                #group: 'rules'
+                #values: ['standard', 'tournament', 'keryo', 'freestyle', 'five', 'no']
+
+
+<MyLabel@Label>:
+    font_size: '30sp'
+
+#<LabelledCheckbox>:
+    #Label:
+        #text: self.parent.value
+    #CheckBox:
+        #group: self.group
+        #active: self.active
+        #on_active: self.set_active
+        #val: self.value
 
 <PenteScreen>:
     RelativeLayout:
@@ -45,38 +60,31 @@
         GridLayout:
             cols: 4
 
-            Label:
+            MyLabel:
                 # TODO: times
-                font_size: '30sp'
                 value: root.black_time
                 text: '0:00'
-			Label:
-                font_size: '30sp'
+            MyLabel:
                 text: root.black_to_move_marker
-            Label:
-                font_size: '30sp'
+            MyLabel:
                 text: root.black_name
-            Label:
-                font_size: '30sp'
+            MyLabel:
                 text: root.black_captures
-            Label:
+
+            MyLabel:
                 # TODO: times
-                font_size: '30sp'
                 value: root.white_time
                 text: '0:00'
-			Label:
-                font_size: '30sp'
+            MyLabel:
                 text: root.white_to_move_marker
-            Label:
-                font_size: '30sp'
+            MyLabel:
                 text: root.white_name
-            Label:
-                font_size: '30sp'
+            MyLabel:
                 text: root.white_captures
 
 <Piece>:
-	Image:
-		id: image
-		source: root.source
-		center: 0, 0
+    Image:
+        id: image
+        source: root.source
+        center: 0, 0
 
