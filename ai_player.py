@@ -9,14 +9,12 @@ import threading
 class AIPlayer(Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
-    def __init__(self, max_depth, *args, **vargs):
+    def __init__(self, *args, **vargs):
         Player.__init__(self, *args, **vargs)
+        self.max_depth = 1
+
+    def set_max_depth(self, max_depth):
         self.max_depth = max_depth
-        '''
-        #TODO use super?
-        def __init__(self, max_depth, *args, **kwargs):
-            super(AIPlayer, self).__init__(*args, **kwargs)
-        '''
 
     def attach_to_game(self, base_game):
         self.ab_game = ab_bridge.ABGame(base_game)
