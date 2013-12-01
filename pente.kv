@@ -2,18 +2,78 @@
 #:import kivy kivy
 #:import win kivy.core.window
 
-#SetupScreen:
-    #GridLayout:
-        #cols: 1
-        #GridLayout:
-            #cols: 2
-            #size_hint: 1, None
-            #height: 200
-            #MyCheckBoxList:
-                #text: 'Rules'
-                #group: 'rules'
-                #values: ['standard', 'tournament', 'keryo', 'freestyle', 'five', 'no']
+<MyCheckBoxList>:
 
+<TestSetupScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            text: 'Hello from TestSetupScreen in kv file'
+        MyCheckBoxList:
+            text: 'Rules'
+            group: 'rules'
+            values: ['standard', 'tournament', 'keryo', 'freestyle', 'five', 'no']
+            id: root.rules_widget
+
+#<SetupScreen>:
+#    #cols: 1 # TEMP
+#    GridLayout:
+#        cols: 1
+#        GridLayout:
+#            cols: 2
+#            size_hint: 1, None
+#            height: 200
+#            board_size_widget: bs_id
+#            rules_widget: r_id
+#            MyCheckBoxList:
+#                text: 'Rules'
+#                group: 'rules'
+#                values: ['standard', 'tournament', 'keryo', 'freestyle', 'five', 'no']
+#                id: r_id
+#
+#            MyCheckBoxList:
+#                text: 'Board Size'
+#                group: 'board_size'
+#                values: ['9', '13', '19']
+#                id: bs_id
+#
+#        GridLayout:
+#            cols: 2
+#            #size_hint: (1, None)
+#            height:120
+#
+#            GridLayout:
+#                cols:2
+#                #size_hint: (1, None)
+#                height:120
+#                Label:
+#                    text: 'Black player name'
+#                TextInput
+#                    text: root.black_name
+#                MyCheckBoxList:
+#                    group: 'black_type'
+#                    text: ''
+#                    values: ('Human', 'Computer')
+#                    id: root.black_type_widget
+#
+#            GridLayout:
+#                cols:2
+#                #size_hint: (1, None)
+#                height:50
+#                Label:
+#                    text: 'White player name'
+#                TextInput
+#                    text: root.white_name
+#                MyCheckBoxList:
+#                    group: 'white_type'
+#                    text: ''
+#                    values: ('Human', 'Computer')
+#                    id: root.white_type_widget
+#
+#            Button:
+#                size_hint: (.2, .2)
+#                text: 'Start Game'
+#                on_press: root.start_game()
 
 <MyLabel@Label>:
     font_size: '30sp'

@@ -4,6 +4,7 @@ from kivy.config import Config
 from kivy.clock import *
 
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
@@ -25,40 +26,31 @@ from pente_screen import *
 global args
 args = None
 
-'''
-class LabelledCheckbox(Widget):
-    value = ObjectProperty(None)
-	callback: None
-    group = StringProperty("")
-	active = BooleanProperty(False)
-'''
-
 class MyCheckBoxList(Widget):
     text = StringProperty("")
     group = StringProperty("")
     values = ListProperty([])
     active = StringProperty("")
 
-    # def on_checkbox_active(checkbox, value):
     def on_checkbox_active(self, checkbox, value):
-        self.val = checkbox.val
+        if checkbox.active:
+            self.val = checkbox.val
+            print self.val
 
     def __init__(self, *args, **kwargs):
+        #print "in MyCheckBoxList __init__"
         super(MyCheckBoxList, self).__init__(*args, **kwargs)
-        #gl = GridLayout(cols=2)
-        gl = GridLayout(cols=2, size_hint=(1, 1))
+        #pdb.set_trace()
+        gl = GridLayout(cols=2)
         self.add_widget(gl)
         l = Label(text=self.text)
         gl.add_widget(l)
-        vals_gl = GridLayout(cols=2, size_hint=(1, 1))
+        vals_gl = GridLayout(cols=2)
         gl.add_widget(vals_gl)
 
         first = True
+        print list(self.values)
         for v in self.values:
-            '''
-            cb = LabelledCheckbox(value=v, callback=self.set_active,
-                    group=self.group, active=first)
-            '''
             l = Label(text=v)
             vals_gl.add_widget(l)
 
@@ -66,22 +58,45 @@ class MyCheckBoxList(Widget):
             cb.bind(active=self.on_checkbox_active)
             cb.val = v
             if first:
+                print "Setting active for %s" % v
                 self.on_checkbox_active(cb, None)
             vals_gl.add_widget(cb)
             first = False
 
+class TestSetupScreen(Screen):
+    #rules_widget = ObjectProperty(None)
+
+    def __init__(self, *args, **kwargs):
+        super(TestSetupScreen, self).__init__(*args, **kwargs)
+
+        top_gl = GridLayout(cols=1, size_hint=(None, None),
+                pos_hint={'right': 1}, size=(150, 50))
+        self.add_widget(top_gl)
+
+        bs_r_gl = GridLayout(cols=2, height=500)
+        top_gl.add_widget(bs_r_gl)
+        self.board_size_widget = MyCheckBoxList(group="board_size", text="Board Size",
+                values=["9", "13", "19"])
+        bs_r_gl.add_widget(self.board_size_widget)
 
 class SetupScreen(Screen):
+#class SetupScreen(GridLayout):
     black_name = StringProperty("Black")
     white_name = StringProperty("White")
+    #black_type = StringProperty("")
+    #white_type = StringProperty("")
+    black_type_widget = ObjectProperty(None)
+    white_type_widget = ObjectProperty(None)
+    rules_widget = ObjectProperty(None)
+    board_size_widget = ObjectProperty(None)
 
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
 
-        top_gl = GridLayout(cols=1, size_hint=(1, 1))
+        top_gl = GridLayout(cols=1) #, pos_hint=(.5,.5)) #, size_hint=(1, 1))
         self.add_widget(top_gl)
 
-        bs_r_gl = GridLayout(cols=2, height=500, size_hint=(1, 1))
+        bs_r_gl = GridLayout(cols=2) #, height=500, size_hint=(1, 1))
         top_gl.add_widget(bs_r_gl)
         self.board_size_widget = MyCheckBoxList(group="board_size", text="Board Size",
                 values=["9", "13", "19"])
@@ -115,12 +130,16 @@ class SetupScreen(Screen):
         b = Button(size_hint=(.1, .1), text='Start Game', on_press=self.start_game)
         top_gl.add_widget(b)
 
-    def start_game(self, cb):
+    def start_game(self, unused=None):
+        #pdb.set_trace()
+        print "Starting game"
         g = self.set_up_game()
         app.start_game(g)
 
     def set_up_game(self):
-        r = rules.Rules(int(self.board_size_widget.val), self.rules_widget.val)
+        bs = int(self.board_size_widget.val)
+        rstr = self.rules_widget.val
+        r = rules.Rules(bs, rstr)
 
         player1_type = human_player.HumanPlayer
         if self.black_type_widget.val == 'Computer':
@@ -134,7 +153,6 @@ class SetupScreen(Screen):
 
         g = game.Game(r, player1, player2)
         return g
-    pass
 
 class PenteApp(App):
 
@@ -155,43 +173,21 @@ class PenteApp(App):
         self.root.current = "Game Screen"
 
     def build(self):
+        '''
+        # TEMP HACK
+        t = SetupScreen(name="Setup Screen")
+        return t
+        '''
         root = ScreenManager()
         self.root = root
-        root.add_widget(SetupScreen(name="Setup Screen"))
+        s = SetupScreen(name="Setup Screen")
+        #s = TestSetupScreen(name="Test Setup Screen")
+        root.add_widget(s)
 
         global app
         app = self
 
-        '''
-        if True:
-
-            g = self.set_up_game()
-
-            # load the game screen
-            pente_screen.set_game(g)
-
-            # TODO: It would be nice if the board did not display until the grid was
-            # correctly positioned
-            Clock.schedule_once(pente_screen.set_up_grid, 1)
-        '''
-
         return root
-
-    def set_up_game(self):
-        r = rules.Rules(args.board_size, args.rules)
-
-        player1_type = human_player.HumanPlayer
-        if args.b_type == 'Computer':
-            player1_type = human_player.AIPlayer
-        player1 = player1_type(args.black)
-
-        player2_type = human_player.HumanPlayer
-        if args.b_type == 'Computer':
-            player2_type = human_player.AIPlayer
-        player2 = player2_type(args.white)
-
-        g = game.Game(r, player1, player2)
-        return g
 
     def on_pause(self):
         return True
@@ -205,25 +201,6 @@ if __name__ == '__main__':
 
     Config.set('graphics', 'width', '600')
     Config.set('graphics', 'height', '700')
-
-    parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('board_size', metavar='s', type=int, nargs='?',
-        default=13, help='How wide is the board')
-    parser.add_argument('rules', type=str, nargs='?',
-        default='standard', help='Which rule set do you want to play', choices=(
-        'standard', 'tournament', 'keryo', 'freestyle', 'five', 'no'))
-    parser.add_argument('black', metavar='B', type=str, nargs='?',
-        default='Black Player', help='Black Player\'s Name')
-    parser.add_argument('white', metavar='W', type=str, nargs='?',
-        default='White Player', help='White Player\'s Name')
-    parser.add_argument('b_type', metavar='b', type=str, nargs='?', choices=('H','C'),
-        default='H', help='Black - (H)uman or (C)omputer')
-    parser.add_argument('w_type', metavar='w', type=str, nargs='?', choices=('H','C'),
-        default='H', help='White - (H)uman or (C)omputer')
-
-    args = parser.parse_args()
-
-
 
     PenteApp().run()
 
