@@ -20,6 +20,7 @@ class UtilityTest(unittest.TestCase):
         self.gs.board = Board(13)
         self.gs.game = self.game
         self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(BLACK)
         self.s.set_state(self.gs)
 
     def set_captured(self, black_captures, white_captures):
@@ -30,73 +31,77 @@ class UtilityTest(unittest.TestCase):
         """ Set whose move it is at the leaf state """
         self.gs.mockAddReturnValues(to_move_colour=turn_player_colour)
         
+    def set_search_player_colour(self, search_player_colour):
+        """ Set whose move it is at the leaf state """
+        self.game.mockAddReturnValues(to_move_colour=search_player_colour)
+        
     def test_utility_single_stone_better_than_none(self):
         self.s.black_lines = LengthCounter([20,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_singles_is_better(self):
         self.s.black_lines = LengthCounter([1,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_twos_is_better(self):
         self.s.black_lines = LengthCounter([0,1,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_threes_is_better(self):
         self.s.black_lines = LengthCounter([0,0,1,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_fours_is_better(self):
         self.s.black_lines = LengthCounter([0,0,0,1,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreater(u, 0)
 
     def test_utility_less_ones_is_worse(self):
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([1,0,0,0,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertLess(u, 0)
 
     def test_utility_less_ones_is_worse(self):
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([1,0,0,0,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertLess(u, 0)
 
     def test_utility_five_is_a_win(self):
         self.s.black_lines = LengthCounter([0,0,0,0,1])
         self.s.white_lines = LengthCounter([99,99,99,99,0])
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreaterEqual(u, inf)
 
     def test_black_win_by_captures(self):
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
         self.set_captured(10, 0)
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreaterEqual(u, inf)
 
     def test_white_win_by_captures(self):
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
         self.set_captured(0, 10)
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertLessEqual(u, -inf)
 
     def test_one_capture_worth_more_than_a_three(self):
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,1,0,0])
         self.set_captured(1, 0)
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertGreaterEqual(u, 0)
 
     def test_one_capture_worth_less_than_a_four(self):
@@ -104,46 +109,51 @@ class UtilityTest(unittest.TestCase):
         self.s.white_lines = LengthCounter([0,0,0,1,0])
         self.set_turn_player_colour(WHITE)
         self.set_captured(1, 0)
-        u = self.s.utility(BLACK)
+        u = self.s.utility()
         self.assertLessEqual(u, 0)
 
     ######################
 
     def test_white_search(self):
         """ Search by white """
+        self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,1,0,0])
-        u = self.s.utility(WHITE)
+        u = self.s.utility()
         self.assertGreaterEqual(u, 0)
 
     def test_white_capture(self):
         """ Search by white """
+        self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,0,0,0])
         self.set_captured(0, 1)
-        u = self.s.utility(WHITE)
+        u = self.s.utility()
         self.assertGreaterEqual(u, 0)
 
     def test_black_to_move_advantage(self):
         """ Search by white """
         self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(WHITE)
         self.s.black_lines = LengthCounter([1,0,0,0,0])
         self.s.white_lines = LengthCounter([1,0,0,0,0])
-        u = self.s.utility(WHITE)
+        u = self.s.utility()
         self.assertLessEqual(u, 0)
 
     ###########
 
     def test_white_having_the_move_gets_a_higher_util(self):
         """ Search by white """
+        self.set_search_player_colour(WHITE)
+
         self.s.black_lines = LengthCounter([1,0,0,0,0])
         self.s.white_lines = LengthCounter([2,0,0,0,0])
 
         self.set_turn_player_colour(WHITE)
-        u_with_move = self.s.utility(WHITE)
+        u_with_move = self.s.utility()
 
         self.set_turn_player_colour(BLACK)
-        u_not_to_move = self.s.utility(WHITE)
+        u_not_to_move = self.s.utility()
 
         self.assertGreater(u_with_move, u_not_to_move)
 
@@ -153,26 +163,28 @@ class UtilityTest(unittest.TestCase):
         self.s.white_lines = LengthCounter([2,0,0,0,0])
 
         self.set_turn_player_colour(BLACK)
-        u_with_move = self.s.utility(BLACK)
+        u_with_move = self.s.utility()
 
         self.set_turn_player_colour(WHITE)
-        u_not_to_move = self.s.utility(BLACK)
+        self.set_search_player_colour(BLACK)
+        u_not_to_move = self.s.utility()
 
         self.assertGreater(u_with_move, u_not_to_move)
 
     def test_next_to_middle_is_better(self):
         """ Search by white """
         self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(WHITE)
 
         # (-783, [16, 0, 0, 0, 0][11, 0, 0, 0, 0] - (3, 3) next to 4,4
         self.s.black_lines = LengthCounter([16,0,0,0,0])
         self.s.white_lines = LengthCounter([11,0,0,0,0])
-        u_adjacent = self.s.utility(WHITE)
+        u_adjacent = self.s.utility()
 
         # (-588, [17, 0, 0, 0, 0][7, 0, 0, 0, 0] - (6, 6) with a gap
         self.s.black_lines = LengthCounter([17,0,0,0,0])
         self.s.white_lines = LengthCounter([7,0,0,0,0])
-        u_dist = self.s.utility(WHITE)
+        u_dist = self.s.utility()
 
         self.assertGreater(u_adjacent, u_dist)
 
