@@ -74,10 +74,8 @@ class SetupScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
 
-        top_al = AnchorLayout(anchor_y='top')
-        self.add_widget(top_al)
         top_gl = GridLayout(cols=1)
-        top_al.add_widget(top_gl)
+        self.add_widget(top_gl)
 
         bs_r_gl = GridLayout(cols=2)
         top_gl.add_widget(bs_r_gl)
