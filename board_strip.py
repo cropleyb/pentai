@@ -56,8 +56,8 @@ class BoardStrip():
             # Cannot capture to the left - off the board
             return ()
         shift = 4 ** (ind - 3)
-        occs = (self.occs / shift) & (4 ** 3 - 1)
-        pattern = BLACK + (4 * WHITE) + (16 * WHITE)
+        occs = (self.occs / shift) & (4 ** 4 - 1)
+        pattern = BLACK + (4 * WHITE) + (16 * WHITE) # + 64 * 0
         if occs == pattern:
             return (ind-1, ind-2)
         return ()
@@ -68,8 +68,8 @@ class BoardStrip():
             # Cannot capture to the left - off the board
             return ()
         shift = 4 ** (ind - 3)
-        occs = (self.occs / shift) & (4 ** 3 - 1)
-        pattern = WHITE + (4 * BLACK) + (16 * BLACK)
+        occs = (self.occs / shift) & (4 ** 4 - 1)
+        pattern = WHITE + (4 * BLACK) + (16 * BLACK) # + 64 * 0
         if occs == pattern:
             return (ind-1, ind-2)
         return ()
@@ -82,18 +82,18 @@ class BoardStrip():
 
     def match_black_capture_right(self, ind):
         # xWWB
-        shift = 4 ** (ind + 1)
-        occs = (self.occs / shift) & (4 ** 3 - 1)
-        pattern = WHITE + (4 * WHITE) + (16 * BLACK)
+        shift = 4 ** ind
+        occs = (self.occs / shift) & (4 ** 4 - 1)
+        pattern = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
         if occs == pattern:
             return (ind+1, ind+2)
         return ()
 
     def match_white_capture_right(self, ind):
         # xBBW
-        shift = 4 ** (ind + 1)
-        occs = (self.occs / shift) & (4 ** 3 - 1)
-        pattern = BLACK + (4 * BLACK) + (16 * WHITE)
+        shift = 4 ** ind
+        occs = (self.occs / shift) & (4 ** 4 - 1)
+        pattern = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
         if occs == pattern:
             return (ind+1, ind+2)
         return ()

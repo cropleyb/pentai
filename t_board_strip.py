@@ -4,6 +4,8 @@ import unittest
 
 from board_strip import *
 
+import pdb
+
 class BoardStripTest(unittest.TestCase):
     def test_empty_board_strip_is_empty(self):
         strip = BoardStrip()
@@ -61,6 +63,22 @@ class BoardStripTest(unittest.TestCase):
         strip.set_occ(3, EMPTY)
         self.assertEquals(strip.match_capture_left(4, BLACK), ())
 
+    def test_dont_match_black_capture_left_already_occupied(self):
+        strip = BoardStrip()
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, WHITE)
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.match_capture_left(4, BLACK), ())
+
+    def test_dont_match_white_capture_left_already_occupied(self):
+        strip = BoardStrip()
+        strip.set_occ(1, WHITE)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, WHITE)
+        self.assertEquals(strip.match_capture_left(4, WHITE), ())
+
     def test_match_black_capture_mid_strip_left(self):
         strip = BoardStrip()
         strip.set_occ(3, BLACK)
@@ -96,6 +114,22 @@ class BoardStripTest(unittest.TestCase):
         strip.set_occ(2, WHITE)
         strip.set_occ(3, BLACK)
         self.assertEquals(strip.match_capture_right(0, BLACK), ())
+
+    def test_dont_match_black_capture_right_already_occupied(self):
+        strip = BoardStrip()
+        strip.set_occ(1, BLACK)
+        strip.set_occ(2, WHITE)
+        strip.set_occ(3, WHITE)
+        strip.set_occ(4, BLACK)
+        self.assertEquals(strip.match_capture_right(1, BLACK), ())
+
+    def test_dont_match_white_capture_right_already_occupied(self):
+        strip = BoardStrip()
+        strip.set_occ(1, WHITE)
+        strip.set_occ(2, BLACK)
+        strip.set_occ(3, BLACK)
+        strip.set_occ(4, WHITE)
+        self.assertEquals(strip.match_capture_right(1, WHITE), ())
 
     def test_match_black_capture_mid_strip_right(self):
         strip = BoardStrip()
@@ -212,7 +246,6 @@ class BoardStrip5sTest(unittest.TestCase):
         strip.set_occ(4, BLACK)
         self.assertEquals(strip.match_five_in_a_row(2, BLACK), False)
 
-import pdb
 
 class BoardStripGetOccsTest(unittest.TestCase):
     def test_get_empty_occs(self):
