@@ -58,16 +58,16 @@ class GameState():
         my_colour = self.to_move_colour() # Save it before the turn is changed
         self.move_number += 1
 
-        # Place a stone
-        self.board.set_occ(move_pos, my_colour)
-        board_size = self.board.get_size()
-
         MC = my_colour
         OC = self.to_move_colour() # Other Colour
 
         # Process captures
         for ds in self.board.get_direction_strips():
             self.process_direction_captures(ds, move_pos, MC)
+
+        # Place a stone
+        self.board.set_occ(move_pos, my_colour)
+
 
         # OLD. We only need to check for 5 in a row wins if we are not
         # an AI player - the AI data structure detects this already,
