@@ -11,13 +11,6 @@ class LengthCounter():
     def tup(self):
         return tuple(self.counts)
 
-    def process(self, length, add):
-        if add:
-            self.counts[length-1] += 1
-        else:
-            self.counts[length-1] -= 1
-        assert self.counts[length-1] >= 0
-
     def __eq__(self, other):
         return self.counts == other
 
@@ -30,7 +23,7 @@ class LengthCounter():
     def __getitem__(self, i):
         return self.counts[i]
 
-def process_substrips(pattern, us_counter, them_counter, add):
+def process_substrips(pattern, us_counter, them_counter, inc):
     """ This complex little algorithm calculates the contributions
     of a given line of pieces ("pattern") to the totals count.
     We only count the number of ways in which a line of 5 is possible. """
@@ -45,9 +38,9 @@ def process_substrips(pattern, us_counter, them_counter, add):
         i += 1
         if i >= COUNT_LENGTH:
             if seen[0] > 0 and seen[1] == 0:
-                us_counter.process(seen[0],add)
+                us_counter.counts[seen[0]-1] += inc
             elif seen[1] > 0 and seen[0] == 0:
-                them_counter.process(seen[1],add)
+                them_counter.counts[seen[1]-1] += inc
             old_occ = old[i-COUNT_LENGTH]
             if old_occ > 0:
                 seen[old_occ-1] -= 1
