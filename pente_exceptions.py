@@ -4,3 +4,10 @@ class IllegalMoveException(Exception):
 
 class OffBoardException(Exception):
     pass
+
+class BoardTooBigException():
+    pass
+
+class BoardTooSmallException():
+    pass
+

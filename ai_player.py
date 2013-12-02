@@ -1,4 +1,4 @@
-import ab_bridge
+import ab_game
 import alpha_beta
 from gui import *
 
@@ -17,7 +17,7 @@ class AIPlayer(Player):
         self.max_depth = max_depth
 
     def attach_to_game(self, base_game):
-        self.ab_game = ab_bridge.ABGame(base_game)
+        self.ab_game = ab_game.ABGame(base_game)
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:

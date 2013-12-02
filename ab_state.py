@@ -156,6 +156,7 @@ class ABState():
     def terminal(self):
         return self.state.get_won_by() != game.EMPTY
 
+'''
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
     def __init__(self, base_game):
@@ -185,4 +186,5 @@ class ABGame():
 
     def terminal_test(self, state):
         return state.terminal()
+'''
 

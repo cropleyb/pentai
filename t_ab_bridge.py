@@ -9,7 +9,7 @@ import rules
 import human_player
 from board import *
 
-from ab_bridge import *
+from ab_state import *
 
 class AlphaBetaBridgeTest(unittest.TestCase):
 

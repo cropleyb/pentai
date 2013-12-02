@@ -3,7 +3,7 @@
 import unittest
 
 from length_counter import *
-from ab_bridge import *
+from ab_state import *
 from player import *
 import game_state
 from board import *

@@ -18,10 +18,6 @@ class SimpletonPlayerTest(unittest.TestCase):
         r = rules.Rules(5, "standard")
         self.game = game.Game(r, player1, player2)
         self.gui = None
-        '''
-        self.s = ABState()
-        self.s.set_state(my_game.current_state)
-        '''
 
     def test_find_one_move(self):
         p = SimpletonPlayer("Dur")

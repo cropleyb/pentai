@@ -1,7 +1,4 @@
-class BoardTooBigException():
-    pass
-class BoardTooSmallException():
-    pass
+from pente_exceptions import *
 
 class Rules():
     def __init__(self, size, type_str):
