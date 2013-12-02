@@ -29,7 +29,7 @@ class NearbyFilter():
     def __init__(self, board):
         self.board = board
         self.moves = []
-        self.captures = []
+        self.captures = [[]]
 
     def clone(self):
         other = NearbyFilter(self.board)
@@ -55,15 +55,16 @@ class NearbyFilter():
 
         for succ in successors:
             yield succ
-            
+
+    # This depended on the move coming first
     def move(self, pos):
         self.moves.append(pos)
         self.captures.append([])
         # TODO: make this 2 into self.num_moves
         if len(self.moves) > 2:
             self.moves = self.moves[-2:]
-        if len(self.captures) > 2:
-            self.captures = self.captures[-2:]
+        if len(self.captures) > 3:
+            self.captures = self.captures[-3:]
 
     def capture(self, pos):
         self.captures[-1].append(pos)
