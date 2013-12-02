@@ -124,7 +124,7 @@ class ABState():
 
     def after_set_occ(self, pos, colour):
         self._set_or_reset_occ(pos, True)
-        # Reduce the move filtering
+        # Update the move filtering
         if colour == EMPTY:
             self.search_filter.capture(pos)
         else:
