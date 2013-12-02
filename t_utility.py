@@ -188,6 +188,29 @@ class UtilityTest(unittest.TestCase):
 
         self.assertGreater(u_adjacent, u_dist)
 
+    ##############
+
+    def test_one_threat_is_worth_more_than_a_few_pairs(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.s.black_lines = LengthCounter([0,0,0,0,0])
+        self.s.white_lines = LengthCounter([11,3,0,0,0])
+        self.s.threats = [0, 1, 0]
+        u = self.s.utility()
+        self.assertGreater(u, 0)
+
+    '''
+    def test_one_threat_is_worth_less_than_two_threes(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.s.black_lines = LengthCounter([0,0,0,0,0])
+        self.s.white_lines = LengthCounter([0,0,2,0,0])
+        self.s.threats = [0, 1, 0]
+        u = self.s.utility()
+        self.assertLess(u, 0)
+    '''
 
 if __name__ == "__main__":
     unittest.main()

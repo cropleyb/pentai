@@ -13,6 +13,7 @@ from length_counter import *
 import pdb
 
 CAPTURE_SCORE_BASE = 120 ** 3
+THREAT_SCORE_BASE = CAPTURE_SCORE_BASE / 2
 
 
 class ABState():
@@ -21,10 +22,12 @@ class ABState():
         if parent == None:
             self.black_lines = LengthCounter()
             self.white_lines = LengthCounter()
+            self.threats = [0, 0, 0]
             self.search_filter = None
         else:
             self.black_lines = LengthCounter(parent.black_lines) # TODO: clone method
             self.white_lines = LengthCounter(parent.white_lines)
+            self.threats = parent.threats[:]
             self.search_filter = parent.search_filter.clone()
 
     def get_black_line_counts(self):
@@ -105,15 +108,24 @@ class ABState():
 
         cc = self.capture_contrib(captured[colour])
         score += cc
-        # score += self.capture_contrib(captured[colour])
+
+        tc = self.threat_contrib(self.threats[colour])
+        score += tc
+
         #print "black: %s, white: %s, score: %s" % (self.black_lines, self.white_lines, \
         #        score)
         return score
 
     def capture_contrib(self, captures):
-        """ captures become increasingly important as we approach 5 """
+        """ TODO captures become increasingly important as we approach 5 """
         # TODO: Use rules
         contrib = captures * CAPTURE_SCORE_BASE
+        return contrib
+
+    def threat_contrib(self, threats):
+        """ TODO threats become increasingly important as we approach 5 captures """
+        # TODO: Use rules
+        contrib = threats * THREAT_SCORE_BASE
         return contrib
 
     def board(self):
