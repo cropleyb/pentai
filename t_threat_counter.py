@@ -12,7 +12,7 @@ mapping = {
     "W": 2, # White
 }
 
-def pattern_string_to_int(occ_str):
+def pattern_string_to_board_strip(occ_str):
     occs = 0
     letters = list(occ_str)
     letters.reverse()
@@ -20,7 +20,8 @@ def pattern_string_to_int(occ_str):
         occs *= 4
         occ_int = mapping[occ]
         occs += occ_int
-    return occs
+    bs = BoardStrip(occs)
+    return bs
 
 """
     As with length counters, we need to subtract all the threats before
@@ -34,9 +35,9 @@ class SubStripCountingTest(unittest.TestCase):
 
     # Helper
     def process_threats_for_str(self, ss_str, ind):
-        occs = pattern_string_to_int(ss_str)
+        occs = pattern_string_to_board_strip(ss_str)
         brd_size = len(ss_str)
-        add_threats(occs, ind, brd_size, self.threats)
+        process_threats(occs, ind, brd_size, self.threats, 1)
 
     # Tests
     def test_count_empty(self):
