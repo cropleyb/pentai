@@ -43,8 +43,14 @@ class PriorityFilter():
             return
         if length == 4:
             length = 5
+        if length < 3:
+            length -= 1
         self.candidates_by_priority_and_colour[length][colour].update(pos_list)
 
     def report_capture(self, colour, pos):
-        # HACK - I am valuing captures between 3s and 4s
+        # Valuing captures between 3s and 4s
         self.candidates_by_priority_and_colour[4][colour].add(pos)
+
+    def report_threat(self, colour, pos):
+        # Valuing captures between 2s and 3s
+        self.candidates_by_priority_and_colour[3][colour].add(pos)

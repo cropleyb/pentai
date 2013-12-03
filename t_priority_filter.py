@@ -93,6 +93,39 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertEquals(l[0],(2,4))
         self.assertEquals(l[1],(1,5))
 
+    def test_iterate_over_threat(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.report_threat(BLACK, (1,5))
+        l = list(pf.get_iter(WHITE))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(1,5))
+
+    def test_iterate_over_their_threat_before_our_two(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.report_candidates(BLACK, 2, ((2,4),(4,6),(5,7)))
+        pf.report_threat(WHITE, (1,5))
+        l = list(pf.get_iter(BLACK))
+        self.assertEquals(len(l), 4)
+        self.assertEquals(l[0],(1,5))
+        twos = (2,4),(4,6),(5,7)
+        self.assertIn(l[1], twos)
+        self.assertIn(l[2], twos)
+        self.assertIn(l[3], twos)
+
+    def test_iterate_over_their_three_before_our_threat(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.report_candidates(BLACK, 3, ((2,4),(4,6),))
+        pf.report_threat(WHITE, (1,5))
+        l = list(pf.get_iter(BLACK))
+        self.assertEquals(len(l), 3)
+        threes = (2,4),(4,6)
+        self.assertIn(l[0], threes)
+        self.assertIn(l[1], threes)
+        self.assertEquals(l[2],(1,5))
+
 if __name__ == "__main__":
     unittest.main()
 
