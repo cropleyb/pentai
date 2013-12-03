@@ -91,9 +91,20 @@ make move?
   - show who is to move (though this isn't a method of the class)
 - get a move
 
-implementation plan:
-1. human versus human, text GUI
-2. AI player move
-3. Kivy (acknowledge http://grungetextures.com/ for background, http://en.wikipedia.org/wiki/File:Realistic_White_Go_Stone.svg)
 
+PriorityFilter
+
+                    Max Depth
+4s                  10
+capture threats     10
+3s                   6
+2s                   2
+nearby last 2 moves  1
+
+TODO?: Do a 1 level search first, sort by utility, then use this search order
+       for a deep (but narrower) search.
+The deeper the search, the narrower.
+The utility function needs to feed the search filter candidate moves,
+classified by priority and who is to move at that depth level of the
+search tree.
 
