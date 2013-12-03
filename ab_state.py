@@ -152,7 +152,7 @@ class ABState():
             occ_list = ds.get_occ_list(pos, brd_size)
 
             #print "%s: %s" % (ds, occs)
-            process_substrips(occ_list, self.black_lines, self.white_lines, inc)
+            process_substrips(occ_list, None, self.black_lines, self.white_lines, inc)
 
             bs, bs_ind = ds.get_strip(pos)
             ind = ds.get_index(pos)

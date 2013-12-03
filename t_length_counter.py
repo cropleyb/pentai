@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
 import unittest
+import mock
+
+import pdb
 
 from length_counter import *
 
@@ -21,11 +24,15 @@ class SubStripCountingTest(unittest.TestCase):
     def setUp(self):
         self.black_counter = LengthCounter()
         self.white_counter = LengthCounter()
+        self.candidate_accumulator = mock.Mock()
 
     # Helper
     def process_substrips_for_str(self, ss_str):
         pattern = pattern_string_to_int_list(ss_str)
-        process_substrips(pattern, self.black_counter, self.white_counter, True)
+        ca = self.candidate_accumulator
+        bc = self.black_counter
+        wc = self.white_counter
+        process_substrips(pattern, ca, bc, wc, True)
 
     # Tests
     def test_count_empty(self):
@@ -142,6 +149,38 @@ class SubStripCountingTest(unittest.TestCase):
         self.process_substrips_for_str("  W  ")
         self.assertEquals(self.black_counter.tup(), (0,0,0,0,0))
         self.assertEquals(self.white_counter.tup(), (1,0,0,0,0))
+
+class CandidateReportingTest(unittest.TestCase):
+    def setUp(self):
+        self.black_counter = LengthCounter()
+        self.white_counter = LengthCounter()
+        self.candidate_accumulator = mock.Mock()
+
+    def process_substrips_for_str(self, ss_str):
+        pattern = pattern_string_to_int_list(ss_str)
+        ca = self.candidate_accumulator
+        bc = self.black_counter
+        wc = self.white_counter
+        process_substrips(pattern, ca, bc, wc, True)
+
+    def test_report_nothing(self):
+        self.process_substrips_for_str("     ")
+        calls = self.candidate_accumulator.mockGetAllCalls()
+        self.assertEquals(len(calls),0)
+
+    '''
+    # TODO
+    def test_report_a_four(self):
+        #pdb.set_trace()
+        self.process_substrips_for_str("BB BB")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),1)
+
+        ca.mockCheckCall(0, 'report_candidate', 4, (2,))
+        notification = calls[0]
+        self.assertEquals(len(calls),1)
+    '''
 
 
 if __name__ == "__main__":
