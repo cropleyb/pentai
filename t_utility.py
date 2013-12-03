@@ -11,6 +11,8 @@ from mock import *
 
 inf = alpha_beta.infinity / 2
 
+import pdb
+
 class UtilityTest(unittest.TestCase):
     def setUp(self):
         self.s = ABState()
@@ -200,17 +202,16 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, 0)
 
-    '''
     def test_one_threat_is_worth_less_than_two_threes(self):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
+        #pdb.set_trace()
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,2,0,0])
         self.s.threats = [0, 1, 0]
         u = self.s.utility()
         self.assertLess(u, 0)
-    '''
 
 if __name__ == "__main__":
     unittest.main()

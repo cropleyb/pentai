@@ -14,7 +14,7 @@ from threat_counter import *
 import pdb
 
 CAPTURE_SCORE_BASE = 120 ** 3
-THREAT_SCORE_BASE = CAPTURE_SCORE_BASE / 2
+THREAT_SCORE_BASE = 190
 
 
 class ABState():
