@@ -12,11 +12,15 @@ import game
 import human_player
 import ai_player
 
-def create_player(player_type_widget, player_name):
-    player_type = human_player.HumanPlayer
+import pdb
+
+def create_player(player_type_widget, player_name, max_depth):
+    #pdb.set_trace()
     if player_type_widget.val == 'Computer':
-        player_type = ai_player.AIPlayer
-    p = player_type(player_name)
+        p = ai_player.AIPlayer(player_name)
+        p.set_max_depth(max_depth)
+    else:
+        p = human_player.HumanPlayer(player_name)
     return p
 
 class MyCheckBoxList(GridLayout):
@@ -56,6 +60,7 @@ class SetupScreen(Screen):
     white_type_widget = ObjectProperty(None)
     rules_widget = ObjectProperty(None)
     board_size_widget = ObjectProperty(None)
+    max_depth_widget = ObjectProperty(None)
 
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
@@ -96,6 +101,10 @@ class SetupScreen(Screen):
                 values=('Human', 'Computer'))
         gl.add_widget(self.white_type_widget)
 
+        self.max_depth_widget = MyCheckBoxList(group="max_depth", text="Max Search Depth",
+                values=('1', '2', '3', '4'))
+        top_gl.add_widget(self.max_depth_widget)
+
         b = Button(size_hint=(.1, .1), text='Start Game', on_press=self.start_game)
         top_gl.add_widget(b)
 
@@ -108,8 +117,9 @@ class SetupScreen(Screen):
         rstr = self.rules_widget.val
         r = rules.Rules(bs, rstr)
 
-        player1 = create_player(self.black_type_widget, self.black_name)
-        player2 = create_player(self.white_type_widget, self.white_name)
+        max_depth = int(self.max_depth_widget.val)
+        player1 = create_player(self.black_type_widget, self.black_name, max_depth)
+        player2 = create_player(self.white_type_widget, self.white_name, max_depth)
 
         g = game.Game(r, player1, player2)
         return g
