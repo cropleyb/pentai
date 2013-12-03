@@ -262,7 +262,7 @@ class ThreatTest(unittest.TestCase):
         g1 = self.s.create_state((4,4)) # B
         g2 =     g1.create_state((3,4)) # W
         g3 =     g2.create_state((5,4)) # B
-        self.assertEquals(g3.threats, (0, 0, 1))
+        self.assertEquals(g3.threats, [0, 0, 1])
 
 if __name__ == "__main__":
     unittest.main()

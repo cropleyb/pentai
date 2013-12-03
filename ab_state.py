@@ -9,6 +9,7 @@ import gui
 from board_strip import *
 
 from length_counter import *
+from threat_counter import *
 
 import pdb
 
@@ -146,13 +147,16 @@ class ABState():
         # update substrips
         brd = self.board()
         for ds in brd.get_direction_strips():
+            brd_size = brd.get_size()
             # TODO: Fetch this just once, share between before and after.
-            occ_list = ds.get_occ_list(pos, brd.get_size())
+            occ_list = ds.get_occ_list(pos, brd_size)
+
             #print "%s: %s" % (ds, occs)
             process_substrips(occ_list, self.black_lines, self.white_lines, inc)
 
-            # TODO
-            # process_threats(bs, ind, brd_size, threats, inc):
+            bs, bs_ind = ds.get_strip(pos)
+            ind = ds.get_index(pos)
+            process_threats(bs, ind, brd_size, self.threats, inc)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)
