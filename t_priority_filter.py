@@ -42,10 +42,10 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertEquals(l[0],(3,4))
         self.assertEquals(l[1],(1,5))
 
-    def test_iterate_over_capture_threat(self):
+    def test_iterate_over_capture(self):
         b = Board(13)
         pf = PriorityFilter(b)
-        pf.report_threat(BLACK, (3,4))
+        pf.report_capture(BLACK, (3,4))
         l = list(pf.get_iter(BLACK))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(3,4))
@@ -53,8 +53,8 @@ class PriorityFilterTest(unittest.TestCase):
     def test_iterate_over_own_capture_first(self):
         b = Board(13)
         pf = PriorityFilter(b)
-        pf.report_threat(BLACK, (1,2))
-        pf.report_threat(WHITE, (3,4))
+        pf.report_capture(BLACK, (1,2))
+        pf.report_capture(WHITE, (3,4))
         l = list(pf.get_iter(WHITE))
         self.assertEquals(len(l), 2)
         self.assertEquals(l[0],(3,4))
@@ -63,7 +63,7 @@ class PriorityFilterTest(unittest.TestCase):
     def test_iterate_over_other_players_four_before_our_capture(self):
         b = Board(13)
         pf = PriorityFilter(b)
-        pf.report_threat(WHITE, (7,2))
+        pf.report_capture(WHITE, (7,2))
         pf.report_candidates(BLACK, 4, ((3,4),))
         l = list(pf.get_iter(WHITE))
         self.assertEquals(len(l), 2)
@@ -74,7 +74,7 @@ class PriorityFilterTest(unittest.TestCase):
         b = Board(13)
         pf = PriorityFilter(b)
         pf.report_candidates(BLACK, 3, ((3,4),(1,5)))
-        pf.report_threat(WHITE, (7,2))
+        pf.report_capture(WHITE, (7,2))
         l = list(pf.get_iter(WHITE))
         self.assertEquals(len(l), 3)
         self.assertEquals(l[0],(7,2))
@@ -82,6 +82,16 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertIn(l[1], our_threes)
         self.assertIn(l[2], our_threes)
 
+    def test_iterate_capture_three_and_four_triple_once(self):
+        b = Board(13)
+        pf = PriorityFilter(b)
+        pf.report_candidates(WHITE, 3, ((1,5),(2,4)))
+        pf.report_capture(BLACK, (1,5))
+        pf.report_candidates(BLACK, 4, ((2,4),))
+        l = list(pf.get_iter(WHITE))
+        self.assertEquals(len(l), 2)
+        self.assertEquals(l[0],(2,4))
+        self.assertEquals(l[1],(1,5))
 
 if __name__ == "__main__":
     unittest.main()

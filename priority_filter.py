@@ -45,6 +45,6 @@ class PriorityFilter():
             length = 5
         self.candidates_by_priority_and_colour[length][colour].update(pos_list)
 
-    def report_threat(self, colour, pos):
+    def report_capture(self, colour, pos):
         # HACK - I am valuing captures between 3s and 4s
         self.candidates_by_priority_and_colour[4][colour].add(pos)
