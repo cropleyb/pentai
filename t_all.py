@@ -17,7 +17,7 @@ import t_simpleton
 import t_board_strip
 import t_direction_strips
 import t_nearby_filter
-import t_threat_counter
+import t_take_counter
 import t_priority_filter
 
 def suite():
@@ -36,7 +36,7 @@ def suite():
     suite13 = unittest.defaultTestLoader.loadTestsFromModule(t_direction_strips)
     suite14 = unittest.defaultTestLoader.loadTestsFromModule(t_search_filter)
     suite15 = unittest.defaultTestLoader.loadTestsFromModule(t_nearby_filter)
-    suite16 = unittest.defaultTestLoader.loadTestsFromModule(t_threat_counter)
+    suite16 = unittest.defaultTestLoader.loadTestsFromModule(t_take_counter)
     suite17 = unittest.defaultTestLoader.loadTestsFromModule(t_priority_filter)
 
     allTests = unittest.TestSuite()

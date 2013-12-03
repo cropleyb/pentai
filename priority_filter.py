@@ -41,9 +41,9 @@ class PriorityFilter():
         if length == 5:
             # won already, ignore
             return
-        if length == 4:
+        if length == 4: # allow space for capture priority
             length = 5
-        if length < 3:
+        if length < 3:  # allow space for threat priority
             length -= 1
         self.candidates_by_priority_and_colour[length][colour].update(pos_list)
 

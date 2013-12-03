@@ -192,44 +192,44 @@ class UtilityTest(unittest.TestCase):
 
     ##############
 
-    def test_one_threat_is_worth_more_than_a_few_pairs(self):
+    def test_one_take_is_worth_more_than_a_few_pairs(self):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([11,3,0,0,0])
-        self.s.threats = [0, 1, 0]
+        self.s.takes = [0, 1, 0]
         u = self.s.utility()
         self.assertGreater(u, 0)
 
-    def test_one_threat_is_worth_less_than_two_threes(self):
+    def test_one_take_is_worth_less_than_two_threes(self):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,2,0,0])
-        self.s.threats = [0, 1, 0]
+        self.s.takes = [0, 1, 0]
         u = self.s.utility()
         self.assertLess(u, 0)
 
-    def test_one_threat_with_the_move_is_worth_more_than_one_three(self):
+    def test_one_take_with_the_move_is_worth_more_than_one_three(self):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,1,0,0])
-        self.s.threats = [0, 1, 0]
+        self.s.takes = [0, 1, 0]
         u = self.s.utility()
         self.assertGreater(u, 0)
 
-    def test_one_three_with_the_move_is_worth_more_than_one_threat(self):
+    def test_one_three_with_the_move_is_worth_more_than_one_take(self):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(WHITE)
 
         #pdb.set_trace()
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,1,0,0])
-        self.s.threats = [0, 1, 0]
+        self.s.takes = [0, 1, 0]
         u = self.s.utility()
         self.assertLess(u, 0)
 

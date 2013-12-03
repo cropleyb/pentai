@@ -9,12 +9,12 @@ import gui
 from board_strip import *
 
 from length_counter import *
-from threat_counter import *
+from take_counter import *
 
 import pdb
 
 CAPTURE_SCORE_BASE = 120 ** 3
-THREAT_SCORE_BASE = 190
+TAKE_SCORE_BASE = 190
 
 
 class ABState():
@@ -23,12 +23,12 @@ class ABState():
         if parent == None:
             self.black_lines = LengthCounter()
             self.white_lines = LengthCounter()
-            self.threats = [0, 0, 0]
+            self.takes = [0, 0, 0]
             self.search_filter = None
         else:
             self.black_lines = LengthCounter(parent.black_lines) # TODO: clone method
             self.white_lines = LengthCounter(parent.white_lines)
-            self.threats = parent.threats[:]
+            self.takes = parent.takes[:]
             self.search_filter = parent.search_filter.clone()
 
     def get_black_line_counts(self):
@@ -107,26 +107,26 @@ class ABState():
             rev = 4 - i
             score += lines[rev]
 
-        cc = self.capture_contrib(captured[colour])
+        cc = self.captured_contrib(captured[colour])
         score += cc
 
-        tc = self.threat_contrib(self.threats[colour])
+        tc = self.take_contrib(self.takes[colour])
         score += tc
 
         #print "black: %s, white: %s, score: %s" % (self.black_lines, self.white_lines, \
         #        score)
         return score
 
-    def capture_contrib(self, captures):
+    def captured_contrib(self, captures):
         """ TODO captures become increasingly important as we approach 5 """
         # TODO: Use rules
         contrib = captures * CAPTURE_SCORE_BASE
         return contrib
 
-    def threat_contrib(self, threats):
-        """ TODO threats become increasingly important as we approach 5 captures """
+    def take_contrib(self, takes):
+        """ TODO takes become increasingly important as we approach 5 captures """
         # TODO: Use rules
-        contrib = threats * THREAT_SCORE_BASE
+        contrib = takes * TAKE_SCORE_BASE
         return contrib
 
     def board(self):
@@ -157,7 +157,7 @@ class ABState():
 
             bs, bs_ind = ds.get_strip(pos)
             ind = ds.get_index(pos)
-            process_threats(bs, ind, brd_size, self.threats, inc)
+            process_takes(bs, ind, brd_size, self.takes, inc)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

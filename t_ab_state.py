@@ -235,19 +235,6 @@ class BoardUtilityTests(unittest.TestCase):
         self.s = ABState()
         self.s.set_state(my_game.current_state)
 
-    '''
-    def testCompareTwoMoves(self):
-        g1 = self.s.create_state((0,1)) # B
-        g2 =     g1.create_state((1,2)) # W
-        g3 =     g2.create_state((1,3)) # B
-        g4 =     g3.create_state((2,3)) # W
-        g5 =     g4.create_state((3,4)) # B
-        self.assertEquals(g5.to_move_colour(), WHITE)
-        self.assertEquals(g5.terminal(), False)
-        board = g5.board()
-        self.assertEquals(board.get_occ((0,1)), BLACK)
-    '''
-
 class ThreatTest(unittest.TestCase):
 
     def setUp(self):
@@ -258,11 +245,11 @@ class ThreatTest(unittest.TestCase):
         self.s = ABState()
         self.s.set_state(my_game.current_state)
 
-    def test_add_one_threat_for_white(self):
+    def test_add_one_take_for_white(self):
         g1 = self.s.create_state((4,4)) # B
         g2 =     g1.create_state((3,4)) # W
         g3 =     g2.create_state((5,4)) # B
-        self.assertEquals(g3.threats, [0, 0, 1])
+        self.assertEquals(g3.takes, [0, 0, 1])
 
 if __name__ == "__main__":
     unittest.main()
