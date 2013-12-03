@@ -23,18 +23,14 @@ class LengthCounter():
     def __getitem__(self, i):
         return self.counts[i]
 
-"""
-How to detect and report indices that build on / interfere with a
-fragmented line?
-
-"""
 
 from defines import *
+from candidate_accumulator import *
 
-class CandidateAccumulator():
-    def report_candidate(self, colour, length, indices):
-        pass
-
+"""
+Detect and report indices that build on or interfere with a 
+possibly fragmented line, as well as counting these possibilities
+"""
 
 def process_substrips(pattern, ca, us_counter, them_counter, inc):
     """ This complex little algorithm calculates the contributions
@@ -75,10 +71,10 @@ def process_substrips(pattern, ca, us_counter, them_counter, inc):
             # Have we only seen one colour in that line of 5?
             if sb > 0 and sw == 0:
                 us_counter.counts[sb-1] += inc
-                ca.report_candidate(BLACK, sb, empties_to_report)
+                ca.report_length_candidate(BLACK, sb, empties_to_report)
             elif sw > 0 and sb == 0:
                 them_counter.counts[sw-1] += inc
-                ca.report_candidate(WHITE, sw, empties_to_report)
+                ca.report_length_candidate(WHITE, sw, empties_to_report)
 
             # Ignore the first one of that 5 now.
             old_occ = old[i-COUNT_LENGTH]
