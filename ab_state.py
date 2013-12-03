@@ -132,24 +132,27 @@ class ABState():
         return self.state.board
 
     def before_set_occ(self, pos, colour):
-        self._set_or_reset_occ(pos, False)
+        self._set_or_reset_occs(pos, -1)
 
     def after_set_occ(self, pos, colour):
-        self._set_or_reset_occ(pos, True)
+        self._set_or_reset_occs(pos, 1)
         # Update the move filtering
         if colour == EMPTY:
             self.search_filter.capture(pos)
         else:
             self.search_filter.move(pos)
 
-    def _set_or_reset_occ(self, pos, add):
+    def _set_or_reset_occs(self, pos, inc):
         # update substrips
         brd = self.board()
         for ds in brd.get_direction_strips():
             # TODO: Fetch this just once, share between before and after.
-            occs = ds.get_occ_list(pos, brd.get_size())
+            occ_list = ds.get_occ_list(pos, brd.get_size())
             #print "%s: %s" % (ds, occs)
-            process_substrips(occs, self.black_lines, self.white_lines, add)
+            process_substrips(occ_list, self.black_lines, self.white_lines, inc)
+
+            # TODO
+            # process_threats(bs, ind, brd_size, threats, inc):
 
     def create_state(self, move_pos):
         ab_child = ABState(self)
