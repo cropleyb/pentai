@@ -13,6 +13,7 @@ class DirectionStrips():
             self.set_up_strips(board_size)
 
     def get_occ_list(self, move_pos, board_size):
+        # TODO: Remove this method as it is time consuming, and may be avoided
         # We only want the strip (in this direction) that goes through 'pos'
         s, s_num = self.get_strip(move_pos)
         move_ind = self.get_index(move_pos)
