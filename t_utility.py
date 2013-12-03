@@ -206,12 +206,33 @@ class UtilityTest(unittest.TestCase):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
-        #pdb.set_trace()
         self.s.black_lines = LengthCounter([0,0,0,0,0])
         self.s.white_lines = LengthCounter([0,0,2,0,0])
         self.s.threats = [0, 1, 0]
         u = self.s.utility()
         self.assertLess(u, 0)
+
+    def test_one_threat_with_the_move_is_worth_more_than_one_three(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.s.black_lines = LengthCounter([0,0,0,0,0])
+        self.s.white_lines = LengthCounter([0,0,1,0,0])
+        self.s.threats = [0, 1, 0]
+        u = self.s.utility()
+        self.assertGreater(u, 0)
+
+    def test_one_three_with_the_move_is_worth_more_than_one_threat(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        #pdb.set_trace()
+        self.s.black_lines = LengthCounter([0,0,0,0,0])
+        self.s.white_lines = LengthCounter([0,0,1,0,0])
+        self.s.threats = [0, 1, 0]
+        u = self.s.utility()
+        self.assertLess(u, 0)
+
 
 if __name__ == "__main__":
     unittest.main()
