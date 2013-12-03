@@ -168,20 +168,76 @@ class CandidateReportingTest(unittest.TestCase):
         calls = self.candidate_accumulator.mockGetAllCalls()
         self.assertEquals(len(calls),0)
 
-    '''
-    # TODO
     def test_report_a_four(self):
         #pdb.set_trace()
         self.process_substrips_for_str("BB BB")
         ca = self.candidate_accumulator
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
+        ca.mockCheckCall(0, 'report_candidate', BLACK, 4, (2,))
 
-        ca.mockCheckCall(0, 'report_candidate', 4, (2,))
-        notification = calls[0]
+    def test_report_a_different_four(self):
+        self.process_substrips_for_str("B BBB")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
-    '''
+        ca.mockCheckCall(0, 'report_candidate', BLACK, 4, (1,))
 
+    def test_report_a_three(self):
+        self.process_substrips_for_str("B B B")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),1)
+        ca.mockCheckCall(0, 'report_candidate', BLACK, 3, (1,3,))
+
+    def test_report_a_three_and_a_two(self):
+        self.process_substrips_for_str("B B B ")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),2)
+        ca.mockCheckCall(0, 'report_candidate', BLACK, 3, (1,3,))
+        ca.mockCheckCall(1, 'report_candidate', BLACK, 2, (1,3,5))
+
+    def test_report_a_white_four(self):
+        self.process_substrips_for_str("WW WW")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),1)
+        ca.mockCheckCall(0, 'report_candidate', WHITE, 4, (2,))
+
+    def test_report_a_four(self):
+        self.process_substrips_for_str(" WB BBB")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),1)
+        ca.mockCheckCall(0, 'report_candidate', BLACK, 4, (3,))
+
+    def test_report_a_five(self):
+        self.process_substrips_for_str(" WBBBBB")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),1)
+        ca.mockCheckCall(0, 'report_candidate', BLACK, 5, ())
+
+    def test_report_two_ones(self):
+        self.process_substrips_for_str(" W    ")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),2)
+        ca.mockCheckCall(0, 'report_candidate', WHITE, 1, (0,2,3,4))
+        ca.mockCheckCall(1, 'report_candidate', WHITE, 1, (2,3,4,5))
+
+    def test_report_five_ones(self):
+        #pdb.set_trace()
+        self.process_substrips_for_str("    B    ")
+        ca = self.candidate_accumulator
+        calls = ca.mockGetAllCalls()
+        self.assertEquals(len(calls),5)
+        ca.mockCheckCall(0, 'report_candidate', BLACK, 1, (0,1,2,3))
+        ca.mockCheckCall(1, 'report_candidate', BLACK, 1, (1,2,3,5))
+        ca.mockCheckCall(2, 'report_candidate', BLACK, 1, (2,3,5,6))
+        ca.mockCheckCall(3, 'report_candidate', BLACK, 1, (3,5,6,7))
+        ca.mockCheckCall(4, 'report_candidate', BLACK, 1, (5,6,7,8))
 
 if __name__ == "__main__":
     unittest.main()

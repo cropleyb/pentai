@@ -31,6 +31,11 @@ fragmented line?
 
 from defines import *
 
+class CandidateAccumulator():
+    def report_candidate(self, colour, length, indices):
+        pass
+
+
 def process_substrips(pattern, ca, us_counter, them_counter, inc):
     """ This complex little algorithm calculates the contributions
     of a given line of pieces ("pattern") to the totals count.
@@ -38,15 +43,19 @@ def process_substrips(pattern, ca, us_counter, them_counter, inc):
     ca: candidate accumulator
     """
     seen = [0, 0, 0]
-
+     
     i = 0
     old = []
+    empty_list = []
+    first_empty = 0
 
     # Go through the occupancies of the strip of positions
     # passed to us.
     for occ in pattern:
         if occ != EMPTY:
-            seen[occ] +=  1 # BLACK or WHITE
+            seen[occ] += 1 # BLACK or WHITE
+        else:
+            empty_list.append(i)
 
         # Keep track of old occupancies for undoing later
         old.append(occ)
@@ -55,11 +64,21 @@ def process_substrips(pattern, ca, us_counter, them_counter, inc):
 
         # We only start counting once we have reached a length of 5
         if i >= COUNT_LENGTH:
+            try:
+                while empty_list[first_empty] < i - COUNT_LENGTH:
+                    first_empty += 1
+            except IndexError:
+                pass
+            empties_to_report = tuple(empty_list[first_empty:])
+            sb = seen[BLACK]
+            sw = seen[WHITE]
             # Have we only seen one colour in that line of 5?
-            if seen[BLACK] > 0 and seen[WHITE] == 0:
-                us_counter.counts[seen[BLACK]-1] += inc
-            elif seen[WHITE] > 0 and seen[BLACK] == 0:
-                them_counter.counts[seen[WHITE]-1] += inc
+            if sb > 0 and sw == 0:
+                us_counter.counts[sb-1] += inc
+                ca.report_candidate(BLACK, sb, empties_to_report)
+            elif sw > 0 and sb == 0:
+                them_counter.counts[sw-1] += inc
+                ca.report_candidate(WHITE, sw, empties_to_report)
 
             # Ignore the first one of that 5 now.
             old_occ = old[i-COUNT_LENGTH]
