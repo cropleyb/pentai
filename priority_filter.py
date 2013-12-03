@@ -4,12 +4,12 @@ class PriorityFilter():
     def __init__(self, board):
         self.board = board
 
-        self.candidates_by_colour_and_priority = []
-        for colour in range(4):
-            cbcp = self.candidates_by_colour_and_priority
+        self.candidates_by_priority_and_colour = []
+        cbpc = self.candidates_by_priority_and_colour
+        for priority in range(6):
             l = []
-            cbcp.append(l)
-            for priority in range(6):
+            cbpc.append(l)
+            for colour in range(3):
                 l.append(set())
 
         self.tried = set()
@@ -19,12 +19,12 @@ class PriorityFilter():
 
         for length in range(5):
             priority = 5 - length
-            cbcp = self.candidates_by_colour_and_priority
-            for pos in cbcp[our_colour][priority]:
+            cbpc = self.candidates_by_priority_and_colour
+            for pos in cbpc[priority][our_colour]:
                 if not pos in self.tried:
                     self.tried.add(pos)
                     yield pos
-            for pos in cbcp[other_colour][priority]:
+            for pos in cbpc[priority][other_colour]:
                 if not pos in self.tried:
                     self.tried.add(pos)
                     yield pos
@@ -38,4 +38,13 @@ class PriorityFilter():
             return
 
     def report_candidates(self, colour, length, pos_list):
-        self.candidates_by_colour_and_priority[colour][length].update(pos_list)
+        if length == 5:
+            # won already, ignore
+            return
+        if length == 4:
+            length = 5
+        self.candidates_by_priority_and_colour[length][colour].update(pos_list)
+
+    def report_threat(self, colour, pos):
+        # HACK - I am valuing captures between 3s and 4s
+        self.candidates_by_priority_and_colour[4][colour].add(pos)
