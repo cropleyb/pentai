@@ -248,6 +248,21 @@ class BoardUtilityTests(unittest.TestCase):
         self.assertEquals(board.get_occ((0,1)), BLACK)
     '''
 
+class ThreatTest(unittest.TestCase):
+
+    def setUp(self):
+        player1 = human_player.HumanPlayer("Blomp")
+        player2 = human_player.HumanPlayer("Kubba")
+        r = rules.Rules(9, "standard")
+        my_game = game.Game(r, player1, player2)
+        self.s = ABState()
+        self.s.set_state(my_game.current_state)
+
+    def test_add_one_threat_for_white(self):
+        g1 = self.s.create_state((4,4)) # B
+        g2 =     g1.create_state((3,4)) # W
+        g3 =     g2.create_state((5,4)) # B
+        self.assertEquals(g3.threats, (0, 0, 1))
 
 if __name__ == "__main__":
     unittest.main()
