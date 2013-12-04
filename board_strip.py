@@ -1,5 +1,19 @@
 from defines import *
 
+# We separate out numbers representing groups of 4 occupancies
+FOUR_OCCS_MASK = (4 ** 4 - 1)
+
+# These patterns are matched against to detect captures
+
+# BWWx
+BLACK_CAPTURE_LEFT_PATTERN = BLACK + (4 * WHITE) + (16 * WHITE) # + 64 * 0
+# WBBx
+WHITE_CAPTURE_LEFT_PATTERN = WHITE + (4 * BLACK) + (16 * BLACK) # + 64 * 0
+# xWWB
+BLACK_CAPTURE_RIGHT_PATTERN = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
+# xBBW
+WHITE_CAPTURE_RIGHT_PATTERN = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
+
 class BoardStrip():
     def __init__(self, initial_val=0):
         self.occs = initial_val
@@ -21,6 +35,7 @@ class BoardStrip():
         ol = [self.get_occ(i) for i in range(min_ind, 1+max_ind)]
         return ol
 
+    # TODO: replace with a more efficient bitmask technique
     def match_five_in_a_row(self, move_ind, my_colour):
         l = 1
         while l < 5:
@@ -50,53 +65,44 @@ class BoardStrip():
         else:
             return self.match_white_capture_left(ind)
 
-    def match_black_capture_left(self, ind):
-        # BWWx
-        if ind < 3:
-            # Cannot capture to the left - off the board
-            return ()
-        shift = 4 ** (ind - 3)
-        occs = (self.occs / shift) & (4 ** 4 - 1)
-        pattern = BLACK + (4 * WHITE) + (16 * WHITE) # + 64 * 0
-        if occs == pattern:
-            return (ind-1, ind-2)
-        return ()
-
-    def match_white_capture_left(self, ind):
-        # WBBx
-        if ind < 3:
-            # Cannot capture to the left - off the board
-            return ()
-        shift = 4 ** (ind - 3)
-        occs = (self.occs / shift) & (4 ** 4 - 1)
-        pattern = WHITE + (4 * BLACK) + (16 * BLACK) # + 64 * 0
-        if occs == pattern:
-            return (ind-1, ind-2)
-        return ()
-
     def match_capture_right(self, ind, colour):
         if colour == BLACK:
             return self.match_black_capture_right(ind)
         else:
             return self.match_white_capture_right(ind)
 
-    def match_black_capture_right(self, ind):
-        # xWWB
-        shift = 4 ** ind
-        occs = (self.occs / shift) & (4 ** 4 - 1)
-        pattern = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
+    def match_pattern_left(self, ind, pattern):
+        if ind < 3:
+            # Cannot place to the left - off the board
+            return ()
+        shift = (ind-3) << 1
+        occs = (self.occs >> shift) & FOUR_OCCS_MASK
+        if occs == pattern:
+            return (ind-1, ind-2)
+        return ()
+
+    def match_pattern_right(self, ind, pattern):
+        shift = ind << 1
+        occs = (self.occs >> shift) & FOUR_OCCS_MASK
         if occs == pattern:
             return (ind+1, ind+2)
         return ()
 
+    def match_black_capture_left(self, ind):
+        # BWWx
+        return self.match_pattern_left(ind, BLACK_CAPTURE_LEFT_PATTERN)
+
+    def match_white_capture_left(self, ind):
+        # WBBx
+        return self.match_pattern_left(ind, WHITE_CAPTURE_LEFT_PATTERN )
+
+    def match_black_capture_right(self, ind):
+        # xWWB
+        return self.match_pattern_right(ind, BLACK_CAPTURE_RIGHT_PATTERN)
+
     def match_white_capture_right(self, ind):
         # xBBW
-        shift = 4 ** ind
-        occs = (self.occs / shift) & (4 ** 4 - 1)
-        pattern = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
-        if occs == pattern:
-            return (ind+1, ind+2)
-        return ()
+        return self.match_pattern_right(ind, WHITE_CAPTURE_RIGHT_PATTERN)
 
     def get_capture_indices(self, ind, colour):
         captures = []
