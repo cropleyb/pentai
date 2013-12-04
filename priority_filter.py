@@ -41,12 +41,24 @@ class PriorityFilter():
             length = 5
         if length < 3:  # allow space for threat priority
             length -= 1
-        self.candidates_by_priority_and_colour[length][colour].update(pos_list)
+        slot = self.candidates_by_priority_and_colour[length][colour]
+        if add:
+            slot.update(pos_list)
+        else:
+            slot.difference_update(pos_list)
 
     def add_or_remove_capture(self, colour, pos, add=True):
         # Valuing captures between 3s and 4s
-        self.candidates_by_priority_and_colour[4][colour].add(pos)
+        slot = self.candidates_by_priority_and_colour[4][colour]
+        if add:
+            slot.add(pos)
+        else:
+            slot.remove(pos)
 
     def add_or_remove_threat(self, colour, pos, add=True):
         # Valuing captures between 2s and 3s
-        self.candidates_by_priority_and_colour[3][colour].add(pos)
+        slot = self.candidates_by_priority_and_colour[2][colour]
+        if add:
+            slot.add(pos)
+        else:
+            slot.remove(pos)

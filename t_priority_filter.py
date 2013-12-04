@@ -93,19 +93,19 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertEquals(l[0],(2,4))
         self.assertEquals(l[1],(1,5))
 
-    def test_iterate_over_threat(self):
+    def test_iterate_over_capture(self):
         b = Board(9)
         pf = PriorityFilter(b)
-        pf.add_or_remove_threat(BLACK, (1,5))
+        pf.add_or_remove_capture(BLACK, (1,5))
         l = list(pf.get_iter(WHITE))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(1,5))
 
-    def test_iterate_over_their_threat_before_our_two(self):
+    def test_iterate_over_their_capture_before_our_two(self):
         b = Board(9)
         pf = PriorityFilter(b)
         pf.add_or_remove_candidates(BLACK, 2, ((2,4),(4,6),(5,7)))
-        pf.add_or_remove_threat(WHITE, (1,5))
+        pf.add_or_remove_capture(WHITE, (1,5))
         l = list(pf.get_iter(BLACK))
         self.assertEquals(len(l), 4)
         self.assertEquals(l[0],(1,5))
@@ -125,6 +125,36 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertIn(l[0], threes)
         self.assertIn(l[1], threes)
         self.assertEquals(l[2],(1,5))
+        
+    def test_add_and_remove_length_candidate(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), add=True)
+        pf.add_or_remove_threat(BLACK, (1,5))
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), add=False)
+        l = list(pf.get_iter(BLACK))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(1,5))
+
+    def test_add_and_remove_capture_candidate(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.add_or_remove_capture(BLACK, (1,5), add=True)
+        pf.add_or_remove_capture(BLACK, (1,5), add=False)
+        l = list(pf.get_iter(BLACK))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(4,4))
+
+    def test_add_and_remove_threat_candidate(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.add_or_remove_threat(BLACK, (1,5), add=True)
+        pf.add_or_remove_threat(BLACK, (1,5), add=False)
+        l = list(pf.get_iter(BLACK))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(4,4))
+
+    # TODO: adding and removing length candidates from different directions
 
 if __name__ == "__main__":
     unittest.main()
