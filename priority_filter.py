@@ -20,15 +20,11 @@ class PriorityFilter():
         for length in range(5):
             priority = 5 - length
             cbpc = self.candidates_by_priority_and_colour
-            for pos in cbpc[priority][our_colour]:
-                if not pos in self.tried:
-                    self.tried.add(pos)
-                    yield pos
-            for pos in cbpc[priority][other_colour]:
-                if not pos in self.tried:
-                    self.tried.add(pos)
-                    yield pos
-                # Ignore duplicates
+            for colour in (our_colour, other_colour):
+                for pos in cbpc[priority][colour]:
+                    if not pos in self.tried:
+                        self.tried.add(pos)
+                        yield pos
 
         # BLACKs first move
         if len(self.tried) == 0:
@@ -37,7 +33,7 @@ class PriorityFilter():
             yield (half_board, half_board)
             return
 
-    def report_candidates(self, colour, length, pos_list):
+    def add_or_remove_candidates(self, colour, length, pos_list, add=True):
         if length == 5:
             # won already, ignore
             return
@@ -47,10 +43,10 @@ class PriorityFilter():
             length -= 1
         self.candidates_by_priority_and_colour[length][colour].update(pos_list)
 
-    def report_capture(self, colour, pos):
+    def add_or_remove_capture(self, colour, pos, add=True):
         # Valuing captures between 3s and 4s
         self.candidates_by_priority_and_colour[4][colour].add(pos)
 
-    def report_threat(self, colour, pos):
+    def add_or_remove_threat(self, colour, pos, add=True):
         # Valuing captures between 2s and 3s
         self.candidates_by_priority_and_colour[3][colour].add(pos)
