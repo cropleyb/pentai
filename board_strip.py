@@ -14,6 +14,17 @@ BLACK_CAPTURE_RIGHT_PATTERN = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
 # xBBW
 WHITE_CAPTURE_RIGHT_PATTERN = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
 
+# These patterns are matched against to detect threats
+
+# EWWx
+BLACK_THREAT_LEFT_PATTERN =         (4 * WHITE) + (16 * WHITE) # + 64 * 0
+# EBBx
+WHITE_THREAT_LEFT_PATTERN =       + (4 * BLACK) + (16 * BLACK) # + 64 * 0
+# EWWB
+BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
+# EBBW
+WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
+
 class BoardStrip():
     def __init__(self, initial_val=0):
         self.occs = initial_val
@@ -114,4 +125,43 @@ class BoardStrip():
             captures.extend(self.match_white_capture_left(ind))
             captures.extend(self.match_white_capture_right(ind))
         return captures
+
+    def match_black_threat_left(self, ind):
+        # BWWx
+        return self.match_pattern_left(ind, BLACK_THREAT_LEFT_PATTERN)
+
+    def match_white_threat_left(self, ind):
+        # WBBx
+        return self.match_pattern_left(ind, WHITE_THREAT_LEFT_PATTERN )
+
+    def match_black_threat_right(self, ind):
+        # xWWB
+        return self.match_pattern_right(ind, BLACK_THREAT_RIGHT_PATTERN)
+
+    def match_white_threat_right(self, ind):
+        # xBBW
+        return self.match_pattern_right(ind, WHITE_THREAT_RIGHT_PATTERN)
+
+    def match_threat_left(self, ind, colour):
+        if colour == BLACK:
+            return self.match_black_threat_left(ind)
+        else:
+            return self.match_white_threat_left(ind)
+
+    def match_threat_right(self, ind, colour):
+        if colour == BLACK:
+            return self.match_black_threat_right(ind)
+        else:
+            return self.match_white_threat_right(ind)
+
+    def get_threat_indices(self, ind, colour):
+        threats = []
+        if colour == BLACK:
+            threats.extend(self.match_black_threat_left(ind))
+            threats.extend(self.match_black_threat_right(ind))
+        else:
+            # WHITE
+            threats.extend(self.match_white_threat_left(ind))
+            threats.extend(self.match_white_threat_right(ind))
+        return threats
 
