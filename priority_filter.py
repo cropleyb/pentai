@@ -10,7 +10,7 @@ class PriorityFilter():
             l = []
             cbpc.append(l)
             for colour in range(3):
-                l.append(set())
+                l.append({})
 
         self.tried = set()
 
@@ -21,10 +21,12 @@ class PriorityFilter():
             priority = 5 - length
             cbpc = self.candidates_by_priority_and_colour
             for colour in (our_colour, other_colour):
-                for pos in cbpc[priority][colour]:
-                    if not pos in self.tried:
-                        self.tried.add(pos)
-                        yield pos
+                slot = cbpc[priority][colour]
+                for pos, count in slot.iteritems():
+                    if count > 0:
+                        if not pos in self.tried:
+                            self.tried.add(pos)
+                            yield pos
 
         # BLACKs first move
         if len(self.tried) == 0:
@@ -33,7 +35,7 @@ class PriorityFilter():
             yield (half_board, half_board)
             return
 
-    def add_or_remove_candidates(self, colour, length, pos_list, add=True):
+    def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length == 5:
             # won already, ignore
             return
@@ -42,23 +44,15 @@ class PriorityFilter():
         if length < 3:  # allow space for threat priority
             length -= 1
         slot = self.candidates_by_priority_and_colour[length][colour]
-        if add:
-            slot.update(pos_list)
-        else:
-            slot.difference_update(pos_list)
+        for pos in pos_list:
+            slot[pos] = slot.setdefault(pos, 0) + inc
 
-    def add_or_remove_capture(self, colour, pos, add=True):
+    def add_or_remove_capture(self, colour, pos, inc=1):
         # Valuing captures between 3s and 4s
         slot = self.candidates_by_priority_and_colour[4][colour]
-        if add:
-            slot.add(pos)
-        else:
-            slot.remove(pos)
+        slot[pos] = slot.setdefault(pos, 0) + inc
 
-    def add_or_remove_threat(self, colour, pos, add=True):
+    def add_or_remove_threat(self, colour, pos, inc=1):
         # Valuing captures between 2s and 3s
         slot = self.candidates_by_priority_and_colour[2][colour]
-        if add:
-            slot.add(pos)
-        else:
-            slot.remove(pos)
+        slot[pos] = slot.setdefault(pos, 0) + inc

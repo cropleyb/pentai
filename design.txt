@@ -108,3 +108,10 @@ The utility function needs to feed the search filter candidate moves,
 classified by priority and who is to move at that depth level of the
 search tree.
 
+Problem
+There may be 2 or more length 3 extending moves for black at pos (6,4),
+from different directions. We only need to iterate over it once, but
+when we remove it from one direction, that shouldn't remove it from the other
+direction. OTOH, if someone plays on (6,4), both should be removed.
+Hopefully this would be fixed by keeping a count of the times it has been added.
+(dict)

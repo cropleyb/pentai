@@ -129,9 +129,9 @@ class PriorityFilterTest(unittest.TestCase):
     def test_add_and_remove_length_candidate(self):
         b = Board(9)
         pf = PriorityFilter(b)
-        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), add=True)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), inc=1)
         pf.add_or_remove_threat(BLACK, (1,5))
-        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), add=False)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), inc=-1)
         l = list(pf.get_iter(BLACK))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(1,5))
@@ -139,8 +139,8 @@ class PriorityFilterTest(unittest.TestCase):
     def test_add_and_remove_capture_candidate(self):
         b = Board(9)
         pf = PriorityFilter(b)
-        pf.add_or_remove_capture(BLACK, (1,5), add=True)
-        pf.add_or_remove_capture(BLACK, (1,5), add=False)
+        pf.add_or_remove_capture(BLACK, (1,5), inc=1)
+        pf.add_or_remove_capture(BLACK, (1,5), inc=-1)
         l = list(pf.get_iter(BLACK))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(4,4))
@@ -148,13 +148,23 @@ class PriorityFilterTest(unittest.TestCase):
     def test_add_and_remove_threat_candidate(self):
         b = Board(9)
         pf = PriorityFilter(b)
-        pf.add_or_remove_threat(BLACK, (1,5), add=True)
-        pf.add_or_remove_threat(BLACK, (1,5), add=False)
+        pf.add_or_remove_threat(BLACK, (1,5), inc=1)
+        pf.add_or_remove_threat(BLACK, (1,5), inc=-1)
         l = list(pf.get_iter(BLACK))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(4,4))
 
-    # TODO: adding and removing length candidates from different directions
+    def test_add_and_remove_length_candidate_from_diff_directions(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), inc=1)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(3,3),), inc=1)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), inc=-1)
+        l = list(pf.get_iter(BLACK))
+        self.assertEquals(len(l), 2)
+        pair = ((2,4),(3,3),)
+        self.assertIn(l[0], pair)
+        self.assertIn(l[1], pair)
 
 if __name__ == "__main__":
     unittest.main()
