@@ -147,16 +147,26 @@ class ABState():
         # update substrips
         brd = self.board()
         for ds in brd.get_direction_strips():
+            # Keep track of the lengths of lines that can form 5
+            # in a row
             brd_size = brd.get_size()
-            # TODO: Fetch this just once, share between before and after.
-            occ_list = ds.get_occ_list(pos, brd_size)
 
-            #print "%s: %s" % (ds, occs)
             ca = CandidateAccumulator() # TEMP HACK
-            process_substrips(occ_list, ca, self.black_lines, self.white_lines, inc)
 
-            bs, bs_ind = ds.get_strip(pos)
+            bs, s_num = ds.get_strip(pos)
             ind = ds.get_index(pos)
+
+            strip_min, strip_max = ds.get_bounds(s_num, brd_size)
+
+            # These are the absolute indices that bound the strip
+            # we want to use to adjust length stats.
+            min_ind = max(strip_min, ind-4) # TODO: constants
+            max_ind = min(ind+4, strip_max) # inclusive
+
+            process_substrips(bs, min_ind, max_ind, 
+                    ca, self.black_lines, self.white_lines, inc)
+
+            # TODO: brd_size may need changing due to some diagonal captures?
             process_takes(bs, ind, brd_size, self.takes, inc)
 
     def create_state(self, move_pos):

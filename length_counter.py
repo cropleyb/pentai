@@ -32,52 +32,61 @@ Detect and report indices that build on or interfere with a
 possibly fragmented line, as well as counting these possibilities
 """
 
-def process_substrips(pattern, ca, us_counter, them_counter, inc):
-    """ This complex little algorithm calculates the contributions
-    of a given line of pieces ("pattern") to the totals count.
-    We only count the number of ways in which a line of 5 is possible.
-    ca: candidate accumulator
-    """
-    seen = [0, 0, 0]
-     
-    i = 0
-    old = []
-    empty_list = []
-    first_empty = 0
+FIVE_OCCS_MASK = (4 ** 5 - 1)
 
-    # Go through the occupancies of the strip of positions
-    # passed to us.
-    for occ in pattern:
-        if occ != EMPTY:
-            seen[occ] += 1 # BLACK or WHITE
-        else:
-            empty_list.append(i)
+global length_lookup
 
-        # Keep track of old occupancies for undoing later
-        old.append(occ)
+import pdb
 
-        i += 1
+def extend_and_store_lookups(occ, depth, occ_val, length, colour, rep_str):
+    if occ != EMPTY:
+        # add occ to lookup value
+        occ_val += colour
 
-        # We only start counting once we have reached a length of 5
-        if i >= COUNT_LENGTH:
-            try:
-                while empty_list[first_empty] < i - COUNT_LENGTH:
-                    first_empty += 1
-            except IndexError:
-                pass
-            empties_to_report = tuple(empty_list[first_empty:])
-            sb = seen[BLACK]
-            sw = seen[WHITE]
-            # Have we only seen one colour in that line of 5?
-            if sb > 0 and sw == 0:
-                us_counter.counts[sb-1] += inc
-                ca.report_length_candidate(BLACK, sb, empties_to_report)
-            elif sw > 0 and sb == 0:
-                them_counter.counts[sw-1] += inc
-                ca.report_length_candidate(WHITE, sw, empties_to_report)
+        # add one to length
+        length += 1
+        rep_str = rep_str + str(colour)
+    else:
+        rep_str = rep_str + " "
+    # TODO: if occ is EMPTY, save it for ca later
 
-            # Ignore the first one of that 5 now.
-            old_occ = old[i-COUNT_LENGTH]
-            if old_occ > 0:
-                seen[old_occ] -= 1
+    if depth <= 1:
+        if length > 0:
+            # add_pattern
+            assert length <= 5
+            rep_str = rep_str + ">"
+            length_lookup[occ_val] = colour, length, rep_str
+    else:
+        build_and_store_values(depth-1, occ_val, length, colour, rep_str)
+
+
+def build_and_store_values(depth, occ_val, length, colour, rep_str=None):
+    if rep_str == None:
+        rep_str = "<"
+    occ_val *= 4
+    for occ in (EMPTY, colour):
+        extend_and_store_lookups(occ, depth, occ_val, length, colour, rep_str)
+
+
+def prepare_length_lookups():
+    global length_lookup
+    length_lookup = {}
+
+    build_and_store_values(5, 0, 0, BLACK)
+    build_and_store_values(5, 0, 0, WHITE)
+
+prepare_length_lookups()
+
+def process_substrips(bs, min_ind, max_ind, ca, black_counter, white_counter, inc):
+    length_counters = [None, black_counter, white_counter]
+    for ind in range(min_ind, 1+max_ind-4):
+        shift = ind << 1 # x 2 for 2 bits each occ
+        occs = (bs.occs >> shift) & FIVE_OCCS_MASK
+        try:
+            colour, length, rep_str = length_lookup[occs]
+        except:
+            continue
+        lc = length_counters[colour]
+        lc.counts[length-1] += inc
+        # TODO: ca
 
