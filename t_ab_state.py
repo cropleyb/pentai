@@ -240,15 +240,15 @@ class ThreatTest(unittest.TestCase):
     def setUp(self):
         player1 = human_player.HumanPlayer("Blomp")
         player2 = human_player.HumanPlayer("Kubba")
-        r = rules.Rules(9, "standard")
+        r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
         self.s.set_state(my_game.current_state)
 
     def test_add_one_take_for_white(self):
-        g1 = self.s.create_state((4,4)) # B
-        g2 =     g1.create_state((3,4)) # W
-        g3 =     g2.create_state((5,4)) # B
+        g1 = self.s.create_state((2,4)) # B
+        g2 =     g1.create_state((1,4)) # W
+        g3 =     g2.create_state((3,4)) # B
         self.assertEquals(g3.takes, [0, 0, 1])
 
     def test_SW_valid(self):
@@ -258,21 +258,21 @@ class ThreatTest(unittest.TestCase):
         self.assertEquals(g3.takes, [0, 0, 1])
 
     def test_NW_valid(self):
-        g1 = self.s.create_state((1,7)) # B
-        g2 =     g1.create_state((3,5)) # W
-        g3 =     g2.create_state((2,6)) # B
+        g1 = self.s.create_state((1,3)) # B
+        g2 =     g1.create_state((3,1)) # W
+        g3 =     g2.create_state((2,2)) # B
         self.assertEquals(g3.takes, [0, 0, 1])
 
     def test_NE_valid(self):
-        g1 = self.s.create_state((7,7)) # B
-        g2 =     g1.create_state((5,5)) # W
-        g3 =     g2.create_state((6,6)) # B
+        g1 = self.s.create_state((3,3)) # B
+        g2 =     g1.create_state((1,1)) # W
+        g3 =     g2.create_state((2,2)) # B
         self.assertEquals(g3.takes, [0, 0, 1])
 
     def test_SE_valid(self):
-        g1 = self.s.create_state((7,1)) # B
-        g2 =     g1.create_state((5,3)) # W
-        g3 =     g2.create_state((6,2)) # B
+        g1 = self.s.create_state((2,2)) # B
+        g2 =     g1.create_state((1,3)) # W
+        g3 =     g2.create_state((3,1)) # B
         self.assertEquals(g3.takes, [0, 0, 1])
 
     ##########################################
@@ -284,21 +284,21 @@ class ThreatTest(unittest.TestCase):
         self.assertEquals(g3.takes, [0, 0, 0])
 
     def test_NW_invalid(self):
-        g1 = self.s.create_state((0,8)) # B
-        g2 =     g1.create_state((2,6)) # W
-        g3 =     g2.create_state((1,7)) # B
+        g1 = self.s.create_state((0,4)) # B
+        g2 =     g1.create_state((2,2)) # W
+        g3 =     g2.create_state((1,3)) # B
         self.assertEquals(g3.takes, [0, 0, 0])
 
     def test_NE_invalid(self):
-        g1 = self.s.create_state((8,8)) # B
-        g2 =     g1.create_state((6,6)) # W
-        g3 =     g2.create_state((7,7)) # B
+        g1 = self.s.create_state((4,4)) # B
+        g2 =     g1.create_state((2,2)) # W
+        g3 =     g2.create_state((3,3)) # B
         self.assertEquals(g3.takes, [0, 0, 0])
 
     def test_SE_invalid(self):
-        g1 = self.s.create_state((8,0)) # B
-        g2 =     g1.create_state((6,2)) # W
-        g3 =     g2.create_state((7,1)) # B
+        g1 = self.s.create_state((4,0)) # B
+        g2 =     g1.create_state((2,2)) # W
+        g3 =     g2.create_state((3,1)) # B
         self.assertEquals(g3.takes, [0, 0, 0])
 
     ##########################################
@@ -310,21 +310,21 @@ class ThreatTest(unittest.TestCase):
         self.assertEquals(g3.takes, [0, 0, 0])
 
     def test_E_invalid(self):
-        g1 = self.s.create_state((8,6)) # B
-        g2 =     g1.create_state((6,6)) # W
-        g3 =     g2.create_state((7,6)) # B
+        g1 = self.s.create_state((4,2)) # B
+        g2 =     g1.create_state((2,2)) # W
+        g3 =     g2.create_state((3,2)) # B
         self.assertEquals(g3.takes, [0, 0, 0])
 
     def test_N_invalid(self):
-        g1 = self.s.create_state((2,8)) # B
-        g2 =     g1.create_state((2,6)) # W
-        g3 =     g2.create_state((2,7)) # B
+        g1 = self.s.create_state((2,4)) # B
+        g2 =     g1.create_state((2,2)) # W
+        g3 =     g2.create_state((2,3)) # B
         self.assertEquals(g3.takes, [0, 0, 0])
 
     def test_S_invalid(self):
-        g1 = self.s.create_state((7,0)) # B
-        g2 =     g1.create_state((7,2)) # W
-        g3 =     g2.create_state((7,1)) # B
+        g1 = self.s.create_state((2,0)) # B
+        g2 =     g1.create_state((2,2)) # W
+        g3 =     g2.create_state((2,1)) # B
         self.assertEquals(g3.takes, [0, 0, 0])
 
 if __name__ == "__main__":
