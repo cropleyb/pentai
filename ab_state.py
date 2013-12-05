@@ -163,8 +163,9 @@ class ABState():
             min_ind = max(strip_min, ind-4) # TODO: constants
             max_ind = min(ind+4, strip_max) # inclusive
 
+            length_counters = [None, self.black_lines, self.white_lines]
             process_substrips(bs, min_ind, max_ind, 
-                    ca, self.black_lines, self.white_lines, inc)
+                    ca, length_counters, inc)
 
             # TODO: brd_size may need changing due to some diagonal captures?
             process_takes(bs, ind, brd_size, self.takes, inc)
@@ -185,36 +186,4 @@ class ABState():
 
     def terminal(self):
         return self.state.get_won_by() != game.EMPTY
-
-'''
-class ABGame():
-    """ This class acts as a bridge between the AlphaBeta code and my code """
-    def __init__(self, base_game):
-        s = self.current_state = ABState()
-        s.set_state(base_game.current_state)
-        self.base_game = base_game
-
-    def to_move(self, state=None):
-        if state is None:
-            state = self.current_state
-        return state.to_move()
-
-    def utility(self, state, player):
-        return state.utility(player)
-
-    # TODO: unit test
-    def successors(self, state):
-        pos_iter = state.get_iter()
-        for pos in pos_iter.get_iter():
-            # create a AB_State for each possible move from state
-            try:
-                succ = state.create_state(pos)
-                yield gui.MoveAction(pos), succ
-            except game_state.IllegalMoveException:
-                # Ignore these
-                pass
-
-    def terminal_test(self, state):
-        return state.terminal()
-'''
 
