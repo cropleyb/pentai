@@ -38,7 +38,7 @@ global length_lookup
 
 import pdb
 
-def extend_and_store_lookups(occ, depth, occ_val, length, colour, rep_str):
+def extend_and_store_lookups(occ, depth, occ_val, length, colour, empty_list, rep_str):
     if occ != EMPTY:
         # add occ to lookup value
         occ_val += colour
@@ -48,6 +48,7 @@ def extend_and_store_lookups(occ, depth, occ_val, length, colour, rep_str):
         rep_str = rep_str + str(colour)
     else:
         rep_str = rep_str + " "
+        empty_list.append(depth-1)
     # TODO: if occ is EMPTY, save it for ca later
 
     if depth <= 1:
@@ -55,25 +56,25 @@ def extend_and_store_lookups(occ, depth, occ_val, length, colour, rep_str):
             # add_pattern
             assert length <= 5
             rep_str = rep_str + ">"
-            length_lookup[occ_val] = colour, length, rep_str
+            length_lookup[occ_val] = colour, length, sorted(empty_list), rep_str
     else:
-        build_and_store_values(depth-1, occ_val, length, colour, rep_str)
+        build_and_store_values(depth-1, occ_val, length, colour, empty_list[:], rep_str)
 
 
-def build_and_store_values(depth, occ_val, length, colour, rep_str=None):
+def build_and_store_values(depth, occ_val, length, colour, empty_list, rep_str=None):
     if rep_str == None:
         rep_str = "<"
     occ_val *= 4
     for occ in (EMPTY, colour):
-        extend_and_store_lookups(occ, depth, occ_val, length, colour, rep_str)
+        extend_and_store_lookups(occ, depth, occ_val, length, colour, empty_list[:], rep_str)
 
 
 def prepare_length_lookups():
     global length_lookup
     length_lookup = {}
 
-    build_and_store_values(5, 0, 0, BLACK)
-    build_and_store_values(5, 0, 0, WHITE)
+    build_and_store_values(5, 0, 0, BLACK, [])
+    build_and_store_values(5, 0, 0, WHITE, [])
 
 prepare_length_lookups()
 
@@ -83,10 +84,11 @@ def process_substrips(bs, min_ind, max_ind, ca, black_counter, white_counter, in
         shift = ind << 1 # x 2 for 2 bits each occ
         occs = (bs.occs >> shift) & FIVE_OCCS_MASK
         try:
-            colour, length, rep_str = length_lookup[occs]
+            colour, length, empty_list, rep_str = length_lookup[occs]
         except:
             continue
         lc = length_counters[colour]
         lc.counts[length-1] += inc
+        ca.report_length_candidate(colour, length, empty_list)
         # TODO: ca
 
