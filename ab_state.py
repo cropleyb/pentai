@@ -21,13 +21,13 @@ class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None):
         if parent == None:
-            self.black_lines = LengthCounter()
-            self.white_lines = LengthCounter()
+            self.black_lines = [0] * 5
+            self.white_lines = [0] * 5
             self.takes = [0, 0, 0]
             self.search_filter = None
         else:
-            self.black_lines = LengthCounter(parent.black_lines) # TODO: clone method
-            self.white_lines = LengthCounter(parent.white_lines)
+            self.black_lines = parent.black_lines[:]
+            self.white_lines = parent.white_lines[:]
             self.takes = parent.takes[:]
             self.search_filter = parent.search_filter.clone()
 
