@@ -251,6 +251,54 @@ class ThreatTest(unittest.TestCase):
         g3 =     g2.create_state((5,4)) # B
         self.assertEquals(g3.takes, [0, 0, 1])
 
+    def test_SW_valid(self):
+        g1 = self.s.create_state((1,1)) # B
+        g2 =     g1.create_state((3,3)) # W
+        g3 =     g2.create_state((2,2)) # B
+        self.assertEquals(g3.takes, [0, 0, 1])
+
+    def test_NW_valid(self):
+        g1 = self.s.create_state((1,7)) # B
+        g2 =     g1.create_state((3,5)) # W
+        g3 =     g2.create_state((2,6)) # B
+        self.assertEquals(g3.takes, [0, 0, 1])
+
+    def test_NE_valid(self):
+        g1 = self.s.create_state((7,7)) # B
+        g2 =     g1.create_state((5,5)) # W
+        g3 =     g2.create_state((6,6)) # B
+        self.assertEquals(g3.takes, [0, 0, 1])
+
+    def test_SE_valid(self):
+        g1 = self.s.create_state((7,1)) # B
+        g2 =     g1.create_state((5,3)) # W
+        g3 =     g2.create_state((6,2)) # B
+        self.assertEquals(g3.takes, [0, 0, 1])
+
+    def test_SW_invalid(self):
+        g1 = self.s.create_state((0,0)) # B
+        g2 =     g1.create_state((2,2)) # W
+        g3 =     g2.create_state((1,1)) # B
+        self.assertEquals(g3.takes, [0, 0, 0])
+
+    def test_NW_invalid(self):
+        g1 = self.s.create_state((0,8)) # B
+        g2 =     g1.create_state((2,6)) # W
+        g3 =     g2.create_state((1,7)) # B
+        self.assertEquals(g3.takes, [0, 0, 0])
+
+    def test_NE_invalid(self):
+        g1 = self.s.create_state((8,8)) # B
+        g2 =     g1.create_state((6,6)) # W
+        g3 =     g2.create_state((7,7)) # B
+        self.assertEquals(g3.takes, [0, 0, 0])
+
+    def test_SE_invalid(self):
+        g1 = self.s.create_state((8,0)) # B
+        g2 =     g1.create_state((6,2)) # W
+        g3 =     g2.create_state((7,1)) # B
+        self.assertEquals(g3.takes, [0, 0, 0])
+
 if __name__ == "__main__":
     unittest.main()
 
