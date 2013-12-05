@@ -35,6 +35,7 @@ possibly fragmented line, as well as counting these possibilities
 FIVE_OCCS_MASK = (4 ** 5 - 1)
 
 global length_lookup
+length_lookup = {}
 
 import pdb
 
@@ -48,10 +49,10 @@ def extend_and_store_lookups(occ, depth, occ_val, length, colour, empty_list, re
         rep_str = rep_str + str(colour)
     else:
         rep_str = rep_str + " "
-        empty_list.append(depth-1)
+        empty_list.append(depth)
     # TODO: if occ is EMPTY, save it for ca later
 
-    if depth <= 1:
+    if depth <= 0:
         if length > 0:
             # add_pattern
             assert length <= 5
@@ -70,25 +71,24 @@ def build_and_store_values(depth, occ_val, length, colour, empty_list, rep_str=N
 
 
 def prepare_length_lookups():
-    global length_lookup
-    length_lookup = {}
-
-    build_and_store_values(5, 0, 0, BLACK, [])
-    build_and_store_values(5, 0, 0, WHITE, [])
+    build_and_store_values(4, 0, 0, BLACK, [])
+    build_and_store_values(4, 0, 0, WHITE, [])
 
 prepare_length_lookups()
 
-def process_substrips(bs, min_ind, max_ind, ca, black_counter, white_counter, inc):
-    length_counters = [None, black_counter, white_counter]
+def process_substrips(bs, min_ind, max_ind, ca, length_counters, inc):
     for ind in range(min_ind, 1+max_ind-4):
         shift = ind << 1 # x 2 for 2 bits each occ
         occs = (bs.occs >> shift) & FIVE_OCCS_MASK
         try:
             colour, length, empty_list, rep_str = length_lookup[occs]
-        except:
+        except KeyError:
             continue
+        # Found a match
         lc = length_counters[colour]
+        # Count it
         lc.counts[length-1] += inc
-        ca.report_length_candidate(colour, length, empty_list)
-        # TODO: ca
+        # Report it
+        shifted_empties = [e+ind for e in empty_list]
+        ca.report_length_candidate(colour, length, shifted_empties)
 
