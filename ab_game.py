@@ -23,14 +23,20 @@ class ABGame():
     def utility(self, state, player):
         return state.utility(player)
 
-    # TODO: unit test
     def successors(self, state):
-        pos_iter = state.get_iter()
-        for pos in pos_iter.get_iter():
+        if state.get_move_number() == 1:
+            # The first black move is always in the centre
+            brd_size = self.base_game.get_board().get_size()
+            centre_pos = (brd_size/2, brd_size/2)
+            p_i = [centre_pos]
+        else:
+            pos_iter = state.get_iter(state.to_move())
+            p_i = pos_iter.get_iter(state.to_move_colour())
+        for pos in p_i:
             # create a AB_State for each possible move from state
             try:
                 succ = state.create_state(pos)
-                yield gui.MoveAction(pos), succ
+                yield gui.MoveAction(pos), succ # TODO: remove MA class
             except pente_exceptions.IllegalMoveException:
                 # Ignore these
                 pass

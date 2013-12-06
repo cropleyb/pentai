@@ -3,9 +3,7 @@
 import board
 import game_state
 import alpha_beta
-import nearby_filter
 import game
-import gui
 from board_strip import *
 
 from length_lookup_table import *
@@ -23,10 +21,8 @@ class ABState():
     def __init__(self, parent=None):
         if parent == None:
             self.utility_stats = UtilityStats()
-            self.search_filter = None
         else:
             self.utility_stats = UtilityStats(parent.utility_stats)
-            self.search_filter = parent.search_filter.clone()
 
     def get_black_line_counts(self):
         return self.utility_stats.lines[BLACK]
@@ -37,19 +33,20 @@ class ABState():
     def get_takes(self):
         return self.utility_stats.takes
 
-    def get_iter(self):
-        return self.search_filter
+    def get_iter(self, to_move):
+        return self.utility_stats.search_filter
 
     def set_state(self, s):
         self.state = s
         self.board().add_observer(self)
-        if self.search_filter is None:
-            self.search_filter = nearby_filter.NearbyFilter(self.board())
         # TODO: Remove us as an observer from previous self.state?
         # Probably not - recursive search could cause probs
 
     def to_move_colour(self):
         return self.state.to_move_colour()
+
+    def get_move_number(self):
+        return self.state.get_move_number()
 
     def to_move(self):
         """ This is only to keep the AB code unchanged; the value is unused. """
@@ -134,11 +131,6 @@ class ABState():
 
     def after_set_occ(self, pos, colour):
         self._set_or_reset_occs(pos, 1)
-        # Update the move filtering
-        if colour == EMPTY:
-            self.search_filter.capture(pos)
-        else:
-            self.search_filter.move(pos)
 
     def _set_or_reset_occs(self, pos, inc):
         # update substrips
