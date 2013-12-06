@@ -187,6 +187,17 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(3,3))
 
+    def test_copy(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(3,3),), inc=1)
+        pf.add_or_remove_candidates(BLACK, 4, ((3,3),), inc=1)
+        pfc = pf.copy(min_priority=4)
+        l = list(pfc.get_iter(BLACK))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(3,3))
+
+
 if __name__ == "__main__":
     unittest.main()
 

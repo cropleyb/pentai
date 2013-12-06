@@ -1,18 +1,27 @@
 from defines import *
 
 class PriorityFilter():
-    def __init__(self, board):
+    def __init__(self, board=None, orig=None, min_priority=0):
         self.board = board
+        self.tried = set()
 
         self.candidates_by_priority_and_colour = []
         cbpc = self.candidates_by_priority_and_colour
+        if orig != None:
+            ocbpc = orig.candidates_by_priority_and_colour
+
         for priority in range(6):
             l = []
             cbpc.append(l)
             for colour in range(3):
-                l.append({})
+                if priority < min_priority or orig is None:
+                    l.append({})
+                else:
+                    l.append(ocbpc[priority][colour].copy())
 
-        self.tried = set()
+
+    def copy(self, min_priority=0):
+        return PriorityFilter(orig=self, min_priority=min_priority)
 
     def get_iter(self, our_colour, min_priority=0):
         other_colour = opposite_colour(our_colour)
