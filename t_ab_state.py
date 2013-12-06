@@ -11,6 +11,8 @@ from board import *
 
 from ab_state import *
 
+import pdb
+
 class AlphaBetaBridgeTest(unittest.TestCase):
 
     def setUp(self):
@@ -19,63 +21,65 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         r = rules.Rules(13, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
+        self.bl = self.s.utility_stats.lines[BLACK]
+        self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(my_game.current_state)
 
     def test_update_substrips_middle_of_board(self):
         self.s.board().set_occ((7,7), BLACK)
 
-        self.assertEquals(self.s.black_lines, [20, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [20, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_empty_board(self):
-        self.assertEquals(self.s.black_lines, [0, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [0, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_SW_corner(self):
         self.s.board().set_occ((0,0), BLACK)
 
-        self.assertEquals(self.s.black_lines, [3, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [3, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_near_SW_corner(self):
         self.s.board().set_occ((1,0), BLACK)
 
-        self.assertEquals(self.s.black_lines, [4, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [4, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_NE_corner(self):
         self.s.board().set_occ((12,12), BLACK)
 
-        self.assertEquals(self.s.black_lines, [3, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [3, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_remove_single_stone(self):
         self.s.board().set_occ((0,0), BLACK)
         self.s.board().set_occ((0,0), EMPTY)
 
-        self.assertEquals(self.s.black_lines, [0, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [0, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_two_blacks_SW(self):
         self.s.board().set_occ((0,0), BLACK)
         self.s.board().set_occ((1,1), BLACK)
 
-        self.assertEquals(self.s.black_lines, [7, 1, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [7, 1, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_2_opp_colour_pieces(self):
         self.s.board().set_occ((0,0), BLACK)
         self.s.board().set_occ((0,1), WHITE)
 
-        self.assertEquals(self.s.black_lines, [2, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [3, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [2, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [3, 0, 0, 0, 0])
 
     def test_update_substrips_2_pieces(self):
         self.s.board().set_occ((0,0), BLACK)
         self.s.board().set_occ((0,1), BLACK)
 
-        self.assertEquals(self.s.black_lines, [5, 1, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [5, 1, 0, 0, 0])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_5_in_a_row(self):
         self.s.board().set_occ((0,0), BLACK)
@@ -84,8 +88,8 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         self.s.board().set_occ((0,3), BLACK)
         self.s.board().set_occ((0,4), BLACK)
 
-        self.assertEquals(self.s.black_lines, [12, 1, 1, 1, 1])
-        self.assertEquals(self.s.white_lines, [0, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [12, 1, 1, 1, 1])
+        self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
 class LengthCountingTest(unittest.TestCase):
 
@@ -95,42 +99,44 @@ class LengthCountingTest(unittest.TestCase):
         r = rules.Rules(9, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
+        self.bl = self.s.utility_stats.lines[BLACK]
+        self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(my_game.current_state)
 
     def test_middle_for_black_diag_2_for_white(self):
         self.s.board().set_occ((4,4), BLACK)
         self.s.board().set_occ((2,2), WHITE)
 
-        self.assertEquals(self.s.black_lines, [17, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [7, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [17, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [7, 0, 0, 0, 0])
         
     def test_middle_for_black_left_1_for_white(self):
         self.s.board().set_occ((4,4), BLACK)
         self.s.board().set_occ((3,4), WHITE)
 
-        self.assertEquals(self.s.black_lines, [16, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [5+4+4, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [16, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
 
     def test_middle_for_black_right_1_for_white(self):
         self.s.board().set_occ((4,4), BLACK)
         self.s.board().set_occ((5,4), WHITE)
 
-        self.assertEquals(self.s.black_lines, [16, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [5+4+4, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [16, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
 
     def test_middle_for_black_up_1_for_white(self):
         self.s.board().set_occ((4,4), BLACK)
         self.s.board().set_occ((4,5), WHITE)
 
-        self.assertEquals(self.s.black_lines, [16, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [5+4+4, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [16, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
 
     def test_middle_for_black_down_1_for_white(self):
         self.s.board().set_occ((4,4), BLACK)
         self.s.board().set_occ((4,3), WHITE)
 
-        self.assertEquals(self.s.black_lines, [16, 0, 0, 0, 0])
-        self.assertEquals(self.s.white_lines, [5+4+4, 0, 0, 0, 0])
+        self.assertEquals(self.bl, [16, 0, 0, 0, 0])
+        self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
 
     ###############
 
@@ -141,6 +147,8 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
+        self.bl = self.s.utility_stats.lines[BLACK]
+        self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(my_game.current_state)
 
     def test_initial_state_black_to_move(self):
@@ -226,15 +234,6 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         self.assertEquals(board.get_occ((1,2)), EMPTY)
         self.assertEquals(board.get_occ((2,3)), EMPTY)
 
-class BoardUtilityTests(unittest.TestCase):
-    def setUp(self):
-        player1 = human_player.HumanPlayer("Blomp")
-        player2 = human_player.HumanPlayer("Kubba")
-        r = rules.Rules(5, "standard")
-        my_game = game.Game(r, player1, player2)
-        self.s = ABState()
-        self.s.set_state(my_game.current_state)
-
 class ThreatTest(unittest.TestCase):
 
     def setUp(self):
@@ -243,6 +242,8 @@ class ThreatTest(unittest.TestCase):
         r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.s = ABState()
+        self.bl = self.s.utility_stats.lines[BLACK]
+        self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(my_game.current_state)
 
     def test_add_one_take_for_white(self):

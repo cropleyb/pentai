@@ -10,6 +10,7 @@ from board_strip import *
 
 from length_lookup_table import *
 from take_counter import *
+from utility_stats import *
 
 import pdb
 
@@ -21,21 +22,19 @@ class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None):
         if parent == None:
-            self.black_lines = [0] * 5
-            self.white_lines = [0] * 5
             self.takes = [0, 0, 0]
+            self.utility_stats = UtilityStats()
             self.search_filter = None
         else:
-            self.black_lines = parent.black_lines[:]
-            self.white_lines = parent.white_lines[:]
             self.takes = parent.takes[:]
+            self.utility_stats = UtilityStats(parent.utility_stats)
             self.search_filter = parent.search_filter.clone()
 
     def get_black_line_counts(self):
-        return self.black_lines
+        return self.utility_stats.lines[BLACK]
 
     def get_white_line_counts(self):
-        return self.white_lines
+        return self.utility_stats.lines[WHITE]
 
     def get_iter(self):
         return self.search_filter
@@ -54,10 +53,6 @@ class ABState():
         """ This is only to keep the AB code unchanged; the value is unused. """
         return None
 
-    def __repr__(self):
-        ret = str(self.black_lines) + str(self.white_lines) + self.state.__repr__()
-        return ret
-
     def search_player_colour(self):
         """ The AI player who is performing the search """
         game = self.game()
@@ -74,8 +69,8 @@ class ABState():
         turn_colour = self.to_move_colour()
         search_colour = self.search_player_colour()
 
-        black_contrib = self.utility_contrib(self.black_lines, BLACK)
-        white_contrib = self.utility_contrib(self.white_lines, WHITE)
+        black_contrib = self.utility_contrib(self.get_black_line_counts(), BLACK)
+        white_contrib = self.utility_contrib(self.get_white_line_counts(), WHITE)
 
         # Having the move is worth a lot.
         if turn_colour == BLACK:
@@ -151,8 +146,6 @@ class ABState():
             # in a row
             brd_size = brd.get_size()
 
-            ca = CandidateAccumulator() # TEMP HACK
-
             bs, s_num = ds.get_strip(pos)
             ind = ds.get_index(pos)
 
@@ -163,9 +156,10 @@ class ABState():
             min_ind = max(strip_min, ind-4) # TODO: constants
             max_ind = min(ind+4, strip_max) # inclusive
 
-            length_counters = [None, self.black_lines, self.white_lines]
+            #length_counters = [None, self.black_lines, self.white_lines]
+            # length_counters = self.utility_stats.lines
             process_substrips(bs, min_ind, max_ind, 
-                    ca, length_counters, inc)
+                    self.utility_stats, inc)
 
             # TODO: brd_size may need changing due to some diagonal captures?
             process_takes(bs, ind, brd_size, self.takes, inc)

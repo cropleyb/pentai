@@ -24,17 +24,17 @@ def pattern_string_to_bs(occ_str):
 
 class SubStripCountingTest(unittest.TestCase):
     def setUp(self):
-        self.black_counter = [0] * 5
-        self.white_counter = [0] * 5
-        self.candidate_accumulator = mock.Mock()
+        self.util_stats = UtilityStats()
+        self.black_counter = self.util_stats.lines[BLACK]
+        self.white_counter = self.util_stats.lines[WHITE]
 
     # Helper
     def process_substrips_for_str(self, ss_str):
         pattern = pattern_string_to_bs(ss_str)
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         lcs = [0, self.black_counter, self.white_counter]
         bs_len = len(ss_str)
-        process_substrips(pattern, 0, bs_len-1, ca, lcs, 1)
+        process_substrips(pattern, 0, bs_len-1, ca, 1)
 
     # Tests
     def test_count_empty(self):
@@ -156,44 +156,44 @@ class CandidateReportingTest(unittest.TestCase):
     def setUp(self):
         self.black_counter = [0] * 5
         self.white_counter = [0] * 5
-        self.candidate_accumulator = mock.Mock()
+        self.util_stats = mock.Mock()
 
     def process_substrips_for_str(self, ss_str):
         pattern = pattern_string_to_bs(ss_str)
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         lcs = [0, self.black_counter, self.white_counter]
         bs_len = len(ss_str)
-        process_substrips(pattern, 0, bs_len-1, ca, lcs, 1)
+        process_substrips(pattern, 0, bs_len-1, ca, 1)
 
     def test_report_nothing(self):
         self.process_substrips_for_str("     ")
-        calls = self.candidate_accumulator.mockGetAllCalls()
+        calls = self.util_stats.mockGetAllCalls()
         self.assertEquals(len(calls),0)
 
     def test_report_a_four(self):
         self.process_substrips_for_str("BB BB")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
         ca.mockCheckCall(0, 'report_length_candidate', BLACK, 4, [2], 1)
 
     def test_report_a_different_four(self):
         self.process_substrips_for_str("B BBB")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
         ca.mockCheckCall(0, 'report_length_candidate', BLACK, 4, [1], 1)
 
     def test_report_a_three(self):
         self.process_substrips_for_str("B B B")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
         ca.mockCheckCall(0, 'report_length_candidate', BLACK, 3, [1,3], 1)
 
     def test_report_a_three_and_a_two(self):
         self.process_substrips_for_str("B B B ")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),2)
         ca.mockCheckCall(0, 'report_length_candidate', BLACK, 3, [1,3], 1)
@@ -201,28 +201,28 @@ class CandidateReportingTest(unittest.TestCase):
 
     def test_report_a_white_four(self):
         self.process_substrips_for_str("WW WW")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
         ca.mockCheckCall(0, 'report_length_candidate', WHITE, 4, [2], 1)
 
     def test_report_a_four(self):
         self.process_substrips_for_str(" WB BBB")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
         ca.mockCheckCall(0, 'report_length_candidate', BLACK, 4, [3], 1)
 
     def test_report_a_five(self):
         self.process_substrips_for_str(" WBBBBB")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),1)
         ca.mockCheckCall(0, 'report_length_candidate', BLACK, 5, [], 1)
 
     def test_report_two_ones(self):
         self.process_substrips_for_str(" W    ")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),2)
         ca.mockCheckCall(0, 'report_length_candidate', WHITE, 1, [0,2,3,4], 1)
@@ -230,7 +230,7 @@ class CandidateReportingTest(unittest.TestCase):
 
     def test_report_five_ones(self):
         self.process_substrips_for_str("    B    ")
-        ca = self.candidate_accumulator
+        ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),5)
         ca.mockCheckCall(0, 'report_length_candidate', BLACK, 1, [0,1,2,3], 1)

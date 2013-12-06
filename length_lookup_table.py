@@ -2,7 +2,7 @@
 COUNT_LENGTH=5
 
 from defines import *
-from candidate_accumulator import *
+from utility_stats import *
 
 """
 Detect and report indices that build on or interfere with a 
@@ -71,12 +71,12 @@ def prepare_length_lookups():
 # TODO: Something better than a global
 prepare_length_lookups()
 
-def process_substrips(bs, min_ind, max_ind, ca, length_counters, inc):
+def process_substrips(bs, min_ind, max_ind, us, inc):
     """
     Try to match each stretch of 5 positions against our lookup table.
     If we find a match then report the number of stones of the same
     colour via length_counters, and report the empty locations (indices)
-    for use by the search filter (ca = CandidateAccumulator)
+    for use by the search filter (us = UtilityStats)
     If we are removing the contributions, inc will be set to -1
     """
 
@@ -92,12 +92,7 @@ def process_substrips(bs, min_ind, max_ind, ca, length_counters, inc):
             # Nope. Not interesting.
             continue
 
-        # Found a match
-        lc = length_counters[colour]
-        # Count it
-        lc[length-1] += inc
-
         # Report it
         shifted_empties = [e+ind for e in empty_list]
-        ca.report_length_candidate(colour, length, shifted_empties, inc)
+        us.report_length_candidate(colour, length, shifted_empties, inc)
 
