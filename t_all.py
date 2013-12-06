@@ -18,6 +18,7 @@ import t_board_strip
 import t_direction_strips
 import t_nearby_filter
 import t_take_counter
+import t_threat_counter
 import t_priority_filter
 
 def suite():
@@ -38,6 +39,7 @@ def suite():
     suite15 = unittest.defaultTestLoader.loadTestsFromModule(t_nearby_filter)
     suite16 = unittest.defaultTestLoader.loadTestsFromModule(t_take_counter)
     suite17 = unittest.defaultTestLoader.loadTestsFromModule(t_priority_filter)
+    suite18 = unittest.defaultTestLoader.loadTestsFromModule(t_threat_counter)
 
     allTests = unittest.TestSuite()
     allTests.addTest(suite1)
@@ -57,6 +59,7 @@ def suite():
     allTests.addTest(suite15)
     allTests.addTest(suite16)
     allTests.addTest(suite17)
+    allTests.addTest(suite18)
     return allTests
 
 if __name__ == "__main__":
