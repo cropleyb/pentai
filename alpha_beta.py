@@ -1,4 +1,4 @@
-infinity = 1e+31
+from defines import INFINITY
 
 def argmax(aspl, fn):
     """ aspl: action state pair list
@@ -20,7 +20,7 @@ def alphabeta_search(state, game, max_depth=4):
     def max_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
             return game.utility(state, player)
-        v = -infinity
+        v = -INFINITY
         for (a, s) in game.successors(state):
             v = max(v, min_value(s, alpha, beta, depth+1))
             if v >= beta:
@@ -31,7 +31,7 @@ def alphabeta_search(state, game, max_depth=4):
     def min_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
             return game.utility(state, player)
-        v = infinity
+        v = INFINITY
         for (a, s) in game.successors(state):
             v = min(v, max_value(s, alpha, beta, depth+1))
             if v <= alpha:
@@ -45,7 +45,7 @@ def alphabeta_search(state, game, max_depth=4):
 
     # print "***** Defining top_min_func"
     def top_min_func((a,s)):
-        return min_value(s, -infinity, infinity, 1)
+        return min_value(s, -INFINITY, INFINITY, 1)
 
     # Body of alphabeta_search starts here:
     action, value = argmax(game.successors(state), top_min_func)

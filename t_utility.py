@@ -9,9 +9,7 @@ import game_state
 from board import *
 from mock import *
 
-inf = alpha_beta.infinity / 2
-
-import pdb
+inf = INFINITY / 2
 
 class UtilityTest(unittest.TestCase):
     def setUp(self):
@@ -235,7 +233,6 @@ class UtilityTest(unittest.TestCase):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(WHITE)
 
-        #pdb.set_trace()
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
         self.set_takes([0, 1, 0])

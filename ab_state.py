@@ -88,10 +88,10 @@ class ABState():
         # TODO: check rules
         captured = self.state.get_all_captured()
         if captured[colour] >= 10:
-            return alpha_beta.infinity
+            return INFINITY
 
         if lines[4] > 0:
-            return alpha_beta.infinity
+            return INFINITY
 
         # No win by "colour" found, fudge up a score
         score = 0
