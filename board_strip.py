@@ -132,7 +132,7 @@ class BoardStrip():
 
     def match_white_threat_left(self, ind):
         # WBBx
-        return self.match_pattern_left(ind, WHITE_THREAT_LEFT_PATTERN )
+        return self.match_pattern_left(ind, WHITE_THREAT_LEFT_PATTERN)
 
     def match_black_threat_right(self, ind):
         # xWWB
