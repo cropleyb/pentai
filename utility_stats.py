@@ -1,6 +1,5 @@
 from defines import *
 
-#class CandidateAccumulator():
 class UtilityStats():
 
     def __init__(self, parent=None):
