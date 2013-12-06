@@ -8,7 +8,7 @@ import game
 import gui
 from board_strip import *
 
-from length_counter import *
+from length_lookup_table import *
 from take_counter import *
 
 import pdb

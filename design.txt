@@ -115,3 +115,20 @@ when we remove it from one direction, that shouldn't remove it from the other
 direction. OTOH, if someone plays on (6,4), both should be removed.
 Hopefully this would be fixed by keeping a count of the times it has been added.
 (dict)
+
+Problem: who knows who?
+
+ABGame
+ has
+AIPlayer
+ABState
+  has a
+PriorityFilter
+  is a
+CandidateAccumulator - it would be nice if the interface to this used pos
+DirectionStrip - for index to pos conversion
+Capture matching - by index
+Threat matching - by index, same tech as for Capture matching
+Length Lookup table - Singleton?
+BoardStrip: occs for a strip
+

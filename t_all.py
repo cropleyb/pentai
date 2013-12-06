@@ -3,7 +3,7 @@
 import unittest
 
 import t_board
-import t_length_counter
+import t_length_lookup_table
 import t_alpha_beta
 import t_ab_state
 import t_rules
@@ -22,7 +22,7 @@ import t_priority_filter
 
 def suite():
     suite1 = unittest.defaultTestLoader.loadTestsFromModule(t_board)
-    suite2 = unittest.defaultTestLoader.loadTestsFromModule(t_length_counter)
+    suite2 = unittest.defaultTestLoader.loadTestsFromModule(t_length_lookup_table)
     suite3 = unittest.defaultTestLoader.loadTestsFromModule(t_alpha_beta)
     suite4 = unittest.defaultTestLoader.loadTestsFromModule(t_ab_state)
     suite5 = unittest.defaultTestLoader.loadTestsFromModule(t_rules)

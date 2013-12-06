@@ -2,7 +2,7 @@
 
 import unittest
 
-from length_counter import *
+from length_lookup_table import *
 from ab_state import *
 from player import *
 import game_state

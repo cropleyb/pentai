@@ -99,5 +99,5 @@ def process_substrips(bs, min_ind, max_ind, ca, length_counters, inc):
 
         # Report it
         shifted_empties = [e+ind for e in empty_list]
-        ca.report_length_candidate(colour, length, shifted_empties)
+        ca.report_length_candidate(colour, length, shifted_empties, inc)
 

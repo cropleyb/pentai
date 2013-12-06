@@ -68,7 +68,6 @@ class GameState():
         # Place a stone
         self.board.set_occ(move_pos, my_colour)
 
-
         # OLD. We only need to check for 5 in a row wins if we are not
         # an AI player - the AI data structure detects this already,
         # so it's duplicate work.
