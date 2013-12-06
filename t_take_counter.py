@@ -3,6 +3,7 @@
 import unittest
 
 from take_counter import *
+from utility_stats import *
 
 import pdb
 
@@ -32,12 +33,14 @@ def pattern_string_to_board_strip(occ_str):
 class SubStripCountingTest(unittest.TestCase):
     def setUp(self):
         self.takes = [0,0,0]
+        self.us = UtilityStats()
+        self.takes = self.us.takes
 
     # Helper
     def process_takes_for_str(self, ss_str, ind):
         occs = pattern_string_to_board_strip(ss_str)
         brd_size = len(ss_str)
-        process_takes(occs, ind, brd_size, self.takes, 1)
+        process_takes(occs, ind, brd_size, self.us, 1)
 
     # Tests
     def test_count_empty(self):

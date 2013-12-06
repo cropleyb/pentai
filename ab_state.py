@@ -157,13 +157,12 @@ class ABState():
             min_ind = max(strip_min, ind-4) # TODO: constants
             max_ind = min(ind+4, strip_max) # inclusive
 
-            #length_counters = [None, self.black_lines, self.white_lines]
-            # length_counters = self.utility_stats.lines
-            process_substrips(bs, min_ind, max_ind, 
-                    self.utility_stats, inc)
+            us = self.utility_stats
+
+            process_substrips(bs, min_ind, max_ind, us, inc)
 
             # TODO: brd_size may need changing due to some diagonal captures?
-            process_takes(bs, ind, brd_size, self.get_takes(), inc)
+            process_takes(bs, ind, brd_size, us, inc)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)
