@@ -1,8 +1,7 @@
 from defines import *
 
 class PriorityFilter():
-    def __init__(self, board=None, orig=None, min_priority=0):
-        self.board = board
+    def __init__(self, orig=None, min_priority=0):
         self.tried = set()
 
         self.candidates_by_priority_and_colour = []
@@ -41,13 +40,6 @@ class PriorityFilter():
                             self.tried.add(pos)
                             yield pos
 
-        # BLACKs first move
-        if len(self.tried) == 0:
-            brd = self.board
-            half_board = brd.get_size() / 2
-            yield (half_board, half_board)
-            return
-
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length == 5:
             # won already, ignore
@@ -61,7 +53,7 @@ class PriorityFilter():
             slot[pos] = slot.setdefault(pos, 0) + inc
             # Remove - still a value of 0 here, which is ignored in get_iter()
 
-    def add_or_remove_capture(self, colour, pos, inc=1):
+    def add_or_remove_take(self, colour, pos, inc=1):
         # Valuing captures between 3s and 4s
         slot = self.candidates_by_priority_and_colour[4][colour]
         slot[pos] = slot.setdefault(pos, 0) + inc

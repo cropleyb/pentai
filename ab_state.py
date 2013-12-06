@@ -46,6 +46,7 @@ class ABState():
         if self.search_filter is None:
             self.search_filter = nearby_filter.NearbyFilter(self.board())
         # TODO: Remove us as an observer from previous self.state?
+        # Probably not - recursive search could cause probs
 
     def to_move_colour(self):
         return self.state.to_move_colour()
@@ -158,6 +159,7 @@ class ABState():
             max_ind = min(ind+4, strip_max) # inclusive
 
             us = self.utility_stats
+            us.set_ind_to_pos(ds.get_pos, s_num)
 
             process_substrips(bs, min_ind, max_ind, us, inc)
 
