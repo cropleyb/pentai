@@ -22,11 +22,9 @@ class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None):
         if parent == None:
-            self.takes = [0, 0, 0]
             self.utility_stats = UtilityStats()
             self.search_filter = None
         else:
-            self.takes = parent.takes[:]
             self.utility_stats = UtilityStats(parent.utility_stats)
             self.search_filter = parent.search_filter.clone()
 
@@ -35,6 +33,9 @@ class ABState():
 
     def get_white_line_counts(self):
         return self.utility_stats.lines[WHITE]
+
+    def get_takes(self):
+        return self.utility_stats.takes
 
     def get_iter(self):
         return self.search_filter
@@ -105,7 +106,7 @@ class ABState():
         cc = self.captured_contrib(captured[colour])
         score += cc
 
-        tc = self.take_contrib(self.takes[colour])
+        tc = self.take_contrib(self.get_takes()[colour])
         score += tc
 
         #print "black: %s, white: %s, score: %s" % (self.black_lines, self.white_lines, \
@@ -162,7 +163,7 @@ class ABState():
                     self.utility_stats, inc)
 
             # TODO: brd_size may need changing due to some diagonal captures?
-            process_takes(bs, ind, brd_size, self.takes, inc)
+            process_takes(bs, ind, brd_size, self.get_takes(), inc)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

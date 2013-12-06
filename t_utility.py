@@ -31,6 +31,9 @@ class UtilityTest(unittest.TestCase):
     def set_white_lines(self, lines):
         self.s.utility_stats.lines[WHITE] = lines
 
+    def set_takes(self, t):
+        self.s.utility_stats.takes = t
+
     def set_captured(self, black_captures, white_captures):
         self.captured[BLACK] = black_captures
         self.captured[WHITE] = white_captures
@@ -204,7 +207,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([11,3,0,0,0])
-        self.s.takes = [0, 1, 0]
+        self.set_takes([0, 1, 0])
         u = self.s.utility()
         self.assertGreater(u, 0)
 
@@ -214,7 +217,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,2,0,0])
-        self.s.takes = [0, 1, 0]
+        self.set_takes([0, 1, 0])
         u = self.s.utility()
         self.assertLess(u, 0)
 
@@ -224,7 +227,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
-        self.s.takes = [0, 1, 0]
+        self.set_takes([0, 1, 0])
         u = self.s.utility()
         self.assertGreater(u, 0)
 
@@ -235,7 +238,7 @@ class UtilityTest(unittest.TestCase):
         #pdb.set_trace()
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
-        self.s.takes = [0, 1, 0]
+        self.set_takes([0, 1, 0])
         u = self.s.utility()
         self.assertLess(u, 0)
 
