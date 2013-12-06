@@ -59,6 +59,7 @@ class PriorityFilter():
         slot = self.candidates_by_priority_and_colour[length][colour]
         for pos in pos_list:
             slot[pos] = slot.setdefault(pos, 0) + inc
+            # Remove - still a value of 0 here, which is ignored in get_iter()
 
     def add_or_remove_capture(self, colour, pos, inc=1):
         # Valuing captures between 3s and 4s
