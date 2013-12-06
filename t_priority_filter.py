@@ -178,6 +178,15 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertIn(l[1], others)
         self.assertIn(l[2], others)
 
+    def test_min_priority(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(3,3),), inc=1)
+        pf.add_or_remove_candidates(BLACK, 4, ((3,3),), inc=1)
+        l = list(pf.get_iter(BLACK, min_priority=4))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(3,3))
+
 if __name__ == "__main__":
     unittest.main()
 
