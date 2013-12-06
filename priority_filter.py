@@ -14,15 +14,19 @@ class PriorityFilter():
 
         self.tried = set()
 
-    def get_iter(self, our_colour):
+    def get_iter(self, our_colour, min_priority=0):
         other_colour = opposite_colour(our_colour)
 
-        for length in range(5):
+        for length in range(5-min_priority):
             priority = 5 - length
             cbpc = self.candidates_by_priority_and_colour
             for colour in (our_colour, other_colour):
                 slot = cbpc[priority][colour]
-                for pos, count in slot.iteritems():
+                slot_arr = slot.iteritems()
+                sorted_slot = [(count, pos) for (pos, count) in slot.iteritems()]
+                sorted_slot.sort()
+                sorted_slot.reverse()
+                for count, pos in sorted_slot:
                     if count > 0:
                         if not pos in self.tried:
                             self.tried.add(pos)

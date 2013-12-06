@@ -166,6 +166,18 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertIn(l[0], pair)
         self.assertIn(l[1], pair)
 
+    def test_multiple_entries_searched_first(self):
+        b = Board(9)
+        pf = PriorityFilter(b)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(4,6),), inc=1)
+        pf.add_or_remove_candidates(BLACK, 3, ((2,4),(3,3),), inc=1)
+        l = list(pf.get_iter(BLACK))
+        self.assertEquals(len(l), 3)
+        self.assertEquals(l[0],(2,4))
+        others = ((4,6), (3,3))
+        self.assertIn(l[1], others)
+        self.assertIn(l[2], others)
+
 if __name__ == "__main__":
     unittest.main()
 
