@@ -61,7 +61,7 @@ class ABState():
         return self.state.game
 
     # TODO: Cache stuff somehow?
-    def utility(self, unused=None):
+    def utility(self):
         """ The search_colour is the colour of the AI player doing the search """
         # The turn_colour is the colour of the player to move at the leaf state
         # of the search.

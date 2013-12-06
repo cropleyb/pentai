@@ -15,11 +15,9 @@ def alphabeta_search(state, game, max_depth=4):
     """Search game to determine best action; use alpha-beta pruning.
     This version cuts off search and uses an evaluation function."""
 
-    player = game.to_move(state)
-
     def max_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
-            return game.utility(state, player)
+            return game.utility(state)
         v = -INFINITY
         for (a, s) in game.successors(state):
             v = max(v, min_value(s, alpha, beta, depth+1))
@@ -30,7 +28,7 @@ def alphabeta_search(state, game, max_depth=4):
 
     def min_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
-            return game.utility(state, player)
+            return game.utility(state)
         v = INFINITY
         for (a, s) in game.successors(state):
             v = min(v, max_value(s, alpha, beta, depth+1))

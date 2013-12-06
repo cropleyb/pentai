@@ -18,7 +18,7 @@ class MockGame:
         for child_state in state.successors:
             yield child_state
 
-    def utility(self, state_name, player):
+    def utility(self, state_name):
         return self.states[state_name].utility
 
     def terminal_test(self, state_name):

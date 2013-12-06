@@ -20,8 +20,8 @@ class ABGame():
             state = self.current_state
         return state.to_move()
 
-    def utility(self, state, player):
-        return state.utility(player)
+    def utility(self, state):
+        return state.utility()
 
     def successors(self, state):
         if state.get_move_number() == 1:
