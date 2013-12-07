@@ -2,7 +2,6 @@ from defines import *
 
 class PriorityFilter():
     def __init__(self, orig=None, min_priority=0):
-        self.tried = set()
 
         self.candidates_by_priority_and_colour = []
         cbpc = self.candidates_by_priority_and_colour
@@ -24,6 +23,7 @@ class PriorityFilter():
 
     def get_iter(self, our_colour, min_priority=0):
         other_colour = opposite_colour(our_colour)
+        tried = set() 
 
         cbpc = self.candidates_by_priority_and_colour
         for length in range(1 + 5 - min_priority): # TODO constants
@@ -37,11 +37,11 @@ class PriorityFilter():
                 sorted_slot.reverse()
                 for count, pos in sorted_slot:
                     if count > 0:
-                        if not pos in self.tried:
-                            self.tried.add(pos)
+                        if not pos in tried:
+                            tried.add(pos)
                             yield pos
                             # HACK
-                            if len(self.tried) > 7:
+                            if len(tried) > 9:
                                 return
 
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
