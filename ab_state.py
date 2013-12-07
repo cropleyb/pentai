@@ -61,6 +61,10 @@ class ABState():
         game = self.game()
         return game.to_move_colour()
 
+    # TODO?
+    def __repr__(self):
+        return ""
+
     def game(self):
         return self.state.game
 
