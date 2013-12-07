@@ -15,7 +15,7 @@ class UtilityTest(unittest.TestCase):
     def setUp(self):
         self.s = ABState()
         self.game = Mock()
-        self.captured = [0, 0, 0]
+        self.captured = [0, 0, 0] # This is individual stones, E/B/W
         self.gs = Mock({"get_all_captured": self.captured, "get_move_number": 1}) 
         self.gs.board = Board(13)
         self.gs.game = self.game
@@ -109,7 +109,7 @@ class UtilityTest(unittest.TestCase):
     def test_one_capture_worth_more_than_a_three(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
-        self.set_captured(1, 0)
+        self.set_captured(2, 0)
         u = self.s.utility()
         self.assertGreaterEqual(u, 0)
 
@@ -117,7 +117,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,1,0])
         self.set_turn_player_colour(WHITE)
-        self.set_captured(1, 0)
+        self.set_captured(2, 0)
         u = self.s.utility()
         self.assertLessEqual(u, 0)
 
@@ -136,7 +136,7 @@ class UtilityTest(unittest.TestCase):
         self.set_search_player_colour(WHITE)
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
-        self.set_captured(0, 1)
+        self.set_captured(0, 2)
         u = self.s.utility()
         self.assertGreaterEqual(u, 0)
 
@@ -249,6 +249,15 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertLess(u, 0)
 
+    def test_four_captures_worth_more_than_3_threes(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.set_black_lines([0,0,0,0,0])
+        self.set_white_lines([0,0,3,0,0])
+        self.set_captured(8, 0)
+        u = self.s.utility()
+        self.assertGreater(u, 0)
 
 if __name__ == "__main__":
     unittest.main()

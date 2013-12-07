@@ -16,6 +16,7 @@ import pdb
 CAPTURED_SCORE_BASE = 120 ** 3
 TAKE_SCORE_BASE = 350
 THREAT_SCORE_BASE = 20
+CAPTURES_SCALE = [0, 2.0, 4.6, 10.0, 22.0, 46.0]
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
@@ -124,10 +125,10 @@ class ABState():
         #        score)
         return score
 
+    """ Captures become increasingly important as we approach 5 """
     def captured_contrib(self, captures):
-        """ TODO captures become increasingly important as we approach 5 """
         # TODO: Use rules
-        contrib = captures * CAPTURED_SCORE_BASE
+        contrib = captures * CAPTURED_SCORE_BASE * CAPTURES_SCALE[captures/2]
         return contrib
 
     def take_contrib(self, takes):
@@ -137,6 +138,7 @@ class ABState():
         return contrib
 
     def threat_contrib(self, threats):
+        """ TODO threats become increasingly important as we approach 5 captures """
         # TODO: Use rules
         contrib = threats * THREAT_SCORE_BASE
         return contrib
