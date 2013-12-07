@@ -14,7 +14,7 @@ from utility_stats import *
 import pdb
 
 CAPTURED_SCORE_BASE = 120 ** 3
-TAKE_SCORE_BASE = 190
+TAKE_SCORE_BASE = 350
 THREAT_SCORE_BASE = 20
 
 class ABState():
@@ -95,17 +95,19 @@ class ABState():
         # Check for a win first
         # TODO: check rules
         captured = self.state.get_all_captured()
+        # Scale these INFINITIES down to discourage sadistic
+        # won game lengthening.
         if captured[colour] >= 10:
-            return INFINITY
+            return INFINITY / self.state.get_move_number()
 
         if lines[4] > 0:
-            return INFINITY
+            return INFINITY / self.state.get_move_number()
 
         # No win by "colour" found, fudge up a score
         score = 0
 
         for i in range(len(lines)):
-            score *= 100
+            score *= 120
             rev = 4 - i
             score += lines[rev]
 

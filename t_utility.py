@@ -16,7 +16,7 @@ class UtilityTest(unittest.TestCase):
         self.s = ABState()
         self.game = Mock()
         self.captured = [0, 0, 0]
-        self.gs = Mock({"get_all_captured": self.captured}) 
+        self.gs = Mock({"get_all_captured": self.captured, "get_move_number": 1}) 
         self.gs.board = Board(13)
         self.gs.game = self.game
         self.set_turn_player_colour(BLACK)
@@ -209,12 +209,22 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, 0)
 
-    def test_one_take_is_worth_less_than_two_threes(self):
+    def test_one_take_is_worth_more_than_two_threes(self):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,2,0,0])
+        self.set_takes([0, 1, 0])
+        u = self.s.utility()
+        self.assertGreater(u, 0)
+
+    def test_one_take_is_worth_less_than_three_threes(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.set_black_lines([0,0,0,0,0])
+        self.set_white_lines([0,0,3,0,0])
         self.set_takes([0, 1, 0])
         u = self.s.utility()
         self.assertLess(u, 0)
