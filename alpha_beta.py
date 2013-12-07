@@ -6,6 +6,8 @@ def argmax(aspl, fn):
     #print "***** In argmax"
 
     vals = [(fn(item), item) for item in aspl]
+    # sort is for debug presentation only. Since this function is only called
+    # once per search, it should not be a problem.
     vals.sort()
     #print "\n%s" % vals
     best = max(vals)
