@@ -22,15 +22,19 @@ class ABGame():
     def utility(self, state):
         return state.utility()
 
-    def successors(self, state):
+    def successors(self, state, depth):
         if state.get_move_number() == 1:
             # The first black move is always in the centre
             brd_size = self.base_game.get_board().get_size()
             centre_pos = (brd_size/2, brd_size/2)
             p_i = [centre_pos]
         else:
+            min_priority = 0
+            if depth > 3:
+                min_priority = 4
+
             pos_iter = state.get_iter(state.to_move())
-            p_i = pos_iter.get_iter(state.to_move_colour())
+            p_i = pos_iter.get_iter(state.to_move_colour(), min_priority)
         for pos in p_i:
             # create a AB_State for each possible move from state
             try:
