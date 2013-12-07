@@ -16,12 +16,12 @@ import Queue
 
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
+black_ghost_filename = "./media/black_ghost.png"
+white_ghost_filename = "./media/white_ghost.png"
 x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
 stone_sound = "./media/click.mp3"
-
-import pdb
 
 class PenteScreen(Screen):
     source = StringProperty(None)
@@ -45,6 +45,8 @@ class PenteScreen(Screen):
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
         self.moved_marker = [None, None, None]
+        self.ghosts = []
+        self.ghost_colour = None
 
         super(PenteScreen, self).__init__(*args, **kwargs)
 
@@ -124,7 +126,7 @@ class PenteScreen(Screen):
             elif winner == WHITE:
                 self.black_to_move_marker = ""
                 self.white_to_move_marker = "won by"
-            # draws are exceedingly unlikely...
+            # TODO draws are exceedingly unlikely...
         else:
             # Mark who is to move. TODO: Underline?
             to_move = self.game.to_move_colour()
@@ -211,7 +213,6 @@ class PenteScreen(Screen):
         return screen_x, screen_y
 
     def update_moved_marker(self, pos, colour):
-        #pdb.set_trace()
         filename = moved_marker_filename_w
         if colour == BLACK:
             filename = moved_marker_filename_b
@@ -257,12 +258,36 @@ class PenteScreen(Screen):
             ma = board_pos
             self.enqueue_action(ma)
 
+    def remove_ghosts(self):
+        while len(self.ghosts) > 0:
+            g = self.ghosts.pop()
+            self.remove_widget(g)
+
+    def place_ghost(self, board_pos, colour):
+        if colour != self.ghost_colour:
+            self.remove_ghosts()
+        filename = ["", black_ghost_filename, white_ghost_filename][colour]
+        self.ghost_colour = colour
+
+        try:
+            # load and place the appropriate stone image
+            new_piece = Piece(self.game, source=filename)
+            new_piece.pos = self.board_to_screen(board_pos)
+            self.ghosts.append(new_piece)
+            self.add_widget(new_piece)
+        except Exception, e:
+            Logger.exception('Board: Unable to load <%s>' % filename)
+
     def make_move_on_the_gui_board(self, board_pos, colour):
+        if colour == self.ghost_colour:
+            self.remove_ghosts()
         if self.stones_by_board_pos.has_key(board_pos) or colour == EMPTY:
             # There is a piece there already, remove it.
             assert colour == EMPTY
-            current_piece = self.stones_by_board_pos.pop(board_pos)
-            self.remove_widget(current_piece)
+            curr_piece, curr_colour = self.stones_by_board_pos.pop(board_pos)
+            self.remove_widget(curr_piece)
+            # Transparent "ghost" image for one turn
+            self.place_ghost(board_pos, curr_colour)
         else:
             # Nothing there yet, place a stone
             filename = ["", black_filename, white_filename][colour]
@@ -270,7 +295,7 @@ class PenteScreen(Screen):
             try:
                 # load and place the appropriate stone image
                 new_piece = Piece(self.game, source=filename)
-                self.stones_by_board_pos[board_pos] = new_piece
+                self.stones_by_board_pos[board_pos] = new_piece, colour
                 new_piece.pos = self.board_to_screen(board_pos)
                 self.add_widget(new_piece)
                 self.update_moved_marker(new_piece.pos, colour)
