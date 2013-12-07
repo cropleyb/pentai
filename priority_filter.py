@@ -40,6 +40,9 @@ class PriorityFilter():
                         if not pos in self.tried:
                             self.tried.add(pos)
                             yield pos
+                            # HACK
+                            if len(self.tried) > 7:
+                                return
 
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length == 5:

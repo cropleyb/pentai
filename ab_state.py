@@ -8,13 +8,14 @@ from board_strip import *
 
 from length_lookup_table import *
 from take_counter import *
+from threat_counter import *
 from utility_stats import *
 
 import pdb
 
-CAPTURE_SCORE_BASE = 120 ** 3
+CAPTURED_SCORE_BASE = 120 ** 3
 TAKE_SCORE_BASE = 190
-
+THREAT_SCORE_BASE = 20
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
@@ -32,6 +33,9 @@ class ABState():
 
     def get_takes(self):
         return self.utility_stats.takes
+
+    def get_threats(self):
+        return self.utility_stats.threats
 
     def get_iter(self, to_move):
         return self.utility_stats.search_filter
@@ -107,6 +111,9 @@ class ABState():
         tc = self.take_contrib(self.get_takes()[colour])
         score += tc
 
+        tc = self.threat_contrib(self.get_threats()[colour])
+        score += tc
+
         #print "black: %s, white: %s, score: %s" % (self.black_lines, self.white_lines, \
         #        score)
         return score
@@ -114,13 +121,18 @@ class ABState():
     def captured_contrib(self, captures):
         """ TODO captures become increasingly important as we approach 5 """
         # TODO: Use rules
-        contrib = captures * CAPTURE_SCORE_BASE
+        contrib = captures * CAPTURED_SCORE_BASE
         return contrib
 
     def take_contrib(self, takes):
         """ TODO takes become increasingly important as we approach 5 captures """
         # TODO: Use rules
         contrib = takes * TAKE_SCORE_BASE
+        return contrib
+
+    def threat_contrib(self, threats):
+        # TODO: Use rules
+        contrib = threats * THREAT_SCORE_BASE
         return contrib
 
     def board(self):
@@ -157,6 +169,7 @@ class ABState():
 
             # TODO: brd_size may need changing due to some diagonal captures?
             process_takes(bs, ind, brd_size, us, inc)
+            process_threats(bs, ind, brd_size, us, inc)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

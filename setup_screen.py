@@ -102,7 +102,7 @@ class SetupScreen(Screen):
         gl.add_widget(self.white_type_widget)
 
         self.max_depth_widget = MyCheckBoxList(group="max_depth", text="Max Search Depth",
-                values=('1', '2', '3', '4'))
+                values=('1', '2', '3', '4', '5', '6', '7', '8'))
         top_gl.add_widget(self.max_depth_widget)
 
         b = Button(size_hint=(.1, .1), text='Start Game', on_press=self.start_game)
