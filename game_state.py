@@ -54,6 +54,8 @@ class GameState():
             raise IllegalMoveException("That position is off the board")
         if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException("That position is already occupied")
+        if self._won_by != EMPTY:
+            raise IllegalMoveException("The game is already over")
 
         my_colour = self.to_move_colour() # Save it before the turn is changed
         self.move_number += 1
