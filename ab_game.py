@@ -2,7 +2,6 @@
 
 import board
 import pente_exceptions
-import gui # TODO
 
 from ab_state import *
 
@@ -36,7 +35,7 @@ class ABGame():
             # create a AB_State for each possible move from state
             try:
                 succ = state.create_state(pos)
-                yield gui.MoveAction(pos), succ # TODO: remove MA class
+                yield pos, succ
             except pente_exceptions.IllegalMoveException:
                 # Ignore these
                 pass

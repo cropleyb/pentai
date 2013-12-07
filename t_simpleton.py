@@ -2,7 +2,6 @@
 
 import unittest
 
-import gui
 import human_player
 import rules
 import game
@@ -23,7 +22,7 @@ class SimpletonPlayerTest(unittest.TestCase):
         p = SimpletonPlayer("Dur")
         p.prompt_for_action(self.game, self.gui)
         ma = p.get_action(self.game, self.gui)
-        self.assertEquals(ma, gui.MoveAction.create_from_tuple(2,2))
+        self.assertEquals(ma, (2,2))
 
 if __name__ == "__main__":
     unittest.main()

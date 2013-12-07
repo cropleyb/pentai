@@ -82,7 +82,7 @@ class TextGui(Gui):
             row = string.atoi(s[1:]) - 1
             if col >= 0 and col < self.game.size() and \
                row >= 0 and row < self.game.size():
-                return MoveAction.create_from_tuple(col, row)
+                return (col, row)
         except:
             pass
         off_board_msg = "That position is not on the board"

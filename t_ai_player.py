@@ -9,9 +9,6 @@ import game
 
 from ai_player import *
 
-def MA(x, y):
-    return gui.MoveAction.create_from_tuple(x,y)
-
 class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
@@ -27,7 +24,7 @@ class AIPlayerTest(unittest.TestCase):
         p = self.p1
         p.prompt_for_action(self.game, self.gui, test=True)
         ma = p.get_action(self.game, self.gui)
-        self.assertEquals(ma, MA(4,4))
+        self.assertEquals(ma, (4,4))
 
     def test_respond_to_corner_start(self):
         self.game.make_move((0,0))
@@ -35,7 +32,7 @@ class AIPlayerTest(unittest.TestCase):
         p = self.p2
         p.prompt_for_action(self.game, self.gui, test=True)
         ma = p.get_action(self.game, self.gui)
-        self.assertEquals(ma, MA(4,4))
+        self.assertEquals(ma, (4,4))
 
     def test_respond_to_centre_start(self):
         self.game.make_move((4,4))
@@ -43,7 +40,7 @@ class AIPlayerTest(unittest.TestCase):
         p = self.p2
         p.prompt_for_action(self.game, self.gui, test=True)
         ma = p.get_action(self.game, self.gui)
-        self.assertEquals(ma, MA(3,4))
+        self.assertEquals(ma, (5,4))
 
 if __name__ == "__main__":
     unittest.main()

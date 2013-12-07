@@ -1,7 +1,7 @@
 import alpha_beta
-from gui import *
 import search_order
 import board
+from defines import *
 
 from player import *
 
@@ -18,7 +18,7 @@ class SimpletonPlayer(Player):
         board = base_game.get_board()
         for p in pos_iter.get_iter():
             if board.get_occ(p) == EMPTY:
-                self.action = MoveAction(p)
+                self.action = p
                 return
 
     def get_action(self, game, gui):

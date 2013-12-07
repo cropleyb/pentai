@@ -169,7 +169,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_move_action(self):
         action = self.gui.get_action_from_string("b3")
-        self.assertEquals(action, MoveAction((1,2)))
+        self.assertEquals(action, (1,2))
 
     def test_move_action_illegal_char(self):
         try:
@@ -181,11 +181,11 @@ class TextGuiTest(unittest.TestCase):
 
     def test_move_action_L_front(self):
         action = self.gui.get_action_from_string("a1")
-        self.assertEquals(action, MoveAction((0,0)))
+        self.assertEquals(action, (0,0))
 
     def test_move_action_R_back(self):
         action = self.gui.get_action_from_string("e5")
-        self.assertEquals(action, MoveAction((4,4)))
+        self.assertEquals(action, (4,4))
 
     def test_off_board_move_R(self):
         try:
