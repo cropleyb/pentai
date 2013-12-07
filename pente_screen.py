@@ -84,7 +84,7 @@ class PenteScreen(Screen):
             return
         action = self.action_queue.get()
         try:
-            action.perform(self.game)
+            self.game.make_move(action)
             self.update_captures_and_winner()
             self.game.prompt_for_action(self)
         except IllegalMoveException, e:
@@ -253,8 +253,8 @@ class PenteScreen(Screen):
             # Quick hack to get both coloured stones on the board
             board_pos = self.screen_to_board(touch.pos)
 
-            # Make and Queue MoveAction
-            ma = MoveAction.create_from_move(board_pos)
+            # Make and Queue
+            ma = board_pos
             self.enqueue_action(ma)
 
     def make_move_on_the_gui_board(self, board_pos, colour):
