@@ -14,11 +14,12 @@ from gui import *
 
 import Queue
 
-confirm_filename = "./media/confirm.png"
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
 black_ghost_filename = "./media/black_ghost.png"
 white_ghost_filename = "./media/white_ghost.png"
+black_confirm_filename = "./media/b_confirm.png"
+white_confirm_filename = "./media/w_confirm.png"
 x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
@@ -49,8 +50,9 @@ class PenteScreen(Screen):
         self.ghosts = []
         self.ghost_colour = None
         self.queued_filename = ""
-        self.confirm = True
-        #self.queued_filename = "./games/sample.txt"
+        self.req_confirm = True
+        self.confirmation_in_progress = None
+        #self.queued_filename = "./games/sample.txt" # TODO: Rename
 
         super(PenteScreen, self).__init__(*args, **kwargs)
 
@@ -77,7 +79,6 @@ class PenteScreen(Screen):
 
 
     def display_error(self, message):
-        # TODO: Update screen
         # TODO: Enter to close
         popup = Popup(title='Error', content=Label(text=message, font_size='25sp'), \
                 size_hint=(.7, .2))
@@ -247,34 +248,65 @@ class PenteScreen(Screen):
         mm.pos = pos
         self.add_widget(mm)
 
+    def cancel_confirmation(self):
+        widget, board_pos = self.confirmation_in_progress
+        self.remove_widget(widget)
+        self.confirmation_in_progress = None
+
+    def show_confirmation(self, board_pos):
+        colour = self.game.to_move_colour()
+        cfs = [None, black_confirm_filename, white_confirm_filename]
+        filename = cfs[colour]
+        widget = Piece(self.game, source=filename)
+        widget.pos = self.board_to_screen(board_pos)
+        self.add_widget(widget)
+        self.confirmation_in_progress = widget, board_pos
+
+    def confirm_cb(self, dt):
+        if self.confirmation_in_progress != None:
+            widget, board_pos = self.confirmation_in_progress
+            self.enqueue_action(board_pos)
+            self.cancel_confirmation()
+        
     def on_touch_down(self, touch):
+        if touch.pos[1] < self.board_offset[1]:
+            self.confirm_cb(None) # Why isn't it called from the button automatically?
+            return touch
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
         if current_player.get_type() == "human":
-            # Place a marker at the (snapped) cursor position.
-            if self.marker == None:
-                try:
-                    # load the image
-                    self.marker = Piece(self.game, source=x_filename)
-                except Exception, e:
-                    Logger.exception('Board: Unable to load <%s>' % x_filename)
-            self.marker.pos = self.snap_to_grid(touch.pos)
-            self.add_widget(self.marker)
+            if self.confirmation_in_progress != None:
+                self.cancel_confirmation()
+            else:
+                # Place a marker at the (snapped) cursor position.
+                if self.marker == None:
+                    try:
+                        # load the image
+                        self.marker = Piece(self.game, source=x_filename)
+                    except Exception, e:
+                        Logger.exception('Board: Unable to load <%s>' % x_filename)
+                self.marker.pos = self.snap_to_grid(touch.pos)
+                self.add_widget(self.marker)
         else:
             self.display_error("It is not your turn!")
 
     def on_touch_up(self, touch):
+        if touch.pos[1] < self.board_offset[1]:
+            # print "IN ON_TOUCH_UP %s %s" % (touch.pos, self.board_offset)
+            return touch
         # If there is an active marker,
         # replace the marker with a piece of the appropriate colour
         if self.marker != None:
             self.remove_widget(self.marker)
             self.marker = None
-            # Quick hack to get both coloured stones on the board
+
             board_pos = self.screen_to_board(touch.pos)
 
-            # Make and Queue
-            ma = board_pos
-            self.enqueue_action(ma)
+            if self.req_confirm:
+                self.show_confirmation(board_pos)
+            else:
+                # Queue the move
+                self.enqueue_action(board_pos)
 
     def remove_ghosts(self):
         while len(self.ghosts) > 0:
@@ -322,6 +354,9 @@ class PenteScreen(Screen):
             #self.play_sound() TODO
 
     def on_touch_move(self, touch):
+        if touch.pos[1] < self.board_offset[1]:
+            # print "IN ON_TOUCH_MOVE"
+            return touch
         if self.marker != None:
             # Move the marker position
             try:
