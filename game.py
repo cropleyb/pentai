@@ -56,6 +56,7 @@ class Game():
         return self.current_state.set_captured(player_number, pieces)
 
     def make_move(self, move):
+        print "%s. %s" % (self.get_move_number(), move)
         self.current_state.make_move(move)
 
     def finished(self):
@@ -66,4 +67,20 @@ class Game():
 
     def winner_name(self):
         return self.player[self.current_state.get_won_by()-1]
+
+    def load_game(self, game_str):
+        # e.g. "1. (4,4)\n2. (3,3)\n"
+        try:
+            gs = game_str.strip()
+
+            for line in gs.split('\n'):
+                fields = line.split(' ', 1)
+                move_number = int(fields[0][:-1])
+                move_pos_tuple = fields[1]
+                move_pos_str = move_pos_tuple[1:-1]
+                coords = move_pos_str.split(',')
+                move = int(coords[0]), int(coords[1])
+                self.make_move(move)
+        except:
+            raise IncompatibleFileException("Could not read line: %s" % line)
 

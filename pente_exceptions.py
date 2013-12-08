@@ -1,13 +1,15 @@
-
 class IllegalMoveException(Exception):
     pass
 
 class OffBoardException(Exception):
     pass
 
-class BoardTooBigException():
+class BoardTooBigException(Exception):
     pass
 
-class BoardTooSmallException():
+class BoardTooSmallException(Exception):
+    pass
+
+class IncompatibleFileException(Exception):
     pass
 

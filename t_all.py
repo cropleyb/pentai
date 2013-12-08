@@ -20,6 +20,7 @@ import t_nearby_filter
 import t_take_counter
 import t_threat_counter
 import t_priority_filter
+import t_game
 
 def suite():
     suite1 = unittest.defaultTestLoader.loadTestsFromModule(t_board)
@@ -40,6 +41,7 @@ def suite():
     suite16 = unittest.defaultTestLoader.loadTestsFromModule(t_take_counter)
     suite17 = unittest.defaultTestLoader.loadTestsFromModule(t_priority_filter)
     suite18 = unittest.defaultTestLoader.loadTestsFromModule(t_threat_counter)
+    suite19 = unittest.defaultTestLoader.loadTestsFromModule(t_game)
 
     allTests = unittest.TestSuite()
     allTests.addTest(suite1)
@@ -60,6 +62,7 @@ def suite():
     allTests.addTest(suite16)
     allTests.addTest(suite17)
     allTests.addTest(suite18)
+    allTests.addTest(suite19)
     return allTests
 
 if __name__ == "__main__":

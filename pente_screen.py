@@ -47,6 +47,8 @@ class PenteScreen(Screen):
         self.moved_marker = [None, None, None]
         self.ghosts = []
         self.ghost_colour = None
+        self.queued_filename = ""
+        #self.queued_filename = "./games/sample.txt"
 
         super(PenteScreen, self).__init__(*args, **kwargs)
 
@@ -63,11 +65,18 @@ class PenteScreen(Screen):
         self.black_name = game.get_player_name(BLACK)
         self.white_name = game.get_player_name(WHITE)
 
+        if len(self.queued_filename) > 0:
+            # Need some time for kivy to finish setting up, otherwise
+            # the pieces are all stacked in the bottom left corner.
+            Clock.schedule_once(self.load_file, 0)
+
         # start the game
         game.prompt_for_action(self)
 
+
     def display_error(self, message):
         # TODO: Update screen
+        # TODO: Enter to close
         popup = Popup(title='Error', content=Label(text=message, font_size='25sp'), \
                 size_hint=(.7, .2))
         popup.open()
@@ -80,6 +89,12 @@ class PenteScreen(Screen):
     def enqueue_action(self, action):
         self.action_queue.put(action)
         self.trig()
+
+    def load_file(self, dt):
+        f = open(self.queued_filename)
+        # TODO: game info - players, rules etc.
+        self.game.load_game(f.read())
+        self.queued_filename = None
 
     def perform(self, dt):
         if self.action_queue.empty():
