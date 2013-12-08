@@ -14,6 +14,7 @@ from gui import *
 
 import Queue
 
+confirm_filename = "./media/confirm.png"
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
 black_ghost_filename = "./media/black_ghost.png"
@@ -48,6 +49,7 @@ class PenteScreen(Screen):
         self.ghosts = []
         self.ghost_colour = None
         self.queued_filename = ""
+        self.confirm = True
         #self.queued_filename = "./games/sample.txt"
 
         super(PenteScreen, self).__init__(*args, **kwargs)
@@ -133,6 +135,7 @@ class PenteScreen(Screen):
         self.black_captures = str(self.game.get_captured(BLACK))
         self.white_captures = str(self.game.get_captured(WHITE))
 
+        # TODO: this is ugly            
         if self.game.finished():
             winner = self.game.winner()
             if winner == BLACK:

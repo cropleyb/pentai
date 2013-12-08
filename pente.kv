@@ -108,29 +108,55 @@
                 pos: self.pos
                 size: self.size
         GridLayout:
-            cols: 4
+            rows: 1
 
-            MyLabel:
-                # TODO: times
-                value: root.black_time
-                text: '0:00'
-            MyLabel:
-                text: root.black_to_move_marker
-            MyLabel:
-                text: root.black_name
-            MyLabel:
-                text: root.black_captures
-
-            MyLabel:
-                # TODO: times
-                value: root.white_time
-                text: '0:00'
-            MyLabel:
-                text: root.white_to_move_marker
-            MyLabel:
-                text: root.white_name
-            MyLabel:
-                text: root.white_captures
+            GridLayout:
+                size_hint_x: .3
+                cols: 1
+                Button:
+                    font_size: '30sp'
+                    text: "Confirm"
+                GridLayout:
+                    cols: 2
+                    Label:
+                        font_size: '15sp'
+                        text: 'Required?'
+                    ToggleButton:
+                        #rgba: 0, 0, .5, 1
+                        group: 'confirm_req'
+            #GridLayout:
+                #cols: 1
+                #Button:
+                    #font_size: '30sp'
+                    #text: "Confirm"
+                #GridLayout:
+                    #cols: 2
+                    #Label:
+                        #text: "Required"
+                    #CheckBox:
+            GridLayout:
+                rows: 2
+                MyLabel:
+                    # TODO: times
+                    value: root.black_time
+                    text: '0:00'
+                MyLabel:
+                    text: root.black_to_move_marker
+                MyLabel:
+                    text: root.black_name
+                MyLabel:
+                    text: root.black_captures
+    
+                MyLabel:
+                    # TODO: times
+                    value: root.white_time
+                    text: '0:00'
+                MyLabel:
+                    text: root.white_to_move_marker
+                MyLabel:
+                    text: root.white_name
+                MyLabel:
+                    text: root.white_captures
 
 <Piece>:
     Image:
