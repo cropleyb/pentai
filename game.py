@@ -56,6 +56,7 @@ class Game():
         return self.current_state.set_captured(player_number, pieces)
 
     def make_move(self, move):
+        # TODO: Record this, then save to a file if required?
         print "%s. %s" % (self.get_move_number(), move)
         self.current_state.make_move(move)
 
