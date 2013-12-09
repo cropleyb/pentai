@@ -28,13 +28,10 @@ stone_sound = "./media/click.mp3"
 class PenteScreen(Screen):
     source = StringProperty(None)
     # TODO: Get the times hooked up
-    black_name = StringProperty("Freddo")
-    white_name = StringProperty("Deep Thunk")
-    black_time = StringProperty("0:00")
-    white_time = StringProperty("0:00")
-    to_move_marker = ListProperty([None, "*", ""])
-    black_captures = StringProperty("0")
-    white_captures = StringProperty("0")
+    player_name = ListProperty([None, "Black", "White"])
+    player_time = ListProperty([None, "0:00", "0:00"])
+    player_status = ListProperty([None, "*", ""])
+    player_captures = ListProperty([None, "0", "0"])
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
     border_colour = ListProperty([20,0,0,1])
@@ -66,8 +63,8 @@ class PenteScreen(Screen):
         self.trig = Clock.create_trigger(self.perform)
         self.set_up_grid()
 
-        self.black_name = game.get_player_name(BLACK)
-        self.white_name = game.get_player_name(WHITE)
+        for colour in (BLACK, WHITE):
+            self.player_name[colour] = game.get_player_name(colour)
 
         if len(self.queued_filename) > 0:
             # Need some time for kivy to finish setting up, otherwise
@@ -133,20 +130,20 @@ class PenteScreen(Screen):
 
     def update_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
-        self.black_captures = str(self.game.get_captured(BLACK))
-        self.white_captures = str(self.game.get_captured(WHITE))
+        for colour in (BLACK, WHITE):
+            self.player_captures[colour] = str(self.game.get_captured(colour))
 
         if self.game.finished():
             winner = self.game.winner()
             other = opposite_colour(winner)
-            self.to_move_marker[winner] = "won by"
+            self.player_status[winner] = "won by"
             # TODO draws are exceedingly unlikely...
         else:
             # Mark who is to move. TODO: Underline?
             to_move = self.game.to_move_colour()
             other = opposite_colour(to_move)
-            self.to_move_marker[to_move] = "*"
-        self.to_move_marker[other] = ""
+            self.player_status[to_move] = "*"
+        self.player_status[other] = ""
 
     def setup_grid_lines(self):
         size_x, size_y = self.size

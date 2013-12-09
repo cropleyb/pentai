@@ -119,27 +119,29 @@
                     #on_press: root.confirm() # Why isn't this working?
             GridLayout:
                 rows: 2
+                # TODO: duplication
                 MyLabel:
                     # TODO: times
-                    value: root.black_time
+                    # TODO: BLACK/WHITE
+                    value: root.player_time[1]
                     text: '0:00'
                 MyLabel:
-                    text: root.to_move_marker[1]
+                    text: root.player_status[1]
                 MyLabel:
-                    text: root.black_name
+                    text: root.player_name[1]
                 MyLabel:
-                    text: root.black_captures
+                    text: root.player_captures[1]
     
                 MyLabel:
                     # TODO: times
-                    value: root.white_time
+                    value: root.player_time[2]
                     text: '0:00'
                 MyLabel:
-                    text: root.to_move_marker[2]
+                    text: root.player_status[2]
                 MyLabel:
-                    text: root.white_name
+                    text: root.player_name[2]
                 MyLabel:
-                    text: root.white_captures
+                    text: root.player_captures[2]
 
 <Piece>:
     Image:
