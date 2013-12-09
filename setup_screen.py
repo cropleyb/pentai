@@ -80,7 +80,7 @@ class SetupScreen(Screen):
 
         gl = GridLayout(cols=2, size_hint=(1, None), height=120)
         players_gl.add_widget(gl)
-        l = Label(text="Black player name")
+        l = Label(text="Black\nplayer\nname")
         gl.add_widget(l)
         self.black_name_widget = TextInput(text=self.black_name)
         self.black_name_widget.bind(text=self.set_player_name)
@@ -91,7 +91,7 @@ class SetupScreen(Screen):
 
         gl = GridLayout(cols=2, size_hint=(1, None), height=120)
         players_gl.add_widget(gl)
-        l = Label(text="White player name")
+        l = Label(text="White\nplayer\nname")
         gl.add_widget(l)
         t = TextInput(text=self.white_name)
         self.white_name_widget = TextInput(text=self.white_name)
@@ -110,7 +110,7 @@ class SetupScreen(Screen):
 
     def start_game(self, unused=None):
         g = self.set_up_game()
-        self.app.start_game(g)
+        self.app.start_game(g, self.size)
 
     def set_up_game(self):
         bs = int(self.board_size_widget.val)

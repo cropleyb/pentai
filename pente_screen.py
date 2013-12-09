@@ -7,7 +7,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
-#from kivy.core.audio import SoundLoader TODO
+#from kivy.core.audio import SoundLoader # TODO
 
 from defines import *
 from gui import *
@@ -36,10 +36,10 @@ class PenteScreen(Screen):
     border_lines = ListProperty([0,0,0,0])
     border_colour = ListProperty([20,0,0,1])
     # TODO: Only the vertical offset is used so far.
-    board_offset = ListProperty([0,80.0])
+    board_offset = ListProperty([0,180.0])
     confirm_status = StringProperty("    No\nConfirm")
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, the_size, *args, **kwargs):
         self.marker = None
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
@@ -49,11 +49,26 @@ class PenteScreen(Screen):
         self.queued_filename = ""
         self.req_confirm = False
         self.confirmation_in_progress = None
+        self.calc_board_offset(the_size)
         #self.queued_filename = "./games/sample.txt" # TODO: Rename
 
         super(PenteScreen, self).__init__(*args, **kwargs)
 
+    def calc_board_offset(self, the_size):
+        x, y = the_size
+        # bo = y - x # Square board
+        bo = y * .35 # Same vertical ratio
+        self.board_offset[1] = bo
+
+    def clean_board(self):
+        for stone, col in self.stones_by_board_pos.values():
+            self.remove_widget(stone)
+        self.stones_by_board_pos = {}
+        self.remove_ghosts()
+        self.cancel_confirmation()
+
     def set_game(self, game):
+        self.clean_board()
         self.game = game
 
         # We must watch what happens to the logical board, and update accordingly
@@ -177,7 +192,7 @@ class PenteScreen(Screen):
         return lines
 
     def setup_colour_border(self, size_x, size_y):
-        w = 10
+        w = 6 # TODO this is copied and pasted from kv
         # This is ugly, but using the "rectangle" feature causes issues in the corners
         self.border_lines = [0,w, size_x,w, w,w, w,size_y, 0,size_y-w, size_x,size_y-w]
         self.border_lines.extend([size_x-w,size_y, size_x-w,w])
@@ -238,9 +253,10 @@ class PenteScreen(Screen):
         self.add_widget(mm)
 
     def cancel_confirmation(self):
-        widget, board_pos = self.confirmation_in_progress
-        self.remove_widget(widget)
-        self.confirmation_in_progress = None
+        if self.confirmation_in_progress != None:
+            widget, board_pos = self.confirmation_in_progress
+            self.remove_widget(widget)
+            self.confirmation_in_progress = None
 
     def show_confirmation(self, board_pos):
         colour = self.game.to_move_colour()
@@ -261,11 +277,12 @@ class PenteScreen(Screen):
         self.req_confirm = not self.req_confirm
         confirm_strings = ["    No\nConfirm", "Confirm\n   Req"]
         self.confirm_status = confirm_strings[self.req_confirm]
-    
+
+
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
             # Hack city
-            if touch.pos[0] < 140:
+            if touch.pos[0] < self.size[0] * .25:
                 self.toggle_confirm_req()
             else:
                 self.confirm_cb(None) # Why isn't it called from the button automatically?
@@ -374,6 +391,6 @@ class Piece(Scatter):
 
     def __init__(self, game, *args, **kwargs):
         game_size = game.size()
-        self.scale = 9. / game_size
+        self.scale = 4.5 / game_size
         super(Piece, self).__init__(*args, **kwargs)
 
