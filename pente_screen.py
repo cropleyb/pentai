@@ -32,8 +32,7 @@ class PenteScreen(Screen):
     white_name = StringProperty("Deep Thunk")
     black_time = StringProperty("0:00")
     white_time = StringProperty("0:00")
-    black_to_move_marker = StringProperty("*")
-    white_to_move_marker = StringProperty("")
+    to_move_marker = ListProperty([None, "*", ""])
     black_captures = StringProperty("0")
     white_captures = StringProperty("0")
     gridlines = ListProperty([])
@@ -137,25 +136,17 @@ class PenteScreen(Screen):
         self.black_captures = str(self.game.get_captured(BLACK))
         self.white_captures = str(self.game.get_captured(WHITE))
 
-        # TODO: this is ugly            
         if self.game.finished():
             winner = self.game.winner()
-            if winner == BLACK:
-                self.black_to_move_marker = "won by"
-                self.white_to_move_marker = ""
-            elif winner == WHITE:
-                self.black_to_move_marker = ""
-                self.white_to_move_marker = "won by"
+            other = opposite_colour(winner)
+            self.to_move_marker[winner] = "won by"
             # TODO draws are exceedingly unlikely...
         else:
             # Mark who is to move. TODO: Underline?
             to_move = self.game.to_move_colour()
-            if to_move == BLACK:
-                self.black_to_move_marker = "*"
-                self.white_to_move_marker = ""
-            elif to_move == WHITE:
-                self.black_to_move_marker = ""
-                self.white_to_move_marker = "*"
+            other = opposite_colour(to_move)
+            self.to_move_marker[to_move] = "*"
+        self.to_move_marker[other] = ""
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
