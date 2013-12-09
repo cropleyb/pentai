@@ -12,10 +12,7 @@ import game
 import human_player
 import ai_player
 
-import pdb
-
 def create_player(player_type_widget, player_name, max_depth):
-    #pdb.set_trace()
     if player_type_widget.val == 'Computer':
         p = ai_player.AIPlayer(player_name)
         p.set_max_depth(max_depth)
@@ -85,8 +82,9 @@ class SetupScreen(Screen):
         players_gl.add_widget(gl)
         l = Label(text="Black player name")
         gl.add_widget(l)
-        t = TextInput(text=self.black_name)
-        gl.add_widget(t)
+        self.black_name_widget = TextInput(text=self.black_name)
+        self.black_name_widget.bind(text=self.set_player_name)
+        gl.add_widget(self.black_name_widget)
         self.black_type_widget = MyCheckBoxList(group="black_type", text="",
                 values=('Human', 'Computer'))
         gl.add_widget(self.black_type_widget)
@@ -96,7 +94,9 @@ class SetupScreen(Screen):
         l = Label(text="White player name")
         gl.add_widget(l)
         t = TextInput(text=self.white_name)
-        gl.add_widget(t)
+        self.white_name_widget = TextInput(text=self.white_name)
+        self.white_name_widget.bind(text=self.set_player_name)
+        gl.add_widget(self.white_name_widget)
         self.white_type_widget = MyCheckBoxList(group="white_type", text="",
                 values=('Human', 'Computer'))
         gl.add_widget(self.white_type_widget)
@@ -123,4 +123,10 @@ class SetupScreen(Screen):
 
         g = game.Game(r, player1, player2)
         return g
+
+    def set_player_name(self, widget, val):
+        if widget == self.black_name_widget:
+            self.black_name = val
+        else:
+            self.white_name = val
 
