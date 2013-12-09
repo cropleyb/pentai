@@ -41,6 +41,7 @@ class PenteScreen(Screen):
     border_colour = ListProperty([20,0,0,1])
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,80.0])
+    confirm_status = StringProperty("    No\nConfirm")
 
     def __init__(self, *args, **kwargs):
         self.marker = None
@@ -50,7 +51,7 @@ class PenteScreen(Screen):
         self.ghosts = []
         self.ghost_colour = None
         self.queued_filename = ""
-        self.req_confirm = True
+        self.req_confirm = False
         self.confirmation_in_progress = None
         #self.queued_filename = "./games/sample.txt" # TODO: Rename
 
@@ -267,10 +268,19 @@ class PenteScreen(Screen):
             widget, board_pos = self.confirmation_in_progress
             self.enqueue_action(board_pos)
             self.cancel_confirmation()
-        
+
+    def toggle_confirm_req(self):
+        self.req_confirm = not self.req_confirm
+        confirm_strings = ["    No\nConfirm", "Confirm\n   Req"]
+        self.confirm_status = confirm_strings[self.req_confirm]
+    
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            self.confirm_cb(None) # Why isn't it called from the button automatically?
+            # Hack city
+            if touch.pos[0] < 140:
+                self.toggle_confirm_req()
+            else:
+                self.confirm_cb(None) # Why isn't it called from the button automatically?
             return touch
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
