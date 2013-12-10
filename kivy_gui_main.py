@@ -19,7 +19,7 @@ class PenteApp(App):
 
         # TODO: It would be nice if the board did not display until the grid was
         # correctly positioned
-        Clock.schedule_once(pente_screen.set_up_grid, 1)
+        Clock.schedule_once(pente_screen.setup_grid, 1)
 
         self.root.current = "Game Screen"
 

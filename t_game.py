@@ -10,10 +10,10 @@ class GameTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_load_game(self):
+    def test_load_moves(self):
         rules = Rules(9, "standard")
         game = Game(rules, Player("Freddo"), Player("Sam"))
-        game.load_game("1. (4, 4)\n2. (3, 3)\n")
+        game.load_moves("1. (4, 4)\n2. (3, 3)\n")
         self.assertEquals(game.get_move_number(), 3)
 
     def test_make_game_header(self):
@@ -40,8 +40,6 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.get_player_name(2), "Sam")
         self.assertEquals(g.rules.type_str, "standard")
         self.assertEquals(the_rest, "More Stuff\n")
-
-
 
 if __name__ == "__main__":
     unittest.main()

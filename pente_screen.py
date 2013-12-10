@@ -46,11 +46,14 @@ class PenteScreen(Screen):
         self.moved_marker = [None, None, None]
         self.ghosts = []
         self.ghost_colour = None
-        self.queued_filename = ""
         self.req_confirm = False
         self.confirmation_in_progress = None
+        self.game = None
+        #self.game_filename = ""
+        self.game_filename = "games/Black_Deep Thunk_2013-12-10.txt"
+
+
         self.calc_board_offset(the_size)
-        #self.queued_filename = "./games/sample.txt" # TODO: Rename
 
         super(PenteScreen, self).__init__(*args, **kwargs)
 
@@ -76,12 +79,10 @@ class PenteScreen(Screen):
         board.add_observer(self)
 
         self.trig = Clock.create_trigger(self.perform)
-        self.set_up_grid()
+        self.display_names()
+        self.setup_grid()
 
-        for colour in (BLACK, WHITE):
-            self.player_name[colour] = game.get_player_name(colour)
-
-        if len(self.queued_filename) > 0:
+        if len(self.game_filename) > 0:
             # Need some time for kivy to finish setting up, otherwise
             # the pieces are all stacked in the bottom left corner.
             Clock.schedule_once(self.load_file, 0)
@@ -89,6 +90,9 @@ class PenteScreen(Screen):
         # start the game
         game.prompt_for_action(self)
 
+    def display_names(self):
+        for colour in (BLACK, WHITE):
+            self.player_name[colour] = self.game.get_player_name(colour)
 
     def display_error(self, message):
         # TODO: Enter to close
@@ -106,10 +110,11 @@ class PenteScreen(Screen):
         self.trig()
 
     def load_file(self, dt):
-        f = open(self.queued_filename)
-        # TODO: game info - players, rules etc.
+        f = open(self.game_filename)
         self.game.load_game(f.read())
-        self.queued_filename = None
+        self.display_names()
+        self.setup_grid()
+        self.game_filename = None
 
     def perform(self, dt):
         if self.action_queue.empty():
@@ -198,8 +203,8 @@ class PenteScreen(Screen):
         self.border_lines.extend([size_x-w,size_y, size_x-w,w])
         self.border_colour = self.game.rules.border_colour
 
-    def set_up_grid(self, _dt=None):
-        if hasattr(self, "game"):
+    def setup_grid(self, _dt=None):
+        if self.game != None:
             self.gridlines = self.setup_grid_lines()
 
     def snap_to_grid(self, screen_pos):
@@ -381,7 +386,7 @@ class PenteScreen(Screen):
                 self.marker = None
 
     def on_size(self,*args,**kwargs):
-        self.set_up_grid()
+        self.setup_grid()
 
     def get_gridlines(self):
         return []
