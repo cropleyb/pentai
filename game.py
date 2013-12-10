@@ -77,11 +77,25 @@ class Game():
     def get_move(self, move_number):
         return self.move_history[move_number-1]
 
+    def go_forwards_one(self):
+        self.go_to_move(self.get_move_number() + 1)
+
+    def go_backwards_one(self):
+        self.go_to_move(self.get_move_number() - 1)
+
     def go_to_move(self, move_number):
-        gs = GameState(self)
-        self.current_state = gs
-        for i in range(move_number-1):
-            gs.make_move(self.move_history[i])
+        current_move = self.get_move_number()
+        if move_number < current_move:
+            # Have to go back to the start
+            gs = GameState(self)
+            self.current_state = gs
+            for i in range(move_number-1):
+                gs.make_move(self.move_history[i])
+        else:
+            for i in range(current_move-1, move_number-1):
+                gs = self.current_state
+                gs.make_move(self.move_history[i])
+
 
     def save_history(self):
         game_str = self.game_header()
