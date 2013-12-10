@@ -14,6 +14,8 @@ from gui import *
 
 import Queue
 
+import pdb
+
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
 black_ghost_filename = "./media/black_ghost.png"
@@ -49,8 +51,11 @@ class PenteScreen(Screen):
         self.req_confirm = False
         self.confirmation_in_progress = None
         self.game = None
-        #self.game_filename = ""
-        self.game_filename = "games/Black_Deep Thunk_2013-12-10.txt"
+        self.game_filename = ""
+        #self.game_filename = "games/Bruce_mark cole_2013-12-10.txt"
+        #self.game_filename = "games/Mark Cole_Bruce_2013-12-10.txt"
+        #self.game_filename = "games/mcunningham64_cropleyb_2013-12-11.txt"
+        #self.game_filename = "games/cropleyb_mcunningham64_2013-12-11.txt"
 
 
         self.calc_board_offset(the_size)
@@ -86,9 +91,9 @@ class PenteScreen(Screen):
             # Need some time for kivy to finish setting up, otherwise
             # the pieces are all stacked in the bottom left corner.
             Clock.schedule_once(self.load_file, 0)
-
-        # start the game
-        game.prompt_for_action(self)
+        else:
+            # start the game
+            game.prompt_for_action(self)
 
     def display_names(self):
         for colour in (BLACK, WHITE):
@@ -115,6 +120,7 @@ class PenteScreen(Screen):
         self.display_names()
         self.setup_grid()
         self.game_filename = None
+        self.game.prompt_for_action(self)
 
     def perform(self, dt):
         if self.action_queue.empty():
@@ -283,15 +289,26 @@ class PenteScreen(Screen):
         confirm_strings = ["    No\nConfirm", "Confirm\n   Req"]
         self.confirm_status = confirm_strings[self.req_confirm]
 
+    def go_forwards_one(self):
+        self.game.go_forwards_one()
+
+    def go_backwards_one(self):
+        self.game.go_backwards_one()
 
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            # Hack city
+            # Hack city; should be able to do this with bind etc.
             if touch.pos[0] < self.size[0] * .25:
-                self.toggle_confirm_req()
+                pdb.set_trace()
+                if touch.pos[1] < self.board_offset[1] / 3.0:
+                    self.go_forwards_one()
+                elif touch.pos[1] < self.board_offset[1] * 2 / 3.0:
+                    self.go_backwards_one()
+                else:
+                    self.toggle_confirm_req()
             else:
                 self.confirm_cb(None) # Why isn't it called from the button automatically?
-            return touch
+            return
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
         if current_player.get_type() == "human":
