@@ -47,7 +47,7 @@ class GameStateTest(unittest.TestCase):
         try:
             self.move(2,4)
         except IllegalMoveException, e:
-            self.assertEquals(e.message, "That position is already occupied")
+            self.assertEquals(e.message, "Position (2, 4) is already occupied")
             return
         self.fail()
 
