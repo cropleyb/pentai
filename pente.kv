@@ -165,11 +165,17 @@
 
             GridLayout:
                 size_hint_x: .3
-                cols: 1
+                rows: 3
                 ToggleButton:
                     font_size: '20sp'
                     text: root.confirm_status
                     #on_press: root.confirm() # Why isn't this working?
+                ToggleButton:
+                    font_size: '20sp'
+                    text: "Back"
+                ToggleButton:
+                    font_size: '20sp'
+                    text: "Forward"
             GridLayout:
                 rows: 2
                 # TODO: duplication
