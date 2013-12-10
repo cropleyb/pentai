@@ -1,0 +1,20 @@
+
+Game History
+Utility tuning
+Set names according to computer level?
+AI levels + scrollbar? Computer player names? Probablistic blindness?
+VCR controls
+pente.net interface
+Replay mode
+Load game via File chooser
+Copy game from pente.net mode
+Prettify GUI: Colours, layout, background, fonts
+Sound effects: place, capture, tick, win, loss, music
+Chess Clock, mode on/off
+Music
+load iPhone 
+Android
+iTunes
+Other Rules - No capture, standard, tournament, keryo etc.
+Add rules explanation
+Rating system: Python source: http://chess.stackexchange.com/questions/1377/is-there-any-software-or-web-service-for-club-level-elo-ratings
