@@ -1,6 +1,8 @@
 
 from game_state import *
 
+import datetime
+
 class Game():
 
     def __init__(self, rules, player1, player2):
@@ -11,6 +13,7 @@ class Game():
             player1.attach_to_game(self)
         if player2 != None:
             player2.attach_to_game(self)
+        self.move_history = []
 
     # TODO: get_size for consistency
     def size(self):
@@ -57,8 +60,9 @@ class Game():
 
     def make_move(self, move):
         # TODO: Record this, then save to a file if required?
-        print "%s. %s" % (self.get_move_number(), move)
         self.current_state.make_move(move)
+        self.move_history.append(move)
+        self.save_history()
 
     def finished(self):
         return self.current_state.get_won_by() > 0
@@ -69,9 +73,44 @@ class Game():
     def winner_name(self):
         return self.player[self.current_state.get_won_by()-1]
 
+    def save_history(self):
+        game_str = self.game_header()
+        for i in range(len(self.move_history)):
+            move = self.move_history[i]
+            game_str = game_str + "%s. %s\n" % (i+1, move)
+        filename = "games/%s_%s_%s.txt" % \
+            (self.get_player_name(BLACK),
+             self.get_player_name(WHITE),
+             str(datetime.date.today()))
+        game_file = open(filename, "w")
+        game_file.write(game_str)
+        game_file.close()
+
+    def configure_from_str(self, s):
+        player_line, size_line, rules_line, the_rest = s.split('\n', 3)
+
+        players = player_line.split(" versus ", 1)
+        self.player[1].name = players[0]
+        self.player[2].name = players[1]
+
+        side_length, ignored = size_line.split('x', 1)
+        self.rules.size = int(side_length)
+
+        rules_type, ignored = rules_line.split(" rules", 1)
+        self.rules.type_str = rules_type
+
+        return the_rest
+
+    def game_header(self):
+        player_line = "%s versus %s" % \
+                (self.get_player_name(1), self.get_player_name(2))
+        size_line = "%sx%s"% (self.size(), self.size())
+        rules_line = "%s rules\n" % self.rules.type_str
+        return "\n".join([player_line, size_line, rules_line])
+
     def load_game(self, game_str):
         # e.g. "1. (4,4)\n2. (3,3)\n"
-        try:
+        #try:
             gs = game_str.strip()
 
             for line in gs.split('\n'):
@@ -82,6 +121,6 @@ class Game():
                 coords = move_pos_str.split(',')
                 move = int(coords[0]), int(coords[1])
                 self.make_move(move)
-        except:
-            raise IncompatibleFileException("Could not read line: %s" % line)
+        #except:
+        #    raise IncompatibleFileException("Could not read line: %s" % line)
 

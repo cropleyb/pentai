@@ -2,6 +2,7 @@ from pente_exceptions import *
 
 class Rules():
     def __init__(self, size, type_str):
+        self.type_str = type_str
         if size < 5:
             raise BoardTooSmallException()
         if size > 19:
