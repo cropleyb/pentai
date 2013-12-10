@@ -6,12 +6,14 @@ from kivy.clock import *
 from kivy.uix.screenmanager import *
 
 from setup_screen import *
+from settings_screen import *
 from pente_screen import *
+from menu_screen import *
 
 class PenteApp(App):
 
     def start_game(self, game, startup_size):
-        pente_screen = PenteScreen(startup_size, name='Game Screen')
+        pente_screen = PenteScreen(startup_size, name='Game')
         self.root.add_widget(pente_screen)
 
         # load the game screen
@@ -21,7 +23,7 @@ class PenteApp(App):
         # correctly positioned
         Clock.schedule_once(pente_screen.setup_grid, 1)
 
-        self.root.current = "Game Screen"
+        self.root.current = "Game"
 
     def build(self):
         '''
@@ -31,9 +33,15 @@ class PenteApp(App):
         '''
         root = ScreenManager()
         self.root = root
-        s = SetupScreen(name="Setup Screen")
-        s.app = self
-        root.add_widget(s)
+        setup = SetupScreen(name="Setup")
+        setup.app = self
+        root.add_widget(setup)
+        settings = SettingsScreen(name="Settings")
+        settings.app = self
+        root.add_widget(settings)
+        menu = MenuScreen(name="Menu")
+        menu.app = self
+        root.add_widget(menu)
 
         return root
 
@@ -47,10 +55,10 @@ if __name__ == '__main__':
     Config.set('kivy', 'log_dir', 'logs')
     Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
 
-    #Config.set('graphics', 'width', '600')
-    #Config.set('graphics', 'height', '750')
-    Config.set('graphics', 'width', '320')
-    Config.set('graphics', 'height', '504')
+    Config.set('graphics', 'width', '457')
+    Config.set('graphics', 'height', '720')
+    #Config.set('graphics', 'width', '320')
+    #Config.set('graphics', 'height', '504')
 
 
     PenteApp().run()

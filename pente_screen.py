@@ -96,8 +96,8 @@ class PenteScreen(Screen):
 
     def display_error(self, message):
         # TODO: Enter to close
-        popup = Popup(title='Error', content=Label(text=message, font_size='25sp'), \
-                size_hint=(.7, .2))
+        popup = Popup(title='Error', content=Label(text=message, font_size='20sp'), \
+                size_hint=(.8, .2))
         popup.open()
         print message
 
@@ -156,7 +156,7 @@ class PenteScreen(Screen):
         if self.game.finished():
             winner = self.game.winner()
             other = opposite_colour(winner)
-            self.player_status[winner] = "won by"
+            self.player_status[winner] = "win:"
             # TODO draws are exceedingly unlikely...
         else:
             # Mark who is to move. TODO: Underline?
@@ -396,6 +396,6 @@ class Piece(Scatter):
 
     def __init__(self, game, *args, **kwargs):
         game_size = game.size()
-        self.scale = 4.5 / game_size
+        self.scale = 7. / game_size
         super(Piece, self).__init__(*args, **kwargs)
 

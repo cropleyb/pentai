@@ -5,6 +5,59 @@
 <MyCheckBoxList>:
     cols: 2
 
+<MenuScreen>:
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        Button:
+            text: "Load game"
+        MyLabel:
+            text: "TODO"
+
+        Button:
+            text: "Save game"
+        MyLabel:
+            text: "TODO"
+
+        Button:
+            text: "Resign"
+        MyLabel:
+            text: "TODO"
+
+        Button:
+            text: "Show Rules"
+        MyLabel:
+            text: "TODO"
+
+        Button:
+            text: "Return to Game"
+        MyLabel:
+            text: "TODO"
+
+<SettingsScreen>:
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        # TODO: Players
+
+        MyLabel:
+            #size_hint: .9, None
+            text: "Show last 2 moves?"
+        ToggleButton:
+            font_size: '20sp'
+
+        MyLabel:
+            text: "Show recent captures?"
+        ToggleButton:
+            font_size: '20sp'
+
+        MyLabel:
+            text: "Confirm moves?"
+        ToggleButton:
+            font_size: '20sp'
+
+        # TODO: Music and Sound Effects
+
 #<SetupScreen>:
 #    #cols: 1 # TEMP
 #    GridLayout:

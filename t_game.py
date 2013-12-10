@@ -41,6 +41,32 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.rules.type_str, "standard")
         self.assertEquals(the_rest, "More Stuff\n")
 
+    def test_go_to_move_back(self):
+        rules = Rules(9, "standard")
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.load_moves("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
+        self.assertEquals(g.get_move_number(), 5)
+        g.go_to_move(2)
+        self.assertEquals(g.get_move_number(), 2)
+        
+    def test_go_to_move_back_then_forward(self):
+        rules = Rules(9, "standard")
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.load_moves("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
+        g.go_to_move(2)
+        g.go_to_move(5)
+        self.assertEquals(g.get_move_number(), 5)
+        
+    def test_go_to_move_back_then_make_a_new_move(self):
+        rules = Rules(9, "standard")
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.load_moves("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
+        g.go_to_move(2)
+        g.make_move((0,0))
+        self.assertEquals(g.get_move_number(), 3)
+        self.assertEquals(g.get_move(1), (4,4))
+        self.assertEquals(g.get_move(2), (0,0))
+
 if __name__ == "__main__":
     unittest.main()
 

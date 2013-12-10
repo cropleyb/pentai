@@ -60,6 +60,7 @@ class Game():
 
     def make_move(self, move):
         # TODO: Record this, then save to a file if required?
+        self.move_history = self.move_history[:self.get_move_number()-1]
         self.current_state.make_move(move)
         self.move_history.append(move)
         self.save_history()
@@ -72,6 +73,15 @@ class Game():
 
     def winner_name(self):
         return self.player[self.current_state.get_won_by()-1]
+
+    def get_move(self, move_number):
+        return self.move_history[move_number-1]
+
+    def go_to_move(self, move_number):
+        gs = GameState(self)
+        self.current_state = gs
+        for i in range(move_number-1):
+            gs.make_move(self.move_history[i])
 
     def save_history(self):
         game_str = self.game_header()
