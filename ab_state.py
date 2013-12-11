@@ -163,19 +163,21 @@ class ABState():
 
             strip_min, strip_max = ds.get_bounds(s_num, brd_size)
 
-            # These are the absolute indices that bound the strip
-            # we want to use to adjust length stats.
-            min_ind = max(strip_min, ind-4) # TODO: constants
-            max_ind = min(ind+4, strip_max) # inclusive
-
             us = self.utility_stats
             us.set_ind_to_pos(ds.get_pos, s_num)
 
+            # These are the absolute indices that bound the strip
+            # that we want to use to adjust length stats.
+            min_ind = max(strip_min, ind-4) # TODO: constants
+            max_ind = min(ind+4, strip_max) # inclusive
+
+            # These have different parameter lists because of the different
+            # lengths of the matching required.
+            # TODO move min_ind into process_substrips
             process_substrips(bs, min_ind, max_ind, us, inc)
 
-            # TODO: brd_size may need changing due to some diagonal captures?
-            process_takes(bs, ind, brd_size, us, inc)
-            process_threats(bs, ind, brd_size, us, inc)
+            process_takes(bs, ind, strip_min, strip_max, us, inc)
+            process_threats(bs, ind, strip_min, strip_max, us, inc)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

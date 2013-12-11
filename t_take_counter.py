@@ -40,7 +40,7 @@ class SubStripCountingTest(unittest.TestCase):
     def process_takes_for_str(self, ss_str, ind):
         occs = pattern_string_to_board_strip(ss_str)
         brd_size = len(ss_str)
-        process_takes(occs, ind, brd_size, self.us, 1)
+        process_takes(occs, ind, 0, brd_size-1, self.us, 1)
 
     # Tests
     def test_count_empty(self):

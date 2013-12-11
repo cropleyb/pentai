@@ -332,6 +332,22 @@ class ThreatTest(unittest.TestCase):
         g3 =     g2.create_state((2,1)) # B
         self.assertEquals(g3.get_takes(), [0, 0, 0])
 
+    ##########################################
+
+    def test_SW_invalid2(self):
+        g1 = self.s.create_state((1,0)) # B
+        g2 =     g1.create_state((3,2)) # W
+        g3 =     g2.create_state((2,1)) # B
+        self.assertEquals(g3.get_takes(), [0, 0, 0])
+
+    def test_SW_invalid_threat2(self):
+        g1 = self.s.create_state((1,0)) # B
+        g2 =     g1.create_state((3,4)) # W (irrel.)
+        g3 =     g2.create_state((2,1)) # B
+        self.assertEquals(g3.get_threats(), [0, 0, 1])
+
+    # TODO: lots of threat cases, or unify stuff
+
 if __name__ == "__main__":
     unittest.main()
 

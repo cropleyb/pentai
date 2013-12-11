@@ -5,13 +5,13 @@ import unittest
 from threat_counter import *
 from utility_stats import *
 
-import pdb
-
 mapping = {
     " ": 0, # empty
     "B": 1, # Black
     "W": 2, # White
 }
+
+import pdb
 
 def pattern_string_to_board_strip(occ_str):
     occs = 0
@@ -37,10 +37,10 @@ class SubStripCountingTest(unittest.TestCase):
         self.threats = self.us.threats
 
     # Helper
-    def process_threats_for_str(self, ss_str, ind):
+    def process_threats_for_str(self, ss_str, ind, strip_min=0):
         occs = pattern_string_to_board_strip(ss_str)
         brd_size = len(ss_str)
-        process_threats(occs, ind, brd_size, self.us, 1)
+        process_threats(occs, ind, strip_min, brd_size-1, self.us, 1)
 
     # Tests
     def test_count_empty(self):
@@ -73,11 +73,12 @@ class SubStripCountingTest(unittest.TestCase):
         self.assertEquals(self.threats, [0,0,0])
     
     def test_threat_spot_would_be_off_left(self):
-        self.process_threats_for_str("WW     ", 1)
+        self.process_threats_for_str("WW     ", 3, strip_min=1)
         self.assertEquals(self.threats, [0,0,0])
 
     def test_threat_spot_would_be_off_right(self):
-        self.process_threats_for_str("     BB", 3)
+        pdb.set_trace()
+        self.process_threats_for_str("     BB", 4)
         self.assertEquals(self.threats, [0,0,0])
     
     def test_zebra(self):
