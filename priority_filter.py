@@ -1,5 +1,7 @@
 from defines import *
 
+import pdb
+
 class PriorityFilter():
     def __init__(self, orig=None, min_priority=0):
 
@@ -54,15 +56,23 @@ class PriorityFilter():
             length -= 1
         slot = self.candidates_by_priority_and_colour[length][colour]
         for pos in pos_list:
+            assert pos[0] >= 0
+            assert pos[1] >= 0
             slot[pos] = slot.setdefault(pos, 0) + inc
             # Remove - still a value of 0 here, which is ignored in get_iter()
 
     def add_or_remove_take(self, colour, pos, inc=1):
+        assert pos[0] >= 0
+        assert pos[1] >= 0
         # Valuing captures between 3s and 4s
         slot = self.candidates_by_priority_and_colour[4][colour]
         slot[pos] = slot.setdefault(pos, 0) + inc
 
     def add_or_remove_threat(self, colour, pos, inc=1):
+        assert pos[0] >= 0
+        if pos[1] < 0:
+            pdb.set_trace()
+        #assert pos[1] >= 0
         # Valuing captures between 2s and 3s
         slot = self.candidates_by_priority_and_colour[2][colour]
         slot[pos] = slot.setdefault(pos, 0) + inc
