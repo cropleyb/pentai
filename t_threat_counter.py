@@ -73,11 +73,10 @@ class SubStripCountingTest(unittest.TestCase):
         self.assertEquals(self.threats, [0,0,0])
     
     def test_threat_spot_would_be_off_left(self):
-        self.process_threats_for_str("WW     ", 3, strip_min=1)
+        self.process_threats_for_str(" WW  ", 3, strip_min=1)
         self.assertEquals(self.threats, [0,0,0])
 
     def test_threat_spot_would_be_off_right(self):
-        pdb.set_trace()
         self.process_threats_for_str("     BB", 4)
         self.assertEquals(self.threats, [0,0,0])
     

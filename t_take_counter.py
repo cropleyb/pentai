@@ -37,10 +37,10 @@ class SubStripCountingTest(unittest.TestCase):
         self.takes = self.us.takes
 
     # Helper
-    def process_takes_for_str(self, ss_str, ind):
+    def process_takes_for_str(self, ss_str, ind, strip_min=0):
         occs = pattern_string_to_board_strip(ss_str)
         brd_size = len(ss_str)
-        process_takes(occs, ind, 0, brd_size-1, self.us, 1)
+        process_takes(occs, ind, strip_min, brd_size-1, self.us, 1)
 
     # Tests
     def test_count_empty(self):
@@ -93,7 +93,7 @@ class SubStripCountingTest(unittest.TestCase):
         self.assertEquals(self.takes, [0,0,0])
     
     def test_capture_spot_would_be_off_left(self):
-        self.process_takes_for_str("WWB    ", 1)
+        self.process_takes_for_str(" WWB ", 3, strip_min=1)
         self.assertEquals(self.takes, [0,0,0])
 
     def test_capture_spot_would_be_off_right(self):
