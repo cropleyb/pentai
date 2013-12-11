@@ -43,9 +43,7 @@ class ABState():
 
     def set_state(self, s):
         self.state = s
-        self.board().add_observer(self)
-        # TODO: Remove us as an observer from previous self.state?
-        # Probably not - recursive search could cause probs
+        s.add_observer(self)
 
     def to_move_colour(self):
         return self.state.to_move_colour()

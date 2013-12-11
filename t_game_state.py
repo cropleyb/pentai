@@ -8,6 +8,8 @@ from human_player import *
 from rules import *
 from game import *
 
+from mock import *
+
 B = BLACK
 W = WHITE
 
@@ -255,6 +257,35 @@ class GameStateTest(unittest.TestCase):
         self.move(4,6,True) # B # finished game
         self.aE(self.gs.captured[1], 10)
         self.aE(self.gs.get_won_by(), B)
+
+# TODO Undo Copy and paste
+class ObserverTest(unittest.TestCase):
+    def setUp(self):
+        self.setUpWithOverrides(
+                size=5,
+                player1=HumanPlayer("Fred"),
+                player2=HumanPlayer("Wilma"))
+
+    def setUpWithOverrides(self, size=5, player1=None, player2=None, rules_str="standard"):
+        rules = Rules(size, rules_str)
+        self.game = Game(rules, player1, player2)
+        self.gs = self.game.current_state
+
+    def move(self, x, y):
+        self.gs.make_move((x,y))
+
+    def test_capture_is_observed(self):
+        m = Mock()
+        self.gs.add_observer(m)
+        self.move(3,1) # B
+        self.move(4,1) # W
+        self.move(2,1) # B
+        self.move(1,1) # W
+
+        all_calls = m.mockGetAllCalls()
+        # Before and after inc. two captures
+        self.assertEquals(len(all_calls), 12)
+        
 
 if __name__ == "__main__":
     unittest.main()

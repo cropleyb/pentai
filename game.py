@@ -19,6 +19,9 @@ class Game():
     def size(self):
         return self.rules.size
 
+    def get_current_state(self):
+        return self.current_state
+
     def get_board(self):
         return self.current_state.board
 

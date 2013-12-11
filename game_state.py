@@ -14,6 +14,7 @@ class GameState():
             self.captured = [0,0,0]
             self.set_won_by(False)
             self.move_number = 1
+            self.observers = []
         else:
             self.board = parent.board.clone()
             self.captured = parent.captured[:]
@@ -22,13 +23,17 @@ class GameState():
             # not + 1, that will be triggered by a move
             self.move_number = parent.move_number
 
-            # TODO: copy AI observer manually
+            self.observers = []
+
         self.last_move = "No move yet"
 
     def __repr__(self):
         # TEMP for debugging
         return str(self.last_move)
         #return self.game.__repr__()
+
+    def add_observer(self, o):
+        self.observers.append(o)
 
     def get_board(self):
         return self.board
@@ -48,7 +53,10 @@ class GameState():
 
     def set_captured(self, player_num, pieces):
         self.captured[player_num] = pieces
-    
+
+    def set_occ(self, move_pos, my_colour):
+        self.board.set_occ(move_pos, my_colour, self.observers)
+
     def make_move(self, move_pos):
         if self.board.off_board(move_pos):
             raise IllegalMoveException("That position is off the board")
@@ -69,7 +77,7 @@ class GameState():
             self.process_direction_captures(ds, move_pos, MC)
 
         # Place a stone
-        self.board.set_occ(move_pos, my_colour)
+        self.set_occ(move_pos, my_colour)
 
         # OLD. We only need to check for 5 in a row wins if we are not
         # an AI player - the AI data structure detects this already,
@@ -93,7 +101,7 @@ class GameState():
         captures = ds.get_captures(move_pos, my_colour)
         for capture_pos in captures:
             # Remove stone
-            self.board.set_occ(capture_pos, EMPTY)
+            self.set_occ(capture_pos, EMPTY)
 
             # Keep track of capture count
             self.captured[my_colour] += 1

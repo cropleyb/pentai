@@ -132,3 +132,20 @@ Threat matching - by index, same tech as for Capture matching
 Length Lookup table - Singleton?
 BoardStrip: occs for a strip
 
+Prob: observers
+currently board observers
+2 types of observers: Current game observers and AI search observers
+AI (ABState) needs to know about all changes in a search
+GUI (PenteScreen) needs to know about all changes to the real game,
+and maybe to changes in a search
+Game.current_state should be observed by the GUI. - through Game or GS?
+GameStates in the search tree should be observed by the AI.
+It would be nice to be able to watch the search in progress,
+maybe to a fixed depth (even 1) i.e. GUI observing AI search states -
+this would need capture ghosts to be turned off or made reversible
+
+Different types of observation:
+add/remove occ; before/after
+captures
+finished move
+game won

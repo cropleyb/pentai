@@ -14,8 +14,6 @@ from gui import *
 
 import Queue
 
-import pdb
-
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
 black_ghost_filename = "./media/black_ghost.png"
@@ -80,8 +78,8 @@ class PenteScreen(Screen):
         self.game = game
 
         # We must watch what happens to the logical board, and update accordingly
-        board = game.get_board()
-        board.add_observer(self)
+        cs = game.get_current_state()
+        cs.add_observer(self)
 
         self.trig = Clock.create_trigger(self.perform)
         self.display_names()
@@ -299,7 +297,6 @@ class PenteScreen(Screen):
         if touch.pos[1] < self.board_offset[1]:
             # Hack city; should be able to do this with bind etc.
             if touch.pos[0] < self.size[0] * .25:
-                pdb.set_trace()
                 if touch.pos[1] < self.board_offset[1] / 3.0:
                     self.go_forwards_one()
                 elif touch.pos[1] < self.board_offset[1] * 2 / 3.0:

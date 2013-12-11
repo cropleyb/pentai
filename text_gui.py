@@ -29,8 +29,7 @@ class TextGui(Gui):
         self.board_chars.append(horiz_grid)
 
         # We must watch what happens to the logical board, and update accordingly
-        board = game.current_state.board
-        board.add_observer(self)
+        game.current_state.add_observer(self)
 
     def after_set_occ(self, pos, colour):
         col_char = " BW"[colour]

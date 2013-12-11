@@ -1,6 +1,6 @@
 from game import *
 from pente_exceptions import *
 
-class Gui(BoardObserver):
+class Gui():
     # TODO: base interface, constructor chaining takes (game)
     pass
