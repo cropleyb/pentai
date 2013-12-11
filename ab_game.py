@@ -37,12 +37,8 @@ class ABGame():
             p_i = pos_iter.get_iter(state.to_move_colour(), min_priority)
         for pos in p_i:
             # create a AB_State for each possible move from state
-            try:
-                succ = state.create_state(pos)
-                yield pos, succ
-            except pente_exceptions.IllegalMoveException:
-                # Ignore these
-                pass
+            succ = state.create_state(pos)
+            yield pos, succ
 
     def terminal_test(self, state):
         return state.terminal()
