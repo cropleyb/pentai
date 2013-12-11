@@ -2,7 +2,8 @@ from defines import *
 from priority_filter import *
 
 def pass_through_func(a, ignored):
-    return a
+    """ This is just a stub, shouldn't be called in production code. """
+    return (a, 0)
 
 class UtilityStats():
 
