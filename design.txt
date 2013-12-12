@@ -149,3 +149,13 @@ add/remove occ; before/after
 captures
 finished move
 game won
+
+Problem: choosing bad move with large search depth
+W 13x13 Depth 6
+Deep utility func is getting a win for black,
+resulting in a utility of -1e+31.
+
+Q: What happens with different search depths
+1: OK, 2: OK, 3: I often win with B, 4: as for 3,
+5: It plays badly, not blocking an open 3
+6: as for 5
