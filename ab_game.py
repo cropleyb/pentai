@@ -30,8 +30,6 @@ class ABGame():
             p_i = [centre_pos]
         else:
             min_priority = 0
-            if depth > 3:
-                min_priority = 4
 
             pos_iter = state.get_iter(state.to_move())
             p_i = pos_iter.get_iter(state.to_move_colour(), min_priority)
