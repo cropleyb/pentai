@@ -147,10 +147,17 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertIn(l[1], others)
         self.assertIn(l[2], others)
 
-    def test_min_priority(self):
+    def test_min_priority4(self):
         self.arc(BLACK, 3, ((2,4),(3,3),), inc=1)
         self.arc(BLACK, 4, ((3,3),), inc=1)
         l = list(self.pf.get_iter(BLACK, min_priority=4))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(3,3))
+
+    def test_min_priority2(self): # TODO
+        self.arc(BLACK, 1, ((2,4),(3,3),), inc=1)
+        self.pf.add_or_remove_threat(BLACK, (3,3))
+        l = list(self.pf.get_iter(BLACK, min_priority=2))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(3,3))
 
