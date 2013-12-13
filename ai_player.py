@@ -36,8 +36,13 @@ class AIPlayer(Player):
 
     def search_thread(self, gui, test=False):
         ab_game = self.ab_game
-        move, value = alpha_beta.alphabeta_search(ab_game.current_state, ab_game,
-                max_depth=self.max_depth)
+        md = self.max_depth
+        '''
+        if ab_game.current_state.get_move_number() < 10:
+            md = min(md, 4)
+        '''
+        move, value = alpha_beta.alphabeta_search(ab_game.current_state,
+                ab_game, max_depth=md)
         action = move[0]
         if test:
             self.action = action
