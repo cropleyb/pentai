@@ -136,8 +136,8 @@ class Game():
         return "\n".join([player_line, size_line, rules_line])
 
     def load_game(self, game_str):
-        rem = self.configure_from_str(game_str)
-        self.load_moves(rem)
+        remainder = self.configure_from_str(game_str)
+        self.load_moves(remainder)
 
     def load_moves(self, game_str):
         # e.g. "1. (4,4)\n2. (3,3)\n"
