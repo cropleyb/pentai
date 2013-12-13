@@ -91,7 +91,14 @@ class PenteScreen(Screen):
             Clock.schedule_once(self.load_file, 0)
         else:
             # start the game
+            Clock.schedule_once(self.make_constrained_first_move, 0)
             game.prompt_for_action(self)
+
+    def make_constrained_first_move(self, dt):
+        r = self.game.rules
+        if r.center_first:
+            bs = r.size
+            self.game.make_move((bs//2, bs//2))
 
     def display_names(self):
         for colour in (BLACK, WHITE):
