@@ -14,9 +14,13 @@ inf = INFINITY / 2
 class UtilityTest(unittest.TestCase):
     def setUp(self):
         self.s = ABState()
+        self.rules = Mock()
+        self.rules.stones_for_capture_win = 10
         self.game = Mock()
+        self.game.rules= self.rules
         self.captured = [0, 0, 0] # This is individual stones, E/B/W
-        self.gs = Mock({"get_all_captured": self.captured, "get_move_number": 1}) 
+        self.gs = Mock({"get_all_captured": self.captured,
+            "get_move_number": 1, "game":self.game}) 
         self.gs.board = Board(13)
         self.gs.game = self.game
         self.set_turn_player_colour(BLACK)
@@ -99,12 +103,28 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreaterEqual(u, inf)
 
+    def test_black_no_win_by_captures_for_five_in_a_row(self):
+        self.set_black_lines([0,0,0,0,0])
+        self.set_white_lines([0,0,0,0,0])
+        self.set_captured(10, 0)
+        self.rules.stones_for_capture_win = 0
+        u = self.s.utility()
+        self.assertEqual(u, 0)
+
     def test_white_win_by_captures(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
         self.set_captured(0, 10)
         u = self.s.utility()
         self.assertLessEqual(u, -inf)
+
+    def test_white_no_win_by_captures_for_five_in_a_row(self):
+        self.set_black_lines([0,0,0,0,0])
+        self.set_white_lines([0,0,0,0,0])
+        self.set_captured(0, 10)
+        self.rules.stones_for_capture_win = 0
+        u = self.s.utility()
+        self.assertEqual(u, 0)
 
     def test_one_capture_worth_more_than_a_three(self):
         self.set_black_lines([0,0,0,0,0])

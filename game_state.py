@@ -32,6 +32,9 @@ class GameState():
         return str(self.last_move)
         #return self.game.__repr__()
 
+    def get_rules(self):
+        return self.game.rules
+
     def add_observer(self, o):
         self.observers.append(o)
 
@@ -106,8 +109,11 @@ class GameState():
 
             # Keep track of capture count
             self.captured[my_colour] += 1
-            if self.captured[my_colour] >= 10:
-                self.set_won_by(my_colour)
+
+            sfcw = self.get_rules().stones_for_capture_win
+            if sfcw > 0:
+                if self.captured[my_colour] >= sfcw:
+                    self.set_won_by(my_colour)
 
     def set_won_by(self, wb):
         self._won_by = wb

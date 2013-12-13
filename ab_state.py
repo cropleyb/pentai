@@ -90,14 +90,19 @@ class ABState():
         else:
             return white_contrib - black_contrib
 
+    def get_rules(self):
+        return self.game().rules
+
     def utility_contrib(self, lines, colour):
         # Check for a win first
         # TODO: check rules
-        captured = self.state.get_all_captured()
-        # Scale these INFINITIES down to discourage sadistic
-        # won game lengthening.
-        if captured[colour] >= 10:
-            return INFINITY / self.state.get_move_number()
+        sfcw = self.get_rules().stones_for_capture_win
+        if sfcw > 0:
+            captured = self.state.get_all_captured()
+            # Scale these INFINITIES down to discourage sadistic
+            # won game lengthening.
+            if captured[colour] >= sfcw:
+                return INFINITY / self.state.get_move_number()
 
         if lines[4] > 0:
             return INFINITY / self.state.get_move_number()
@@ -110,9 +115,13 @@ class ABState():
             rev = 4 - i
             score += lines[rev]
 
-        cc = self.captured_contrib(captured[colour])
-        score += cc
+        if sfcw > 0:
+            cc = self.captured_contrib(captured[colour])
+            score += cc
+        # else: Captured stones are not worth anything
 
+        # Give takes and threats some value for their ability to help
+        # get 5 in a row.
         tc = self.take_contrib(self.get_takes()[colour])
         score += tc
 
