@@ -1,10 +1,12 @@
 
-Options Page - popup or sep. page
-VCR controls
 Load game via File chooser
+Options Page - sep. page
+VCR control graphics
 Utility tuning
+Cython
 Set names according to computer level?
 AI levels + scrollbar? Computer player names? Probablistic blindness?
+switch players mid-game
 pente.net interface
 Copy game from pente.net mode
 Prettify GUI: Colours, layout, background, fonts
@@ -13,8 +15,8 @@ Chess Clock, mode on/off
 Music
 load iPhone 
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
+iPad: "Rich Guano" I am running IOS7 on iPad mini.
 iTunes
 keryo rules etc.
 Add rules explanation
 Rating system: Python source: http://chess.stackexchange.com/questions/1377/is-there-any-software-or-web-service-for-club-level-elo-ratings
-iPad: "Rich Guano" I am running IOS7 on iPad mini.
