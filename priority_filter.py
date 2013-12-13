@@ -43,7 +43,7 @@ class PriorityFilter():
                             tried.add(pos)
                             yield pos
                             # HACK
-                            if len(tried) > 9:
+                            if len(tried) > 6:
                                 return
 
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
