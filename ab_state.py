@@ -26,6 +26,9 @@ class ABState():
         else:
             self.utility_stats = UtilityStats(parent.utility_stats)
 
+    def reset_state(self):
+        self.utility_stats = UtilityStats()
+
     def get_black_line_counts(self):
         return self.utility_stats.lines[BLACK]
 

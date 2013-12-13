@@ -14,6 +14,8 @@ from gui import *
 
 import Queue
 
+import pdb
+
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
 black_ghost_filename = "./media/black_ghost.png"
@@ -72,6 +74,10 @@ class PenteScreen(Screen):
         self.stones_by_board_pos = {}
         self.remove_ghosts()
         self.cancel_confirmation()
+
+    def reset_state(self):
+        """ Callback from game_state """
+        self.clean_board()
 
     def set_game(self, game):
         self.clean_board()

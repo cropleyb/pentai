@@ -62,7 +62,7 @@ class Game():
         return self.current_state.set_captured(player_number, pieces)
 
     def make_move(self, move):
-        # TODO: Record this, then save to a file if required?
+        # Record this, then save to a file if required
         self.move_history = self.move_history[:self.get_move_number()-1]
         self.current_state.make_move(move)
         self.move_history.append(move)
@@ -89,16 +89,17 @@ class Game():
     def go_to_move(self, move_number):
         current_move = self.get_move_number()
         if move_number < current_move:
-            # Have to go back to the start
-            gs = GameState(self)
-            self.current_state = gs
+            # Have to go back to the start, and replay all the moves,
+            # otherwise the GUI and AI would need to support undo. TODO?
+            gs = self.current_state
+            gs.reset(self)
+
             for i in range(move_number-1):
                 gs.make_move(self.move_history[i])
         else:
             for i in range(current_move-1, move_number-1):
                 gs = self.current_state
                 gs.make_move(self.move_history[i])
-
 
     def save_history(self):
         game_str = self.game_header()

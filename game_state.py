@@ -9,12 +9,8 @@ class GameState():
         self.game = game
         self.parent = parent
         if parent == None:
-            self.board = Board(game.size())
-            # 3 for convenience, should only use [1] and [2]
-            self.captured = [0,0,0]
-            self.set_won_by(False)
-            self.move_number = 1
             self.observers = []
+            self.reset(game)
         else:
             self.board = parent.board.clone()
             self.captured = parent.captured[:]
@@ -31,6 +27,17 @@ class GameState():
         # TEMP for debugging
         return str(self.last_move)
         #return self.game.__repr__()
+
+    def reset(self, game=None):
+        if game is None:
+            game = self.game
+        self.board = Board(game.size())
+        # 3 for convenience, should only use [1] and [2]
+        self.captured = [0,0,0]
+        self.set_won_by(False)
+        self.move_number = 1
+        for o in self.observers:
+            o.reset_state()
 
     def get_rules(self):
         return self.game.rules
