@@ -72,7 +72,8 @@ class SetupScreen(Screen):
         bs_r_gl.add_widget(self.board_size_widget)
 
         self.rules_widget = MyCheckBoxList(group="rules", text="Rules",
-				values=['standard', 'tournament', 'keryo', 'freestyle', 'five', 'no'])
+				values=['standard', 'tournament', 'keryo',
+                    'freestyle', 'five in a row', 'no captures'])
         bs_r_gl.add_widget(self.rules_widget)
 
         players_gl = GridLayout(cols=2, size_hint=(1, None), height=120)

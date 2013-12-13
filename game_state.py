@@ -76,9 +76,12 @@ class GameState():
         MC = my_colour
         OC = self.to_move_colour() # Other Colour
 
-        # Process captures
-        for ds in self.board.get_direction_strips():
-            self.process_direction_captures(ds, move_pos, MC)
+        rules = self.get_rules()
+        ccp = rules.can_capture_pairs
+        if ccp:
+            # Process captures
+            for ds in self.board.get_direction_strips():
+                self.process_direction_captures(ds, move_pos, MC)
 
         # Place a stone
         self.set_occ(move_pos, my_colour)

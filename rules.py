@@ -10,6 +10,7 @@ class Rules():
         self.size = size
         ts = type_str.lower()
         if ts == "standard":
+            # TODO: constrain second black move attr.
             self.center_first = True
             self.stones_for_capture_win = 10
             self.can_capture_pairs = True

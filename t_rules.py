@@ -4,19 +4,6 @@ import unittest
 from rules import *
 
 class RulesTest(unittest.TestCase):
-    #def setUp(self):
-
-    '''
-    def __init__(self, size, typeStr):
-        self.size = size
-        ts = typeStr.lower()
-        if ts == "standard":
-            self.centerFirst = True
-            self.stonesForCaptureWin = 10
-            self.canCapturePairs = True
-            self.canCaptureThrees = False
-            self.exactlyFive = False
-    '''
 
     def test_board_size_13(self):
         r = Rules(13, "standard")

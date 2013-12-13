@@ -95,9 +95,10 @@ class ABState():
 
     def utility_contrib(self, lines, colour):
         # Check for a win first
-        # TODO: check rules
-        sfcw = self.get_rules().stones_for_capture_win
-        if sfcw > 0:
+        rules = self.get_rules()
+        sfcw = rules.stones_for_capture_win
+        ccp = rules.can_capture_pairs
+        if sfcw > 0 and ccp:
             captured = self.state.get_all_captured()
             # Scale these INFINITIES down to discourage sadistic
             # won game lengthening.
@@ -115,18 +116,20 @@ class ABState():
             rev = 4 - i
             score += lines[rev]
 
-        if sfcw > 0:
-            cc = self.captured_contrib(captured[colour])
-            score += cc
-        # else: Captured stones are not worth anything
+        if ccp:
+            if sfcw > 0:
+                cc = self.captured_contrib(captured[colour])
+                score += cc
+            # else: Captured stones are not worth anything
 
-        # Give takes and threats some value for their ability to help
-        # get 5 in a row.
-        tc = self.take_contrib(self.get_takes()[colour])
-        score += tc
+            # Give takes and threats some value for their ability to help
+            # get 5 in a row.
+            tc = self.take_contrib(self.get_takes()[colour])
+            score += tc
 
-        tc = self.threat_contrib(self.get_threats()[colour])
-        score += tc
+            tc = self.threat_contrib(self.get_threats()[colour])
+            score += tc
+        # else: no capturing pairs - no scoring pairs
 
         #print "black: %s, white: %s, score: %s" % (self.black_lines, self.white_lines, \
         #        score)
@@ -162,6 +165,7 @@ class ABState():
     def _set_or_reset_occs(self, pos, inc):
         # update substrips
         brd = self.board()
+        ccp = self.get_rules().can_capture_pairs
         for ds in brd.get_direction_strips():
             # Keep track of the lengths of lines that can form 5
             # in a row
@@ -185,8 +189,9 @@ class ABState():
             # TODO move min_ind into process_substrips
             process_substrips(bs, min_ind, max_ind, us, inc)
 
-            process_takes(bs, ind, strip_min, strip_max, us, inc)
-            process_threats(bs, ind, strip_min, strip_max, us, inc)
+            if ccp:
+                process_takes(bs, ind, strip_min, strip_max, us, inc)
+                process_threats(bs, ind, strip_min, strip_max, us, inc)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

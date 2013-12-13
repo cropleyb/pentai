@@ -99,6 +99,7 @@ class PenteScreen(Screen):
         if r.center_first:
             bs = r.size
             self.game.make_move((bs//2, bs//2))
+            self.game.prompt_for_action(self)
 
     def display_names(self):
         for colour in (BLACK, WHITE):
