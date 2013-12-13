@@ -100,6 +100,10 @@ class PenteScreen(Screen):
             Clock.schedule_once(self.make_first_move, 0)
 
     def make_first_move(self, dt):
+        """
+        Some rule variations require that the first black move must
+        be in the center. TODO: This shouldn't really be in the GUI.
+        """
         r = self.game.rules
         if r.center_first:
             bs = r.size
