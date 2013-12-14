@@ -32,14 +32,18 @@ class ABGame():
         else:
             min_priority = 0
             if depth > 4:
-                min_priority = 4
+                min_priority = 3
 
             pos_iter = state.get_iter(state.to_move())
             p_i = pos_iter.get_iter(state.to_move_colour(), min_priority)
+        tried_count = 0
         for pos in p_i:
             # create an AB_State for each possible move from state
             succ = state.create_state(pos)
             yield pos, succ
+            tried_count += 1
+            if depth > 3 and tried_count >= 2:
+                return
 
     def terminal_test(self, state):
         return state.terminal()
