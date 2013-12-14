@@ -11,6 +11,7 @@ import rules
 import game
 import human_player
 import ai_player
+from defines import *
 
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
@@ -30,12 +31,22 @@ class MyCheckBoxList(GridLayout):
         if checkbox.active:
             self.val = checkbox.val
 
+    def set_active(self, val):
+        """ Set the active value from outside """
+        old = self.widgets_by_val[str(self.val)]
+        old.active = False
+
+        w = self.widgets_by_val[str(val)]
+        w.active = True
+        self.val = str(val)
+
     def __init__(self, *args, **kwargs):
         super(MyCheckBoxList, self).__init__(*args, **kwargs)
         l = Label(text=self.text)
         self.add_widget(l)
         vals_gl = GridLayout(cols=2)
         self.add_widget(vals_gl)
+        self.widgets_by_val = {}
 
         first = True
         for v in self.values:
@@ -48,6 +59,8 @@ class MyCheckBoxList(GridLayout):
             if first:
                 self.on_checkbox_active(cb, None)
             vals_gl.add_widget(cb)
+            self.widgets_by_val[v] = cb
+
             first = False
 
 class SetupScreen(Screen):
@@ -59,7 +72,7 @@ class SetupScreen(Screen):
     board_size_widget = ObjectProperty(None)
     max_depth_widget = ObjectProperty(None)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, filename=None, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
 
         top_gl = GridLayout(cols=1)
@@ -109,11 +122,14 @@ class SetupScreen(Screen):
         b = Button(size_hint=(.1, .1), text='Start Game', on_press=self.start_game)
         top_gl.add_widget(b)
 
+        if filename != None:
+            self.set_GUI_from_file(filename)
+
     def start_game(self, unused=None):
-        g = self.set_up_game()
+        g = self.set_up_game_from_GUI()
         self.app.start_game(g, self.size)
 
-    def set_up_game(self):
+    def set_up_game_from_GUI(self):
         bs = int(self.board_size_widget.val)
         rstr = self.rules_widget.val
         r = rules.Rules(bs, rstr)
@@ -131,3 +147,11 @@ class SetupScreen(Screen):
         else:
             self.white_name = val
 
+    def set_GUI_from_file(self, filename):
+        f = open(filename)
+        g = game.Game(None, None, None) # Hmmm. TODO
+        g.configure_from_str(f.read())
+        self.black_name_widget.text = g.get_player_name(BLACK)
+        self.white_name_widget.text = g.get_player_name(WHITE)
+        self.board_size_widget.set_active(g.rules.size)
+        self.rules_widget.set_active(g.rules.type_str)

@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.config import Config
 from kivy.clock import *
-#from kivy.core.window import Window # Hmmmm...
+#from kivy.core.window import Window # Hmmmm... TODO?
 
 from kivy.uix.screenmanager import *
 
@@ -10,11 +10,38 @@ from settings_screen import *
 from pente_screen import *
 from menu_screen import *
 
-class PenteApp(App):
+from kivy.properties import ObjectProperty
 
-    def start_game(self, game, startup_size):
-        pente_screen = PenteScreen(startup_size, name='Game')
+import os # TODO: Remove?
+
+class LoadScreen(Screen):
+    load = ObjectProperty(None)
+    cancel = ObjectProperty(None)
+
+class PenteApp(App):
+    game_filename = StringProperty("")
+
+    def show_load(self):
+        self.root.current = "Load"
+
+    def cancel_game_file(self):
+        self.game_filename = ""
+        self.root.current = "Setup"
+
+    def load_game_file(self, path, filenames):
+        f_n = filenames
+        full_path = os.path.join(path, filenames[0])
+        self.game_filename = full_path
+
+        # TODO: Check file parsed etc.
+        self.setup_screen.set_GUI_from_file(full_path)
+        self.root.current = "Setup" # TODO production app should start game.
+
+    def start_game(self, game, startup_size, filename=""):
+        pente_screen = PenteScreen(startup_size, name='Game', filename=self.game_filename)
         self.root.add_widget(pente_screen)
+
+        # TODO: Move stuff into PenteScreen __init__?
 
         # load the game screen
         pente_screen.set_game(game)
@@ -33,15 +60,16 @@ class PenteApp(App):
         '''
         root = ScreenManager()
         self.root = root
-        setup = SetupScreen(name="Setup")
-        setup.app = self
-        root.add_widget(setup)
-        settings = SettingsScreen(name="Settings")
-        settings.app = self
-        root.add_widget(settings)
-        menu = MenuScreen(name="Menu")
-        menu.app = self
-        root.add_widget(menu)
+
+        screens = [(SetupScreen, "Setup"), (SettingsScreen, "Settings"), \
+                   (MenuScreen, "Menu"), (LoadScreen, "Load")]
+        for scr_cls, scr_name in screens:
+            scr = scr_cls(name=scr_name)
+            scr.app = self
+            root.add_widget(scr)
+        self.setup_screen = root.get_screen("Setup")
+
+        self.show_load() # TEMP HACK
 
         return root
 

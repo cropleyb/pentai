@@ -41,7 +41,7 @@ class PenteScreen(Screen):
     board_offset = ListProperty([0,180.0])
     confirm_status = StringProperty("    No\nConfirm")
 
-    def __init__(self, the_size, *args, **kwargs):
+    def __init__(self, the_size, filename, *args, **kwargs):
         self.marker = None
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
@@ -51,12 +51,7 @@ class PenteScreen(Screen):
         self.req_confirm = False
         self.confirmation_in_progress = None
         self.game = None
-        self.game_filename = ""
-        #self.game_filename = "games/Bruce_mark cole_2013-12-10.txt"
-        #self.game_filename = "games/Mark Cole_Bruce_2013-12-10.txt"
-        #self.game_filename = "games/mcunningham64_cropleyb_2013-12-11.txt"
-        #self.game_filename = "games/cropleyb_mcunningham64_2013-12-11.txt"
-
+        self.game_filename = filename
 
         self.calc_board_offset(the_size)
 

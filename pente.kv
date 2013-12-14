@@ -1,9 +1,28 @@
-#:kivy 1.0
+#:kivy 1.1.0
 #:import kivy kivy
 #:import win kivy.core.window
 
 <MyCheckBoxList>:
     cols: 2
+
+<LoadScreen>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            path: "games"
+    BoxLayout:
+        size_hint_y: None
+        height: 30
+        Button:
+            text: "Cancel"
+            on_release: root.app.cancel_game_file()
+        Button:
+            text: "Load"
+            on_release: root.app.load_game_file(filechooser.path, filechooser.selection)
+
 
 <MenuScreen>:
     GridLayout:

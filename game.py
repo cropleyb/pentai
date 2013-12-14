@@ -1,14 +1,18 @@
 
 from game_state import *
+from player import *
+from rules import *
 
 import datetime
 
 class Game():
 
-    def __init__(self, rules, player1, player2):
+    def __init__(self, rules=None, player1=None, player2=None):
         self.rules = rules
+        if rules != None:
+            self.current_state = GameState(self)
+
         self.player = [None, player1, player2]
-        self.current_state = GameState(self)
         if player1 != None:
             player1.attach_to_game(self)
         if player2 != None:
@@ -116,6 +120,12 @@ class Game():
 
     def configure_from_str(self, s):
         player_line, size_line, rules_line, the_rest = s.split('\n', 3)
+
+        # TODO: This is ugly - these values will be replaced shortly
+        if self.player[BLACK] == None:
+            self.player = [None, Player("Black"), Player("White")]
+        if self.rules == None:
+            self.rules = Rules(5,"standard")
 
         players = player_line.split(" versus ", 1)
         self.player[1].name = players[0]
