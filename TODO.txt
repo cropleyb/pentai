@@ -1,5 +1,4 @@
 
-Load game via File chooser
 Options Page - sep. page
 VCR control graphics
 Utility tuning
