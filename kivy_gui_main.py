@@ -61,15 +61,13 @@ class PenteApp(App):
         root = ScreenManager()
         self.root = root
 
-        screens = [(SetupScreen, "Setup"), (SettingsScreen, "Settings"), \
-                   (MenuScreen, "Menu"), (LoadScreen, "Load")]
+        screens = [(LoadScreen, "Load"), (SettingsScreen, "Settings"), \
+                   (MenuScreen, "Menu"), (SetupScreen, "Setup")]
         for scr_cls, scr_name in screens:
             scr = scr_cls(name=scr_name)
             scr.app = self
             root.add_widget(scr)
         self.setup_screen = root.get_screen("Setup")
-
-        self.show_load() # TEMP HACK
 
         return root
 
