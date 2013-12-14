@@ -77,6 +77,7 @@ class PenteScreen(Screen):
     def set_game(self, game):
         self.clean_board()
         self.game = game
+        game.autosave = True
 
         # We must watch what happens to the logical board, and update accordingly
         cs = game.get_current_state()

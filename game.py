@@ -18,6 +18,7 @@ class Game():
         if player2 != None:
             player2.attach_to_game(self)
         self.move_history = []
+        self.autosave = False
 
     # TODO: get_size for consistency
     def size(self):
@@ -70,7 +71,8 @@ class Game():
         self.move_history = self.move_history[:self.get_move_number()-1]
         self.current_state.make_move(move)
         self.move_history.append(move)
-        self.save_history()
+        if self.autosave:
+            self.save_history()
 
     def finished(self):
         return self.current_state.get_won_by() > 0
@@ -107,11 +109,16 @@ class Game():
                 gs = self.current_state
                 gs.make_move(self.move_history[i])
 
-    def save_history(self):
+    def history_to_str(self):
         game_str = self.game_header()
         for i in range(len(self.move_history)):
             move = self.move_history[i]
+            # TODO: Could be slow for very long games (n**2)
             game_str = game_str + "%s. %s\n" % (i+1, move)
+        return game_str
+
+    def save_history(self):
+        game_str = self.history_to_str()
         filename = "games/%s_%s_%s.txt" % \
             (self.get_player_name(BLACK),
              self.get_player_name(WHITE),
