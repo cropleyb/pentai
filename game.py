@@ -102,6 +102,8 @@ class Game():
                 gs.make_move(self.move_history[i])
         else:
             for i in range(current_move-1, move_number-1):
+                if i > len(self.move_history) - 1:
+                    return
                 gs = self.current_state
                 gs.make_move(self.move_history[i])
 
