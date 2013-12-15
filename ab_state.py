@@ -78,8 +78,10 @@ class ABState():
         turn_colour = self.to_move_colour()
         search_colour = self.search_player_colour()
 
-        black_contrib = self.utility_contrib(self.get_black_line_counts(), BLACK)
-        white_contrib = self.utility_contrib(self.get_white_line_counts(), WHITE)
+        black_contrib = self.utility_contrib(
+                self.get_black_line_counts(), BLACK, turn_colour)
+        white_contrib = self.utility_contrib(
+                self.get_white_line_counts(), WHITE, turn_colour)
 
         # Having the move is worth a lot.
         if turn_colour == BLACK:
@@ -96,7 +98,7 @@ class ABState():
     def get_rules(self):
         return self.game().rules
 
-    def utility_contrib(self, lines, colour):
+    def utility_contrib(self, lines, colour, turn_colour):
         # Check for a win first
         rules = self.get_rules()
         sfcw = rules.stones_for_capture_win
@@ -110,6 +112,9 @@ class ABState():
 
         if lines[4] > 0:
             return INFINITY / self.state.get_move_number()
+        if lines[3] > 0:
+            if colour == turn_colour:
+                return INFINITY / self.state.get_move_number()
 
         # No win by "colour" found, fudge up a score
         score = 0
@@ -121,7 +126,12 @@ class ABState():
 
         if ccp:
             if sfcw > 0:
-                cc = self.captured_contrib(captured[colour])
+                captured_by_colour = captured[colour]
+                if colour == turn_colour:
+                    if (sfcw - captured_by_colour) <= 2 and \
+                            self.get_takes()[colour] > 0:
+                        return INFINITY / self.state.get_move_number()
+                cc = self.captured_contrib(captured_by_colour)
                 score += cc
             # else: Captured stones are not worth anything
 

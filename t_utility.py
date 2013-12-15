@@ -33,8 +33,8 @@ class UtilityTest(unittest.TestCase):
     def set_white_lines(self, lines):
         self.s.utility_stats.lines[WHITE] = lines
 
-    def set_takes(self, t):
-        self.s.utility_stats.takes = t
+    def set_takes(self, black_takes, white_takes):
+        self.s.utility_stats.takes = [0, black_takes, white_takes]
 
     def set_captured(self, black_captures, white_captures):
         self.captured[BLACK] = black_captures
@@ -225,7 +225,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([11,3,0,0,0])
-        self.set_takes([0, 1, 0])
+        self.set_takes(1, 0)
         u = self.s.utility()
         self.assertGreater(u, 0)
 
@@ -235,7 +235,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,2,0,0])
-        self.set_takes([0, 1, 0])
+        self.set_takes(1, 0)
         u = self.s.utility()
         self.assertGreater(u, 0)
 
@@ -245,7 +245,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,3,0,0])
-        self.set_takes([0, 1, 0])
+        self.set_takes(1, 0)
         u = self.s.utility()
         self.assertLess(u, 0)
 
@@ -255,7 +255,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
-        self.set_takes([0, 1, 0])
+        self.set_takes(1, 0)
         u = self.s.utility()
         self.assertGreater(u, 0)
 
@@ -265,7 +265,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
-        self.set_takes([0, 1, 0])
+        self.set_takes(1, 0)
         u = self.s.utility()
         self.assertLess(u, 0)
 
@@ -278,6 +278,69 @@ class UtilityTest(unittest.TestCase):
         self.set_captured(8, 0)
         u = self.s.utility()
         self.assertGreater(u, 0)
+
+    def test_four_in_a_row_with_the_move_is_a_win(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.set_black_lines([0,0,0,1,0])
+        self.set_white_lines([0,0,0,0,0])
+        u = self.s.utility()
+        self.assertGreater(u, inf)
+
+    def test_four_in_a_row_without_the_move_is_not_won(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_black_lines([0,0,0,1,0])
+        self.set_white_lines([0,0,0,0,0])
+        u = self.s.utility()
+        self.assertLess(u, inf)
+
+    def test_four_in_a_row_for_opposition_with_the_move_is_a_loss(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_black_lines([0,0,0,0,0])
+        self.set_white_lines([0,0,0,1,0])
+        u = self.s.utility()
+        self.assertLess(u, -inf)
+
+    def test_four_captures_and_a_threat_with_the_move_is_a_win(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.set_captured(8, 0)
+        self.set_takes(1, 0)
+        u = self.s.utility()
+        self.assertGreater(u, inf)
+
+    def test_four_captures_with_no_threats_with_the_move_is_not_a_win(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.set_captured(8, 0)
+        self.set_takes(0, 0)
+        u = self.s.utility()
+        self.assertLess(u, inf)
+
+    def test_four_captures_and_a_threat_for_oppenent_with_the_move_is_a_loss(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_captured(0, 8)
+        self.set_takes(0, 1)
+        u = self.s.utility()
+        self.assertLess(u, -inf)
+
+    def test_three_captures_and_a_threat_for_oppenent_with_the_move_is_not_a_loss(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_captured(0, 6)
+        self.set_takes(0, 1)
+        u = self.s.utility()
+        self.assertGreater(u, -inf)
 
 if __name__ == "__main__":
     unittest.main()
