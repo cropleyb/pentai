@@ -9,6 +9,8 @@ import game
 
 from ai_player import *
 
+import pdb
+
 class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
@@ -22,25 +24,66 @@ class AIPlayerTest(unittest.TestCase):
 
     def test_find_one_move(self):
         p = self.p1
-        p.prompt_for_action(self.game, self.gui, test=True)
-        ma = p.get_action(self.game, self.gui)
+        ma = p.prompt_for_action(self.game, self.gui, test=True)
         self.assertEquals(ma, (4,4))
 
     def test_respond_to_corner_start(self):
         self.game.make_move((0,0))
 
         p = self.p2
-        p.prompt_for_action(self.game, self.gui, test=True)
-        ma = p.get_action(self.game, self.gui)
+        ma = p.prompt_for_action(self.game, self.gui, test=True)
         self.assertEquals(ma, (4,4))
 
     def test_respond_to_centre_start(self):
         self.game.make_move((4,4))
 
         p = self.p2
-        p.prompt_for_action(self.game, self.gui, test=True)
-        ma = p.get_action(self.game, self.gui)
+        ma = p.prompt_for_action(self.game, self.gui, test=True)
         self.assertEquals(ma, (5,4))
+
+
+class AIPlayerSubsystemTest(unittest.TestCase):
+
+    def setUp(self):
+        self.p1 = AIPlayer("Deep thunk")
+        self.p2 = AIPlayer("Deep thunk2")
+        r = rules.Rules(13, "standard")
+        self.game = game.Game(r, self.p1, self.p2)
+
+    # !./t_ai_player.py AIPlayerSubsystemTest.test_find_one_move
+    def test_find_one_move(self):
+        self.p2.set_max_depth(2)
+        game_str = \
+"""Black versus White
+13x13
+standard rules
+1. (6, 6)
+2. (7, 7)
+3. (8, 6)
+4. (9, 6)
+5. (6, 4)
+6. (9, 7)
+7. (9, 8)
+8. (9, 5)
+9. (6, 5)
+10. (6, 7)
+11. (8, 7)
+12. (9, 4)
+13. (9, 3)
+14. (7, 6)
+15. (6, 3)
+16. (6, 2)
+17. (5, 7)
+"""
+        self.game.load_game(game_str)
+        #pdb.set_trace()
+        m = self.p2.do_the_search()
+        self.assertEquals(m, (6,7))
+        #print "HI: moved - %s" % (m,)
+        '''
+        ma = p.get_action(self.game, self.gui)
+        self.assertEquals(ma, (4,4))
+        '''
 
 if __name__ == "__main__":
     unittest.main()
