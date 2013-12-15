@@ -13,6 +13,7 @@ from defines import *
 from gui import *
 
 import Queue
+import datetime
 
 import pdb
 
@@ -77,7 +78,12 @@ class PenteScreen(Screen):
     def set_game(self, game):
         self.clean_board()
         self.game = game
-        game.autosave = True
+        if game.autosave_filename == None:
+            filename = "games/%s_%s_%s.txt" % \
+                (game.get_player_name(BLACK),
+                 game.get_player_name(WHITE),
+                 str(datetime.date.today()))
+            game.autosave_filename = filename
 
         # We must watch what happens to the logical board, and update accordingly
         cs = game.get_current_state()
@@ -130,6 +136,7 @@ class PenteScreen(Screen):
         self.game.load_game(f.read())
         self.display_names()
         self.setup_grid()
+        self.game.autosave_filename = self.game_filename
         self.game_filename = None
         self.game.prompt_for_action(self)
 

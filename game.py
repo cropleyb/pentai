@@ -3,7 +3,7 @@ from game_state import *
 from player import *
 from rules import *
 
-import datetime
+import pdb
 
 class Game():
 
@@ -18,7 +18,7 @@ class Game():
         if player2 != None:
             player2.attach_to_game(self)
         self.move_history = []
-        self.autosave = False
+        self.autosave_filename = None
 
     # TODO: get_size for consistency
     def size(self):
@@ -71,7 +71,7 @@ class Game():
         self.move_history = self.move_history[:self.get_move_number()-1]
         self.current_state.make_move(move)
         self.move_history.append(move)
-        if self.autosave:
+        if self.autosave_filename != None:
             self.save_history()
 
     def finished(self):
@@ -119,11 +119,9 @@ class Game():
 
     def save_history(self):
         game_str = self.history_to_str()
-        filename = "games/%s_%s_%s.txt" % \
-            (self.get_player_name(BLACK),
-             self.get_player_name(WHITE),
-             str(datetime.date.today()))
+        filename = self.autosave_filename
         game_file = open(filename, "w")
+        # TODO: Append to the file
         game_file.write(game_str)
         game_file.close()
 
