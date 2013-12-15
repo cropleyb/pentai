@@ -24,6 +24,7 @@ class PriorityFilter():
         return PriorityFilter(orig=self, min_priority=min_priority)
 
     def get_iter(self, our_colour, min_priority=0):
+        #pdb.set_trace()
         other_colour = opposite_colour(our_colour)
         tried = set() 
 
@@ -34,7 +35,7 @@ class PriorityFilter():
             for colour in (our_colour, other_colour):
                 slot = cand_for_priority[colour]
                 slot_arr = slot.iteritems()
-                sorted_slot = [(count, pos) for (pos, count) in slot.iteritems()]
+                sorted_slot = [(count, pos) for (pos, count) in slot_arr]
                 sorted_slot.sort()
                 sorted_slot.reverse()
                 for count, pos in sorted_slot:
