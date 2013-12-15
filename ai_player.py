@@ -41,9 +41,12 @@ class AIPlayer(Player):
         if ab_game.current_state.get_move_number() < 10:
             md = min(md, 4)
         '''
+        print "%s. " % ab_game.current_state.get_move_number(),
+        print ab_game.current_state.utility_stats,
         move, value = alpha_beta.alphabeta_search(ab_game.current_state,
                 ab_game, max_depth=md)
         action = move[0]
+        print " => %s" % (action,)
         if test:
             self.action = action
         else:
