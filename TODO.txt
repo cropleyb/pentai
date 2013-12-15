@@ -1,6 +1,7 @@
 
 Fix autosave - save to the opened file
 Close open 3 threats (utility tuning)
+Bug: not taking the win in 13x13 depth 5 standard (both B/W)
 Disable utility short cut and see if the bug
   is still there. Yup
 Get the last moves in Rich games into the files
