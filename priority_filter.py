@@ -46,6 +46,9 @@ class PriorityFilter():
                             if len(tried) > 6:
                                 return
 
+    def __repr__(self):
+        return "%s" % self.candidates_by_priority_and_colour[5]
+
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length == 5:
             # won already, ignore
@@ -70,9 +73,7 @@ class PriorityFilter():
 
     def add_or_remove_threat(self, colour, pos, inc=1):
         assert pos[0] >= 0
-        if pos[1] < 0:
-            pdb.set_trace()
-        #assert pos[1] >= 0
+        assert pos[1] >= 0
         # Valuing captures between 2s and 3s
         slot = self.candidates_by_priority_and_colour[2][colour]
         slot[pos] = slot.setdefault(pos, 0) + inc
