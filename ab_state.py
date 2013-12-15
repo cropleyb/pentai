@@ -98,6 +98,12 @@ class ABState():
     def get_rules(self):
         return self.game().rules
 
+    # Scale these INFINITIES down to discourage sadistic
+    # won game lengthening.
+    def win_val(self):
+        # TODO: Sadistic mode for Rich ;)
+        return INFINITY / self.state.get_move_number()
+
     def utility_contrib(self, lines, colour, turn_colour):
         # Check for a win first
         rules = self.get_rules()
@@ -105,16 +111,22 @@ class ABState():
         ccp = rules.can_capture_pairs
         if sfcw > 0 and ccp:
             captured = self.state.get_all_captured()
-            # Scale these INFINITIES down to discourage sadistic
-            # won game lengthening.
             if captured[colour] >= sfcw:
-                return INFINITY / self.state.get_move_number()
+                return self.win_val()
 
         if lines[4] > 0:
-            return INFINITY / self.state.get_move_number()
+            # Already won
+            return self.win_val()
         if lines[3] > 0:
             if colour == turn_colour:
-                return INFINITY / self.state.get_move_number()
+                # An unanswered line of four will win
+                return self.win_val()
+            if lines[3] > 1:
+                # Two or more lines of four, with no danger of being
+                # captured is a win.
+                if ccp:
+                    if self.get_takes()[opposite_colour(colour)] == 0:
+                        return self.win_val()
 
         # No win by "colour" found, fudge up a score
         score = 0
@@ -130,7 +142,7 @@ class ABState():
                 if colour == turn_colour:
                     if (sfcw - captured_by_colour) <= 2 and \
                             self.get_takes()[colour] > 0:
-                        return INFINITY / self.state.get_move_number()
+                        return self.win_val()
                 cc = self.captured_contrib(captured_by_colour)
                 score += cc
             # else: Captured stones are not worth anything

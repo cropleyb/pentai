@@ -1,11 +1,6 @@
 
-Close open 3 threats (utility tuning)
 Bug: not taking the win in 13x13 depth 5 standard (both B/W)
-Disable utility short cut and see if the bug
-  is still there. Yup
-Get the last moves in Rich games into the files
 Try some profiling
-
 Confirm exit, save prompt
 Options Page - sep. page
 VCR control graphics
@@ -27,3 +22,4 @@ iTunes
 keryo rules etc.
 Add rules explanation
 Rating system: Python source: http://chess.stackexchange.com/questions/1377/is-there-any-software-or-web-service-for-club-level-elo-ratings
+Sadistic mode

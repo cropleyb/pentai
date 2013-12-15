@@ -342,6 +342,15 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, -inf)
 
+    def test_two_fours_with_no_danger_of_being_captured_is_a_win(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_black_lines([0,0,0,2,0])
+        self.set_takes(0, 0)
+        u = self.s.utility()
+        self.assertGreater(u, inf)
+
 if __name__ == "__main__":
     unittest.main()
 
