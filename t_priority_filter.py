@@ -191,6 +191,14 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertIn(l[0], first_pair)
         self.assertIn(l[1], first_pair)
 
+    def test_pointless_positions_ignored_gracefully(self):
+        self.arc(BLACK, 4, ((4,6),), inc=1)
+        self.arc(BLACK, 4, ((5,7),), inc=1)
+        self.arc(BLACK, 4, ((4,6),), inc=-1)
+        l = list(self.pf.get_iter(BLACK))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(5,7))
+
 if __name__ == "__main__":
     unittest.main()
 
