@@ -1,4 +1,12 @@
 
+Fix autosave - save to the opened file
+Close open 3 threats (utility tuning)
+Disable utility short cut and see if the bug
+  is still there. Yup
+Get the last moves in Rich games into the files
+Try some profiling
+
+Confirm exit, save prompt
 Options Page - sep. page
 VCR control graphics
 Utility tuning
