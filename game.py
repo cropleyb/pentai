@@ -68,7 +68,8 @@ class Game():
 
     def make_move(self, move):
         # Record this, then save to a file if required
-        self.move_history = self.move_history[:self.get_move_number()-1]
+        if len(self.move_history) > 0:
+            self.move_history = self.move_history[:self.get_move_number()-1]
         self.current_state.make_move(move)
         self.move_history.append(move)
         if self.autosave_filename != None:
