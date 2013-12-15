@@ -7,19 +7,17 @@ class GameState():
     """
     def __init__(self, game, parent=None):
         self.game = game
-        self.parent = parent
+        self.observers = []
+
         if parent == None:
-            self.observers = []
             self.reset(game)
         else:
             self.board = parent.board.clone()
             self.captured = parent.captured[:]
-            self.set_won_by(parent.get_won_by())
+            self.set_won_by(parent.get_won_by()) # TODO - EMPTY?
 
             # not + 1, that will be triggered by a move
             self.move_number = parent.move_number
-
-            self.observers = []
 
         self.last_move = "No move yet"
 
@@ -34,7 +32,7 @@ class GameState():
         self.board = Board(game.size())
         # 3 for convenience, should only use [1] and [2]
         self.captured = [0,0,0]
-        self.set_won_by(False)
+        self.set_won_by(EMPTY)
         self.move_number = 1
         for o in self.observers:
             o.reset_state()
