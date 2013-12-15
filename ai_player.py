@@ -21,7 +21,7 @@ class AIPlayer(Player):
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:
-            self.search_thread(gui, True)
+            return self.do_the_search()
         else:
             t = threading.Thread(target=self.search_thread, args=(gui,))
 
@@ -34,7 +34,12 @@ class AIPlayer(Player):
     def get_type(self):
         return "computer"
 
-    def search_thread(self, gui, test=False):
+    def search_thread(self, gui):
+        action = self.do_the_search()
+        gui.enqueue_action(action)
+        gui.trig()
+
+    def do_the_search(self):
         ab_game = self.ab_game
         md = self.max_depth
         '''
@@ -47,13 +52,5 @@ class AIPlayer(Player):
                 ab_game, max_depth=md)
         action = move[0]
         print " => %s" % (action,)
-        if test:
-            self.action = action
-        else:
-            gui.enqueue_action(action)
-            gui.trig()
-
-    # TODO This is only for testing!
-    def get_action(self, game, gui):
-        return self.action
+        return action
 
