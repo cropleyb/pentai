@@ -1,16 +1,14 @@
 
-Bug: not taking the win in 13x13 depth 5 standard (both B/W)
 Try some profiling
-Confirm exit, save prompt
+Confirm exit, add save prompt
 Options Page - sep. page
 VCR control graphics
 Utility tuning
 Cython
 Set names according to computer level?
 AI levels + scrollbar? Computer player names? Probablistic blindness?
-switch players mid-game
-pente.net interface
-Copy game from pente.net mode
+switch players mid-game?
+pente.net interface. html scraping might not be too hard.
 Prettify GUI: Colours, layout, background, fonts
 Sound effects: place, capture, tick, win, loss, music
 Chess Clock, mode on/off
