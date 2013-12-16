@@ -77,63 +77,105 @@ class ABState():
         # AI player doing the search.
         # The turn_colour is the colour of the player to 
         # move at the leaf state of the search.
+        # eval_colour is the colour that we are assessing
+        # the utility value for -
+        # we do both for each call to utility
         turn_colour = self.to_move_colour()
         search_colour = self.search_player_colour()
+        other_colour = opposite_colour(turn_colour)
 
-        turn_contrib = self.utility_contrib(
-                self.utility_stats.lines[turn_colour],
-                turn_colour, turn_colour)
-        if self.terminal():
-            other_contrib = 0
-        else:
-            turn_contrib *= 100
-            other_colour = opposite_colour(turn_colour)
-            other_contrib = self.utility_contrib(
-                    self.utility_stats.lines[other_colour],
-                    other_colour, turn_colour)
+        # Check for immediate wins first, then forceable wins
+        for win_eval_func in (self.zero_turn_win, self.one_turn_win):
+            for eval_colour in (turn_colour, other_colour):
+                eval_captured = self.state.get_all_captured()[eval_colour]
+                eval_lines = self.utility_stats.lines[eval_colour]
+
+                util, won = win_eval_func(
+                    eval_lines, eval_captured, eval_colour, turn_colour)
+
+                if won:
+                    self.set_win_for(eval_colour)
+                    if search_colour == eval_colour:
+                        return util
+                    else:
+                        return -util
+
+        # No forceable win has been found, so fudge up a score
+        util_scores = [None, None, None]
+
+        for eval_colour in (turn_colour, other_colour):
+            eval_captured = self.state.get_all_captured()[eval_colour]
+            eval_lines = self.utility_stats.lines[eval_colour]
+            util = self.utility_score(
+                    eval_lines,
+                    eval_captured,
+                    eval_colour, turn_colour)
+            util_scores[eval_colour] = util
+
+        # It is a very significant advantage to have the move
+        util_scores[turn_colour] *= 100 
+
         if search_colour == turn_colour:
-            return turn_contrib - other_contrib
+            return util_scores[turn_colour] - util_scores[other_colour]
         else:
-            return other_contrib - turn_contrib
+            return util_scores[other_colour] - util_scores[turn_colour]
 
-    def get_rules(self):
-        return self.game().rules
+    def zero_turn_win(self, lines, captured, eval_colour, turn_colour):
+        """ Detect a win in this position """
+        if lines[4] > 0:
+            # This position has been won already, mark it as such so
+            # that the search is not continued from this node.
+            self.state.set_won_by(eval_colour)
+            return self.winning_score(), True
 
-    # Scale these INFINITIES down to discourage sadistic
-    # won game lengthening.
-    def set_win_for(self, colour):
-        self.state.set_won_by(colour)
-        return self.winning_score()
-
-    def winning_score(self):
-        # TODO: Sadistic mode for Rich ;)
-        return INFINITY / self.state.get_move_number()
-
-    def utility_contrib(self, lines, eval_colour, turn_colour):
-        # Check for a win first
         rules = self.get_rules()
         sfcw = rules.stones_for_capture_win
         ccp = rules.can_capture_pairs
+
         if sfcw > 0 and ccp:
             captured = self.state.get_all_captured()
             if captured[eval_colour] >= sfcw:
-                return self.set_win_for(eval_colour) / 100
+                # This position has been won already, mark it as such so
+                # that the search is not continued from this node.
+                self.state.set_won_by(eval_colour)
+                return self.set_win_for(eval_colour), True
 
-        if lines[4] > 0:
-            # Already won
-            return self.set_win_for(eval_colour)
+        return 0, False
+
+    def one_turn_win(self, lines, captured, eval_colour, turn_colour):
+        """ Detect a forceable win after one turn each """
+        rules = self.get_rules()
+        sfcw = rules.stones_for_capture_win
+        ccp = rules.can_capture_pairs
+
         if lines[3] > 0:
             if eval_colour == turn_colour:
-                # An unanswered line of four will win
-                return self.winning_score() / 100
+                # An unanswered line of four out of five will win
+                return self.winning_score() / 100, True
+
             if lines[3] > 1:
                 # Two or more lines of four, with no danger of being
                 # captured is a win.
                 if ccp:
                     if self.get_takes()[opposite_colour(eval_colour)] == 0:
-                        return self.winning_score() / 100
+                        return self.winning_score() / 100, True
 
-        # No win by "eval_colour" found, fudge up a score
+        if ccp and sfcw > 0:
+            # Can win by captures
+            if eval_colour == turn_colour:
+                if (sfcw - captured) <= 2 and \
+                        self.get_takes()[eval_colour] > 0:
+                    # eval_colour can take the last pair for a win
+                    return self.winning_score() / 100, True
+
+        return 0, False
+
+    def utility_score(self, lines, captured, eval_colour, turn_colour):
+        """ Calculate a score for eval_colour for this state. """
+        rules = self.get_rules()
+        sfcw = rules.stones_for_capture_win
+        ccp = rules.can_capture_pairs
+
         score = 0
 
         for i in range(len(lines)):
@@ -143,12 +185,7 @@ class ABState():
 
         if ccp:
             if sfcw > 0:
-                captured_by_colour = captured[eval_colour]
-                if eval_colour == turn_colour:
-                    if (sfcw - captured_by_colour) <= 2 and \
-                            self.get_takes()[eval_colour] > 0:
-                        return self.winning_score() / 100
-                cc = self.captured_contrib(captured_by_colour)
+                cc = self.captured_contrib(captured)
                 score += cc
             # else: Captured stones are not worth anything
 
@@ -159,11 +196,20 @@ class ABState():
 
             tc = self.threat_contrib(self.get_threats()[eval_colour])
             score += tc
-        # else: no capturing pairs - no scoring pairs
 
-        #print "black: %s, white: %s, score: %s" % (self.black_lines, self.white_lines, \
-        #        score)
         return score
+
+    def get_rules(self):
+        return self.game().rules
+
+    def set_win_for(self, colour):
+        return self.winning_score()
+
+    # Scale these INFINITIES down to discourage sadistic
+    # won game lengthening.
+    def winning_score(self):
+        # TODO: Sadistic mode for Rich ;)
+        return INFINITY / self.state.get_move_number()
 
     """ Captures become increasingly important as we approach 5 """
     def captured_contrib(self, captures):
