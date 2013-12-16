@@ -5,8 +5,6 @@ import pente_exceptions
 
 from ab_state import *
 
-CAPTURE_SCORE_BASE = 120 ** 3
-
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
     def __init__(self, base_game):
@@ -31,8 +29,6 @@ class ABGame():
             p_i = [centre_pos]
         else:
             min_priority = 0
-            if depth > 4:
-                min_priority = 3
 
             pos_iter = state.get_iter(state.to_move())
             p_i = pos_iter.get_iter(state.to_move_colour(), min_priority)
