@@ -11,9 +11,9 @@ from take_counter import *
 from threat_counter import *
 from utility_stats import *
 
-import pdb
-
+# TODO: This doesn't seem to have any effect?!
 CAPTURED_SCORE_BASE = 120 ** 3
+
 TAKE_SCORE_BASE = 350
 THREAT_SCORE_BASE = 20
 CAPTURES_SCALE = [0, 2.0, 4.6, 10.0, 22.0, 46.0]
@@ -72,7 +72,6 @@ class ABState():
 
     # TODO: Cache stuff somehow?
     def utility(self):
-        #pdb.set_trace()
         # The search_colour is the colour of the
         # AI player doing the search.
         # The turn_colour is the colour of the player to 
