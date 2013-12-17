@@ -355,6 +355,15 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, inf)
 
+    def test_four_pairs_captured_and_three_takes_will_win(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_captured(8, 0)
+        self.set_takes(3, 0)
+        u = self.s.utility()
+        self.assertGreater(u, inf)
+
 if __name__ == "__main__":
     unittest.main()
 

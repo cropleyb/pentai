@@ -70,6 +70,7 @@ class ABState():
     def game(self):
         return self.state.game
 
+    # All the utility calculations belong in the UtilityCalculator
     # TODO: Cache stuff somehow?
     def utility(self):
         # The search_colour is the colour of the
@@ -166,6 +167,11 @@ class ABState():
                         self.get_takes()[eval_colour] > 0:
                     # eval_colour can take the last pair for a win
                     return self.winning_score() / 100, True
+            else:
+                if (sfcw - captured) <= 2 and \
+                        self.get_takes()[eval_colour] > 2:
+                    # eval_colour can take the last pair for a win
+                    return self.winning_score() / 100, True
 
         return 0, False
 
@@ -231,6 +237,7 @@ class ABState():
     def board(self):
         return self.state.board
 
+    # These 3 should go to the UtilityStats class
     def before_set_occ(self, pos, colour):
         self._set_or_reset_occs(pos, -1)
 
