@@ -20,8 +20,10 @@ class ABGame():
     def utility(self, state):
         return state.utility()
 
+    # TODO: Where does this belong?
     def successors(self, state, depth):
         mn = state.get_move_number()
+        # TODO: First move constraints are associated with the rules
         if mn == 1:
             # The first black move is always in the centre
             brd_size = self.base_game.get_board().get_size()
@@ -34,7 +36,7 @@ class ABGame():
             p_i = pos_iter.get_iter(state.to_move_colour(), min_priority)
         tried_count = 0
         for pos in p_i:
-            # create an AB_State for each possible move from state
+            # create an ABState for each possible move from state
             succ = state.create_state(pos)
             yield pos, succ
             tried_count += 1
