@@ -1,6 +1,7 @@
 from defines import *
 from priority_filter import *
 
+# TODO: move this to test code?
 def pass_through_func(a, ignored):
     """ This is just a stub, shouldn't be called in production code. """
     return (a, 0)
@@ -14,6 +15,8 @@ class UtilityStats():
             self.threats = [0, 0, 0]
             self.search_filter = PriorityFilter()
             self.i_to_p = pass_through_func
+
+            # TODO: move this to test code?
             self.s_num = 0 # irrel, just needs a value
         else:
             pl = parent.lines
