@@ -1,29 +1,43 @@
 from defines import *
 
+'''
+cdef:
+	long FOUR_OCCS_MASK
+	long BLACK_CAPTURE_LEFT_PATTERN
+	long WHITE_CAPTURE_LEFT_PATTERN
+	long BLACK_CAPTURE_RIGHT_PATTERN
+	long WHITE_CAPTURE_RIGHT_PATTERN
+	long BLACK_THREAT_LEFT_PATTERN
+	long WHITE_THREAT_LEFT_PATTERN
+	long BLACK_THREAT_RIGHT_PATTERN
+	long WHITE_THREAT_RIGHT_PATTERN
+'''
+
+
 # We separate out numbers representing groups of 4 occupancies
-FOUR_OCCS_MASK = (4 ** 4 - 1)
+cdef long FOUR_OCCS_MASK = (4 ** 4 - 1)
 
 # These patterns are matched against to detect captures
 
 # BWWx
-BLACK_CAPTURE_LEFT_PATTERN = BLACK + (4 * WHITE) + (16 * WHITE) # + 64 * 0
+cdef long BLACK_CAPTURE_LEFT_PATTERN = BLACK + (4 * WHITE) + (16 * WHITE) # + 64 * 0
 # WBBx
-WHITE_CAPTURE_LEFT_PATTERN = WHITE + (4 * BLACK) + (16 * BLACK) # + 64 * 0
+cdef long WHITE_CAPTURE_LEFT_PATTERN = WHITE + (4 * BLACK) + (16 * BLACK) # + 64 * 0
 # xWWB
-BLACK_CAPTURE_RIGHT_PATTERN = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
+cdef long BLACK_CAPTURE_RIGHT_PATTERN = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
 # xBBW
-WHITE_CAPTURE_RIGHT_PATTERN = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
+cdef long WHITE_CAPTURE_RIGHT_PATTERN = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
 
 # These patterns are matched against to detect threats
 
 # EWWx
-BLACK_THREAT_LEFT_PATTERN =         (4 * WHITE) + (16 * WHITE) # + 64 * 0
+cdef long BLACK_THREAT_LEFT_PATTERN =         (4 * WHITE) + (16 * WHITE) # + 64 * 0
 # EBBx
-WHITE_THREAT_LEFT_PATTERN =       + (4 * BLACK) + (16 * BLACK) # + 64 * 0
+cdef long WHITE_THREAT_LEFT_PATTERN =       + (4 * BLACK) + (16 * BLACK) # + 64 * 0
 # EWWB
-BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
+cdef long BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
 # EBBW
-WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
+cdef long WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
 
 class BoardStrip():
     def __init__(self, initial_val=0):
