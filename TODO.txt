@@ -1,5 +1,7 @@
 
+GP interface
 Try some profiling
+Narrower search per depth level
 Confirm exit, add save prompt
 Options Page - sep. page
 VCR control graphics
