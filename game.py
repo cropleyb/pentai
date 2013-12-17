@@ -82,7 +82,7 @@ class Game():
         return self.current_state.get_won_by()
 
     def winner_name(self):
-        return self.player[self.current_state.get_won_by()-1]
+        return self.player[self.current_state.get_won_by()]
 
     def get_move(self, move_number):
         return self.move_history[move_number-1]
