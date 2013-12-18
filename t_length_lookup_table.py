@@ -19,7 +19,7 @@ def pattern_string_to_bs(occ_str):
         ret *= 4
         occ_int = mapping[c]
         ret += occ_int
-    return BoardStrip(ret)
+    return ret
 
 
 class SubStripCountingTest(unittest.TestCase):

@@ -9,14 +9,14 @@ def process_takes(bs, ind, strip_min, strip_max, us, inc):
     [ind-3, ..., ind] for capture right
     """
     for i in range(max(strip_min+3, ind), 1 + min(ind+3, strip_max)):
-        if len(bs.match_black_capture_left(i)) > 0:
+        if len(match_black_capture_left(bs, i)) > 0:
             us.report_take(BLACK, i, inc)
-        if len(bs.match_white_capture_left(i)) > 0:
+        if len(match_white_capture_left(bs, i)) > 0:
             us.report_take(WHITE, i, inc)
 
     for i in range(max(strip_min,ind-3), 1 + min(strip_max-3,ind)):
-        if len(bs.match_black_capture_right(i)) > 0:
+        if len(match_black_capture_right(bs, i)) > 0:
             us.report_take(BLACK, i, inc)
-        if len(bs.match_white_capture_right(i)) > 0:
+        if len(match_white_capture_right(bs, i)) > 0:
             us.report_take(WHITE, i, inc)
 

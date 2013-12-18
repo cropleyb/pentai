@@ -83,7 +83,7 @@ def process_substrips(bs, min_ind, max_ind, us, inc):
     for ind in range(min_ind, 1+max_ind-4):
         # Extract just the 5 * 2 bits that we're currently interested in.
         shift = ind << 1 # x 2 for 2 bits each occ - EMPTY:0, BLACK:1 or WHITE:2
-        occs = (bs.occs >> shift) & FIVE_OCCS_MASK
+        occs = (bs >> shift) & FIVE_OCCS_MASK
 
         # Now see if it's in our lookup table
         try:

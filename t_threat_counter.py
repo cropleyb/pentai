@@ -21,8 +21,7 @@ def pattern_string_to_board_strip(occ_str):
         occs *= 4
         occ_int = mapping[occ]
         occs += occ_int
-    bs = BoardStrip(occs)
-    return bs
+    return occs
 
 """
     As with length counters, we need to subtract all the threats before

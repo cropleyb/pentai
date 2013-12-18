@@ -20,7 +20,7 @@ class DirectionStrips():
         strip_min, strip_max = self.get_bounds(s_num, board_size)
         min_ind = max(strip_min, move_ind-4) # TODO: constant
         max_ind = min(move_ind+4, strip_max)
-        return s.get_occ_list(min_ind, max_ind)
+        return get_occ_list(s, min_ind, max_ind)
 
     def get_captures(self, move_pos, colour):
         captures = []
@@ -29,7 +29,7 @@ class DirectionStrips():
         move_ind = self.get_index(move_pos)
 
         # Need a way to convert pos to an index and the reverse.
-        indices = s.get_capture_indices(move_ind, colour)
+        indices = get_capture_indices(s, move_ind, colour)
         for cap_ind in indices:
             captures.append(self.get_pos(cap_ind, s_num))
         return captures
@@ -45,7 +45,7 @@ class EDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = EDirectionStrips(board_size=0, clone=True)
-        new_one.strips = [s.clone() for s in self.strips]
+        new_one.strips = self.strips[:]
         return new_one
 
     def get_bounds(self, s_num, board_size):
@@ -53,7 +53,7 @@ class EDirectionStrips(DirectionStrips):
 
     def set_up_strips(self, board_size):
         for i in range(board_size+1):
-            self.strips.append(BoardStrip())
+            self.strips.append(0)
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
@@ -69,10 +69,12 @@ class EDirectionStrips(DirectionStrips):
         return (ind, s_num)
 
     def get_occ(self, pos):
-        return self.get_strip(pos)[0].get_occ(pos[0])
+        return get_occ(self.get_strip(pos)[0], pos[0])
 
     def set_occ(self, pos, occ):
-        self.get_strip(pos)[0].set_occ(pos[0], occ)
+        bs, s_num = self.get_strip(pos)
+        bs_new = set_occ(bs, pos[0], occ)
+        self.strips[s_num] = bs_new
 
     def append_pos_for_indices(self, pos_list, indices, strip_num):
         for i in indices:
@@ -90,7 +92,7 @@ class SWDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = SWDirectionStrips(self.board_size, clone=True)
-        new_one.strips = [s.clone() for s in self.strips]
+        new_one.strips = self.strips[:]
         new_one.board_size = self.board_size
         return new_one
 
@@ -108,7 +110,7 @@ class SWDirectionStrips(DirectionStrips):
     def set_up_strips(self, board_size):
         self.board_size = board_size
         for i in range(board_size*2):
-            self.strips.append(BoardStrip())
+            self.strips.append(0)
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
@@ -130,10 +132,12 @@ class SWDirectionStrips(DirectionStrips):
         return (ind, y)
 
     def get_occ(self, pos):
-        return self.get_strip(pos)[0].get_occ(pos[0])
+        return get_occ(self.get_strip(pos)[0], pos[0])
 
     def set_occ(self, pos, occ):
-        self.get_strip(pos)[0].set_occ(pos[0], occ)
+        bs, s_num = self.get_strip(pos)
+        bs_new = set_occ(bs, pos[0], occ)
+        self.strips[s_num] = bs_new
 
 class SDirectionStrips(DirectionStrips):
     '''
@@ -146,7 +150,7 @@ class SDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = SDirectionStrips(board_size=0, clone=True)
-        new_one.strips = [s.clone() for s in self.strips]
+        new_one.strips = self.strips[:]
         return new_one
 
     def get_bounds(self, s_num, board_size):
@@ -154,7 +158,7 @@ class SDirectionStrips(DirectionStrips):
 
     def set_up_strips(self, board_size):
         for i in range(board_size+1):
-            self.strips.append(BoardStrip())
+            self.strips.append(0)
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
@@ -173,10 +177,12 @@ class SDirectionStrips(DirectionStrips):
         return (s_num, ind)
 
     def get_occ(self, pos):
-        return self.get_strip(pos)[0].get_occ(pos[1])
+        return get_occ(self.get_strip(pos)[0], pos[1])
 
     def set_occ(self, pos, occ):
-        self.get_strip(pos)[0].set_occ(pos[1], occ)
+        bs, s_num = self.get_strip(pos)
+        bs_new = set_occ(bs, pos[1], occ)
+        self.strips[s_num] = bs_new
 
 class SEDirectionStrips(DirectionStrips):
     '''
@@ -189,7 +195,7 @@ class SEDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = SEDirectionStrips(board_size=0, clone=True)
-        new_one.strips = [s.clone() for s in self.strips]
+        new_one.strips = self.strips[:]
         return new_one
 
     def get_bounds(self, s_num, board_size):
@@ -206,7 +212,7 @@ class SEDirectionStrips(DirectionStrips):
 
     def set_up_strips(self, board_size):
         for i in range(board_size*2+1):
-            self.strips.append(BoardStrip())
+            self.strips.append(0)
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
@@ -224,7 +230,10 @@ class SEDirectionStrips(DirectionStrips):
         return (ind, s_num-ind)
 
     def get_occ(self, pos):
-        return self.get_strip(pos)[0].get_occ(pos[0])
+        return get_occ(self.get_strip(pos)[0], pos[0])
 
     def set_occ(self, pos, occ):
-        self.get_strip(pos)[0].set_occ(pos[0], occ)
+        bs, s_num = self.get_strip(pos)
+        bs = self.get_strip(pos)[0]
+        bs_new = set_occ(bs, pos[0], occ)
+        self.strips[s_num] = bs_new
