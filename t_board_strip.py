@@ -8,393 +8,342 @@ import pdb
 
 class BoardStripTest(unittest.TestCase):
     def test_empty_board_strip_is_empty(self):
-        strip = BoardStrip()
-        self.assertEquals(strip.get_occ(0), EMPTY)
+        bs = 0
+        self.assertEquals(get_occ(bs, 0), EMPTY)
 
-    def test_empty_strip_place_one_black_piece(self):
-        strip = BoardStrip()
-        strip.set_occ(0, BLACK)
-        self.assertEquals(strip.get_occ(0), BLACK)
+    def test_empty_board_strip_place_one_black_piece(self):
+        bs = set_occ(0, 0, BLACK)
+        self.assertEquals(get_occ(bs, 0), BLACK)
 
-    def test_empty_strip_place_one_white_piece(self):
-        strip = BoardStrip()
-        strip.set_occ(1, WHITE)
-        self.assertEquals(strip.get_occ(1), WHITE)
+    def test_empty_board_strip_place_one_white_piece(self):
+        bs = set_occ(0, 1, WHITE)
+        self.assertEquals(get_occ(bs, 1), WHITE)
 
-    def test_empty_strip_place_one_white_piece_far(self):
-        strip = BoardStrip()
-        strip.set_occ(18, WHITE)
-        self.assertEquals(strip.get_occ(18), WHITE)
+    def test_empty_board_strip__one_white_piece_far(self):
+        bs = set_occ(0, 18, WHITE)
+        self.assertEquals(get_occ(bs, 18), WHITE)
 
-    def test_empty_strip_place_one_black_piece_far(self):
-        strip = BoardStrip()
-        strip.set_occ(18, BLACK)
-        self.assertEquals(strip.get_occ(18), BLACK)
+    def test_empty_board_strip_black_piece_far(self):
+        bs = set_occ(0, 18, BLACK)
+        self.assertEquals(get_occ(bs, 18), BLACK)
 
     def test_place_two_pieces(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, BLACK)
-        self.assertEquals(strip.get_occ(1), BLACK)
-        self.assertEquals(strip.get_occ(2), BLACK)
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 2, BLACK)
+        self.assertEquals(get_occ(bs, 1), BLACK)
+        self.assertEquals(get_occ(bs, 2), BLACK)
 
     def test_place_two_pieces_widely(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(21, WHITE)
-        self.assertEquals(strip.get_occ(1), BLACK)
-        self.assertEquals(strip.get_occ(21), WHITE)
-        self.assertEquals(strip.get_occ(13), EMPTY)
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 21, WHITE)
+        self.assertEquals(get_occ(bs, 1), BLACK)
+        self.assertEquals(get_occ(bs, 21), WHITE)
+        self.assertEquals(get_occ(bs, 13), EMPTY)
 
     #####################################
 
 class BoardStripCaptureTest(unittest.TestCase):
     def test_match_black_capture_left(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(7, BLACK) # Not involved in the capture
-        self.assertEquals(strip.match_capture_left(4, BLACK), (3,2))
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 7, BLACK) # Not involved in the capture
+        self.assertEquals(match_capture_left(bs, 4, BLACK), (3,2))
         
     def test_dont_match_black_capture_left(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, EMPTY)
-        self.assertEquals(strip.match_capture_left(4, BLACK), ())
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, EMPTY)
+        self.assertEquals(match_capture_left(bs, 4, BLACK), ())
 
     def test_dont_match_black_capture_left_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_capture_left(4, BLACK), ())
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_capture_left(bs, 4, BLACK), ())
 
     def test_dont_match_white_capture_left_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, WHITE)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, WHITE)
-        self.assertEquals(strip.match_capture_left(4, WHITE), ())
+        bs = set_occ(0, 1, WHITE)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, WHITE)
+        self.assertEquals(match_capture_left(bs, 4, WHITE), ())
 
     def test_match_black_capture_mid_strip_left(self):
-        strip = BoardStrip()
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, WHITE)
-        strip.set_occ(5, WHITE)
-        self.assertEquals(strip.match_capture_left(6, BLACK), (5,4))
+        bs = set_occ(0, 3, BLACK)
+        bs = set_occ(bs, 4, WHITE)
+        bs = set_occ(bs, 5, WHITE)
+        self.assertEquals(match_capture_left(bs, 6, BLACK), (5,4))
 
     def test_dont_match_black_capture_left_mid_strip(self):
-        strip = BoardStrip()
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, EMPTY)
-        strip.set_occ(5, WHITE)
-        self.assertEquals(strip.match_capture_left(6, BLACK), ())
+        bs = set_occ(0, 3, BLACK)
+        bs = set_occ(bs, 4, EMPTY)
+        bs = set_occ(bs, 5, WHITE)
+        self.assertEquals(match_capture_left(bs, 6, BLACK), ())
 
     def test_dont_match_black_capture_left_off_board(self):
-        strip = BoardStrip()
-        strip.set_occ(0, WHITE)
-        strip.set_occ(1, WHITE)
-        self.assertEquals(strip.match_capture_left(2, BLACK), ())
+        bs = set_occ(0, 0, WHITE)
+        bs = set_occ(bs, 1, WHITE)
+        self.assertEquals(match_capture_left(bs, 2, BLACK), ())
 
     #####################################
 
     def test_match_black_capture_right(self):
-        strip = BoardStrip()
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_capture_right(1, BLACK), (2,3))
+        bs = set_occ(0, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_capture_right(bs, 1, BLACK), (2,3))
         
     def test_dont_match_black_capture_right(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, BLACK)
-        self.assertEquals(strip.match_capture_right(0, BLACK), ())
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, BLACK)
+        self.assertEquals(match_capture_right(bs, 0, BLACK), ())
 
     def test_dont_match_black_capture_right_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_capture_right(1, BLACK), ())
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_capture_right(bs, 1, BLACK), ())
 
     def test_dont_match_white_capture_right_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, WHITE)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, WHITE)
-        self.assertEquals(strip.match_capture_right(1, WHITE), ())
+        bs = set_occ(0, 1, WHITE)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, WHITE)
+        self.assertEquals(match_capture_right(bs, 1, WHITE), ())
 
-    def test_match_black_capture_mid_strip_right(self):
-        strip = BoardStrip()
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, WHITE)
-        strip.set_occ(5, BLACK)
-        self.assertEquals(strip.match_capture_right(2, BLACK), (3,4))
+    def test_match_black_capture_mid_strip(self):
+        bs = set_occ(0, 3, WHITE)
+        bs = set_occ(bs, 4, WHITE)
+        bs = set_occ(bs, 5, BLACK)
+        self.assertEquals(match_capture_right(bs, 2, BLACK), (3,4))
 
     def test_dont_match_black_capture_right_mid_strip(self):
-        strip = BoardStrip()
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, EMPTY)
-        strip.set_occ(5, BLACK)
-        self.assertEquals(strip.match_capture_right(2, BLACK), ())
+        bs = set_occ(0, 3, WHITE)
+        bs = set_occ(bs, 4, EMPTY)
+        bs = set_occ(bs, 5, BLACK)
+        self.assertEquals(match_capture_right(bs, 2, BLACK), ())
 
     #####################################
 
     def test_match_white_capture_right(self):
-        strip = BoardStrip()
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, WHITE)
-        strip.set_occ(8, BLACK) # Not involved in the capture
-        self.assertEquals(strip.match_capture_right(1, WHITE), (2,3))
+        bs = set_occ(0, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, WHITE)
+        bs = set_occ(bs, 8, BLACK) # Not involved in the capture
+        self.assertEquals(match_capture_right(bs, 1, WHITE), (2,3))
         
     def test_dont_match_white_capture_right(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, WHITE)
-        self.assertEquals(strip.match_capture_right(0, WHITE), ())
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, WHITE)
+        self.assertEquals(match_capture_right(bs, 0, WHITE), ())
 
     def test_match_white_capture_mid_strip_right(self):
-        strip = BoardStrip()
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, BLACK)
-        strip.set_occ(5, WHITE)
-        self.assertEquals(strip.match_capture_right(2, WHITE), (3,4))
+        bs = set_occ(0, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        bs = set_occ(bs, 5, WHITE)
+        self.assertEquals(match_capture_right(bs, 2, WHITE), (3,4))
 
     def test_dont_match_white_capture_right_mid_strip(self):
-        strip = BoardStrip()
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, EMPTY)
-        strip.set_occ(5, WHITE)
-        self.assertEquals(strip.match_capture_right(2, WHITE), ())
+        bs = set_occ(0, 3, BLACK)
+        bs = set_occ(bs, 4, EMPTY)
+        bs = set_occ(bs, 5, WHITE)
+        self.assertEquals(match_capture_right(bs, 2, WHITE), ())
 
     #####################################
 
 class BoardStripThreatTest(unittest.TestCase):
     def test_match_black_threat_left(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(7, BLACK) # Not involved in the threat
-        self.assertEquals(strip.match_threat_left(4, BLACK), (3,2))
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 7, BLACK) # Not involved in the threat
+        self.assertEquals(match_threat_left(bs, 4, BLACK), (3,2))
         
     def test_dont_match_black_threat_left(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, EMPTY)
-        self.assertEquals(strip.match_threat_left(4, BLACK), ())
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, EMPTY)
+        self.assertEquals(match_threat_left(bs, 4, BLACK), ())
 
     def test_dont_match_black_threat_left_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_threat_left(4, BLACK), ())
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_threat_left(bs, 4, BLACK), ())
 
     def test_dont_match_white_threat_left_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, WHITE)
-        self.assertEquals(strip.match_threat_left(4, WHITE), ())
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, WHITE)
+        self.assertEquals(match_threat_left(bs, 4, WHITE), ())
 
     def test_match_black_threat_mid_strip_left(self):
-        strip = BoardStrip()
-        strip.set_occ(3, EMPTY)
-        strip.set_occ(4, WHITE)
-        strip.set_occ(5, WHITE)
-        self.assertEquals(strip.match_threat_left(6, BLACK), (5,4))
+        bs = set_occ(0, 3, EMPTY)
+        bs = set_occ(bs, 4, WHITE)
+        bs = set_occ(bs, 5, WHITE)
+        self.assertEquals(match_threat_left(bs, 6, BLACK), (5,4))
 
     def test_dont_match_black_threat_left_mid_strip(self):
-        strip = BoardStrip()
-        strip.set_occ(3, EMPTY)
-        strip.set_occ(4, EMPTY)
-        strip.set_occ(5, WHITE)
-        self.assertEquals(strip.match_threat_left(6, BLACK), ())
+        bs = set_occ(0, 3, EMPTY)
+        bs = set_occ(bs, 4, EMPTY)
+        bs = set_occ(bs, 5, WHITE)
+        self.assertEquals(match_threat_left(bs, 6, BLACK), ())
 
     def test_dont_match_black_threat_left_off_board(self):
-        strip = BoardStrip()
-        strip.set_occ(0, WHITE)
-        strip.set_occ(1, WHITE)
-        self.assertEquals(strip.match_threat_left(2, BLACK), ())
+        bs = set_occ(0, 0, WHITE)
+        bs = set_occ(bs, 1, WHITE)
+        self.assertEquals(match_threat_left(bs, 2, BLACK), ())
 
     #####################################
 
     def test_match_black_threat_right(self):
-        strip = BoardStrip()
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, EMPTY)
-        self.assertEquals(strip.match_threat_right(1, BLACK), (2,3))
+        bs = set_occ(0, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, EMPTY)
+        self.assertEquals(match_threat_right(bs, 1, BLACK), (2,3))
         
     def test_dont_match_black_threat_right(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, EMPTY)
-        self.assertEquals(strip.match_threat_right(0, BLACK), ())
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, EMPTY)
+        self.assertEquals(match_threat_right(bs, 0, BLACK), ())
 
     def test_dont_match_black_threat_right_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, EMPTY)
-        self.assertEquals(strip.match_threat_right(1, BLACK), ())
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, EMPTY)
+        self.assertEquals(match_threat_right(bs, 1, BLACK), ())
 
     def test_dont_match_white_threat_right_already_occupied(self):
-        strip = BoardStrip()
-        strip.set_occ(1, WHITE)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, EMPTY)
-        self.assertEquals(strip.match_threat_right(1, WHITE), ())
+        bs = set_occ(0, 1, WHITE)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, EMPTY)
+        self.assertEquals(match_threat_right(bs, 1, WHITE), ())
 
     def test_match_black_threat_mid_strip_right(self):
-        strip = BoardStrip()
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, WHITE)
-        strip.set_occ(5, EMPTY)
-        self.assertEquals(strip.match_threat_right(2, BLACK), (3,4))
+        bs = set_occ(0, 3, WHITE)
+        bs = set_occ(bs, 4, WHITE)
+        bs = set_occ(bs, 5, EMPTY)
+        self.assertEquals(match_threat_right(bs, 2, BLACK), (3,4))
 
     def test_dont_match_black_threat_right_mid_strip(self):
-        strip = BoardStrip()
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, EMPTY)
-        strip.set_occ(5, EMPTY)
-        self.assertEquals(strip.match_threat_right(2, BLACK), ())
+        bs = set_occ(0, 3, WHITE)
+        bs = set_occ(bs, 4, EMPTY)
+        bs = set_occ(bs, 5, EMPTY)
+        self.assertEquals(match_threat_right(bs, 2, BLACK), ())
 
     #####################################
 
     def test_match_white_threat_right(self):
-        strip = BoardStrip()
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, EMPTY)
-        strip.set_occ(8, BLACK) # Not involved in the threat
-        self.assertEquals(strip.match_threat_right(1, WHITE), (2,3))
+        bs = set_occ(0, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, EMPTY)
+        bs = set_occ(bs, 8, BLACK) # Not involved in the threat
+        self.assertEquals(match_threat_right(bs, 1, WHITE), (2,3))
         
     def test_dont_match_white_threat_right(self):
-        strip = BoardStrip()
-        strip.set_occ(1, EMPTY)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, EMPTY)
-        self.assertEquals(strip.match_threat_right(0, WHITE), ())
+        bs = set_occ(0, 1, EMPTY)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, EMPTY)
+        self.assertEquals(match_threat_right(bs, 0, WHITE), ())
 
     def test_match_white_threat_mid_strip_right(self):
-        strip = BoardStrip()
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, BLACK)
-        strip.set_occ(5, EMPTY)
-        self.assertEquals(strip.match_threat_right(2, WHITE), (3,4))
+        bs = set_occ(0, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        bs = set_occ(bs, 5, EMPTY)
+        self.assertEquals(match_threat_right(bs, 2, WHITE), (3,4))
 
     def test_dont_match_white_threat_right_mid_strip(self):
-        strip = BoardStrip()
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, EMPTY)
-        strip.set_occ(5, EMPTY)
-        self.assertEquals(strip.match_threat_right(2, WHITE), ())
+        bs = set_occ(0, 3, BLACK)
+        bs = set_occ(bs, 4, EMPTY)
+        bs = set_occ(bs, 5, EMPTY)
+        self.assertEquals(match_threat_right(bs, 2, WHITE), ())
 
-class BoardStrip5sTest(unittest.TestCase):
+class BoardStrip2Test(unittest.TestCase):
     def test_dont_match_5_from_empty(self):
-        strip = BoardStrip()
-        self.assertEquals(strip.match_five_in_a_row(2, BLACK), False)
+        bs = 0
+        self.assertEquals(match_five_in_a_row(bs, 2, BLACK), False)
 
     def test_match_5_left(self):
-        strip = BoardStrip()
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, BLACK)
-        strip.set_occ(5, BLACK)
-        self.assertEquals(strip.match_five_in_a_row(5, BLACK), True)
+        bs = set_occ(0, 1, BLACK)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        bs = set_occ(bs, 5, BLACK)
+        self.assertEquals(match_five_in_a_row(bs, 5, BLACK), True)
 
     def test_dont_match_4_left(self):
-        strip = BoardStrip()
-        #pdb.set_trace()
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, BLACK)
-        strip.set_occ(5, BLACK)
-        self.assertEquals(strip.match_five_in_a_row(5, BLACK), False)
+        bs = set_occ(0, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        bs = set_occ(bs, 5, BLACK)
+        self.assertEquals(match_five_in_a_row(bs, 5, BLACK), False)
 
     def test_match_5_right(self):
-        strip = BoardStrip()
-        strip.set_occ(0, BLACK)
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_five_in_a_row(0, BLACK), True)
+        bs = set_occ(0, 0, BLACK)
+        bs = set_occ(bs, 1, BLACK)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_five_in_a_row(bs, 0, BLACK), True)
 
     def test_dont_match_5_right_with_gap(self):
-        strip = BoardStrip()
-        strip.set_occ(0, BLACK)
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_five_in_a_row(0, BLACK), False)
+        bs = set_occ(0, 0, BLACK)
+        bs = set_occ(bs, 1, BLACK)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_five_in_a_row(bs, 0, BLACK), False)
 
     def test_match_5_in_middle(self):
-        strip = BoardStrip()
         #pdb.set_trace()
-        strip.set_occ(0, BLACK)
-        strip.set_occ(1, BLACK)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, BLACK)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_five_in_a_row(2, BLACK), True)
+        bs = set_occ(0, 0, BLACK)
+        bs = set_occ(bs, 1, BLACK)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_five_in_a_row(bs, 2, BLACK), True)
 
     def test_match_5_white_in_middle(self):
-        strip = BoardStrip()
         #pdb.set_trace()
-        strip.set_occ(0, WHITE)
-        strip.set_occ(1, WHITE)
-        strip.set_occ(2, WHITE)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, WHITE)
-        self.assertEquals(strip.match_five_in_a_row(2, WHITE), True)
+        bs = set_occ(0, 0, WHITE)
+        bs = set_occ(bs, 1, WHITE)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, WHITE)
+        self.assertEquals(match_five_in_a_row(bs, 2, WHITE), True)
 
     def test_dont_match_5_zebra_in_middle(self):
-        strip = BoardStrip()
         #pdb.set_trace()
-        strip.set_occ(0, BLACK)
-        strip.set_occ(1, WHITE)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.match_five_in_a_row(2, BLACK), False)
+        bs = set_occ(0, 0, BLACK)
+        bs = set_occ(bs, 1, WHITE)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(match_five_in_a_row(bs, 2, BLACK), False)
 
 
-class BoardStripGetOccsTest(unittest.TestCase):
+class BoardStripSetOccsTest(unittest.TestCase):
     def test_get_empty_occs(self):
-        strip = BoardStrip()
-        self.assertEquals(strip.get_occ_list(3, 7), [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
+        self.assertEquals(get_occ_list(bs, 3, 7), [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY])
 
     def test_get_empty_occs(self):
-        strip = BoardStrip()
-        strip.set_occ(0, BLACK)
-        strip.set_occ(1, WHITE)
-        strip.set_occ(2, BLACK)
-        strip.set_occ(3, WHITE)
-        strip.set_occ(4, BLACK)
-        self.assertEquals(strip.get_occ_list(3, 5), [WHITE, BLACK, EMPTY])
+        bs = set_occ(0, 0, BLACK)
+        bs = set_occ(bs, 1, WHITE)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(get_occ_list(bs, 3, 5), [WHITE, BLACK, EMPTY])
+
 
 if __name__ == "__main__":
     unittest.main()
-
-
 
