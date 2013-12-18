@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.config import Config
 from kivy.clock import *
+from kivy.base import *
 #from kivy.core.window import Window # Hmmmm... TODO?
 
 from kivy.uix.screenmanager import *
@@ -17,6 +18,41 @@ import os # TODO: Remove?
 class LoadScreen(Screen):
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
+
+class MyConfirmPopup(Popup):
+    confirm_prompt = StringProperty("")
+
+    # There should only be one active popup at a time.
+    active = None
+
+    def __init__(self, message, action, *args, **kwargs):
+        self.title = "Confirm"
+        self.confirm_prompt = message
+        self.action = action
+        super(MyConfirmPopup, self).__init__(*args, **kwargs)
+
+    @staticmethod
+    def create_and_open(message, action, *args, **kwargs):
+        if MyConfirmPopup.active == None:
+            # TODO: Do we dismiss any existing popup?
+            MyConfirmPopup.active = \
+                MyConfirmPopup(*args, message=message, action=action, **kwargs)
+            MyConfirmPopup.active.open()
+
+    @staticmethod
+    def confirm():
+        MyConfirmPopup.active.ok_confirm()
+
+    def on_open(self):
+        MyConfirmPopup.active = self 
+
+    def cancel_confirm(self):
+        MyConfirmPopup.active = None
+        self.dismiss()
+
+    def ok_confirm(self):
+        MyConfirmPopup.active = None
+        self.action()
 
 class PenteApp(App):
     game_filename = StringProperty("")
@@ -52,9 +88,28 @@ class PenteApp(App):
 
         self.root.current = "Game"
 
+    def close_confirmed(self):
+        # TODO Send to the current screen?
+        self.stop()
+
+    def hook_keyboard(self, window, key, *largs):               
+        print "KEY PRESSED: %s" % key
+        if key == 27:
+            # (i.e. Escape)
+            # do something to prevent close eg. Popup
+            msg_str = "Are you sure you want to quit?"
+            MyConfirmPopup.create_and_open(message=msg_str,
+                        action=self.close_confirmed,
+                        size_hint=(.6, .2))
+            return True
+        elif key == 13:
+            # (i.e. Enter)
+            MyConfirmPopup.confirm()
+        return False
+
     def build(self):
         '''
-        # This may look OK on an iPad?
+        # This may look OK on an iPad? Not so good on laptop ;)
         if Window.height < Window.width:
             Window.rotation = 90
         '''
@@ -68,6 +123,10 @@ class PenteApp(App):
             scr.app = self
             root.add_widget(scr)
         self.setup_screen = root.get_screen("Setup")
+
+        # Confirm Quit
+        EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
+        self.popup = None
 
         return root
 

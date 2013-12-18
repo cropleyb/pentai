@@ -5,6 +5,21 @@
 <MyCheckBoxList>:
     cols: 2
 
+<MyConfirmPopup>:
+    content:
+    GridLayout:
+        rows: 2
+        Label:
+            text: root.confirm_prompt
+        GridLayout:
+            cols: 2
+            Button:
+                text: "Cancel"
+                on_release: root.cancel_confirm()
+            Button:
+                text: "OK"
+                on_release: root.ok_confirm()
+
 <LoadScreen>:
     BoxLayout:
         size: root.size
