@@ -77,19 +77,19 @@ def match_five_in_a_row(bs, move_ind, my_colour):
     total_line_length = 1 + (l-1) - (m+1)
     return total_line_length >= 5
 
-def match_capture_left(bs, ind, colour):
+cpdef match_capture_left(long bs, int ind, int colour):
     if colour == BLACK:
         return match_black_capture_left(bs, ind)
     else:
         return match_white_capture_left(bs, ind)
 
-def match_capture_right(bs, ind, colour):
+cpdef match_capture_right(long bs, int ind, int colour):
     if colour == BLACK:
         return match_black_capture_right(bs, ind)
     else:
         return match_white_capture_right(bs, ind)
 
-def match_pattern_left(bs,  ind, pattern):
+cdef match_pattern_left(long bs, int ind, long pattern):
     if ind < 3:
         # Cannot place to the left - off the board
         return ()
@@ -99,26 +99,26 @@ def match_pattern_left(bs,  ind, pattern):
         return (ind-1, ind-2)
     return ()
 
-def match_pattern_right(bs, ind, pattern):
+cdef match_pattern_right(long bs, int ind, long pattern):
     shift = ind << 1
     occs = (bs >> shift) & FOUR_OCCS_MASK
     if occs == pattern:
         return (ind+1, ind+2)
     return ()
 
-def match_black_capture_left(bs, ind):
+cdef match_black_capture_left(long bs, int ind):
     # BWWx
     return match_pattern_left(bs, ind, BLACK_CAPTURE_LEFT_PATTERN)
 
-def match_white_capture_left(bs, ind):
+cdef match_white_capture_left(long bs, int ind):
     # WBBx
     return match_pattern_left(bs, ind, WHITE_CAPTURE_LEFT_PATTERN )
 
-def match_black_capture_right(bs, ind):
+cdef match_black_capture_right(long bs, int ind):
     # xWWB
     return match_pattern_right(bs, ind, BLACK_CAPTURE_RIGHT_PATTERN)
 
-def match_white_capture_right(bs, ind):
+cdef match_white_capture_right(long bs, int ind):
     # xBBW
     return match_pattern_right(bs, ind, WHITE_CAPTURE_RIGHT_PATTERN)
 
@@ -171,4 +171,49 @@ def get_threat_indices(bs, ind, colour):
         threats.extend(match_white_threat_left(bs, ind))
         threats.extend(match_white_threat_right(bs, ind))
     return threats
+
+#######################################
+
+def process_takes(bs, ind, strip_min, strip_max, us, inc):
+    """
+    bs is the board strip that we are looking through
+    ind is the index of the affected position, only the 3 positions
+    to its left and 3 to the right need to be examined.
+    [ind, ... ind+3] for capture left
+    [ind-3, ..., ind] for capture right
+    """
+    for i in range(max(strip_min+3, ind), 1 + min(ind+3, strip_max)):
+        if len(match_black_capture_left(bs, i)) > 0:
+            us.report_take(BLACK, i, inc)
+        if len(match_white_capture_left(bs, i)) > 0:
+            us.report_take(WHITE, i, inc)
+
+    for i in range(max(strip_min,ind-3), 1 + min(strip_max-3,ind)):
+        if len(match_black_capture_right(bs, i)) > 0:
+            us.report_take(BLACK, i, inc)
+        if len(match_white_capture_right(bs, i)) > 0:
+            us.report_take(WHITE, i, inc)
+
+#######################################
+
+# TODO: this is copy and paste from above
+def process_threats(bs, ind, strip_min, strip_max, us, inc):
+    """
+    bs is the board strip that we are looking through
+    ind is the index of the affected position, only the 3 positions
+    to its left and 3 to the right need to be examined.
+    [ind, ... ind+3] for threat left
+    [ind-3, ..., ind] for threat right
+    """
+    for i in range(max(strip_min+3, ind), 1 + min(ind+3, strip_max)):
+        if len(match_black_threat_left(bs, i)) > 0:
+            us.report_threat(BLACK, i, inc)
+        if len(match_white_threat_left(bs, i)) > 0:
+            us.report_threat(WHITE, i, inc)
+
+    for i in range(max(strip_min,ind-3), 1 + min(strip_max-3,ind)):
+        if len(match_black_threat_right(bs, i)) > 0:
+            us.report_threat(BLACK, i, inc)
+        if len(match_white_threat_right(bs, i)) > 0:
+            us.report_threat(WHITE, i, inc)
 

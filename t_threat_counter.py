@@ -2,7 +2,7 @@
 
 import unittest
 
-from threat_counter import *
+from board_strip import *
 from utility_stats import *
 
 mapping = {

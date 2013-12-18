@@ -2,7 +2,7 @@
 
 import unittest
 
-from take_counter import *
+from board_strip import *
 from utility_stats import *
 
 import pdb
