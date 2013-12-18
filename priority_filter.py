@@ -2,12 +2,18 @@ from defines import *
 
 import pdb
 
+def max_moves_sample_func():
+    return 6
+
 class PriorityFilter():
     def __init__(self, orig=None, min_priority=0):
+
+        self.max_moves_func = max_moves_sample_func
 
         self.candidates_by_priority_and_colour = []
         cbpc = self.candidates_by_priority_and_colour
         if orig != None:
+            self.max_moves_func = orig.max_moves_func
             ocbpc = orig.candidates_by_priority_and_colour
 
         for priority in range(6):
@@ -19,6 +25,8 @@ class PriorityFilter():
                 else:
                     l.append(ocbpc[priority][colour].copy())
 
+    def set_max_moves_func(self, mmf):
+        self.max_moves_func = mmf
 
     def copy(self, min_priority=0):
         return PriorityFilter(orig=self, min_priority=min_priority)
@@ -43,8 +51,7 @@ class PriorityFilter():
                         if not pos in tried:
                             tried.add(pos)
                             yield pos
-                            # HACK
-                            if len(tried) > 6:
+                            if len(tried) >= self.max_moves_func():
                                 return
 
     def __repr__(self):
