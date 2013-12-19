@@ -113,9 +113,9 @@ class ABState():
         else:
             return util_scores[other_colour] - util_scores[turn_colour]
 
-    def zero_turn_win(self, lines, captured, eval_colour, turn_colour):
+    def zero_turn_win(self, eval_lines, eval_captured, eval_colour, turn_colour):
         """ Detect a win in this position """
-        if lines[4] > 0:
+        if eval_lines[4] > 0:
             # This position has been won already, mark it as such so
             # that the search is not continued from this node.
             self.state.set_won_by(eval_colour)
@@ -126,8 +126,7 @@ class ABState():
         ccp = rules.can_capture_pairs
 
         if sfcw > 0 and ccp:
-            captured = self.state.get_all_captured()
-            if captured[eval_colour] >= sfcw:
+            if eval_captured >= sfcw:
                 # This position has been won already, mark it as such so
                 # that the search is not continued from this node.
                 self.state.set_won_by(eval_colour)
@@ -135,18 +134,18 @@ class ABState():
 
         return 0, False
 
-    def one_turn_win(self, lines, captured, eval_colour, turn_colour):
+    def one_turn_win(self, eval_lines, eval_captured, eval_colour, turn_colour):
         """ Detect a forceable win after one turn each """
         rules = self.get_rules()
         sfcw = rules.stones_for_capture_win
         ccp = rules.can_capture_pairs
 
-        if lines[3] > 0:
+        if eval_lines[3] > 0:
             if eval_colour == turn_colour:
                 # An unanswered line of four out of five will win
                 return self.winning_score() / 100, True
 
-            if lines[3] > 1:
+            if eval_lines[3] > 1:
                 # Two or more lines of four, with no danger of being
                 # captured is a win.
                 if ccp:
@@ -156,19 +155,19 @@ class ABState():
         if ccp and sfcw > 0:
             # Can win by captures
             if eval_colour == turn_colour:
-                if (sfcw - captured) <= 2 and \
+                if (sfcw - eval_captured) <= 2 and \
                         self.get_takes()[eval_colour] > 0:
                     # eval_colour can take the last pair for a win
                     return self.winning_score() / 100, True
             else:
-                if (sfcw - captured) <= 2 and \
+                if (sfcw - eval_captured) <= 2 and \
                         self.get_takes()[eval_colour] > 2:
                     # eval_colour can take the last pair for a win
                     return self.winning_score() / 100, True
 
         return 0, False
 
-    def utility_score(self, lines, captured, eval_colour, turn_colour):
+    def utility_score(self, eval_lines, eval_captured, eval_colour, turn_colour):
         """ Calculate a score for eval_colour for this state. """
         rules = self.get_rules()
         sfcw = rules.stones_for_capture_win
@@ -176,14 +175,14 @@ class ABState():
 
         score = 0
 
-        for i in range(len(lines)):
+        for i in range(len(eval_lines)):
             score *= 120
             rev = 4 - i
-            score += lines[rev]
+            score += eval_lines[rev]
 
         if ccp:
             if sfcw > 0:
-                cc = self.utility_calculator.captured_contrib(captured)
+                cc = self.utility_calculator.captured_contrib(eval_captured)
                 score += cc
             # else: Captured stones are not worth anything
 
@@ -213,11 +212,14 @@ class ABState():
     def get_rules(self):
         return self.game().rules
 
+    # TODO: Could these two be moved to utility_stats too?
     def before_set_occ(self, pos, colour):
-        self.utility_stats.set_or_reset_occs(self.board(), self.get_rules(), pos, -1)
+        self.utility_stats.set_or_reset_occs( \
+                self.board(), self.get_rules(), pos, -1)
 
     def after_set_occ(self, pos, colour):
-        self.utility_stats.set_or_reset_occs(self.board(), self.get_rules(), pos, 1)
+        self.utility_stats.set_or_reset_occs( \
+                self.board(), self.get_rules(), pos, 1)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)
