@@ -211,7 +211,7 @@ class ABState():
     # Scale these INFINITIES down to discourage sadistic
     # won game lengthening.
     def winning_score(self):
-        # TODO: Sadistic mode for Rich ;)
+        # TODO: Sadistic mode for Rich - just multiply by move number ;)
         return INFINITY / self.state.get_move_number()
 
     """ Captures become increasingly important as we approach 5 """
