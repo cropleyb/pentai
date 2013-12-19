@@ -1,5 +1,7 @@
 from defines import *
 from priority_filter import *
+from board_strip import *
+from length_lookup_table import *
 
 # TODO: move this to test code?
 def pass_through_func(a, ignored):
@@ -58,4 +60,42 @@ class UtilityStats():
         # These two should always be set together
         self.i_to_p = func
         self.s_num = s_num
+    
+    '''
+    def before_set_occ(self, pos, colour):
+        self._set_or_reset_occs(pos, -1)
+
+    def after_set_occ(self, pos, colour):
+        self._set_or_reset_occs(pos, 1)
+    '''
+
+    def set_or_reset_occs(self, brd, rules, pos, inc):
+        # update substrips
+
+        ccp = rules.can_capture_pairs
+        for ds in brd.get_direction_strips():
+            # Keep track of the lengths of lines that can form 5
+            # in a row
+            brd_size = brd.get_size()
+
+            bs, s_num = ds.get_strip(pos)
+            ind = ds.get_index(pos)
+
+            strip_min, strip_max = ds.get_bounds(s_num, brd_size)
+
+            self.set_ind_to_pos(ds.get_pos, s_num)
+
+            # These are the absolute indices that bound the strip
+            # that we want to use to adjust length stats.
+            min_ind = max(strip_min, ind-4) # TODO: constants
+            max_ind = min(ind+4, strip_max) # inclusive
+
+            # These have different parameter lists because of the different
+            # lengths of the matching required.
+            # TODO move min_ind into process_substrips
+            process_substrips(bs, min_ind, max_ind, self, inc)
+
+            if ccp:
+                process_takes(bs, ind, strip_min, strip_max, self, inc)
+                process_threats(bs, ind, strip_min, strip_max, self, inc)
 

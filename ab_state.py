@@ -4,7 +4,6 @@ import board
 import game_state
 import alpha_beta
 import game
-from board_strip import *
 
 from length_lookup_table import *
 from utility_stats import *
@@ -198,9 +197,6 @@ class ABState():
 
         return score
 
-    def get_rules(self):
-        return self.game().rules
-
     def set_win_for(self, colour):
         return self.winning_score()
 
@@ -210,46 +206,18 @@ class ABState():
         # TODO: Sadistic mode for Rich - just multiply by move number ;)
         return INFINITY / self.state.get_move_number()
 
+    # TODO: Rename to get_board
     def board(self):
         return self.state.board
 
-    # These 3 should go to the UtilityStats class
+    def get_rules(self):
+        return self.game().rules
+
     def before_set_occ(self, pos, colour):
-        self._set_or_reset_occs(pos, -1)
+        self.utility_stats.set_or_reset_occs(self.board(), self.get_rules(), pos, -1)
 
     def after_set_occ(self, pos, colour):
-        self._set_or_reset_occs(pos, 1)
-
-    def _set_or_reset_occs(self, pos, inc):
-        # update substrips
-        brd = self.board()
-        ccp = self.get_rules().can_capture_pairs
-        for ds in brd.get_direction_strips():
-            # Keep track of the lengths of lines that can form 5
-            # in a row
-            brd_size = brd.get_size()
-
-            bs, s_num = ds.get_strip(pos)
-            ind = ds.get_index(pos)
-
-            strip_min, strip_max = ds.get_bounds(s_num, brd_size)
-
-            us = self.utility_stats
-            us.set_ind_to_pos(ds.get_pos, s_num)
-
-            # These are the absolute indices that bound the strip
-            # that we want to use to adjust length stats.
-            min_ind = max(strip_min, ind-4) # TODO: constants
-            max_ind = min(ind+4, strip_max) # inclusive
-
-            # These have different parameter lists because of the different
-            # lengths of the matching required.
-            # TODO move min_ind into process_substrips
-            process_substrips(bs, min_ind, max_ind, us, inc)
-
-            if ccp:
-                process_takes(bs, ind, strip_min, strip_max, us, inc)
-                process_threats(bs, ind, strip_min, strip_max, us, inc)
+        self.utility_stats.set_or_reset_occs(self.board(), self.get_rules(), pos, 1)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)
