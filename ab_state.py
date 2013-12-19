@@ -8,21 +8,17 @@ from board_strip import *
 
 from length_lookup_table import *
 from utility_stats import *
-
-# TODO: This doesn't seem to have any effect?!
-CAPTURED_SCORE_BASE = 120 ** 3
-
-TAKE_SCORE_BASE = 350
-THREAT_SCORE_BASE = 20
-CAPTURES_SCALE = [0, 2.0, 4.6, 10.0, 22.0, 46.0]
+from utility_calculator import *
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None):
         if parent == None:
             self.utility_stats = UtilityStats()
+            self.utility_calculator = UtilityCalculator()
         else:
             self.utility_stats = UtilityStats(parent.utility_stats)
+            self.utility_calculator = parent.utility_calculator
 
     def reset_state(self):
         self.utility_stats = UtilityStats()
@@ -188,16 +184,16 @@ class ABState():
 
         if ccp:
             if sfcw > 0:
-                cc = self.captured_contrib(captured)
+                cc = self.utility_calculator.captured_contrib(captured)
                 score += cc
             # else: Captured stones are not worth anything
 
             # Give takes and threats some value for their ability to help
             # get 5 in a row.
-            tc = self.take_contrib(self.get_takes()[eval_colour])
+            tc = self.utility_calculator.take_contrib(self.get_takes()[eval_colour])
             score += tc
 
-            tc = self.threat_contrib(self.get_threats()[eval_colour])
+            tc = self.utility_calculator.threat_contrib(self.get_threats()[eval_colour])
             score += tc
 
         return score
@@ -213,24 +209,6 @@ class ABState():
     def winning_score(self):
         # TODO: Sadistic mode for Rich - just multiply by move number ;)
         return INFINITY / self.state.get_move_number()
-
-    """ Captures become increasingly important as we approach 5 """
-    def captured_contrib(self, captures):
-        # TODO: Use rules
-        contrib = captures * CAPTURED_SCORE_BASE * CAPTURES_SCALE[captures/2]
-        return contrib
-
-    def take_contrib(self, takes):
-        """ TODO takes become increasingly important as we approach 5 captures """
-        # TODO: Use rules
-        contrib = takes * TAKE_SCORE_BASE
-        return contrib
-
-    def threat_contrib(self, threats):
-        """ TODO threats become increasingly important as we approach 5 captures """
-        # TODO: Use rules
-        contrib = threats * THREAT_SCORE_BASE
-        return contrib
 
     def board(self):
         return self.state.board
