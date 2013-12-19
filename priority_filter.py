@@ -2,8 +2,8 @@ from defines import *
 
 import pdb
 
-def max_moves_sample_func():
-    return 6
+def max_moves_sample_func(depth):
+    return 9
 
 class PriorityFilter():
     def __init__(self, orig=None, min_priority=0):
@@ -31,7 +31,7 @@ class PriorityFilter():
     def copy(self, min_priority=0):
         return PriorityFilter(orig=self, min_priority=min_priority)
 
-    def get_iter(self, our_colour, min_priority=0):
+    def get_iter(self, our_colour, depth=0, min_priority=0):
         #pdb.set_trace()
         other_colour = opposite_colour(our_colour)
         tried = set() 
@@ -51,7 +51,7 @@ class PriorityFilter():
                         if not pos in tried:
                             tried.add(pos)
                             yield pos
-                            if len(tried) >= self.max_moves_func():
+                            if len(tried) >= self.max_moves_func(depth):
                                 return
 
     def __repr__(self):

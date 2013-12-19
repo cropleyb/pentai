@@ -15,6 +15,17 @@ class AIPlayer(Player):
 
     def set_max_depth(self, max_depth):
         self.max_depth = max_depth
+    
+    def set_max_moves_per_depth_level(self, mmpdl, narrowing):
+        if narrowing:
+            def mmpdl_func(depth):
+                return mmpdl - depth
+        else:
+            def mmpdl_func(depth):
+                return mmpdl
+        # TODO: Ugly chaining
+        us = self.ab_game.current_state.utility_stats
+        us.search_filter.set_max_moves_func(mmpdl_func)
 
     def attach_to_game(self, base_game):
         self.ab_game = ab_game.ABGame(base_game)
