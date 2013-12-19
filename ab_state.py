@@ -7,8 +7,6 @@ import game
 from board_strip import *
 
 from length_lookup_table import *
-from take_counter import *
-from threat_counter import *
 from utility_stats import *
 
 # TODO: This doesn't seem to have any effect?!
