@@ -11,12 +11,13 @@ from utility_calculator import *
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, search_filter=None):
         if parent == None:
-            self.utility_stats = UtilityStats()
+            assert search_filter != None
+            self.utility_stats = UtilityStats(search_filter=search_filter)
             self.utility_calculator = UtilityCalculator()
         else:
-            self.utility_stats = UtilityStats(parent.utility_stats)
+            self.utility_stats = UtilityStats(parent=parent.utility_stats)
             self.utility_calculator = parent.utility_calculator
 
     def reset_state(self):

@@ -21,7 +21,8 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         r = rules.Rules(13, "standard")
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
-        self.s = ABState()
+        self.search_filter = PriorityFilter()
+        self.s = ABState(search_filter=self.search_filter)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)
@@ -100,7 +101,8 @@ class LengthCountingTest(unittest.TestCase):
         r = rules.Rules(9, "standard")
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
-        self.s = ABState()
+        self.search_filter = PriorityFilter()
+        self.s = ABState(search_filter=self.search_filter)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)
@@ -149,7 +151,8 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
-        self.s = ABState()
+        self.search_filter = PriorityFilter()
+        self.s = ABState(search_filter=self.search_filter)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)
@@ -245,7 +248,8 @@ class ThreatTest(unittest.TestCase):
         r = rules.Rules(5, "standard")
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
-        self.s = ABState()
+        self.search_filter = PriorityFilter()
+        self.s = ABState(search_filter=self.search_filter)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)

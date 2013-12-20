@@ -25,7 +25,7 @@ def pattern_string_to_bs(occ_str):
 
 class SubStripCountingTest(unittest.TestCase):
     def setUp(self):
-        self.util_stats = UtilityStats()
+        self.util_stats = UtilityStats(search_filter=mock.Mock())
         self.black_counter = self.util_stats.lines[BLACK]
         self.white_counter = self.util_stats.lines[WHITE]
 

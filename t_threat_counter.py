@@ -32,7 +32,7 @@ def pattern_string_to_board_strip(occ_str):
 class SubStripCountingTest(unittest.TestCase):
     def setUp(self):
         self.threats = [0,0,0]
-        self.us = UtilityStats()
+        self.us = UtilityStats(search_filter=PriorityFilter())
         self.threats = self.us.threats
 
     # Helper

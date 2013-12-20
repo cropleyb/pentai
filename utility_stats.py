@@ -10,12 +10,12 @@ def pass_through_func(a, ignored):
 
 class UtilityStats():
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, search_filter=None):
         if parent == None:
             self.lines = [None, [0] * 5, [0] * 5]
             self.takes = [0, 0, 0]
             self.threats = [0, 0, 0]
-            self.search_filter = PriorityFilter()
+            self.search_filter = search_filter
             self.i_to_p = pass_through_func
 
             # TODO: move this to test code?

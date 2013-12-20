@@ -14,8 +14,8 @@ import pdb
 class AIPlayerTest(unittest.TestCase):
 
     def setUp(self):
-        self.p1 = AIPlayer("Deep thunk")
-        self.p2 = AIPlayer("Deep thunk2")
+        self.p1 = AIPlayer(name="Deep thunk", mmpdl=9, narrowing=0)
+        self.p2 = AIPlayer(name="Deep thunk2", mmpdl=9, narrowing=0)
         r = rules.Rules(9, "standard")
         self.game = game.Game(r, self.p1, self.p2)
         self.p1.attach_to_game(self.game)

@@ -3,15 +3,19 @@ import alpha_beta
 from gui import *
 
 from player import *
+from priority_filter import *
 
 import threading
 
 class AIPlayer(Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
-    def __init__(self, *args, **vargs):
+    def __init__(self, mmpdl, narrowing, *args, **vargs):
         Player.__init__(self, *args, **vargs)
         self.max_depth = 1
+
+        self.search_filter = PriorityFilter()
+        self.set_max_moves_per_depth_level(mmpdl, narrowing)
 
     def set_max_depth(self, max_depth):
         self.max_depth = max_depth
@@ -23,12 +27,11 @@ class AIPlayer(Player):
         else:
             def mmpdl_func(depth):
                 return mmpdl
-        # TODO: Ugly chaining
-        us = self.ab_game.current_state.utility_stats
-        us.search_filter.set_max_moves_func(mmpdl_func)
+        self.search_filter.set_max_moves_func(mmpdl_func)
 
     def attach_to_game(self, base_game):
-        self.ab_game = ab_game.ABGame(base_game)
+        self.ab_game = ab_game.ABGame(
+            base_game, search_filter=self.search_filter)
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:

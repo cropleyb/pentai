@@ -44,22 +44,27 @@ class Genome():
     total game time
     search iterations - 0,1,2,3
     """
-
+    def __init__(self, longarr):
+        self.max_depth = longarr[0]
+        self.mmpdl = longarr[1]
+        self.narrowing = (longarr[2] - 2) / 2.0
 
 class Match():
+    def create_player(self, name, genome):
+        p = AIPlayer(name=name, mmpdl=genome.mmpdl, narrowing=genome.narrowing)
+        p.set_max_depth(genome.max_depth)
+        p.set_max_moves_per_depth_level(genome.mmpdl, genome.narrowing)
+        return p
+
     def set_up(self):
-        self.p1 = AIPlayer("Black")
-        self.p2 = AIPlayer("White")
+        genome1 = Genome([6, 9, 0])
+        genome2 = Genome([6, 9, 0])
+        self.p1 = self.create_player("Black", genome1)
+        self.p2 = self.create_player("White", genome2)
         r = rules.Rules(13, "standard")
         self.game = game.Game(r, self.p1, self.p2)
 
-    # !./t_ai_player.py AIPlayerSubsystemTest.test_find_one_move
     def play_one_game(self):
-        self.p1.set_max_depth(6)
-        self.p1.set_max_moves_per_depth_level(9, narrowing=False)
-        self.p2.set_max_depth(8)
-        self.p2.set_max_moves_per_depth_level(6, narrowing=False)
-        #self.p2.set_max_moves_per_depth_level(7)
         tt = TwoTimer()
 
         while not self.game.finished():

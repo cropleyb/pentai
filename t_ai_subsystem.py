@@ -14,12 +14,12 @@ import pdb
 class AIPlayerSubsystemTest(unittest.TestCase):
 
     def setUp(self):
-        self.p1 = AIPlayer("Deep thunk")
-        self.p2 = AIPlayer("Deep thunk2")
+        self.p1 = AIPlayer(name="Deep thunk", mmpdl=9, narrowing=0)
+        self.p2 = AIPlayer(name="Deep thunk2", mmpdl=9, narrowing=0)
         r = rules.Rules(13, "standard")
         self.game = game.Game(r, self.p1, self.p2)
 
-    # !./t_ai_player.py AIPlayerSubsystemTest.test_find_one_move
+    # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_find_one_move
     def test_find_one_move(self):
         self.p2.set_max_depth(2)
         game_str = \

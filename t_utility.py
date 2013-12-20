@@ -15,7 +15,9 @@ import pdb
 
 class UtilityTest(unittest.TestCase):
     def setUp(self):
-        self.s = ABState()
+        self.search_filter = PriorityFilter()
+        self.s = ABState(search_filter=self.search_filter)
+        self.us = UtilityStats()
         self.rules = Mock()
         self.rules.stones_for_capture_win = 10
         self.rules.can_capture_pairs = True
