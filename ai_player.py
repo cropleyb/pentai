@@ -57,7 +57,9 @@ class AIPlayer(Player):
         if ab_game.current_state.get_move_number() < 10:
             md = min(md, 4)
         '''
+        # TODO: Move these to ABState.__repr__
         print "%s. " % ab_game.current_state.get_move_number(),
+        print "Captures: %s " % ab_game.current_state.state.get_all_captured(),
         print ab_game.current_state.utility_stats,
         move, value = alpha_beta.alphabeta_search(ab_game.current_state,
                 ab_game, max_depth=md)
