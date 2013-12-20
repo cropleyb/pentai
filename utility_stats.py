@@ -31,7 +31,8 @@ class UtilityStats():
             self.s_num = 0 # irrel, just needs a value
 
     def __repr__(self):
-        return "Lines: %s, Takes: %s, Threats: %s, Best: %s" % (self.lines, self.takes, self.threats, self.search_filter)
+        return "Lines: %s, Takes: %s, Threats: %s, Best: %s" % \
+                (self.lines, self.takes, self.threats, self.search_filter)
 
     def report_length_candidate(self, colour, length, ind_list, inc):
         self.lines[colour][length-1] += inc
