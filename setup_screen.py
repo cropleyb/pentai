@@ -15,7 +15,7 @@ from defines import *
 
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
-        p = ai_player.AIPlayer(player_name, 9, 0)
+        p = ai_player.AIPlayer(name=player_name, mmpdl=9, narrowing=0)
         p.set_max_depth(max_depth)
     else:
         p = human_player.HumanPlayer(player_name)
