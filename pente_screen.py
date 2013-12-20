@@ -133,10 +133,10 @@ class PenteScreen(Screen):
 
     def load_file(self, dt):
         f = open(self.game_filename)
+        self.game.autosave_filename = self.game_filename[:]
         self.game.load_game(f.read())
         self.display_names()
         self.setup_grid()
-        self.game.autosave_filename = self.game_filename
         self.game_filename = None
         self.game.prompt_for_action(self)
 
