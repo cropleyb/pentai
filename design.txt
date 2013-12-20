@@ -177,3 +177,10 @@ UtilityCalculator class
     capture value scaling
     line length value scaling
 
+Each generation:
+Play each AI against each of the others twice - n squared * 2
+6 players -> 72 games per gen?!
+sort best to worst
+New pool: 3 best + mate each pair
+Mutate 1 aspect of each of the new ones?
+
