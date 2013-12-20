@@ -61,14 +61,6 @@ class UtilityStats():
         self.i_to_p = func
         self.s_num = s_num
     
-    '''
-    def before_set_occ(self, pos, colour):
-        self._set_or_reset_occs(pos, -1)
-
-    def after_set_occ(self, pos, colour):
-        self._set_or_reset_occs(pos, 1)
-    '''
-
     def set_or_reset_occs(self, brd, rules, pos, inc):
         # update substrips
 
