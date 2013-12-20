@@ -20,11 +20,11 @@ class UtilityTest(unittest.TestCase):
         self.rules.stones_for_capture_win = 10
         self.rules.can_capture_pairs = True
         self.game = Mock()
-        self.game.rules= self.rules
         self.captured = [0, 0, 0] # This is individual stones, E/B/W
         self.gs = Mock({"get_all_captured": self.captured,
             "get_move_number": 1, "game":self.game,
-            "get_won_by": EMPTY}) 
+            "get_won_by": EMPTY,
+            "get_rules":self.rules}) 
         self.gs.board = Board(13)
         self.gs.game = self.game
         self.set_turn_player_colour(BLACK)
