@@ -66,7 +66,6 @@ class Match():
             p = self.game.get_current_player()
             with tt:
                 m = p.do_the_search()
-                print m
                 self.game.make_move(m)
         print "Game was won by: %s" % self.game.winner_name()
         print tt
