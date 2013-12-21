@@ -1,4 +1,5 @@
 
+Bug: play whole game (fast, computer vs. computer) then press "Back"
 GP interface
 Try some profiling
 Narrower search per depth level
