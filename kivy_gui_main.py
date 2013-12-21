@@ -59,6 +59,12 @@ class PenteApp(App):
 
     def show_load(self):
         self.root.current = "Load"
+        try:
+            self.game = None
+            game_screen = self.root.get_screen("Game")
+            self.root.remove_widget(game_screen)
+        except ScreenManagerException:
+            pass
 
     def cancel_game_file(self):
         self.game_filename = ""
@@ -76,6 +82,7 @@ class PenteApp(App):
     def start_game(self, game, startup_size, filename=""):
         pente_screen = PenteScreen(startup_size, name='Game', filename=self.game_filename)
         self.root.add_widget(pente_screen)
+        self.game = game
 
         # TODO: Move stuff into PenteScreen __init__?
 
@@ -93,6 +100,7 @@ class PenteApp(App):
         self.stop()
 
     def hook_keyboard(self, window, key, *largs):               
+        # This keyboard control is just for my convenience, not on app.
         print "KEY PRESSED: %s" % key
         if key == 27:
             # (i.e. Escape)
@@ -105,6 +113,10 @@ class PenteApp(App):
         elif key == 13:
             # (i.e. Enter)
             MyConfirmPopup.confirm()
+        elif key == 32:
+            # (i.e. Space)
+            if self.root.current != "Game" or self.game.finished():
+                self.show_load()
         return False
 
     def build(self):
