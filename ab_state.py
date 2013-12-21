@@ -21,7 +21,7 @@ class ABState():
             self.utility_calculator = parent.utility_calculator
 
     def reset_state(self):
-        self.utility_stats = UtilityStats()
+        self.utility_stats.reset()
 
     # TODO: These don't belong here
     def get_black_line_counts(self):

@@ -12,11 +12,9 @@ class UtilityStats():
 
     def __init__(self, parent=None, search_filter=None):
         if parent == None:
-            self.lines = [None, [0] * 5, [0] * 5]
-            self.takes = [0, 0, 0]
-            self.threats = [0, 0, 0]
             self.search_filter = search_filter
             self.i_to_p = pass_through_func
+            self.reset()
 
             # TODO: move this to test code?
             self.s_num = 0 # irrel, just needs a value
@@ -29,6 +27,11 @@ class UtilityStats():
             # TODO: Use depth and/or min priority when copying the search filter
             self.search_filter = parent.search_filter.copy()
             self.s_num = 0 # irrel, just needs a value
+
+    def reset(self):
+        self.lines = [None, [0] * 5, [0] * 5]
+        self.takes = [0, 0, 0]
+        self.threats = [0, 0, 0]
 
     def __repr__(self):
         return "Lines: %s, Takes: %s, Threats: %s, Best: %s" % \
