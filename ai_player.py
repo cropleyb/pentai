@@ -70,3 +70,6 @@ class AIPlayer(Player):
         print " => %s" % (action,)
         return action
 
+    def set_interrupted(self):
+        self.ab_game.interrupted = True
+

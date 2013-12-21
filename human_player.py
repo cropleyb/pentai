@@ -10,3 +10,5 @@ class HumanPlayer(Player):
     def get_type(self):
         return "human"
 
+    def set_interrupted(self):
+        pass

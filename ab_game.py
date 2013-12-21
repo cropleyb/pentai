@@ -11,6 +11,7 @@ class ABGame():
         s = self.current_state = ABState(None, search_filter)
         s.set_state(base_game.current_state)
         self.base_game = base_game
+        self.interrupted = False
 
     def to_move(self, state=None):
         if state is None:
@@ -44,5 +45,7 @@ class ABGame():
                 return
 
     def terminal_test(self, state):
+        if self.interrupted:
+            return True
         return state.terminal()
 

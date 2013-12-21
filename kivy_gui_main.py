@@ -52,15 +52,18 @@ class MyConfirmPopup(Popup):
 
     def ok_confirm(self):
         MyConfirmPopup.active = None
+        self.dismiss()
         self.action()
 
 class PenteApp(App):
     game_filename = StringProperty("")
 
-    def show_load(self):
+    def show_load(self, ignored=None):
         self.root.current = "Load"
         try:
-            self.game = None
+            if self.game != None:
+                self.game.set_interrupted()
+                self.game = None
             game_screen = self.root.get_screen("Game")
             self.root.remove_widget(game_screen)
         except ScreenManagerException:
@@ -72,8 +75,11 @@ class PenteApp(App):
 
     def load_game_file(self, path, filenames):
         f_n = filenames
-        full_path = os.path.join(path, filenames[0])
-        self.game_filename = full_path
+        try:
+            full_path = os.path.join(path, filenames[0])
+            self.game_filename = full_path
+        except IndexError:
+            return
 
         # TODO: Check file parsed etc.
         self.setup_screen.set_GUI_from_file(full_path)
@@ -117,6 +123,11 @@ class PenteApp(App):
             # (i.e. Space)
             if self.root.current != "Game" or self.game.finished():
                 self.show_load()
+            else:
+                msg_str = "Start New Game?"
+                MyConfirmPopup.create_and_open(message=msg_str,
+                    action=self.show_load,
+                    size_hint=(.6, .2))
         return False
 
     def build(self):
