@@ -117,17 +117,26 @@ class PenteApp(App):
                         size_hint=(.6, .2))
             return True
         elif key == 13:
-            # (i.e. Enter)
+            # Enter
             MyConfirmPopup.confirm()
         elif key == 32:
-            # (i.e. Space)
-            if self.root.current != "Game" or self.game.finished():
-                self.show_load()
-            else:
-                msg_str = "Start New Game?"
-                MyConfirmPopup.create_and_open(message=msg_str,
-                    action=self.show_load,
-                    size_hint=(.6, .2))
+            # Space
+            if self.root.current != "Setup":
+                # Ignore spaces on setup page, could be entering names
+                if self.root.current != "Game" or self.game.finished():
+                    self.show_load()
+                else:
+                    # Game in progress, prompt
+                    msg_str = "Start New Game?"
+                    MyConfirmPopup.create_and_open(message=msg_str,
+                        action=self.show_load,
+                        size_hint=(.6, .2))
+        '''
+        # TODO
+        elif key == 115:
+            # 's' for settings
+            self.root.current = "Setup"
+        '''
         return False
 
     def build(self):
@@ -138,6 +147,8 @@ class PenteApp(App):
         '''
         root = ScreenManager()
         self.root = root
+
+        self.game = None
 
         screens = [(LoadScreen, "Load"), (SettingsScreen, "Settings"), \
                    (MenuScreen, "Menu"), (SetupScreen, "Setup")]
