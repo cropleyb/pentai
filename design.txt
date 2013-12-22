@@ -184,3 +184,10 @@ sort best to worst
 New pool: 3 best + mate each pair
 Mutate 1 aspect of each of the new ones?
 
+Problem: Playing badly once a loss is detected
+All forceable losses are considered equal.
+Solution: don't use infinity? Only partial solution.
+AB alg. looks for best move by each player; if there is a forceable win,
+all moves are considered equally futile. We want to move so that there are
+less winning choices.
+Alter AB so max node chooses moves with less losing options
