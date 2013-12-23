@@ -2,9 +2,11 @@
 
 from defines import *
 
+import pdb
+
 class UtilityCalculator():
     def __init__(self):
-        self.captured_score_base = 120 ** 3
+        self.captured_score_base = 1500
         self.take_score_base = 350
         self.threat_score_base = 20
         self.captures_scale = [0, 2.0, 4.6, 10.0, 22.0, 46.0]
@@ -69,9 +71,10 @@ class UtilityCalculator():
         util_scores[turn_colour] *= 100 
 
         if search_colour == turn_colour:
-            return util_scores[turn_colour] - util_scores[other_colour]
+            ret = util_scores[turn_colour] - util_scores[other_colour]
         else:
-            return util_scores[other_colour] - util_scores[turn_colour]
+            ret = util_scores[other_colour] - util_scores[turn_colour]
+        return ret
 
     def zero_turn_win(self, state, eval_colour, turn_colour):
         """ Detect a win in this position """

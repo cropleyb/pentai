@@ -42,6 +42,9 @@ class UtilityTest(unittest.TestCase):
     def set_takes(self, black_takes, white_takes):
         self.s.utility_stats.takes = [0, black_takes, white_takes]
 
+    def set_threats(self, black_threats, white_threats):
+        self.s.utility_stats.threats = [0, black_threats, white_threats]
+
     def set_captured(self, black_captures, white_captures):
         self.captured[BLACK] = black_captures
         self.captured[WHITE] = white_captures
@@ -365,6 +368,37 @@ class UtilityTest(unittest.TestCase):
         self.set_takes(3, 0)
         u = self.s.utility()
         self.assertGreater(u, inf)
+
+    def test_tricky_pos_1(self):
+        #pdb.set_trace()
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_captured(4, 4)
+        self.set_takes(0, 0)
+        self.set_threats(0, 0)
+        self.set_black_lines([78, 9, 1, 1, 0])
+        self.set_white_lines([36, 2, 0, 0, 0])
+        u1= self.s.utility()
+
+        self.set_captured(0, 0)
+        self.set_takes(0, 0)
+        self.set_threats(2, 2)
+        self.set_black_lines([51, 8, 0, 0, 0])
+        self.set_white_lines([28, 3, 1, 0, 0])
+        u2= self.s.utility()
+
+        self.assertGreater(u1, u2)
+        '''
+
+    assert:
+    '11. (9, 7) 12. (10, 8) 13. (6, 9) 14. (6, 10) 15. (8, 7) '
+    Lines: [None, [78, 9, 1, 1, 0], [36, 2, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(6, 10): 0, (6, 5): 1}, {}] Captured: [0, 4, 4]
+    should be >
+    '11. (7, 4) 12. (9, 7) 13. (7, 9) 14. (6, 9) 15. (10, 9) '
+    Lines: [None, [51, 8, 0, 0, 0], [23, 8, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 2], Best: [{}, {}, {}] Captured: [0, 0, 0]
+
+        '''
 
 if __name__ == "__main__":
     unittest.main()
