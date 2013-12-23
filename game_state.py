@@ -22,9 +22,8 @@ class GameState():
         self.last_move = "No move yet"
 
     def __repr__(self):
-        # TEMP for debugging
-        return str(self.last_move)
-        #return self.game.__repr__()
+        # For debugging
+        return "%s. %s" % (self.move_number-1, self.last_move)
 
     def reset(self, game=None):
         if game is None:
