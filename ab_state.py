@@ -12,6 +12,7 @@ from utility_calculator import *
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None, search_filter=None):
+        self.parent = parent # For debugging
         if parent == None:
             assert search_filter != None
             self.utility_stats = UtilityStats(search_filter=search_filter)
@@ -70,6 +71,17 @@ class ABState():
 
     def game(self):
         return self.state.game
+
+    def history_string(self):
+        """ For debugging only """
+        hist_str = ""
+        ab_s = self
+        # TODO: Just make it go back to the start?
+        cs = self.state.game.current_state
+        while ab_s.state != cs:
+            hist_str = str(ab_s.state) + "\n" + hist_str
+            ab_s = ab_s.parent
+        return hist_str
 
     def utility(self):
         return self.utility_calculator.utility(self, self.utility_stats)
