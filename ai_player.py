@@ -67,6 +67,14 @@ class AIPlayer(Player):
         move, value = alpha_beta.alphabeta_search(ab_game.current_state,
                 ab_game, max_depth=md)
         action = move[0]
+        if value < -INFINITY / 1000:
+            # No matter what we do, there is a forceable loss.
+            # Just take the first move suggested by the search filter -
+            # it will look better than the AB suggestion
+            pf = ab_game.current_state.utility_stats.search_filter
+            our_colour = ab_game.current_state.to_move_colour()
+            action = pf.get_iter(our_colour).next()
+
         print " => %s" % (action,)
         return action
 
