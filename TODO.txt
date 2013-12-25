@@ -1,6 +1,5 @@
 
 Double click on a filename to open
-Once a game is in a lost position, don't throw it in
 Setting page
 Add rules explanation
 switch players mid-game?
