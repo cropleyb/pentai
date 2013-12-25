@@ -41,7 +41,8 @@ class MyConfirmPopup(Popup):
 
     @staticmethod
     def confirm():
-        MyConfirmPopup.active.ok_confirm()
+        if MyConfirmPopup.active != None:
+            MyConfirmPopup.active.ok_confirm()
 
     def on_open(self):
         MyConfirmPopup.active = self 
