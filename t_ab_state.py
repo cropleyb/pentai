@@ -10,6 +10,7 @@ import human_player
 from board import *
 
 from ab_state import *
+from utility_calculator import *
 
 import pdb
 
@@ -22,7 +23,9 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
         self.search_filter = PriorityFilter()
-        self.s = ABState(search_filter=self.search_filter)
+        self.util_calc = UtilityCalculator()
+        self.s = ABState(search_filter=self.search_filter,
+                utility_calculator=self.util_calc)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)
@@ -102,7 +105,9 @@ class LengthCountingTest(unittest.TestCase):
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
         self.search_filter = PriorityFilter()
-        self.s = ABState(search_filter=self.search_filter)
+        self.util_calc = UtilityCalculator()
+        self.s = ABState(search_filter=self.search_filter,
+                utility_calculator=self.util_calc)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)
@@ -152,7 +157,9 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
         self.search_filter = PriorityFilter()
-        self.s = ABState(search_filter=self.search_filter)
+        self.util_calc = UtilityCalculator()
+        self.s = ABState(search_filter=self.search_filter,
+                utility_calculator=self.util_calc)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)
@@ -249,7 +256,9 @@ class ThreatTest(unittest.TestCase):
         my_game = game.Game(r, player1, player2)
         self.gs = my_game.current_state
         self.search_filter = PriorityFilter()
-        self.s = ABState(search_filter=self.search_filter)
+        self.util_calc = UtilityCalculator()
+        self.s = ABState(search_filter=self.search_filter,
+                utility_calculator=self.util_calc)
         self.bl = self.s.utility_stats.lines[BLACK]
         self.wl = self.s.utility_stats.lines[WHITE]
         self.s.set_state(self.gs)

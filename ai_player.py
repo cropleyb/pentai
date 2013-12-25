@@ -4,6 +4,7 @@ from gui import *
 
 from player import *
 from priority_filter import *
+from utility_calculator import *
 
 import threading
 
@@ -17,6 +18,8 @@ class AIPlayer(Player):
         self.search_filter = PriorityFilter()
         self.set_max_moves_per_depth_level(mmpdl, narrowing)
 
+        self.utility_calculator = UtilityCalculator()
+
     def set_max_depth(self, max_depth):
         self.max_depth = max_depth
     
@@ -29,9 +32,16 @@ class AIPlayer(Player):
                 return mmpdl
         self.search_filter.set_max_moves_func(mmpdl_func)
 
+    def get_utility_calculator(self):
+        return self.utility_calculator
+
+    def get_priority_filter(self):
+        return self.search_filter
+
     def attach_to_game(self, base_game):
         self.ab_game = ab_game.ABGame(
-            base_game, search_filter=self.search_filter)
+            base_game, search_filter=self.search_filter,
+            utility_calculator=self.utility_calculator)
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:

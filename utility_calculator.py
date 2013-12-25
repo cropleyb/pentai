@@ -6,10 +6,12 @@ import pdb
 
 class UtilityCalculator():
     def __init__(self):
-        self.captured_score_base = 1500
-        self.take_score_base = 350
+        self.captured_score_base = 120 ** 3
+        self.take_score_base = 2000
         self.threat_score_base = 20
         self.captures_scale = [0, 2.0, 4.6, 10.0, 22.0, 46.0]
+        self.length_factor = 120
+        self.move_factor = 100
 
     def set_rules(self, rules):
         self.rules = rules
@@ -19,6 +21,8 @@ class UtilityCalculator():
         # TODO: Use rules?
         contrib = captures * self.captured_score_base * \
                 self.captures_scale[captures/2]
+        # Unless we're playing keryo, captures_scale only needs to operate
+        # on pairs
         return contrib
 
     def take_contrib(self, takes):
@@ -68,12 +72,33 @@ class UtilityCalculator():
             util_scores[eval_colour] = util
 
         # It is a very significant advantage to have the move
-        util_scores[turn_colour] *= 100 
+        #util_scores[turn_colour] *= 100 
+        util_scores[turn_colour] *= self.move_factor
 
         if search_colour == turn_colour:
             ret = util_scores[turn_colour] - util_scores[other_colour]
         else:
             ret = util_scores[other_colour] - util_scores[turn_colour]
+        '''
+        #if ret == 147571: # 9,7 descendant
+        #if ret == 314642.0: # 8,4 descendant
+        #if ret == -14362: # 9,7 descendant
+            #if ret == -9358: # 8,4 descendant
+            #pdb.set_trace()
+        #if ret == -9431:
+        #    pdb.set_trace()
+        #if ret == -9358: # or ret == -9431:
+        if ret == -9431:
+            print
+            print state.history_string()
+            print utility_stats
+            print "Captured: [0, %s, %s]" % \
+                (state.get_captured(1),
+                 state.get_captured(2))
+            print "Util scores: %s, ret: %s" % (util_scores, ret)
+            #pdb.set_trace()
+        '''
+
         return ret
 
     def zero_turn_win(self, state, eval_colour, turn_colour):
@@ -142,19 +167,24 @@ class UtilityCalculator():
         ccp = rules.can_capture_pairs
 
         eval_captured = state.get_captured(eval_colour)
+        other_colour = opposite_colour(eval_colour)
+        other_captured = state.get_captured(other_colour)
+        net_captured = eval_captured - other_captured
         eval_lines = state.utility_stats.lines[eval_colour]
 
         score = 0
 
+        lf = self.length_factor
         for i in range(len(eval_lines)):
-            score *= 120
+            score *= lf
             rev = 4 - i
             score += eval_lines[rev]
 
         if ccp:
             if sfcw > 0:
-                cc = self.captured_contrib(eval_captured)
-                score += cc
+                if net_captured > 0:
+                    cc = self.captured_contrib(net_captured)
+                    score += cc
             # else: Captured stones are not worth anything
 
             us = state.utility_stats

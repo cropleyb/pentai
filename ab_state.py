@@ -7,18 +7,21 @@ import game
 
 from length_lookup_table import *
 from utility_stats import *
-from utility_calculator import *
 
 class ABState():
     """ Bridge for state, for use by alpha_beta code """
-    def __init__(self, parent=None, search_filter=None):
-        self.parent = parent # For debugging
+    def __init__(self, parent=None, search_filter=None,
+            utility_calculator=None):
+        self.parent = parent # Save for debugging only
         if parent == None:
             assert search_filter != None
             self.utility_stats = UtilityStats(search_filter=search_filter)
-            self.utility_calculator = UtilityCalculator()
         else:
             self.utility_stats = UtilityStats(parent=parent.utility_stats)
+        if utility_calculator != None:
+            self.utility_calculator = utility_calculator
+        else:
+            assert parent != None
             self.utility_calculator = parent.utility_calculator
 
     def reset_state(self):

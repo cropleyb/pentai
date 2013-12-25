@@ -7,8 +7,9 @@ from ab_state import *
 
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
-    def __init__(self, base_game, search_filter=None):
-        s = self.current_state = ABState(None, search_filter)
+    def __init__(self, base_game, search_filter=None,
+                 utility_calculator=None):
+        s = self.current_state = ABState(None, search_filter, utility_calculator)
         s.set_state(base_game.current_state)
         self.base_game = base_game
         self.interrupted = False

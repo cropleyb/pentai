@@ -4,6 +4,7 @@ import unittest
 
 from length_lookup_table import *
 from ab_state import *
+from utility_calculator import *
 from player import *
 import game_state
 from board import *
@@ -16,7 +17,9 @@ import pdb
 class UtilityTest(unittest.TestCase):
     def setUp(self):
         self.search_filter = PriorityFilter()
-        self.s = ABState(search_filter=self.search_filter)
+        self.util_calc = UtilityCalculator()
+        self.s = ABState(search_filter=self.search_filter,
+                utility_calculator=self.util_calc)
         self.us = UtilityStats()
         self.rules = Mock()
         self.rules.stones_for_capture_win = 10
@@ -238,7 +241,8 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, 0)
 
-    def test_one_take_is_worth_more_than_two_threes(self):
+    def atest_one_take_is_worth_more_than_two_threes(self):
+        # I'm not sure about this one
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
@@ -370,6 +374,14 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, inf)
 
     def test_tricky_pos_1(self):
+        '''
+    assert:
+    '11. (9, 7) 12. (10, 8) 13. (6, 9) 14. (6, 10) 15. (8, 7) '
+    Lines: [None, [78, 9, 1, 1, 0], [36, 2, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(6, 10): 0, (6, 5): 1}, {}] Captured: [0, 4, 4]
+    should be >
+    '11. (7, 4) 12. (9, 7) 13. (7, 9) 14. (6, 9) 15. (10, 9) '
+    Lines: [None, [51, 8, 0, 0, 0], [23, 8, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 2], Best: [{}, {}, {}] Captured: [0, 0, 0]
+        '''
         #pdb.set_trace()
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(WHITE)
@@ -389,15 +401,78 @@ class UtilityTest(unittest.TestCase):
         u2= self.s.utility()
 
         self.assertGreater(u1, u2)
+
+    def test_tricky_pos_2(self):
+        #pdb.set_trace()
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.set_captured(0, 0)
+        self.set_takes(0, 1)
+        self.set_threats(0, 0)
+        self.set_black_lines([34, 5, 1, 0, 0])
+        self.set_white_lines([49, 6, 0, 0, 0])
+        u1= self.s.utility()
+
+        self.set_captured(2, 2)
+        self.set_takes(0, 0)
+        self.set_threats(2, 0)
+        self.set_black_lines([49, 4, 0, 0, 0])
+        self.set_white_lines([48, 5, 1, 0, 0])
+        u2= self.s.utility()
+
+        self.assertGreater(u1, u2)
+
+    def test_tricky_pos_2b(self):
+        #pdb.set_trace()
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
+        self.set_captured(2, 2)
+        self.set_takes(0, 0)
+        self.set_threats(0, 0)
+        self.set_black_lines([59, 4, 0, 0, 0])
+        self.set_white_lines([61, 3, 1, 0, 0])
+        u1= self.s.utility()
+        '''
+        Lines: [None, [59, 4, 0, 0, 0], [61, 3, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}]
+        Captured: [0, 2, 2]
+        Util scores: [None, 5390, 14821], ret: -9431
         '''
 
-    assert:
-    '11. (9, 7) 12. (10, 8) 13. (6, 9) 14. (6, 10) 15. (8, 7) '
-    Lines: [None, [78, 9, 1, 1, 0], [36, 2, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(6, 10): 0, (6, 5): 1}, {}] Captured: [0, 4, 4]
-    should be >
-    '11. (7, 4) 12. (9, 7) 13. (7, 9) 14. (6, 9) 15. (10, 9) '
-    Lines: [None, [51, 8, 0, 0, 0], [23, 8, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 2], Best: [{}, {}, {}] Captured: [0, 0, 0]
+        self.set_captured(2, 2)
+        self.set_takes(0, 0)
+        self.set_threats(2, 0)
+        self.set_black_lines([49, 4, 0, 0, 0])
+        self.set_white_lines([48, 5, 1, 0, 0])
+        u2= self.s.utility()
+        '''
+        Lines: [None, [49, 4, 0, 0, 0], [48, 5, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 0], Best: [{}, {}, {}]
+        Captured: [0, 2, 2]
+        Util scores: [None, 5690, 15048], ret: -9358
+        '''
 
+        self.assertGreater(u1, u2)
+        '''
+OLD
+        9,7
+        Lines: [None, [34, 5, 1, 0, 0], [49, 6, 0, 0, 0]], Takes: [0, 0, 1], Threats: [0, 0, 0], Best: [{}, {(11, 9): 0}, {}]
+        (no captures)
+
+        Should be > 
+
+        8,4
+        Lines: [None, [49, 4, 0, 0, 0], [48, 5, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 0], Best: [{}, {}, {}]
+        Captures: [0, 2, 2]
+
+NEW
+(-9431, ((9, 7), ))
+Lines: [None, [59, 4, 0, 0, 0], [61, 3, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(11, 9): 0}, {}]
+Captured: [0, 2, 2]
+
+(-9358, ((8, 4), ))
+Lines: [None, [49, 4, 0, 0, 0], [48, 5, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 0], Best: [{}, {}, {}]
+Captured: [0, 2, 2]
         '''
 
 if __name__ == "__main__":
