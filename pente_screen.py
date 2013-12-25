@@ -138,6 +138,7 @@ class PenteScreen(Screen):
         self.display_names()
         self.setup_grid()
         self.game_filename = None
+        self.update_captures_and_winner()
         self.game.prompt_for_action(self)
 
     def perform(self, dt):
@@ -309,9 +310,11 @@ class PenteScreen(Screen):
 
     def go_forwards_one(self):
         self.game.go_forwards_one()
+        self.update_captures_and_winner()
 
     def go_backwards_one(self):
         self.game.go_backwards_one()
+        self.update_captures_and_winner()
 
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
