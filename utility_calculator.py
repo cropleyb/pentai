@@ -6,12 +6,12 @@ import pdb
 
 class UtilityCalculator():
     def __init__(self):
-        self.captured_score_base = 120 ** 3
+        self.capture_score_base = 120 ** 3
         self.take_score_base = 2000
         self.threat_score_base = 20
-        self.captures_scale = [0, 2.0, 4.6, 10.0, 22.0, 46.0]
+        self.captures_scale = [0, 1, 1, 1, 1, 1]
         self.length_factor = 120
-        self.move_factor = 100
+        self.move_factor = 300
 
     def set_rules(self, rules):
         self.rules = rules
@@ -19,7 +19,7 @@ class UtilityCalculator():
     """ Captures become increasingly important as we approach 5 """
     def captured_contrib(self, captures):
         # TODO: Use rules?
-        contrib = captures * self.captured_score_base * \
+        contrib = captures * self.capture_score_base * \
                 self.captures_scale[captures/2]
         # Unless we're playing keryo, captures_scale only needs to operate
         # on pairs
@@ -50,6 +50,7 @@ class UtilityCalculator():
         turn_colour = state.to_move_colour()
         search_colour = state.search_player_colour()
         other_colour = opposite_colour(turn_colour)
+        #pdb.set_trace()
 
         # Check for immediate wins first, then forceable wins
         for win_eval_func in (self.zero_turn_win, self.one_turn_win):

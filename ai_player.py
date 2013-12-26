@@ -24,9 +24,9 @@ class AIPlayer(Player):
         self.max_depth = max_depth
     
     def set_max_moves_per_depth_level(self, mmpdl, narrowing):
-        if narrowing:
+        if narrowing != 0:
             def mmpdl_func(depth):
-                return mmpdl - depth
+                return mmpdl - round(narrowing * depth)
         else:
             def mmpdl_func(depth):
                 return mmpdl
@@ -70,10 +70,12 @@ class AIPlayer(Player):
         if ab_game.current_state.get_move_number() < 10:
             md = min(md, 4)
         '''
+        '''
         # TODO: Move these to ABState.__repr__
         print "%s. " % ab_game.current_state.get_move_number(),
         print "Captures: %s " % ab_game.current_state.state.get_all_captured(),
         print ab_game.current_state.utility_stats,
+        '''
         move, value = alpha_beta.alphabeta_search(ab_game.current_state,
                 ab_game, max_depth=md)
         action = move[0]
@@ -85,7 +87,7 @@ class AIPlayer(Player):
             our_colour = ab_game.current_state.to_move_colour()
             action = pf.get_iter(our_colour).next()
 
-        print " => %s" % (action,)
+        #print " => %s" % (action,)
         return action
 
     def set_interrupted(self):

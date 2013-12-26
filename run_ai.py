@@ -44,27 +44,58 @@ class Genome():
     total game time
     search iterations - 0,1,2,3
     """
-    def __init__(self, longarr):
-        self.max_depth = longarr[0]
-        self.mmpdl = longarr[1]
-        self.narrowing = (longarr[2] - 2) / 2.0
+    def __init__(self):
+        self.max_depth = 6
+        self.mmpdl = 12
+        self.narrowing = 1
+
+        self.capture_score_base = 120 ** 3
+        self.take_score_base = 2000
+        self.threat_score_base = 20
+        self.captures_scale = [0, 1, 1, 1, 1, 1]
+        self.length_factor = 120
+        self.move_factor = 300
+
+    def set_config(self, player):
+        uc = player.get_utility_calculator()
+        uc.capture_score_base = self.capture_score_base
+        uc.take_score_base = self.take_score_base
+        uc.threat_score_base = self.threat_score_base
+        uc.captures_scale = self.captures_scale
+        uc.length_factor = self.length_factor
+        uc.move_factor = self.move_factor
+        # TODO: pf = player.get_priority_filter()
+
+class MatchResults():
+    def __init__(self):
+        self.results = []
+
+    def __repr__(self):
+        return "\n".join(self.results)
+
+    def add(self, result):
+        self.results.append(result)
 
 class Match():
+    def __init__(self):
+        self.genome1 = Genome()
+        self.genome2 = Genome()
+
     def create_player(self, name, genome):
         p = AIPlayer(name=name, mmpdl=genome.mmpdl, narrowing=genome.narrowing)
         p.set_max_depth(genome.max_depth)
         p.set_max_moves_per_depth_level(genome.mmpdl, genome.narrowing)
+        genome.set_config(p)
         return p
 
     def set_up(self):
-        genome1 = Genome([6, 9, 0])
-        genome2 = Genome([6, 9, 0])
-        self.p1 = self.create_player("Black", genome1)
-        self.p2 = self.create_player("White", genome2)
-        r = rules.Rules(13, "standard")
-        self.game = game.Game(r, self.p1, self.p2)
+        self.p1 = self.create_player("Defender", self.genome1)
+        self.p2 = self.create_player("Contender", self.genome2)
 
-    def play_one_game(self):
+    def play_one_game(self, p1, p2):
+        r = rules.Rules(13, "standard")
+        self.game = game.Game(r, p1, p2)
+
         tt = TwoTimer()
 
         while not self.game.finished():
@@ -72,11 +103,40 @@ class Match():
             with tt:
                 m = p.do_the_search()
                 self.game.make_move(m)
-        print "Game was won by: %s" % self.game.winner_name()
+        #pdb.set_trace()
+        winner = self.game.winner_name()
+
+        print "Game was won by: %s" % winner
         print tt
+
+        return "%s vs. %s: %s (%s) %s" % (p1.name, p2.name, winner, p1.max_depth, tt)
+
+    def play_some_games(self):
+        #pdb.set_trace()
+        #self.genome2.move_factor = 400
+        #self.genome2.length_factor = 10
+        #self.genome2.take_score_base = 500
+        #self.genome2.narrowing = 2
+        #self.genome2.max_depth += 1
+        #self.genome1.max_depth += 1
+        #self.genome2.mmpdl = 16
+        #self.genome2.captures_scale = [0, 1, 1, 2, 2, 2]
+
+        results = MatchResults()
+        for game_length in range(1, 8):
+            for first_player in [0, 1]:
+                self.set_up()
+                self.p1.set_max_depth(game_length)
+                self.p2.set_max_depth(game_length)
+                players = [self.p1, self.p2]
+                second_player = 1 - first_player
+                res = self.play_one_game(players[first_player],
+                                         players[second_player])
+                results.add(res)
+
+        print results
 
 
 if __name__ == "__main__":
     m = Match()
-    m.set_up()
-    m.play_one_game()
+    m.play_some_games()
