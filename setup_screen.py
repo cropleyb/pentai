@@ -13,6 +13,8 @@ import human_player
 import ai_player
 from defines import *
 
+import pdb
+
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
         p = ai_player.AIPlayer(name=player_name, mmpdl=9, narrowing=0)
@@ -138,6 +140,18 @@ class SetupScreen(Screen):
         player1 = create_player(self.black_type_widget, self.black_name, max_depth)
         player2 = create_player(self.white_type_widget, self.white_name, max_depth)
 
+        '''
+        # HACK TIME
+        if self.app.game != None:
+            pdb.set_trace()
+            g = self.app.game
+            g.player1 = player1
+            g.player2 = player2
+            g.max_depth = max_depth
+        else:
+            g = game.Game(r, player1, player2)
+        return g
+        '''
         g = game.Game(r, player1, player2)
         return g
 

@@ -70,25 +70,41 @@ class PenteApp(App):
         except ScreenManagerException:
             pass
 
-    def cancel_game_file(self):
+    def cancel_game_file_cb(self):
         self.game_filename = ""
         self.root.current = "Setup"
 
-    def load_game_file(self, path, filenames):
+    def load_game_file_cb(self, path, filenames):
         f_n = filenames
         try:
             full_path = os.path.join(path, filenames[0])
-            self.game_filename = full_path
         except IndexError:
             return
+        self.load_game_file(full_path)
+    
+    def load_game_file(self, full_path=None):
+        if full_path != None:
+            self.game_filename = full_path
+        if self.game_filename == "":
+            self.game_filename = self.game.autosave_filename
+        if self.game_filename:
+            # TODO: Check file parsed etc.
+            self.setup_screen.set_GUI_from_file(self.game_filename)
+        # TODO production app should start game here.
+        self.root.current = "Setup"
 
-        # TODO: Check file parsed etc.
-        self.setup_screen.set_GUI_from_file(full_path)
-        self.root.current = "Setup" # TODO production app should start game.
+    def start_game(self, game, startup_size):
+        # TODO: Move this?
+        root = self.root
+        try:
+            old_game_screen = root.get_screen("Game")
+            if old_game_screen != None:
+                root.remove_widget(old_game_screen)
+        except ScreenManagerException:
+            pass
 
-    def start_game(self, game, startup_size, filename=""):
         pente_screen = PenteScreen(startup_size, name='Game', filename=self.game_filename)
-        self.root.add_widget(pente_screen)
+        root.add_widget(pente_screen)
         self.game = game
 
         # TODO: Move stuff into PenteScreen __init__?
@@ -132,12 +148,9 @@ class PenteApp(App):
                     MyConfirmPopup.create_and_open(message=msg_str,
                         action=self.show_load,
                         size_hint=(.6, .2))
-        '''
-        # TODO
         elif key == 115:
             # 's' for settings
-            self.root.current = "Setup"
-        '''
+            self.load_game_file()
         return False
 
     def build(self):

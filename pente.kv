@@ -33,10 +33,10 @@
         height: 30
         Button:
             text: "New Game"
-            on_release: root.app.cancel_game_file()
+            on_release: root.app.cancel_game_file_cb()
         Button:
             text: "Load"
-            on_release: root.app.load_game_file(filechooser.path, filechooser.selection)
+            on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)
 
 
 <MenuScreen>:
