@@ -32,6 +32,8 @@ class UtilityStats():
         self.lines = [None, [0] * 5, [0] * 5]
         self.takes = [0, 0, 0]
         self.threats = [0, 0, 0]
+        if self.search_filter != None:
+            self.search_filter.reset()
 
     def __repr__(self):
         return "Lines: %s, Takes: %s, Threats: %s, Best: %s" % \

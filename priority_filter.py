@@ -9,12 +9,16 @@ class PriorityFilter():
     def __init__(self, orig=None, min_priority=0):
 
         self.max_moves_func = max_moves_sample_func
-
-        self.candidates_by_priority_and_colour = []
-        cbpc = self.candidates_by_priority_and_colour
         if orig != None:
             self.max_moves_func = orig.max_moves_func
+
+        self.reset(orig, min_priority)
+
+    def reset(self, orig=None, min_priority=0):
+        if orig != None:
             ocbpc = orig.candidates_by_priority_and_colour
+        self.candidates_by_priority_and_colour = []
+        cbpc = self.candidates_by_priority_and_colour
 
         for priority in range(6):
             l = []
