@@ -74,7 +74,7 @@ class SetupScreen(Screen):
     board_size_widget = ObjectProperty(None)
     max_depth_widget = ObjectProperty(None)
 
-    def __init__(self, filename=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
 
         top_gl = GridLayout(cols=1)
@@ -121,11 +121,15 @@ class SetupScreen(Screen):
                 values=('1', '2', '3', '4', '5', '6', '7', '8'))
         top_gl.add_widget(self.max_depth_widget)
 
-        b = Button(size_hint=(.1, .1), text='Start Game', on_press=self.start_game)
-        top_gl.add_widget(b)
+        self.start_button = Button(size_hint=(.1, .1), on_press=self.start_game)
 
-        if filename != None:
+        top_gl.add_widget(self.start_button)
+
+    def load_file(self, filename):
+        if filename:
             self.set_GUI_from_file(filename)
+        else:
+            self.start_button.text = "Start Game"
 
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
@@ -165,6 +169,7 @@ class SetupScreen(Screen):
         f = open(filename)
         g = game.Game(None, None, None) # Hmmm. TODO
         g.configure_from_str(f.read())
+        self.start_button.text = "Resume"
         self.black_name_widget.text = g.get_player_name(BLACK)
         self.white_name_widget.text = g.get_player_name(WHITE)
         self.board_size_widget.set_active(g.rules.size)

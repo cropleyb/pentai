@@ -33,7 +33,7 @@
         height: 30
         Button:
             text: "New Game"
-            on_release: root.app.cancel_game_file_cb()
+            on_release: root.app.new_game_cb()
         Button:
             text: "Load"
             on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)

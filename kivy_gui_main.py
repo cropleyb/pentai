@@ -47,9 +47,11 @@ class MyConfirmPopup(Popup):
     def on_open(self):
         MyConfirmPopup.active = self 
 
-    def cancel_confirm(self):
+    @staticmethod
+    def cancel_confirm():
+        a = MyConfirmPopup.active
         MyConfirmPopup.active = None
-        self.dismiss()
+        a.dismiss()
 
     def ok_confirm(self):
         MyConfirmPopup.active = None
@@ -70,8 +72,9 @@ class PenteApp(App):
         except ScreenManagerException:
             pass
 
-    def cancel_game_file_cb(self):
+    def new_game_cb(self):
         self.game_filename = ""
+        self.setup_screen.load_file(None)
         self.root.current = "Setup"
 
     def load_game_file_cb(self, path, filenames):
@@ -87,9 +90,8 @@ class PenteApp(App):
             self.game_filename = full_path
         if self.game_filename == "":
             self.game_filename = self.game.autosave_filename
-        if self.game_filename:
-            # TODO: Check file parsed etc.
-            self.setup_screen.set_GUI_from_file(self.game_filename)
+        # TODO: Check file parsed etc.
+        self.setup_screen.load_file(self.game_filename)
         # TODO production app should start game here.
         self.root.current = "Setup"
 
@@ -128,26 +130,30 @@ class PenteApp(App):
         if key == 27:
             # (i.e. Escape)
             # do something to prevent close eg. Popup
-            msg_str = "Are you sure you want to quit?"
-            MyConfirmPopup.create_and_open(message=msg_str,
-                        action=self.close_confirmed,
-                        size_hint=(.6, .2))
+            
+            if MyConfirmPopup.active:
+                MyConfirmPopup.cancel_confirm()
+            else:
+                msg_str = "Are you sure you want to quit?"
+                MyConfirmPopup.create_and_open(message=msg_str,
+                            action=self.close_confirmed,
+                            size_hint=(.6, .2))
             return True
         elif key == 13:
             # Enter
             MyConfirmPopup.confirm()
         elif key == 32:
             # Space
-            if self.root.current != "Setup":
-                # Ignore spaces on setup page, could be entering names
-                if self.root.current != "Game" or self.game.finished():
-                    self.show_load()
-                else:
-                    # Game in progress, prompt
-                    msg_str = "Start New Game?"
-                    MyConfirmPopup.create_and_open(message=msg_str,
-                        action=self.show_load,
-                        size_hint=(.6, .2))
+            #if self.root.current != "Setup":
+            # Ignore spaces on setup page, could be entering names
+            if self.root.current != "Game" or self.game.finished():
+                self.show_load()
+            else:
+                # Game in progress, prompt
+                msg_str = "Quit this game?"
+                MyConfirmPopup.create_and_open(message=msg_str,
+                    action=self.show_load,
+                    size_hint=(.6, .2))
         elif key == 115:
             # 's' for settings
             self.load_game_file()
