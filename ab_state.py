@@ -68,9 +68,12 @@ class ABState():
         game = self.game()
         return game.to_move_colour()
 
-    # TODO?
     def __repr__(self):
-        return ""
+        ret = "%s. %s Captures: %s" % \
+                (self.get_move_number(),
+                 self.utility_stats,
+                 self.state.get_all_captured())
+        return ret
 
     def game(self):
         return self.state.game
