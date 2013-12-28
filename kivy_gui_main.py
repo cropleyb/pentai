@@ -144,19 +144,22 @@ class PenteApp(App):
             MyConfirmPopup.confirm()
         elif key == 32:
             # Space
-            #if self.root.current != "Setup":
-            # Ignore spaces on setup page, could be entering names
-            if self.root.current != "Game" or self.game.finished():
-                self.show_load()
-            else:
-                # Game in progress, prompt
-                msg_str = "Quit this game?"
-                MyConfirmPopup.create_and_open(message=msg_str,
-                    action=self.show_load,
-                    size_hint=(.6, .2))
-        elif key == 115:
-            # 's' for settings
-            self.load_game_file()
+            # Ignore spaces on other pages, could be entering names
+            if self.root.current == "Game":
+                if self.game.finished():
+                    self.show_load()
+                else:
+                    # Game in progress, prompt
+                    msg_str = "Quit this game?"
+                    MyConfirmPopup.create_and_open(message=msg_str,
+                        action=self.show_load,
+                        size_hint=(.6, .2))
+        else:
+            if self.root.current == "Game" and \
+                    key == 115:
+                # 's' for settings
+                # Go to settings page
+                self.load_game_file()
         return False
 
     def build(self):
