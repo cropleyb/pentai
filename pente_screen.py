@@ -259,9 +259,9 @@ class PenteScreen(Screen):
         size_y -= self.board_offset[1]
 
         # Use float() to avoid python int / int = int prob
-        GS = float(self.grid_size())
-        screen_x = ((board_pos[0] + 1) / GS) * size_x
-        screen_y = ((board_pos[1] + 1) / GS) * size_y
+        gs = float(self.grid_size())
+        screen_x = ((board_pos[0] + 1) / gs) * size_x
+        screen_y = ((board_pos[1] + 1) / gs) * size_y
         screen_y += self.board_offset[1]
         return screen_x, screen_y
 
