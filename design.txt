@@ -191,3 +191,39 @@ AB alg. looks for best move by each player; if there is a forceable win,
 all moves are considered equally futile. We want to move so that there are
 less winning choices.
 Alter AB so max node chooses moves with less losing options
+
+Where does the game filename belong?
+- game.py - needs to persist due to autosave
+- pente_screen.py - creates the autosave filename
+- pente.kv LoadScreen - calls app in kivy_gui_main
+- kivy_gui_main.py
+- setup screen
+
+Evaluate internal nodes:
+those that are "close" need more searching, those that aren't, don't
+close: divide big score by little score, abs() < 100 -> close?
+e.g. start with width 20
+for nodes that are "close", evaluate their children with width 19
+for nodes that are not "close", evaluate their children with width 10
+
+Budget searcher
+---------------
+Allocate a number of leaf nodes to be searched to the root searcher.
+This is split (evenly?) into the child nodes.
+Only some priority levels need be searched, depending on the threat priority
+Capture and line threats are treated independantly at this stage:
+Threatening 5 - only need to look at that one node, it's a win
+Threatening 5 captures - only need to look at that one node, it's a win
+Threatened 5 - block it or capture (part of it*), or we lose
+Threatening double 4 (single point) - look at that one node first,
+                                      it's probably a win
+Threatening 4 - look at that one node first, it is forcing
+Threatened double 4 (single point) - look at that one node last?**,
+                                      it's probably a loss
+Threatened 4 - look at those nodes first, we could be forced
+
+
+*Do we need to detect/precalculate which moves can capture a given point?
+**We may not need lots of search through this node except for this node
+and if we search it last we can use more nodes to do it
+
