@@ -148,9 +148,12 @@ class PenteScreen(Screen):
         try:
             self.game.make_move(action)
             self.update_captures_and_winner()
-            self.game.prompt_for_action(self)
+            Clock.schedule_once(self.prompt_for_action, 0)
         except IllegalMoveException, e:
             self.display_error(e.message)
+
+    def prompt_for_action(self, ignored):
+        self.game.prompt_for_action(self)
 
     def board_size(self):
         return self.game.size()
@@ -359,7 +362,6 @@ class PenteScreen(Screen):
 
     def on_touch_up(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            # print "IN ON_TOUCH_UP %s %s" % (touch.pos, self.board_offset)
             # Lower section of the screen
             return touch
         # If there is an active marker,
@@ -423,7 +425,6 @@ class PenteScreen(Screen):
 
     def on_touch_move(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            # print "IN ON_TOUCH_MOVE"
             return touch
         if self.marker != None:
             # Move the marker position
