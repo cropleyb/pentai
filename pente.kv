@@ -27,6 +27,7 @@
         orientation: "vertical"
         FileChooserListView:
             id: filechooser
+            on_submit: root.app.load_game_file_cb(self.path, self.selection)
             rootpath: "games"
     BoxLayout:
         size_hint_y: None
