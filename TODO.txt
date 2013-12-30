@@ -1,4 +1,10 @@
 
+q for quit
+upper/lower case keys
+Load file button - no file selected feedback
+Move Delay bug
+Taken pieces graphics
+Order human player first?
 Double click on a filename to open
 Setting page
 Add rules explanation
