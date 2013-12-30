@@ -288,14 +288,25 @@ class PenteScreen(Screen):
             self.remove_widget(widget)
             self.confirmation_in_progress = None
 
-    def show_confirmation(self, board_pos):
-        colour = self.game.to_move_colour()
-        cfs = [None, black_confirm_filename, white_confirm_filename]
-        filename = cfs[colour]
-        widget = Piece(self.game, source=filename)
-        widget.pos = self.board_to_screen(board_pos)
-        self.add_widget(widget)
-        self.confirmation_in_progress = widget, board_pos
+    def adjust_confirmation(self, board_pos):
+        if self.confirmation_in_progress:
+            widget, old_board_pos = self.confirmation_in_progress
+            if board_pos == old_board_pos:
+                # Remove the confirmation
+                self.remove_widget(widget)
+                self.confirmation_in_progress = None
+            else:
+                # Adjust the confirmation
+                widget.pos = self.board_to_screen(board_pos)
+                self.confirmation_in_progress = widget, board_pos
+        else:
+            colour = self.game.to_move_colour()
+            cfs = [None, black_confirm_filename, white_confirm_filename]
+            filename = cfs[colour]
+            widget = Piece(self.game, source=filename)
+            widget.pos = self.board_to_screen(board_pos)
+            self.add_widget(widget)
+            self.confirmation_in_progress = widget, board_pos
 
     def confirm_cb(self, dt):
         if self.confirmation_in_progress != None:
@@ -305,6 +316,7 @@ class PenteScreen(Screen):
 
     def toggle_confirm_req(self):
         self.req_confirm = not self.req_confirm
+        self.cancel_confirmation()
         confirm_strings = ["    No\nConfirm", "Confirm\n   Req"]
         self.confirm_status = confirm_strings[self.req_confirm]
 
@@ -320,6 +332,7 @@ class PenteScreen(Screen):
         if touch.pos[1] < self.board_offset[1]:
             # Hack city; should be able to do this with bind etc.
             if touch.pos[0] < self.size[0] * .25:
+                # Work out which button was pressed
                 if touch.pos[1] < self.board_offset[1] / 3.0:
                     self.go_forwards_one()
                 elif touch.pos[1] < self.board_offset[1] * 2 / 3.0:
@@ -332,35 +345,33 @@ class PenteScreen(Screen):
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
         if current_player.get_type() == "human":
-            if self.confirmation_in_progress != None:
-                self.cancel_confirmation()
-            else:
-                # Place a marker at the (snapped) cursor position.
-                if self.marker == None:
-                    try:
-                        # load the image
-                        self.marker = Piece(self.game, source=x_filename)
-                    except Exception, e:
-                        Logger.exception('Board: Unable to load <%s>' % x_filename)
-                self.marker.pos = self.snap_to_grid(touch.pos)
-                self.add_widget(self.marker)
+            # Place a marker at the (snapped) cursor position.
+            if self.marker == None:
+                try:
+                    # load the image
+                    self.marker = Piece(self.game, source=x_filename)
+                except Exception, e:
+                    Logger.exception('Board: Unable to load <%s>' % x_filename)
+            self.marker.pos = self.snap_to_grid(touch.pos)
+            self.add_widget(self.marker)
         else:
             self.display_error("It is not your turn!")
 
     def on_touch_up(self, touch):
         if touch.pos[1] < self.board_offset[1]:
             # print "IN ON_TOUCH_UP %s %s" % (touch.pos, self.board_offset)
+            # Lower section of the screen
             return touch
         # If there is an active marker,
         # replace the marker with a piece of the appropriate colour
         if self.marker != None:
             self.remove_widget(self.marker)
-            self.marker = None
+            #self.marker = None
 
             board_pos = self.screen_to_board(touch.pos)
 
             if self.req_confirm:
-                self.show_confirmation(board_pos)
+                self.adjust_confirmation(board_pos)
             else:
                 # Queue the move
                 self.enqueue_action(board_pos)
@@ -420,7 +431,7 @@ class PenteScreen(Screen):
                 self.marker.pos = self.snap_to_grid(touch.pos)
             except IllegalMoveException:
                 self.remove_widget(self.marker)
-                self.marker = None
+                # self.marker = None
 
     def on_size(self,*args,**kwargs):
         self.setup_grid()
