@@ -12,6 +12,7 @@ class UtilityCalculator():
         self.captures_scale = [0, 1, 1, 1, 1, 1]
         self.length_factor = 120
         self.move_factor = 300
+        self.sub = True
 
     def set_rules(self, rules):
         self.rules = rules
@@ -76,10 +77,16 @@ class UtilityCalculator():
         #util_scores[turn_colour] *= 100 
         util_scores[turn_colour] *= self.move_factor
 
-        if search_colour == turn_colour:
-            ret = util_scores[turn_colour] - util_scores[other_colour]
+        if self.sub:
+            if search_colour == turn_colour:
+                ret = util_scores[turn_colour] - util_scores[other_colour]
+            else:
+                ret = util_scores[other_colour] - util_scores[turn_colour]
         else:
-            ret = util_scores[other_colour] - util_scores[turn_colour]
+            if search_colour == turn_colour:
+                ret = float(util_scores[turn_colour]) / util_scores[other_colour]
+            else:
+                ret = float(util_scores[other_colour]) / util_scores[turn_colour]
         '''
         #if ret == 147571: # 9,7 descendant
         #if ret == 314642.0: # 8,4 descendant
