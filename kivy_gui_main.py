@@ -124,11 +124,11 @@ class PenteApp(App):
         # TODO Send to the current screen?
         self.stop()
 
-    def hook_keyboard(self, window, key, *largs):               
+    def hook_keyboard(self, window, key, *ignored_args):               
         # This keyboard control is just for my convenience, not on app.
         print "KEY PRESSED: %s" % key
-        if key == 27:
-            # (i.e. Escape)
+        if key in (27, 113):
+            # (i.e. Escape or q)
             # do something to prevent close eg. Popup
             
             if MyConfirmPopup.active:
