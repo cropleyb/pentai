@@ -34,7 +34,7 @@ class PenteScreen(Screen):
     player_name = ListProperty([None, "Black", "White"])
     player_time = ListProperty([None, "0:00", "0:00"])
     player_status = ListProperty([None, "*", ""])
-    player_captures = ListProperty([None, "0", "0"])
+    captured_widgets = ListProperty([None, [], []])
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
     border_colour = ListProperty([20,0,0,1])
@@ -117,11 +117,7 @@ class PenteScreen(Screen):
             self.player_name[colour] = self.game.get_player_name(colour)
 
     def display_error(self, message):
-        # TODO: Enter to close
-        popup = Popup(title='Error', content=Label(text=message, font_size='20sp'), \
-                size_hint=(.8, .2))
-        popup.open()
-        print message
+        self.app.display_error(message)
 
     def request_move(self, name):
         # TODO: Remove need for this - compat with Text GUI
@@ -176,10 +172,38 @@ class PenteScreen(Screen):
             print("Sound is %.3f seconds" % self.sound.length)
         self.sound.play()
 
+    def update_captures(self, colour, captured):
+        """ Update the display of captured stones below the board """
+        cw = self.captured_widgets[colour]
+
+        if len(cw) != captured:
+            while len(cw) > 0:
+                w = cw.pop()
+                self.remove_widget(w)
+            # We capture pieces of the opposite colour
+            filename = ["", black_filename, white_filename] \
+                    [opposite_colour(colour)]
+            size_x, size_y = self.size
+            base_x = .9 * size_x
+            base_y = self.board_offset[1] * .45 * (2.2-colour)
+
+            for i in range(captured / 2):
+                for j in range(2):
+                    try:
+                        # load and place the appropriate stone image
+                        new_piece = Piece(19, source=filename)
+                        x = base_x + j * 7
+                        y = base_y + i * 20
+                        new_piece.pos = x,y
+                        cw.append(new_piece)
+                        self.add_widget(new_piece)
+                    except Exception, e:
+                        print e
+
     def update_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
         for colour in (BLACK, WHITE):
-            self.player_captures[colour] = str(self.game.get_captured(colour))
+            self.update_captures(colour, self.game.get_captured(colour))
 
         if self.game.finished():
             winner = self.game.winner()
@@ -275,7 +299,7 @@ class PenteScreen(Screen):
         mm = self.moved_marker[colour]
         if mm == None:
             try:
-                mm = Piece(self.game, source=filename)
+                mm = Piece(self.game.size(), source=filename)
                 self.moved_marker[colour] = mm
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
@@ -306,7 +330,7 @@ class PenteScreen(Screen):
             colour = self.game.to_move_colour()
             cfs = [None, black_confirm_filename, white_confirm_filename]
             filename = cfs[colour]
-            widget = Piece(self.game, source=filename)
+            widget = Piece(self.game.size(), source=filename)
             widget.pos = self.board_to_screen(board_pos)
             self.add_widget(widget)
             self.confirmation_in_progress = widget, board_pos
@@ -352,7 +376,8 @@ class PenteScreen(Screen):
             if self.marker == None:
                 try:
                     # load the image
-                    self.marker = Piece(self.game, source=x_filename)
+                    self.marker = Piece(self.game.size(), \
+                            source=x_filename)
                 except Exception, e:
                     Logger.exception('Board: Unable to load <%s>' % x_filename)
             self.marker.pos = self.snap_to_grid(touch.pos)
@@ -391,7 +416,7 @@ class PenteScreen(Screen):
 
         try:
             # load and place the appropriate stone image
-            new_piece = Piece(self.game, source=filename)
+            new_piece = Piece(self.game.size(), source=filename)
             new_piece.pos = self.board_to_screen(board_pos)
             self.ghosts.append(new_piece)
             self.add_widget(new_piece)
@@ -414,7 +439,7 @@ class PenteScreen(Screen):
 
             try:
                 # load and place the appropriate stone image
-                new_piece = Piece(self.game, source=filename)
+                new_piece = Piece(self.game.size(), source=filename)
                 self.stones_by_board_pos[board_pos] = new_piece, colour
                 new_piece.pos = self.board_to_screen(board_pos)
                 self.add_widget(new_piece)
@@ -443,8 +468,7 @@ class PenteScreen(Screen):
 class Piece(Scatter):
     source = StringProperty(None)
 
-    def __init__(self, game, *args, **kwargs):
-        game_size = game.size()
-        self.scale = 7. / game_size
+    def __init__(self, board_size, *args, **kwargs):
+        self.scale = 7. / board_size
         super(Piece, self).__init__(*args, **kwargs)
 

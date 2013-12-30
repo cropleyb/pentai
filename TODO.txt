@@ -1,8 +1,7 @@
 
+Click on another piece -> error popup (already occupied); click on board,
+ dismisses by plays on the board?! -> kivy bug report http://git.io/orqsSw
 Load Player Type from file (Computer/Human)
-Load file button - no file selected feedback
-Move Delay bug
-Taken pieces graphics
 Order human player first?
 Double click on a filename to open
 Setting page
