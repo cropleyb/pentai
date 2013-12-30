@@ -1,6 +1,5 @@
 
-q for quit
-upper/lower case keys
+Load Player Type from file (Computer/Human)
 Load file button - no file selected feedback
 Move Delay bug
 Taken pieces graphics
