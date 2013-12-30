@@ -2,7 +2,6 @@
 COUNT_LENGTH=5
 
 from defines import *
-#from utility_stats import *
 
 """
 Detect and report indices that build on or interfere with a 
