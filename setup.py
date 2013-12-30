@@ -7,14 +7,14 @@ from distutils.core import setup
 from Cython.Build import cythonize
 
 setup(
-        name = "My hello app",
-        ext_modules = cythonize(
+        name = "Pentacular",
+        ext_modules = cythonize([
             'board_strip.pyx',
-        )
-    )
-'''
-# TODO Something broken in distutils? Doesn't like multiple files
-            'take_counter.py',
+            'length_lookup_table.py',
             'priority_filter.py',
-            'threat_counter.py'
-'''
+            'utility_calculator.py',
+            'utility_stats.py',
+            'direction_strips.py',
+            'alpha_beta.py',
+        ])
+    )
