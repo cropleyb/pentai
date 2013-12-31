@@ -23,6 +23,8 @@ black_ghost_filename = "./media/black_ghost.png"
 white_ghost_filename = "./media/white_ghost.png"
 black_confirm_filename = "./media/b_confirm.png"
 white_confirm_filename = "./media/w_confirm.png"
+win_filename = "./media/winning_flag.png"
+turn_filename = "./media/turn_marker.png"
 x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
@@ -33,7 +35,6 @@ class PenteScreen(Screen):
     # TODO: Get the times hooked up
     player_name = ListProperty([None, "Black", "White"])
     player_time = ListProperty([None, "0:00", "0:00"])
-    player_status = ListProperty([None, "*", ""])
     captured_widgets = ListProperty([None, [], []])
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
@@ -53,6 +54,9 @@ class PenteScreen(Screen):
         self.confirmation_in_progress = None
         self.game = None
         self.game_filename = filename
+
+        self.turn_marker = Piece(13, source=turn_filename)
+        self.win_marker = Piece(13, source=win_filename)
 
         self.calc_board_offset(the_size)
 
@@ -185,15 +189,17 @@ class PenteScreen(Screen):
                     [opposite_colour(colour)]
             size_x, size_y = self.size
             base_x = .9 * size_x
-            base_y = self.board_offset[1] * .45 * (2.2-colour)
+            base_y = self.board_offset[1] * .5 * (2.2-colour)
+            centre = [2, 1, 3, 0, 4]
 
             for i in range(captured / 2):
+                i_centred = centre[i]
                 for j in range(2):
                     try:
                         # load and place the appropriate stone image
                         new_piece = Piece(19, source=filename)
                         x = base_x + j * 7
-                        y = base_y + i * 20
+                        y = base_y + i_centred * 20
                         new_piece.pos = x,y
                         cw.append(new_piece)
                         self.add_widget(new_piece)
@@ -202,20 +208,28 @@ class PenteScreen(Screen):
 
     def update_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
+        # TODO: Only call this when the game is up to date
         for colour in (BLACK, WHITE):
             self.update_captures(colour, self.game.get_captured(colour))
 
         if self.game.finished():
-            winner = self.game.winner()
-            other = opposite_colour(winner)
-            self.player_status[winner] = "win:"
-            # TODO draws are exceedingly unlikely...
+            marker = self.win_marker
+            other_marker = self.turn_marker
+            colour = self.game.winner()
         else:
-            # Mark who is to move. TODO: Underline?
-            to_move = self.game.to_move_colour()
-            other = opposite_colour(to_move)
-            self.player_status[to_move] = "*"
-        self.player_status[other] = ""
+            marker = self.turn_marker
+            other_marker = self.win_marker
+            colour = self.game.to_move_colour()
+
+        if marker.parent == None:
+            self.add_widget(marker)
+        if other_marker.parent != None:
+            self.remove_widget(other_marker)
+
+        size_x, size_y = self.size
+        base_y = self.board_offset[1] * .5 * (2.5-colour)
+
+        marker.pos = size_x/2, base_y
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
@@ -464,6 +478,16 @@ class PenteScreen(Screen):
 
     def get_gridlines(self):
         return []
+
+'''
+class Image(Scatter):
+    source = StringProperty(None)
+
+    def __init__(self, *args, **kwargs):
+        #self.scale = 7. / board_size
+        super(Piece, self).__init__(*args, **kwargs)
+'''
+
 
 class Piece(Scatter):
     source = StringProperty(None)

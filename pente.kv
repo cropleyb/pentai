@@ -5,7 +5,7 @@
 <MyCheckBoxList>:
     cols: 2
 
-<MyConfirmPopup>:
+<ConfirmPopup>:
     content:
     GridLayout:
         rows: 2
@@ -15,7 +15,7 @@
             cols: 2
             Button:
                 text: "Cancel"
-                on_release: root.cancel_confirm()
+                on_release: root.clear()
             Button:
                 text: "OK"
                 on_release: root.ok_confirm()
@@ -219,21 +219,17 @@
                     # TODO: BLACK/WHITE
                     text: root.player_time[1]
                 MyLabel:
-                    text: root.player_status[1]
                 MyLabel:
                     text: root.player_name[1]
                 MyLabel:
-                    text: root.player_captures[1]
     
                 MyLabel:
                     # TODO: times
                     text: root.player_time[2]
                 MyLabel:
-                    text: root.player_status[2]
                 MyLabel:
                     text: root.player_name[2]
                 MyLabel:
-                    text: root.player_captures[2]
 
 <Piece>:
     Image:
