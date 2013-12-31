@@ -19,47 +19,70 @@ class LoadScreen(Screen):
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
 
-class MyConfirmPopup(Popup):
-    confirm_prompt = StringProperty("")
-
-    # There should only be one active popup at a time.
+class BasePopup(Popup):
+    """ There should only be one active popup at a time. """
     active = None
+    auto_dismiss = False
+
+    @staticmethod
+    def confirm():
+        if BasePopup.active != None:
+            BasePopup.active.ok_confirm()
+
+    def ok_confirm(self):
+        BasePopup.active = None
+        self.dismiss()
+
+    @staticmethod
+    def clear():
+        a = BasePopup.active
+        BasePopup.active = None
+        a.dismiss()
+
+    def on_open(self):
+        BasePopup.active = self 
+
+class MessagePopup(BasePopup):
+    """ Message Popup is for errors so far. Click on them to dismiss. """
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.dismiss()
+            BasePopup.active = None
+            return True
+        return super(MessagePopup, self).on_touch_down(touch)
+
+class ConfirmPopup(BasePopup):
+    """ ConfirmPopup is for True/False confirmation popup with a message """
+    confirm_prompt = StringProperty("")
 
     def __init__(self, message, action, *args, **kwargs):
         self.title = "Confirm"
         self.confirm_prompt = message
         self.action = action
-        super(MyConfirmPopup, self).__init__(*args, **kwargs)
+        super(ConfirmPopup, self).__init__(*args, **kwargs)
 
     @staticmethod
     def create_and_open(message, action, *args, **kwargs):
-        if MyConfirmPopup.active == None:
+        if BasePopup.active == None:
             # TODO: Do we dismiss any existing popup?
-            MyConfirmPopup.active = \
-                MyConfirmPopup(*args, message=message, action=action, **kwargs)
-            MyConfirmPopup.active.open()
-
-    @staticmethod
-    def confirm():
-        if MyConfirmPopup.active != None:
-            MyConfirmPopup.active.ok_confirm()
-
-    def on_open(self):
-        MyConfirmPopup.active = self 
-
-    @staticmethod
-    def cancel_confirm():
-        a = MyConfirmPopup.active
-        MyConfirmPopup.active = None
-        a.dismiss()
+            BasePopup.active = \
+                ConfirmPopup(*args, message=message,
+                        action=action, **kwargs)
+            BasePopup.active.open()
 
     def ok_confirm(self):
-        MyConfirmPopup.active = None
-        self.dismiss()
+        super(ConfirmPopup, self).ok_confirm()
         self.action()
 
 class PenteApp(App):
     game_filename = StringProperty("")
+
+    def display_error(self, message):
+        self.popup = MessagePopup(title='Error', content=Label(text=message, font_size='20sp'), \
+                size_hint=(.8, .2))
+        self.popup.open()
+        print message
 
     def show_load(self, ignored=None):
         self.root.current = "Load"
@@ -82,6 +105,7 @@ class PenteApp(App):
         try:
             full_path = os.path.join(path, filenames[0])
         except IndexError:
+            self.display_error("Please select a game first")
             return
         self.load_game_file(full_path)
     
@@ -106,6 +130,7 @@ class PenteApp(App):
             pass
 
         pente_screen = PenteScreen(startup_size, name='Game', filename=self.game_filename)
+        pente_screen.app = self
         root.add_widget(pente_screen)
         self.game = game
 
@@ -128,20 +153,21 @@ class PenteApp(App):
         # This keyboard control is just for my convenience, not on app.
         print "KEY PRESSED: %s" % key
         if key in (27, 113):
-            # (i.e. Escape or q)
+            # (i.e. Escape or 'q')
             # do something to prevent close eg. Popup
             
-            if MyConfirmPopup.active:
-                MyConfirmPopup.cancel_confirm()
+            if BasePopup.active:
+                BasePopup.clear()
             else:
                 msg_str = "Are you sure you want to quit?"
-                MyConfirmPopup.create_and_open(message=msg_str,
+                ConfirmPopup.create_and_open(message=msg_str,
                             action=self.close_confirmed,
                             size_hint=(.6, .2))
             return True
         elif key == 13:
             # Enter
-            MyConfirmPopup.confirm()
+            ConfirmPopup.confirm()
+            return True
         elif key == 32:
             # Space
             # Ignore spaces on other pages, could be entering names
@@ -151,15 +177,17 @@ class PenteApp(App):
                 else:
                     # Game in progress, prompt
                     msg_str = "Quit this game?"
-                    MyConfirmPopup.create_and_open(message=msg_str,
+                    ConfirmPopup.create_and_open(message=msg_str,
                         action=self.show_load,
                         size_hint=(.6, .2))
+                return True
         else:
             if self.root.current == "Game" and \
                     key == 115:
                 # 's' for settings
                 # Go to settings page
                 self.load_game_file()
+                return True
         return False
 
     def build(self):
