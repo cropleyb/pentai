@@ -1,10 +1,10 @@
 
-Click on another piece -> error popup (already occupied); click on board,
- dismisses by plays on the board?! -> kivy bug report http://git.io/orqsSw
+Budget Filter stage 1 - less bredth for forced nodes
+Budget Filter stage 2 - pass budget down
+Budget Filter stage 3 - BF utility tuning
 Load Player Type from file (Computer/Human)
 Order human player first?
-Double click on a filename to open
-Setting page
+Options page
 Add rules explanation
 switch players mid-game?
 GP interface
@@ -13,7 +13,6 @@ Narrower search per depth level
 Confirm exit, add save prompt
 Options Page - sep. page
 VCR control graphics
-Utility tuning
 Cython
 Set names according to computer level?
 AI levels + scrollbar? Computer player names? Probablistic blindness?
