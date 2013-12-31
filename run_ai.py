@@ -51,10 +51,11 @@ class Genome():
 
         self.capture_score_base = 120 ** 3
         self.take_score_base = 2000
-        self.threat_score_base = 20
+        self.threat_score_base = 40
         self.captures_scale = [0, 1, 1, 1, 1, 1]
         self.length_factor = 120
         self.move_factor = 300
+        self.sub = True
 
     def set_config(self, player):
         uc = player.get_utility_calculator()
@@ -116,14 +117,17 @@ class Match():
         #self.genome2.move_factor = 400
         #self.genome2.length_factor = 10
         #self.genome2.take_score_base = 500
+        #self.genome2.threat_score_base = 60
         #self.genome2.narrowing = 2
-        #self.genome2.max_depth += 1
+        self.genome2.max_depth += 2
         #self.genome1.max_depth += 1
         #self.genome2.mmpdl = 16
-        #self.genome2.captures_scale = [0, 1, 1, 2, 2, 2]
+        #self.genome2.captures_scale = [0, 1, 1, 2, 3, 4]
+        #self.genome2.move_factor = 30
+        #self.genome2.sub = False
 
         results = MatchResults()
-        for game_length in range(1, 8):
+        for game_length in range(1, 5):
             for first_player in [0, 1]:
                 self.set_up()
                 self.p1.set_max_depth(game_length)
