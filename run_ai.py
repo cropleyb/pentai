@@ -8,6 +8,7 @@ import game
 import time
 
 from ai_player import *
+from priority_filter import *
 
 import pdb
 
@@ -65,6 +66,8 @@ class Genome():
         uc.captures_scale = self.captures_scale
         uc.length_factor = self.length_factor
         uc.move_factor = self.move_factor
+
+        player.set_max_depth(self.max_depth)
         # TODO: pf = player.get_priority_filter()
 
 class MatchResults():
@@ -83,10 +86,11 @@ class Match():
         self.genome2 = Genome()
 
     def create_player(self, name, genome):
-        p = AIPlayer(name=name, mmpdl=genome.mmpdl, narrowing=genome.narrowing)
-        p.set_max_depth(genome.max_depth)
-        p.set_max_moves_per_depth_level(genome.mmpdl, genome.narrowing)
+        sf = PriorityFilter()
+        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
+        p = AIPlayer(sf, name=name)
         genome.set_config(p)
+
         return p
 
     def set_up(self):

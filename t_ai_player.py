@@ -8,14 +8,20 @@ import rules
 import game
 
 from ai_player import *
+from priority_filter import *
 
 import pdb
 
 class AIPlayerTest(unittest.TestCase):
 
+    def create_player(self, name, mmpdl, narrowing):
+        sf = PriorityFilter()
+        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
+        return AIPlayer(sf, name=name)
+
     def setUp(self):
-        self.p1 = AIPlayer(name="Deep thunk", mmpdl=9, narrowing=0)
-        self.p2 = AIPlayer(name="Deep thunk2", mmpdl=9, narrowing=0)
+        self.p1 = self.create_player("Deep thunk", 9, 0)
+        self.p2 = self.create_player("Deep thunk2", 9, 0)
         r = rules.Rules(9, "standard")
         self.game = game.Game(r, self.p1, self.p2)
         self.p1.attach_to_game(self.game)

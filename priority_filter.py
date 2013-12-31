@@ -14,6 +14,16 @@ class PriorityFilter():
 
         self.reset(orig, min_priority)
 
+    def set_max_moves_per_depth_level(self, mmpdl, narrowing):
+        if narrowing != 0:
+            def mmpdl_func(depth):
+                return mmpdl - round(narrowing * depth)
+        else:
+            def mmpdl_func(depth):
+                return mmpdl
+
+        self.set_max_moves_func(mmpdl_func)
+
     def reset(self, orig=None, min_priority=0):
         if orig != None:
             ocbpc = orig.candidates_by_priority_and_colour

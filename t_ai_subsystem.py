@@ -8,19 +8,25 @@ import rules
 import game
 
 from ai_player import *
+from priority_filter import *
 
 import pdb
 
 class AIPlayerSubsystemTest(unittest.TestCase):
 
+    def create_player(self, name, mmpdl, narrowing):
+        sf = PriorityFilter()
+        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
+        return AIPlayer(sf, name=name)
+
     def setUp(self):
-        self.p1 = AIPlayer(name="Deep thunk", mmpdl=9, narrowing=0)
-        self.p2 = AIPlayer(name="Deep thunk2", mmpdl=9, narrowing=0)
+        self.p1 = self.create_player("Deep thunk", 9, 0)
+        self.p2 = self.create_player("Deep thunk2", 9, 0)
         r = rules.Rules(13, "standard")
         self.game = game.Game(r, self.p1, self.p2)
 
     # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_find_one_move
-    def test_find_one_move(self):
+    def atest_find_one_move(self):
         self.p2.set_max_depth(2)
         game_str = \
 """Black versus White
@@ -49,7 +55,7 @@ standard rules
         self.assertEquals(m, (6,7))
 
     # !./t_ai_player.py AIPlayerSubsystemTest.test_dont_waste_a_pair
-    def test_dont_waste_a_pair(self):
+    def atest_dont_waste_a_pair(self):
         self.p1.set_max_depth(6)
         game_str = \
 """Black versus White
@@ -70,7 +76,7 @@ standard rules
         m = self.p1.do_the_search()
         self.assertNotEquals(m, (6,5))
 
-    def test_dodgy_move(self):
+    def atest_dodgy_move(self):
         self.p2.set_max_depth(6)
         game_str = \
 """Black versus White
@@ -119,7 +125,7 @@ Now compare for black's next move:
     Lines: [None, [78, 9, 1, 1, 0], [36, 2, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(6, 10): 0, (6, 5): 1}, {}] Captured: [0, 4, 4]
 
     '''
-    def test_dodgy_move_part2(self):
+    def atest_dodgy_move_part2(self):
         #pdb.set_trace()
         self.p1.set_max_depth(5)
         game_str = \
@@ -181,6 +187,11 @@ standard rules
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
         self.assertEquals(m, (9,7))
+
+    '''
+    Show the history of each move's deciding path
+        (146879, ((9, 7), 8. Lines: [None, [29, 5, 1, 0, 0], [28, 1, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 0, 0])), (190986, ((8, 4), 8. Lines: [None, [26, 6, 3, 0, 0], [28, 1, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 0, 0]))]
+    '''
 
     '''
 7.  Captures: [0, 0, 0]  Lines: [None, [20, 5, 0, 0, 0], [31, 1, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0, 0, 2], Best: [{}, {}, {}] 
@@ -276,7 +287,7 @@ Captures: [0, 2, 2]
 
     '''
 
-    def test_freebie(self):
+    def atest_freebie(self):
         #pdb.set_trace()
         self.p1.set_max_depth(8)
         game_str = \
@@ -299,6 +310,13 @@ standard rules
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
         self.assertEquals(m, (8,7))
+
+'''
+TODO: Enable lots of logging again
+Create freebie.txt
+Run just freebie.
+(check it on screen)
+'''
 
 if __name__ == "__main__":
     unittest.main()

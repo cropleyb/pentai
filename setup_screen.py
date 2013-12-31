@@ -11,13 +11,17 @@ import rules
 import game
 import human_player
 import ai_player
+import priority_filter
+
 from defines import *
 
 import pdb
 
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
-        p = ai_player.AIPlayer(name=player_name, mmpdl=9, narrowing=0)
+        sf = priority_filter.PriorityFilter()
+        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
+        p = ai_player.AIPlayer(sf, name=player_name)
         p.set_max_depth(max_depth)
     else:
         p = human_player.HumanPlayer(player_name)

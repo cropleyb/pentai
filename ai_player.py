@@ -3,7 +3,6 @@ import alpha_beta
 from gui import *
 
 from player import *
-from priority_filter import *
 from utility_calculator import *
 
 import threading
@@ -11,27 +10,17 @@ import threading
 class AIPlayer(Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
-    def __init__(self, mmpdl, narrowing, *args, **vargs):
+    def __init__(self, search_filter, *args, **vargs):
         Player.__init__(self, *args, **vargs)
         self.max_depth = 1
 
-        self.search_filter = PriorityFilter()
-        self.set_max_moves_per_depth_level(mmpdl, narrowing)
+        self.search_filter = search_filter
 
         self.utility_calculator = UtilityCalculator()
 
     def set_max_depth(self, max_depth):
         self.max_depth = max_depth
     
-    def set_max_moves_per_depth_level(self, mmpdl, narrowing):
-        if narrowing != 0:
-            def mmpdl_func(depth):
-                return mmpdl - round(narrowing * depth)
-        else:
-            def mmpdl_func(depth):
-                return mmpdl
-        self.search_filter.set_max_moves_func(mmpdl_func)
-
     def get_utility_calculator(self):
         return self.utility_calculator
 
@@ -80,9 +69,9 @@ class AIPlayer(Player):
             # No matter what we do, there is a forceable loss.
             # Just take the first move suggested by the search filter -
             # it will look better than the AB suggestion
-            pf = ab_game.current_state.utility_stats.search_filter
+            sf = ab_game.current_state.utility_stats.search_filter
             our_colour = ab_game.current_state.to_move_colour()
-            action = pf.get_iter(our_colour).next()
+            action = sf.get_iter(our_colour).next()
 
         #print " => %s" % (action,)
         return action
