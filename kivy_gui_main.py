@@ -7,7 +7,7 @@ from kivy.base import *
 from kivy.uix.screenmanager import *
 
 from setup_screen import *
-from settings_screen import *
+from options_screen import *
 from pente_screen import *
 from menu_screen import *
 
@@ -21,36 +21,40 @@ class LoadScreen(Screen):
 
 class BasePopup(Popup):
     """ There should only be one active popup at a time. """
-    active = None
-    auto_dismiss = False
+
+    my_active = None
+
+    def __init__(self, *args, **kwargs):
+        self.auto_dismiss = False
+        super(BasePopup, self).__init__(*args, **kwargs)
 
     @staticmethod
     def confirm():
-        if BasePopup.active != None:
-            BasePopup.active.ok_confirm()
+        if BasePopup.my_active != None:
+            BasePopup.my_active.ok_confirm()
 
     def ok_confirm(self):
-        BasePopup.active = None
+        BasePopup.my_active = None
         self.dismiss()
 
     @staticmethod
     def clear():
-        a = BasePopup.active
-        BasePopup.active = None
+        a = BasePopup.my_active
+        BasePopup.my_active = None
         a.dismiss()
 
     def on_open(self):
-        BasePopup.active = self 
+        BasePopup.my_active = self 
 
 class MessagePopup(BasePopup):
     """ Message Popup is for errors so far. Click on them to dismiss. """
 
-    def on_touch_down(self, touch):
+    def on_touch_up(self, touch):
         if self.collide_point(*touch.pos):
             self.dismiss()
-            BasePopup.active = None
+            BasePopup.my_active = None
             return True
-        return super(MessagePopup, self).on_touch_down(touch)
+        return super(MessagePopup, self).on_touch_up(touch)
 
 class ConfirmPopup(BasePopup):
     """ ConfirmPopup is for True/False confirmation popup with a message """
@@ -64,12 +68,12 @@ class ConfirmPopup(BasePopup):
 
     @staticmethod
     def create_and_open(message, action, *args, **kwargs):
-        if BasePopup.active == None:
+        if BasePopup.my_active == None:
             # TODO: Do we dismiss any existing popup?
-            BasePopup.active = \
+            BasePopup.my_active = \
                 ConfirmPopup(*args, message=message,
                         action=action, **kwargs)
-            BasePopup.active.open()
+            BasePopup.my_active.open()
 
     def ok_confirm(self):
         super(ConfirmPopup, self).ok_confirm()
@@ -94,6 +98,9 @@ class PenteApp(App):
             self.root.remove_widget(game_screen)
         except ScreenManagerException:
             pass
+
+    def show_options(self):
+        self.root.current = "Options"
 
     def new_game_cb(self):
         self.game_filename = ""
@@ -156,7 +163,7 @@ class PenteApp(App):
             # (i.e. Escape or 'q')
             # do something to prevent close eg. Popup
             
-            if BasePopup.active:
+            if BasePopup.my_active:
                 BasePopup.clear()
             else:
                 msg_str = "Are you sure you want to quit?"
@@ -181,11 +188,16 @@ class PenteApp(App):
                         action=self.show_load,
                         size_hint=(.6, .2))
                 return True
+        elif key == 111:
+            if self.root.current in ("Load", "Game"):
+                # or any other screen with text input
+                self.show_options()
+                return True
         else:
             if self.root.current == "Game" and \
                     key == 115:
-                # 's' for settings
-                # Go to settings page
+                # 's' for options TODO: o
+                # Go to options page
                 self.load_game_file()
                 return True
         return False
@@ -201,7 +213,7 @@ class PenteApp(App):
 
         self.game = None
 
-        screens = [(LoadScreen, "Load"), (SettingsScreen, "Settings"), \
+        screens = [(LoadScreen, "Load"), (OptionsScreen, "Options"), \
                    (MenuScreen, "Menu"), (SetupScreen, "Setup")]
         for scr_cls, scr_name in screens:
             scr = scr_cls(name=scr_name)

@@ -69,20 +69,28 @@
         MyLabel:
             text: "TODO"
 
-<SettingsScreen>:
+#Help
+#Sound effects volume
+#Music volume
+#Start/Resume
+<OptionsScreen>:
     GridLayout:
         cols: 2
         size_hint: 1, None
-        # TODO: Players
+
+        Label:
+
+        Button:
+            text: "Help"
+            # TODO
 
         MyLabel:
-            #size_hint: .9, None
-            text: "Show last 2 moves?"
+            text: "Mark last 2 moves?"
         ToggleButton:
             font_size: '20sp'
 
         MyLabel:
-            text: "Show recent captures?"
+            text: "Mark recent captures?"
         ToggleButton:
             font_size: '20sp'
 
@@ -92,6 +100,9 @@
             font_size: '20sp'
 
         # TODO: Music and Sound Effects
+
+        Button:
+            text: "Resume"
 
 #<SetupScreen>:
 #    #cols: 1 # TEMP
@@ -201,9 +212,10 @@
             GridLayout:
                 size_hint_x: .3
                 rows: 3
-                ToggleButton:
+                Button:
                     font_size: '20sp'
-                    text: root.confirm_status
+                    text: root.options_text
+                    #on_press: root.show_options() # Why isn't this working?
                     #on_press: root.confirm() # Why isn't this working?
                 ToggleButton:
                     font_size: '20sp'
