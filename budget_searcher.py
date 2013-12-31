@@ -42,18 +42,19 @@ class BudgetSearcher():
             return [our_fours]
 
         our_captures = self.get_captured(our_colour)
-
         our_takes = self.priority_level(4, our_colour)
 
         if our_captures >= 8 and len(our_takes) > 0:
             # This will win too
             return [our_takes]
 
-        '''
-        our_captures = self.get_captured(our_colour)
+        their_captures = self.get_captured(their_colour)
+        their_takes = self.priority_level(4, their_colour)
 
-        our_takes = self.priority_level(4, our_colour)
-        '''
+        if their_captures >= 8 and len(their_takes) > 0:
+            # Block their takes, or capture one of the ends of an
+            # attacker, or lose
+            return [our_takes, their_takes]
 
         their_fours = self.priority_level(5, their_colour)
 
@@ -63,14 +64,16 @@ class BudgetSearcher():
                     # We will lose unless we capture
                     return [our_takes]
                 else:
+                    # Might as well block one of them
                     return [their_fours]
             # We will lose unless we block or capture 
             return [their_fours, our_takes]
 
-        our_threes = self.priority_level(3, our_colour)
-        our_twos = self.priority_level(1, our_colour)
-
-        return []
+        ret = []
+        for level in range(4, -1, -1):
+            for colour in [our_colour, their_colour]:
+                ret.append(self.priority_level(level, colour))
+        return ret
 
     def get_iter(self, our_colour):
         #pdb.set_trace()

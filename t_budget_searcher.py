@@ -60,7 +60,7 @@ class BudgetSearcherTest(unittest.TestCase):
         # But we need to choose one or the other
 
     def test_finish_capture_win(self):
-        pdb.set_trace()
+        #pdb.set_trace()
         self.set_captured_by(BLACK, 8)
         self.ar_take(BLACK, (1,2))
         self.arc(WHITE, 4, ((3,4),))
@@ -68,6 +68,12 @@ class BudgetSearcherTest(unittest.TestCase):
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(1,2))
 
+    def test_block_or_take_to_defend_capture_loss(self):
+        self.set_captured_by(WHITE, 8)
+        self.ar_take(BLACK, (1,2))
+        self.ar_take(WHITE, (3,4))
+        l = list(self.bs.get_iter(BLACK))
+        self.assertEquals(len(l), 2)
 '''
     def test_iterate_over_own_black_first(self):
         self.arc(WHITE, 4, ((1,5),))
