@@ -14,6 +14,11 @@ from utility_calculator import *
 
 import pdb
 
+def get_black_line_counts(ab_game_state):
+    return ab_game_state.get_utility_stats().lines[BLACK]
+def get_white_line_counts(ab_game_state):
+    return ab_game_state.get_utility_stats().lines[WHITE]
+
 class AlphaBetaBridgeTest(unittest.TestCase):
 
     def setUp(self):
@@ -178,19 +183,19 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
 
     def test_length_counters_after_sw_corner(self):
         g1 = self.s.create_state((0,0)) # B
-        self.assertEquals(g1.get_black_line_counts(), [3, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g1), [3, 0, 0, 0, 0])
 
     def test_length_counters_after_nw_corner(self):
         g1 = self.s.create_state((0,4)) # B
-        self.assertEquals(g1.get_black_line_counts(), [3, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g1), [3, 0, 0, 0, 0])
 
     def test_length_counters_after_ne_corner(self):
         g1 = self.s.create_state((4,4)) # B
-        self.assertEquals(g1.get_black_line_counts(), [3, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g1), [3, 0, 0, 0, 0])
 
     def test_length_counters_after_se_corner(self):
         g1 = self.s.create_state((4,0)) # B
-        self.assertEquals(g1.get_black_line_counts(), [3, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g1), [3, 0, 0, 0, 0])
 
     def test_cannot_place_off_e_edge(self):
         try:
@@ -202,15 +207,15 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
     def test_length_counters_after_two_moves(self):
         g1 = self.s.create_state((0,0)) # B
         g2 =     g1.create_state((1,1)) # W
-        self.assertEquals(g2.get_black_line_counts(), [2, 0, 0, 0, 0])
-        self.assertEquals(g2.get_white_line_counts(), [2, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g2), [2, 0, 0, 0, 0])
+        self.assertEquals(get_white_line_counts(g2), [2, 0, 0, 0, 0])
 
     def test_length_counters_after_two_moves_b(self):
         g1 = self.s.create_state((1,1)) # B
         g2 =     g1.create_state((2,2)) # W
-        self.assertEquals(g2.get_black_line_counts(), [2, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g2), [2, 0, 0, 0, 0])
         # One across the other diagonal
-        self.assertEquals(g2.get_white_line_counts(), [3, 0, 0, 0, 0])
+        self.assertEquals(get_white_line_counts(g2), [3, 0, 0, 0, 0])
 
     def test_length_counters_after_five_moves(self):
         # along the NE diagonal
@@ -219,8 +224,8 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         g3 =     g2.create_state((3,3)) # B
         g4 =     g3.create_state((4,4)) # W
         g5 =     g4.create_state((0,0)) # B
-        self.assertEquals(g5.get_black_line_counts(), [6, 0, 0, 0, 0])
-        self.assertEquals(g5.get_white_line_counts(), [5, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g5), [6, 0, 0, 0, 0])
+        self.assertEquals(get_white_line_counts(g5), [5, 0, 0, 0, 0])
 
     def test_length_counters_after_five_moves_in_cnrs_and_middle(self):
         # four in the corners and one in the middle
@@ -229,8 +234,8 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         g3 =     g2.create_state((4,4)) # B
         g4 =     g3.create_state((4,0)) # W
         g5 =     g4.create_state((2,2)) # B
-        self.assertEquals(g5.get_black_line_counts(), [2, 0, 1, 0, 0])
-        self.assertEquals(g5.get_white_line_counts(), [0, 0, 0, 0, 0])
+        self.assertEquals(get_black_line_counts(g5), [2, 0, 1, 0, 0])
+        self.assertEquals(get_white_line_counts(g5), [0, 0, 0, 0, 0])
 
     def test_make_a_capture(self):
         g1 = self.s.create_state((0,1)) # B
