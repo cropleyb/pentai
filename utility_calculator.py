@@ -6,11 +6,11 @@ import pdb
 
 class UtilityCalculator():
     def __init__(self):
-        self.capture_score_base = 120 ** 3
-        self.take_score_base = 2000
-        self.threat_score_base = 20
+        self.capture_score_base = 1000
+        self.take_score_base = 600
+        self.threat_score_base = 60
         self.captures_scale = [0, 1, 1, 1, 1, 1]
-        self.length_factor = 120
+        self.length_factor = 29
         self.move_factor = 300
         self.sub = True
 
@@ -74,7 +74,8 @@ class UtilityCalculator():
             util_scores[eval_colour] = util
 
         # It is a very significant advantage to have the move
-        #util_scores[turn_colour] *= 100 
+        # This doesn't seem to have any effect until we compare
+        # positions at different depth levels
         util_scores[turn_colour] *= self.move_factor
 
         if self.sub:
@@ -83,10 +84,13 @@ class UtilityCalculator():
             else:
                 ret = util_scores[other_colour] - util_scores[turn_colour]
         else:
-            if search_colour == turn_colour:
-                ret = float(util_scores[turn_colour]) / util_scores[other_colour]
-            else:
-                ret = float(util_scores[other_colour]) / util_scores[turn_colour]
+            try:
+                if search_colour == turn_colour:
+                    ret = float(util_scores[turn_colour]) / (util_scores[other_colour] or 1)
+                else:
+                    ret = float(util_scores[other_colour]) / (util_scores[turn_colour] or 1)
+            except:
+                pdb.set_trace()
         '''
         #if ret == 147571: # 9,7 descendant
         #if ret == 314642.0: # 8,4 descendant
