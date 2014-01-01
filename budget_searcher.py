@@ -4,7 +4,6 @@ import pdb
 
 class BudgetSearcher():
     def __init__(self, budget, orig=None):
-
         self.budget = budget
         self.reset(orig)
 
