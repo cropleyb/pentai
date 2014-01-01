@@ -25,7 +25,7 @@ class BudgetSearcher():
                     l.append(ocbpc[priority][colour].copy())
 
     def copy(self):
-        return PriorityFilter(orig=self)
+        return BudgetSearcher(self.budget, orig=self)
 
     def get_captured(self, colour):
         return self.captured[colour]
@@ -91,7 +91,7 @@ class BudgetSearcher():
                     if not pos in tried:
                         tried.add(pos)
                         yield pos
-                        if len(tried) >= 20:
+                        if len(tried) >= self.budget: # TEMP HACK
                             return
 
     def __repr__(self):
@@ -100,7 +100,7 @@ class BudgetSearcher():
     def adjust_slot(self, slot, pos, inc):
         slot[pos] = slot.setdefault(pos, 0) + inc
         if slot[pos] == 0:
-            slot.remove(pos)
+            del slot[pos]
 
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length == 5:

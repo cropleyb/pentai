@@ -26,6 +26,14 @@ class BudgetSearcherTest(unittest.TestCase):
         l = list(self.bs.get_iter(BLACK))
         self.assertEquals(len(l), 0)
 
+    def test_add_and_remove(self):
+        self.arc(BLACK, 4, ((3,4),))
+        self.arc(BLACK, 4, ((3,4),), -1)
+        self.arc(BLACK, 3, ((3,2),))
+        l = list(self.bs.get_iter(BLACK))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(3,2))
+
     def test_iterate_over_our_four(self):
         self.arc(BLACK, 4, ((3,4),))
         self.arc(BLACK, 3, ((3,2),))
