@@ -27,13 +27,6 @@ class ABState():
     def reset_state(self):
         self.utility_stats.reset()
 
-    # TODO: These don't belong here
-    def get_black_line_counts(self):
-        return self.utility_stats.lines[BLACK]
-
-    def get_white_line_counts(self):
-        return self.utility_stats.lines[WHITE]
-
     def get_takes(self):
         return self.utility_stats.takes
 
