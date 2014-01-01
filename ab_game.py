@@ -32,18 +32,13 @@ class ABGame():
             centre_pos = (brd_size/2, brd_size/2)
             p_i = [centre_pos]
         else:
-            min_priority = 0
-
             pos_iter = state.get_iter(state.to_move())
-            p_i = pos_iter.get_iter(state.to_move_colour(), depth, min_priority)
+            p_i = pos_iter.get_iter(state.to_move_colour())
         tried_count = 0
         for pos in p_i:
             # create an ABState for each possible move from state
             succ = state.create_state(pos)
             yield pos, succ
-            tried_count += 1
-            if depth > 3 and tried_count >= 2:
-                return
 
     def terminal_test(self, state):
         if self.interrupted:
