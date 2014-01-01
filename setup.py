@@ -12,6 +12,7 @@ setup(
             'board_strip.pyx',
             'length_lookup_table.py',
             'priority_filter.py',
+            'budget_searcher.py',
             'utility_calculator.py',
             'utility_stats.py',
             'direction_strips.py',
