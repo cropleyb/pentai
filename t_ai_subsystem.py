@@ -26,7 +26,7 @@ class AIPlayerSubsystemTest(unittest.TestCase):
         self.game = game.Game(r, self.p1, self.p2)
 
     # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_find_one_move
-    def atest_find_one_move(self):
+    def test_find_one_move(self):
         self.p2.set_max_depth(2)
         game_str = \
 """Black versus White
@@ -55,7 +55,7 @@ standard rules
         self.assertEquals(m, (6,7))
 
     # !./t_ai_player.py AIPlayerSubsystemTest.test_dont_waste_a_pair
-    def atest_dont_waste_a_pair(self):
+    def test_dont_waste_a_pair(self):
         self.p1.set_max_depth(6)
         game_str = \
 """Black versus White
@@ -76,7 +76,7 @@ standard rules
         m = self.p1.do_the_search()
         self.assertNotEquals(m, (6,5))
 
-    def atest_dodgy_move(self):
+    def test_dodgy_move(self):
         self.p2.set_max_depth(6)
         game_str = \
 """Black versus White
@@ -125,7 +125,7 @@ Now compare for black's next move:
     Lines: [None, [78, 9, 1, 1, 0], [36, 2, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(6, 10): 0, (6, 5): 1}, {}] Captured: [0, 4, 4]
 
     '''
-    def atest_dodgy_move_part2(self):
+    def test_dodgy_move_part2(self):
         #pdb.set_trace()
         self.p1.set_max_depth(5)
         game_str = \
@@ -287,7 +287,7 @@ Captures: [0, 2, 2]
 
     '''
 
-    def atest_freebie(self):
+    def test_freebie(self):
         #pdb.set_trace()
         self.p1.set_max_depth(8)
         game_str = \
