@@ -71,10 +71,11 @@ class UtilityStats():
         # update substrips
 
         ccp = rules.can_capture_pairs
+        brd_size = brd.get_size()
+
         for ds in brd.get_direction_strips():
             # Keep track of the lengths of lines that can form 5
             # in a row
-            brd_size = brd.get_size()
 
             bs, s_num = ds.get_strip(pos)
             ind = ds.get_index(pos)
