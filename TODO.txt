@@ -1,5 +1,5 @@
 
-Budget Filter stage 1 - less bredth for forced nodes
+BF is not being informed of # captures
 Budget Filter stage 2 - pass budget down
 Budget Filter stage 3 - BF utility tuning
 Load Player Type from file (Computer/Human)
