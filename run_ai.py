@@ -28,7 +28,8 @@ class TwoTimer:
         self.current = 1 - self.current
 
     def __repr__(self):
-        return "B: %.2fs, W: %.2fs" % tuple(self.totals)
+        tot = self.totals
+        return "B: %.2fs, W: %.2fs, B/W: %.2f" % (tot[0], tot[1], tot[0]/tot[1])
 
 class Genome():
     """
@@ -51,13 +52,13 @@ class Genome():
         self.mmpdl = 12
         self.narrowing = 1
 
-        self.capture_score_base = 120 ** 3
-        self.take_score_base = 2000
-        self.threat_score_base = 40
+        self.capture_score_base = 1000
+        self.take_score_base = 600
+        self.threat_score_base = 60
         self.captures_scale = [0, 1, 1, 1, 1, 1]
-        self.length_factor = 120
+        self.length_factor = 29
         self.move_factor = 300
-        self.sub = True
+        self.sub = False
 
     def create_player(self, name, budget=0):
         if budget > 0:
@@ -78,6 +79,7 @@ class Genome():
         uc.captures_scale = self.captures_scale
         uc.length_factor = self.length_factor
         uc.move_factor = self.move_factor
+        uc.sub = self.sub
 
         player.set_max_depth(self.max_depth)
         # TODO: pf = player.get_priority_filter()
@@ -85,12 +87,17 @@ class Genome():
 class MatchResults():
     def __init__(self):
         self.results = []
+        self.bw_total = [0, 0, 0]
+        self.dc_total = {"Defender":0, "Contender":0}
 
     def __repr__(self):
-        return "\n".join(self.results)
+        return "\n".join(self.results) + "\nB/W:" + str(self.bw_total) + " D/C: " + str(self.dc_total)
 
     def add(self, result):
-        self.results.append(result)
+        res_str, winner_colour, winner_name = result
+        self.results.append(res_str)
+        self.bw_total[winner_colour] += 1
+        self.dc_total[str(winner_name)] += 1
 
 class Match():
     def __init__(self):
@@ -101,8 +108,8 @@ class Match():
         self.p1 = self.genome1.create_player("Defender")
         self.p2 = self.genome2.create_player("Contender", 9)
 
-    def play_one_game(self, p1, p2):
-        r = rules.Rules(13, "standard")
+    def play_one_game(self, board_size, p1, p2):
+        r = rules.Rules(board_size, "standard")
         self.game = game.Game(r, p1, p2)
 
         tt = TwoTimer()
@@ -113,38 +120,42 @@ class Match():
                 m = p.do_the_search()
                 self.game.make_move(m)
         #pdb.set_trace()
-        winner = self.game.winner_name()
+        winner_name = self.game.winner_name()
+        winner = self.game.winner()
 
-        print "Game was won by: %s" % winner
+        print "Game was won by: %s" % winner_name
         print tt
 
-        return "%s vs. %s: %s (%s) %s" % (p1.name, p2.name, winner, p1.max_depth, tt)
+        return "%s vs. %s: %s (%sx%s %s) %s" % (p1.name, p2.name, winner_name,
+                board_size, board_size, p1.max_depth, tt), winner, winner_name
 
     def play_some_games(self):
         #pdb.set_trace()
-        #self.genome2.move_factor = 400
-        #self.genome2.length_factor = 10
-        #self.genome2.take_score_base = 500
+        #self.genome2.move_factor = 350
+        #self.genome2.length_factor = 29
+        #self.genome2.take_score_base = 550
+        #self.genome2.capture_score_base = 600
         #self.genome2.threat_score_base = 60
         #self.genome2.narrowing = 2
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome1.max_depth += 1
         #self.genome2.mmpdl = 16
         #self.genome2.captures_scale = [0, 1, 1, 2, 3, 4]
-        #self.genome2.move_factor = 30
-        #self.genome2.sub = False
+        #self.genome2.move_factor = 10000000
 
         results = MatchResults()
         for game_length in range(1, 5):
-            for first_player in [0, 1]:
-                self.set_up()
-                self.p1.set_max_depth(game_length)
-                self.p2.set_max_depth(game_length)
-                players = [self.p1, self.p2]
-                second_player = 1 - first_player
-                res = self.play_one_game(players[first_player],
-                                         players[second_player])
-                results.add(res)
+            for board_size in [9, 13, 19]:
+                for first_player in [0, 1]:
+                    self.set_up()
+                    self.p1.set_max_depth(game_length)
+                    self.p2.set_max_depth(game_length)
+                    players = [self.p1, self.p2]
+                    second_player = 1 - first_player
+                    res = self.play_one_game(board_size,
+                                             players[first_player],
+                                             players[second_player])
+                    results.add(res)
 
         print results
 
