@@ -17,5 +17,9 @@ setup(
             'utility_stats.py',
             'direction_strips.py',
             'alpha_beta.py',
+            'ab_state.py',
+            'ab_game.py',
+            'game_state.py',
+            'board.py',
         ])
     )
