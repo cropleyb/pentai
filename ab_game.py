@@ -23,7 +23,7 @@ class ABGame():
         return state.utility()
 
     # TODO: Where does this belong?
-    def successors(self, state, depth):
+    def successors(self, state):
         mn = state.get_move_number()
         # TODO: First move constraints are associated with the rules
         if mn == 1:
@@ -35,7 +35,7 @@ class ABGame():
             pos_iter = state.get_iter(state.to_move())
             p_i = pos_iter.get_iter(state.to_move_colour())
         tried_count = 0
-        for pos in p_i:
+        for pos in p_i: # TODO: pos, budget in p_i
             # create an ABState for each possible move from state
             succ = state.create_state(pos)
             yield pos, succ

@@ -13,7 +13,7 @@ class MockGame:
     def __init__(self, states):
         self.states = dict([(s.name, s) for s in states])
      
-    def successors(self, state_name, depth):
+    def successors(self, state_name):
         state = self.states[state_name]
         for child_state in state.successors:
             yield child_state

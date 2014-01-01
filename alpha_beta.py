@@ -8,8 +8,8 @@ def argmax(aspl, fn):
     vals = [(fn(item), item) for item in aspl]
     # sort is for debug presentation only. Since this function is only called
     # once per search, it should not be a problem.
-    #vals.sort()
-    #print "\n%s" % vals
+    vals.sort()
+    print "\n%s" % vals
     best = max(vals)
     return best[1], best[0]
 
@@ -21,7 +21,7 @@ def alphabeta_search(state, game, max_depth=4):
         if cutoff_test(state, depth):
             return game.utility(state)
         v = -INFINITY
-        for (a, s) in game.successors(state, depth):
+        for (a, s) in game.successors(state):
             v = max(v, min_value(s, alpha, beta, depth+1))
             if v >= beta:
                 return v
@@ -32,7 +32,7 @@ def alphabeta_search(state, game, max_depth=4):
         if cutoff_test(state, depth):
             return game.utility(state)
         v = INFINITY
-        for (a, s) in game.successors(state, depth):
+        for (a, s) in game.successors(state):
             v = min(v, max_value(s, alpha, beta, depth+1))
             if v <= alpha:
                 return v
@@ -49,6 +49,6 @@ def alphabeta_search(state, game, max_depth=4):
         return min_value(s, -INFINITY, INFINITY, 1)
 
     # Body of alphabeta_search starts here:
-    action, value = argmax(game.successors(state, 0), top_min_func)
+    action, value = argmax(game.successors(state), top_min_func)
     return action, value
 
