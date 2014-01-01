@@ -9,6 +9,7 @@ import time
 
 from ai_player import *
 from priority_filter import *
+from budget_searcher import *
 
 import pdb
 
@@ -27,7 +28,7 @@ class TwoTimer:
         self.current = 1 - self.current
 
     def __repr__(self):
-        return "Black time: %.2fs, White time: %.2fs" % tuple(self.totals)
+        return "B: %.2fs, W: %.2fs" % tuple(self.totals)
 
 class Genome():
     """
@@ -58,6 +59,17 @@ class Genome():
         self.move_factor = 300
         self.sub = True
 
+    def create_player(self, name, budget=0):
+        if budget > 0:
+            sf = BudgetSearcher(budget)
+        else:
+            sf = PriorityFilter()
+            sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
+        p = AIPlayer(sf, name=name)
+        self.set_config(p)
+
+        return p
+
     def set_config(self, player):
         uc = player.get_utility_calculator()
         uc.capture_score_base = self.capture_score_base
@@ -85,17 +97,9 @@ class Match():
         self.genome1 = Genome()
         self.genome2 = Genome()
 
-    def create_player(self, name, genome):
-        sf = PriorityFilter()
-        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
-        p = AIPlayer(sf, name=name)
-        genome.set_config(p)
-
-        return p
-
     def set_up(self):
-        self.p1 = self.create_player("Defender", self.genome1)
-        self.p2 = self.create_player("Contender", self.genome2)
+        self.p1 = self.genome1.create_player("Defender")
+        self.p2 = self.genome2.create_player("Contender", 9)
 
     def play_one_game(self, p1, p2):
         r = rules.Rules(13, "standard")
@@ -123,7 +127,7 @@ class Match():
         #self.genome2.take_score_base = 500
         #self.genome2.threat_score_base = 60
         #self.genome2.narrowing = 2
-        self.genome2.max_depth += 2
+        #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome1.max_depth += 1
         #self.genome2.mmpdl = 16
         #self.genome2.captures_scale = [0, 1, 1, 2, 3, 4]
