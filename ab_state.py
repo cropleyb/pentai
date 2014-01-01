@@ -24,6 +24,9 @@ class ABState():
             assert parent != None
             self.utility_calculator = parent.utility_calculator
 
+    def get_utility_stats(self):
+        return self.utility_stats
+
     def reset_state(self):
         self.utility_stats.reset()
 
