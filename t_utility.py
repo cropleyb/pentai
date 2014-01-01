@@ -241,7 +241,7 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, 0)
 
-    def atest_one_take_is_worth_more_than_two_threes(self):
+    def test_one_take_is_worth_more_than_two_threes(self):
         # I'm not sure about this one
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
@@ -252,7 +252,7 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, 0)
 
-    def test_one_take_is_worth_less_than_three_threes(self):
+    def atest_one_take_is_worth_less_than_three_threes(self):
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
@@ -423,7 +423,8 @@ class UtilityTest(unittest.TestCase):
 
         self.assertGreater(u1, u2)
 
-    def test_tricky_pos_2b(self):
+    def atest_tricky_pos_2b(self):
+        # TODO
         #pdb.set_trace()
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
