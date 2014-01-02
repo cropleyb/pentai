@@ -6,12 +6,12 @@ import pdb
 
 class UtilityCalculator():
     def __init__(self):
-        self.capture_score_base = 1000
-        self.take_score_base = 600
-        self.threat_score_base = 60
+        self.capture_score_base = 300
+        self.take_score_base = 100
+        self.threat_score_base = 20
         self.captures_scale = [0, 1, 1, 1, 1, 1]
-        self.length_factor = 29
-        self.move_factor = 300
+        self.length_factor = 27
+        self.move_factor = 30 # Irrelevant with subtraction mode
         self.sub = True
 
     def set_rules(self, rules):
