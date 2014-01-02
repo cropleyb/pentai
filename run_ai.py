@@ -52,13 +52,13 @@ class Genome():
         self.mmpdl = 12
         self.narrowing = 1
 
-        self.capture_score_base = 1000
-        self.take_score_base = 600
-        self.threat_score_base = 60
+        self.capture_score_base = 300
+        self.take_score_base = 100
+        self.threat_score_base = 20
         self.captures_scale = [0, 1, 1, 1, 1, 1]
-        self.length_factor = 29
-        self.move_factor = 300
-        self.sub = False
+        self.length_factor = 27
+        self.move_factor = 30
+        self.sub = True
 
     def create_player(self, name, budget=0):
         if budget > 0:
@@ -106,7 +106,7 @@ class Match():
 
     def set_up(self):
         self.p1 = self.genome1.create_player("Defender")
-        self.p2 = self.genome2.create_player("Contender", 9)
+        self.p2 = self.genome2.create_player("Contender")
 
     def play_one_game(self, board_size, p1, p2):
         r = rules.Rules(board_size, "standard")
@@ -130,21 +130,23 @@ class Match():
                 board_size, board_size, p1.max_depth, tt), winner, winner_name
 
     def play_some_games(self):
-        #pdb.set_trace()
         #self.genome2.move_factor = 350
-        #self.genome2.length_factor = 29
-        #self.genome2.take_score_base = 550
-        #self.genome2.capture_score_base = 600
-        #self.genome2.threat_score_base = 60
+
+        #self.genome2.length_factor = 27
+        #self.genome2.take_score_base = 100
+        #self.genome2.capture_score_base = 550
+        #self.genome2.threat_score_base = 20
+
         #self.genome2.narrowing = 2
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome1.max_depth += 1
         #self.genome2.mmpdl = 16
         #self.genome2.captures_scale = [0, 1, 1, 2, 3, 4]
         #self.genome2.move_factor = 10000000
+        self.genome2.sub = False
 
         results = MatchResults()
-        for game_length in range(1, 5):
+        for game_length in range(1, 3):
             for board_size in [9, 13, 19]:
                 for first_player in [0, 1]:
                     self.set_up()
