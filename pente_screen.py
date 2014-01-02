@@ -42,6 +42,7 @@ class PenteScreen(Screen):
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
     confirm_status = StringProperty("    No\nConfirm")
+    options_text = StringProperty("Options")
 
     def __init__(self, the_size, filename, *args, **kwargs):
         self.marker = None
@@ -181,6 +182,9 @@ class PenteScreen(Screen):
 
     def update_captures(self, colour, captured):
         """ Update the display of captured stones below the board """
+        if self.game.rules.stones_for_capture_win <= 0:
+            # Don't display them if you can't win by captures
+            return
         cw = self.captured_widgets[colour]
 
         if len(cw) != captured:
@@ -197,7 +201,7 @@ class PenteScreen(Screen):
 
             for i in range(captured / 2):
                 i_centred = centre[i]
-                for j in range(2):
+                for j in range(2): # TODO Use triples for keryo
                     try:
                         # load and place the appropriate stone image
                         new_piece = Piece(19, source=filename)
