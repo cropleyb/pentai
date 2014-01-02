@@ -1,4 +1,5 @@
 
+Message popup is being dismissed instantly if the cause click overlaps the popup
 BF is not being informed of # captures
 Budget Filter stage 2 - pass budget down
 Budget Filter stage 3 - BF utility tuning
