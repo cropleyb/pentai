@@ -23,11 +23,10 @@ setup(
             'direction_strips.py',
             'alpha_beta.py',
             'ab_state.py',
-            'ab_game.py',
             'game_state.py',
             'board.py',
             'ai_player.py',
             ],
-            extra_compile_args=["-O3"],
+            # extra_compile_args=["-O3"], # Is this doing anything?
         )
     )
