@@ -227,3 +227,19 @@ Threatened 4 - look at those nodes first, we could be forced
 **We may not need lots of search through this node except for this node
 and if we search it last we can use more nodes to do it
 
+Where should the number of captures live?
+GameState
+Needed by:
+ABState
+UtilityStats
+UtilityCalculator
+BudgetSearcher
+
+openings book
+-------------
+each position has 4 rotations, and 2 flips of each of these, for a total of 8 equivalents
+Only store the version of the position with the lowest value.
+1 rotations is easy: look at N or E direction_strips.
+The flip is also easy: reverse the order of the board strips in a direction_strip
+The last flip is tricky - reversing each of the board strip bit string numbers
+Each position has one (or more?) recommended move.
