@@ -13,6 +13,10 @@ from budget_searcher import *
 
 import pdb
 
+
+import pstats, cProfile
+
+
 class TwoTimer:
     def __init__(self):
         self.totals = [0.0, 0.0]
@@ -51,6 +55,7 @@ class Genome():
         self.max_depth = 6
         self.mmpdl = 9
         self.narrowing = 0
+        self.chokes = [(4,2)]
 
         self.capture_score_base = 300
         self.take_score_base = 100
@@ -61,11 +66,13 @@ class Genome():
         self.sub = True
 
     def create_player(self, name, budget=0):
+        #pdb.set_trace()
         if budget > 0:
             sf = BudgetSearcher(budget)
         else:
             sf = PriorityFilter()
-            sf.set_max_moves_per_depth_level(mmpdl=self.mmpdl, narrowing=self.narrowing)
+            sf.set_max_moves_per_depth_level(mmpdl=self.mmpdl, narrowing=self.narrowing,
+                    chokes=self.chokes)
         p = AIPlayer(sf, name=name)
         self.set_config(p)
 
@@ -89,24 +96,30 @@ class MatchResults():
         self.results = []
         self.bw_total = [0, 0, 0]
         self.dc_total = {"Defender":0, "Contender":0}
+        self.total_ratio = 0.
+        self.games_played = 0
 
     def __repr__(self):
-        return "\n".join(self.results) + "\nB/W:" + str(self.bw_total) + " D/C: " + str(self.dc_total)
+        return "\n".join(self.results) + "\nB/W:" + str(self.bw_total) \
+                + " won: " + str(self.dc_total) \
+                + " C/D avg. time: " + str(self.total_ratio / self.games_played)
 
     def add(self, result):
-        res_str, winner_colour, winner_name = result
+        res_str, winner_colour, winner_name, ratio = result
         self.results.append(res_str)
         self.bw_total[winner_colour] += 1
         self.dc_total[str(winner_name)] += 1
+        self.total_ratio += ratio
+        self.games_played += 1
 
 class Match():
     def __init__(self):
-        pdb.set_trace()
+        #pdb.set_trace()
         self.genome1 = Genome()
         self.genome2 = Genome()
 
     def set_up(self, game_length):
-        self.p1 = self.genome1.create_player("Defender", 9)
+        self.p1 = self.genome1.create_player("Defender")
         self.p2 = self.genome2.create_player("Contender")
         self.p1.set_max_depth(game_length + self.genome1.max_depth_boost)
         self.p2.set_max_depth(game_length + self.genome2.max_depth_boost)
@@ -125,32 +138,45 @@ class Match():
         #pdb.set_trace()
         winner_name = self.game.winner_name()
         winner = self.game.winner()
+        if p1.name == "Contender":
+            ratio = tt.totals[0] / tt.totals[1]
+        else:
+            ratio = tt.totals[1] / tt.totals[0]
 
         print "Game was won by: %s" % winner_name
         print tt
-
+ 
         return "%s vs. %s: %s (%sx%s %s) %s" % (p1.name, p2.name, winner_name,
-                board_size, board_size, p1.max_depth, tt), winner, winner_name
+                board_size, board_size, p1.max_depth, tt), winner, winner_name, ratio
 
     def play_some_games(self):
-        #self.genome2.move_factor = 350
 
-        #self.genome2.length_factor = 27
-        #self.genome2.take_score_base = 100
-        #self.genome2.capture_score_base = 550
-        #self.genome2.threat_score_base = 20
+        #self.genome2.length_factor = 28
+        #self.genome2.take_score_base = 101
+        #self.genome2.capture_score_base = 340
+        #self.genome2.threat_score_base = 22
 
-        self.genome2.narrowing = 3
+        #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
-        self.genome2.mmpdl = 15
-        self.genome1.max_depth_boost = 2
-        #self.genome2.captures_scale = [0, 1, 1, 2, 3, 4]
+        #self.genome2.mmpdl = 15
+        #self.genome2.mmpdl = 10
+        self.genome2.chokes = []
+        #self.genome2.chokes = [(4,3),(5,1)]
+        #self.genome2.chokes = [(2,2)]
+        #self.genome1.max_depth_boost = 2
+        #self.genome2.captures_scale = [0, 1, 10, 100, 1000, 50]
+        #self.genome2.captures_scale = [0, 0, 0, 0, 0, 0]
         #self.genome2.move_factor = 10000000
-        self.genome2.sub = False
+
+        #self.genome1.sub = False
+        #self.genome2.sub = False
+        #self.genome2.move_factor = 50
+        #self.genome2.move_factor = 5
 
         results = MatchResults()
         for game_length in range(1, 3):
-            for board_size in [9, 13, 19]:
+            #for board_size in [9, 13, 19]:
+            for board_size in [9, 13, 16, 19]:
                 for first_player in [0, 1]:
                     self.set_up(game_length)
                     players = [self.p1, self.p2]
@@ -166,3 +192,9 @@ class Match():
 if __name__ == "__main__":
     m = Match()
     m.play_some_games()
+    '''
+    cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
+
+    s = pstats.Stats("Profile.prof")
+    s.strip_dirs().sort_stats("time").print_stats()
+    '''
