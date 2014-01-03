@@ -74,7 +74,7 @@ class BudgetSearcher():
                 ret.append(self.priority_level(level, colour))
         return ret
 
-    def get_iter(self, our_colour):
+    def get_iter(self, our_colour, depth):
         #pdb.set_trace()
         their_colour = opposite_colour(our_colour)
         candidate_slots = self.get_priority_levels(our_colour)

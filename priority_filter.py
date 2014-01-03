@@ -14,12 +14,20 @@ class PriorityFilter():
 
         self.reset(orig, min_priority)
 
-    def set_max_moves_per_depth_level(self, mmpdl, narrowing):
+    def set_max_moves_per_depth_level(self, mmpdl, narrowing, chokes=[]):
         if narrowing != 0:
             def mmpdl_func(depth):
+                # This is really hacky, but it seemed to work
+                for d, w in chokes:
+                    if depth >= d:
+                        return w
                 return mmpdl - round(narrowing * depth)
         else:
             def mmpdl_func(depth):
+                # This is really hacky, but it seemed to work
+                for d, w in chokes:
+                    if depth >= d:
+                        return w
                 return mmpdl
 
         self.set_max_moves_func(mmpdl_func)

@@ -14,14 +14,16 @@ import pdb
 
 class AIPlayerSubsystemTest(unittest.TestCase):
 
-    def create_player(self, name, mmpdl, narrowing):
+    def create_player(self, name, mmpdl, narrowing, chokes):
         sf = PriorityFilter()
-        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
+        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0, chokes=chokes)
         return AIPlayer(sf, name=name)
 
     def setUp(self):
-        self.p1 = self.create_player("Deep thunk", 9, 0)
-        self.p2 = self.create_player("Deep thunk2", 9, 0)
+        chokes = [(4,3),(5,1)]
+        self.p1 = self.create_player("Deep thunk", 9, 0, chokes)
+        self.p2 = self.create_player("Deep thunk2", 9, 0, chokes)
+
         r = rules.Rules(13, "standard")
         self.game = game.Game(r, self.p1, self.p2)
 
@@ -170,9 +172,12 @@ Work out the inputs for the 2 positions that are evaluating incorrectly
 Check the positions on the board, and write a utility function test
 for the correct order.
 '''
+
+    # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_throw_away_pair
+    # This one is broken
     def test_throw_away_pair(self):
         #pdb.set_trace()
-        self.p1.set_max_depth(8)
+        self.p1.set_max_depth(7)
         game_str = \
 """DT versus Rich
 13x13
