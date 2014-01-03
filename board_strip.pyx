@@ -1,3 +1,5 @@
+cimport cython
+
 from defines import *
 
 '''
@@ -39,13 +41,15 @@ cdef long BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
 # EBBW
 cdef long WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
 
-def get_occ(bs, ind):
-    ret = bs >> (2 * ind)
+cpdef long get_occ(long bs, int ind):
+    ret = bs >> (ind * 2)
     return ret & 3
 
-def set_occ(bs, ind, occ):
+cpdef long set_occ(long bs, int ind, long occ):
+    cdef long shift
     shift = 4 ** ind
-    bs &= ~(shift + shift * 2)
+    #shift = 1 << (ind * 2) # Type conversion issues in C
+    bs &= ~(shift + (shift << 1))
     bs |= (occ * shift)
     return bs
 
@@ -54,7 +58,9 @@ def get_occ_list(bs, min_ind, max_ind):
     return ol
 
 # TODO: replace with a more efficient bitmask technique
-def match_five_in_a_row(bs, move_ind, my_colour):
+cpdef int match_five_in_a_row(long bs, int move_ind, int my_colour):
+    cdef int l
+
     l = 1
     while l < 5:
         test_ind = move_ind + l
@@ -89,7 +95,11 @@ cpdef match_capture_right(long bs, int ind, int colour):
     else:
         return match_white_capture_right(bs, ind)
 
-cdef match_pattern_left(long bs, int ind, long pattern):
+@cython.profile(False)
+cdef inline match_pattern_left(long bs, int ind, long pattern):
+    cdef int shift
+    cdef long occs
+
     if ind < 3:
         # Cannot place to the left - off the board
         return ()
@@ -99,13 +109,18 @@ cdef match_pattern_left(long bs, int ind, long pattern):
         return (ind-1, ind-2)
     return ()
 
-cdef match_pattern_right(long bs, int ind, long pattern):
+@cython.profile(False)
+cdef inline match_pattern_right(long bs, int ind, long pattern):
+    cdef int shift
+    cdef long occs
+
     shift = ind << 1
     occs = (bs >> shift) & FOUR_OCCS_MASK
     if occs == pattern:
         return (ind+1, ind+2)
     return ()
 
+@cython.profile(False)
 cdef match_black_capture_left(long bs, int ind):
     # BWWx
     return match_pattern_left(bs, ind, BLACK_CAPTURE_LEFT_PATTERN)
