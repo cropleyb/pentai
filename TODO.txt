@@ -1,5 +1,7 @@
 
+AI thread is taking all the CPU, less .pyx conversions?
 Message popup is being dismissed instantly if the cause click overlaps the popup
+Change UI for computer selection
 BF is not being informed of # captures
 Budget Filter stage 2 - pass budget down
 Budget Filter stage 3 - BF utility tuning
