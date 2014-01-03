@@ -76,13 +76,15 @@
 <OptionsScreen>:
     GridLayout:
         cols: 2
-        size_hint: 1, None
-
-        Label:
+        size_hint: 1, 1
 
         Button:
-            text: "Help"
-            # TODO
+            text: "Instructions"
+            on_release: root.app.show_instructions()
+
+        Button:
+            text: "Rules"
+            on_release: root.app.show_rules()
 
         MyLabel:
             text: "Mark last 2 moves?"
@@ -103,6 +105,7 @@
 
         Button:
             text: "Resume"
+            on_release: root.app.show_game()
 
 #<SetupScreen>:
 #    #cols: 1 # TEMP
