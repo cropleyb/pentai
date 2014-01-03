@@ -2,4 +2,6 @@
 *.swp
 *.c
 *.so
+*.prof
 build
+examples
