@@ -26,13 +26,13 @@ class BasePopup(Popup):
     my_active = None
 
     def __init__(self, *args, **kwargs):
-        self.opened = time.clock()
+        self.opened = time.time()  
         self.auto_dismiss = False
         super(BasePopup, self).__init__(*args, **kwargs)
 
     def waited_long_enough(self):
-        now = time.clock()
-        return now - self.opened >= 1
+        now = time.time()  
+        return now - self.opened >= .1
 
     @staticmethod
     def confirm():
@@ -43,6 +43,8 @@ class BasePopup(Popup):
         if self.waited_long_enough():
             BasePopup.my_active = None
             self.dismiss()
+            return True
+        return False
 
     @staticmethod
     def clear():
@@ -83,9 +85,8 @@ class ConfirmPopup(BasePopup):
             BasePopup.my_active.open()
 
     def ok_confirm(self):
-        super(ConfirmPopup, self).ok_confirm()
-        # TODO: only if time is up
-        self.action()
+        if super(ConfirmPopup, self).ok_confirm():
+            self.action()
 
 class PenteApp(App):
     game_filename = StringProperty("")
