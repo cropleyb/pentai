@@ -14,6 +14,7 @@ from menu_screen import *
 from kivy.properties import ObjectProperty
 
 import os # TODO: Remove?
+import time
 
 class LoadScreen(Screen):
     load = ObjectProperty(None)
@@ -25,8 +26,13 @@ class BasePopup(Popup):
     my_active = None
 
     def __init__(self, *args, **kwargs):
+        self.opened = time.clock()
         self.auto_dismiss = False
         super(BasePopup, self).__init__(*args, **kwargs)
+
+    def waited_long_enough(self):
+        now = time.clock()
+        return now - self.opened >= 1
 
     @staticmethod
     def confirm():
@@ -34,8 +40,9 @@ class BasePopup(Popup):
             BasePopup.my_active.ok_confirm()
 
     def ok_confirm(self):
-        BasePopup.my_active = None
-        self.dismiss()
+        if self.waited_long_enough():
+            BasePopup.my_active = None
+            self.dismiss()
 
     @staticmethod
     def clear():
@@ -77,6 +84,7 @@ class ConfirmPopup(BasePopup):
 
     def ok_confirm(self):
         super(ConfirmPopup, self).ok_confirm()
+        # TODO: only if time is up
         self.action()
 
 class PenteApp(App):
