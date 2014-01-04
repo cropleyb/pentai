@@ -9,7 +9,7 @@ class UtilityCalculator():
         self.capture_score_base = 300
         self.take_score_base = 100
         self.threat_score_base = 20
-        self.captures_scale = [0, 1, 1, 1, 1, 1]
+        self.captures_scale = [1, 1, 1, 1, 1, 1]
         self.length_factor = 27
         self.move_factor = 30 # Irrelevant with subtraction mode
         self.sub = True
@@ -19,23 +19,22 @@ class UtilityCalculator():
 
     """ Captures become increasingly important as we approach 5 """
     def captured_contrib(self, captures):
-        # TODO: Use rules?
         contrib = captures * self.capture_score_base * \
                 self.captures_scale[captures/2]
         # Unless we're playing keryo, captures_scale only needs to operate
         # on pairs
         return contrib
 
-    def take_contrib(self, takes):
-        """ TODO takes become increasingly important as we approach 5 captures """
-        # TODO: Use rules?
-        contrib = takes * self.take_score_base
+    def take_contrib(self, takes, captures):
+        """ takes become increasingly important as we approach 5 captures """
+        contrib = takes * self.take_score_base * \
+                self.captures_scale[captures/2]
         return contrib
 
-    def threat_contrib(self, threats):
-        """ TODO threats become increasingly important as we approach 5 captures """
-        # TODO: Use rules?
-        contrib = threats * self.threat_score_base
+    def threat_contrib(self, threats, captures):
+        """ threats become increasingly important as we approach 5 captures """
+        contrib = threats * self.threat_score_base * \
+                self.captures_scale[captures/2]
         return contrib
 
     # All the utility calculations belong in the UtilityCalculator
@@ -203,10 +202,10 @@ class UtilityCalculator():
 
             # Give takes and threats some value for their ability to help
             # get 5 in a row.
-            tc = self.take_contrib(us.takes[eval_colour])
+            tc = self.take_contrib(us.takes[eval_colour], net_captured)
             score += tc
 
-            tc = self.threat_contrib(us.threats[eval_colour])
+            tc = self.threat_contrib(us.threats[eval_colour], net_captured)
             score += tc
 
         return score
