@@ -153,7 +153,9 @@ class PenteScreen(Screen):
             self.game.make_move(action)
             self.update_captures_and_winner()
             Clock.schedule_once(self.prompt_for_action, 0)
-        except IllegalMoveException, e:
+        except Exception, e:
+            if self.game.was_interrupted():
+                return
             self.display_error(e.message)
 
     def prompt_for_action(self, ignored):

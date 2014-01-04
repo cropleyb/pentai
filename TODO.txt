@@ -1,5 +1,5 @@
 
-AI thread is taking all the CPU, less .pyx conversions?
+GUI thread is lagging at start of game
 Message popup is being dismissed instantly if the cause click overlaps the popup
 Change UI for computer selection
 BF is not being informed of # captures
