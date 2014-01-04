@@ -4,6 +4,7 @@ import unittest
 
 from board_strip import *
 from utility_stats import *
+from priority_filter import * # TODO: NullFilter
 
 mapping = {
     " ": 0, # empty

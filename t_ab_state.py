@@ -7,6 +7,7 @@ import alpha_beta
 import game
 import rules
 import human_player
+from priority_filter import *
 from board import *
 
 from ab_state import *

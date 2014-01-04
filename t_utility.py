@@ -5,6 +5,7 @@ import unittest
 from length_lookup_table import *
 from ab_state import *
 from utility_calculator import *
+from priority_filter import * # TODO: NullFilter
 from player import *
 import game_state
 from board import *

@@ -1,5 +1,4 @@
 from defines import *
-from priority_filter import *
 from board_strip import *
 from length_lookup_table import *
 
