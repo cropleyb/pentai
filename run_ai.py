@@ -9,6 +9,7 @@ import time
 
 from ai_player import *
 from priority_filter import *
+from blindness_filter import *
 from budget_searcher import *
 
 import pdb
@@ -63,6 +64,7 @@ class Genome():
         self.captures_scale = [0, 1, 1, 1, 1, 1]
         self.length_factor = 27
         self.move_factor = 30
+        self.blindness = 0
         self.sub = True
 
     def create_player(self, name, budget=0):
@@ -73,6 +75,10 @@ class Genome():
             sf = PriorityFilter()
             sf.set_max_moves_per_depth_level(mmpdl=self.mmpdl, narrowing=self.narrowing,
                     chokes=self.chokes)
+        if self.blindness > 0:
+            bf = BlindnessFilter(sf)
+            bf.set_blindness(self.blindness)
+            sf = bf
         p = AIPlayer(sf, name=name)
         self.set_config(p)
 
@@ -151,16 +157,17 @@ class Match():
 
     def play_some_games(self):
 
-        #self.genome2.length_factor = 28
-        #self.genome2.take_score_base = 101
-        #self.genome2.capture_score_base = 340
-        #self.genome2.threat_score_base = 22
+        #self.genome2.length_factor = 35
+        #self.genome2.take_score_base = 110
+        #self.genome2.capture_score_base = 310
+        #self.genome2.threat_score_base = 25
+        self.genome1.blindness = 0.30
+        self.genome2.blindness = 0.40
 
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
-        #self.genome2.mmpdl = 10
-        self.genome2.chokes = []
+        #self.genome2.chokes = []
         #self.genome2.chokes = [(4,3),(5,1)]
         #self.genome2.chokes = [(2,2)]
         #self.genome1.max_depth_boost = 2
@@ -168,8 +175,8 @@ class Match():
         #self.genome2.captures_scale = [0, 0, 0, 0, 0, 0]
         #self.genome2.move_factor = 10000000
 
-        #self.genome1.sub = False
-        #self.genome2.sub = False
+        self.genome1.sub = False
+        self.genome2.sub = False
         #self.genome2.move_factor = 50
         #self.genome2.move_factor = 5
 
@@ -188,13 +195,15 @@ class Match():
 
         print results
 
+import random
 
 if __name__ == "__main__":
+    random.seed()
     m = Match()
+    '''
     m.play_some_games()
     '''
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
 
     s = pstats.Stats("Profile.prof")
     s.strip_dirs().sort_stats("time").print_stats()
-    '''
