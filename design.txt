@@ -243,3 +243,21 @@ Only store the version of the position with the lowest value.
 The flip is also easy: reverse the order of the board strips in a direction_strip
 The last flip is tricky - reversing each of the board strip bit string numbers
 Each position has one (or more?) recommended move.
+
+computer opponents
+------------------
+depth
+speed
+width chokes
+blindness (5% intervals)
+openings book on/off
+
+evaluator
+---------
+Need to see what the score is for any screen position, updated with each move.
+  Need:
+UtilityCalculator
+UtilityStats
+Share GameState
+  Don't want:
+AB Game, State, PriorityFilter, AI Player
