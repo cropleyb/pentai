@@ -60,7 +60,7 @@ class AIPlayer(Player):
             md = min(md, 4)
         '''
         # TODO: Move these to ABState.__repr__
-        print ab_game.current_state
+        #print ab_game.current_state
 
         move, value = alpha_beta.alphabeta_search(ab_game.current_state,
                 ab_game, max_depth=md)
