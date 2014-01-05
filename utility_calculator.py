@@ -37,9 +37,8 @@ class UtilityCalculator():
                 self.captures_scale[captures/2]
         return contrib
 
-    # All the utility calculations belong in the UtilityCalculator
-    # TODO: Cache stuff somehow?
     def utility(self, state, utility_stats):
+        """ This is the entry point into the position evaluation function """
         # The search_colour is the colour of the
         # AI player doing the search.
         # The turn_colour is the colour of the player to 
@@ -120,6 +119,7 @@ class UtilityCalculator():
         if eval_lines[4] > 0:
             # This position has been won already, mark it as such so
             # that the search is not continued from this node.
+            # TODO: we shouldn't be modifying "state" here.
             state.set_won_by(eval_colour)
             return self.winning_score(state), True
 
@@ -131,6 +131,7 @@ class UtilityCalculator():
             if eval_captured >= sfcw:
                 # This position has been won already, mark it as such so
                 # that the search is not continued from this node.
+                # TODO: we shouldn't be modifying "state" here.
                 state.set_won_by(eval_colour)
                 return self.winning_score(state), True
 
