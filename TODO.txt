@@ -31,3 +31,5 @@ iTunes
 keryo rules etc.
 Rating system: Python source: http://chess.stackexchange.com/questions/1377/is-there-any-software-or-web-service-for-club-level-elo-ratings
 Sadistic mode
+Update kivy to remove need for:
+   /Applications/Kivy.app/Contents/Resources/kivy/kivy/tools/packaging/pyinstaller_hooks hack
