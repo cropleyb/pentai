@@ -40,6 +40,12 @@ class ABGame():
             succ = state.create_state(pos)
             yield pos, succ
 
+            # Are we are at the top level of the search
+            # and have we found a win (for ourselves)
+            # This is just to finish games off quickly
+            if self.current_state.terminal():
+                return
+
     def terminal_test(self, state):
         if self.interrupted:
             return True
