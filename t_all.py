@@ -20,6 +20,7 @@ import t_nearby_filter
 import t_take_counter
 import t_threat_counter
 import t_priority_filter
+import t_null_filter
 import t_bit_reverse
 import t_game
 import t_blindness_filter
@@ -47,6 +48,7 @@ def suite():
     add_module(t_nearby_filter, all_tests)
     add_module(t_take_counter, all_tests)
     add_module(t_priority_filter, all_tests)
+    add_module(t_null_filter, all_tests)
     add_module(t_threat_counter, all_tests)
     add_module(t_game, all_tests)
     add_module(t_bit_reverse, all_tests)
