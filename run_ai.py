@@ -11,6 +11,7 @@ from ai_player import *
 from priority_filter import *
 from blindness_filter import *
 from budget_searcher import *
+from evaluator import *
 
 import pdb
 
@@ -133,6 +134,7 @@ class Match():
     def play_one_game(self, board_size, p1, p2):
         r = rules.Rules(board_size, "standard")
         self.game = game.Game(r, p1, p2)
+        self.evaluator = Evaluator(UtilityCalculator(), self.game.current_state)
 
         tt = TwoTimer()
 
@@ -141,6 +143,7 @@ class Match():
             with tt:
                 m = p.do_the_search()
                 self.game.make_move(m)
+                print self.evaluator.utility()
         #pdb.set_trace()
         winner_name = self.game.winner_name()
         winner = self.game.winner()
@@ -206,4 +209,4 @@ if __name__ == "__main__":
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
 
     s = pstats.Stats("Profile.prof")
-    s.strip_dirs().sort_stats("time").print_stats()
+    s.strip_dirs().sort_stats("cumulative").print_stats(10) # or "time"

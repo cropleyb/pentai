@@ -8,6 +8,8 @@ from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
 #from kivy.core.audio import SoundLoader # TODO
+from evaluator import *
+from utility_calculator import *
 
 from defines import *
 from gui import *
@@ -93,6 +95,7 @@ class PenteScreen(Screen):
         # We must watch what happens to the logical board, and update accordingly
         cs = game.get_current_state()
         cs.add_observer(self)
+        self.evaluator = Evaluator(UtilityCalculator(), cs)
 
         self.trig = Clock.create_trigger(self.perform)
         self.display_names()
@@ -160,6 +163,7 @@ class PenteScreen(Screen):
 
     def prompt_for_action(self, ignored):
         self.game.prompt_for_action(self)
+        print self.evaluator.utility()
 
     def board_size(self):
         return self.game.size()
@@ -373,10 +377,12 @@ class PenteScreen(Screen):
     def go_forwards_one(self):
         self.game.go_forwards_one()
         self.update_captures_and_winner()
+        print self.evaluator.utility()
 
     def go_backwards_one(self):
         self.game.go_backwards_one()
         self.update_captures_and_winner()
+        print self.evaluator.utility()
 
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
