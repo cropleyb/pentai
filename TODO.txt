@@ -1,4 +1,5 @@
 
+Tool for processing a game - which moves were not searched
 GUI thread is lagging at start of game
 Message popup is being dismissed instantly if the cause click overlaps the popup
 Change UI for computer selection
