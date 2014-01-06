@@ -33,13 +33,24 @@ Rules
 Controls
 '''
 
+def s2b(state):
+    """ state string to boolean """
+    return state == "down"
+
 class OptionsScreen(Screen):
-    mark_moves = BooleanProperty(True)
-    mark_captures = BooleanProperty(True)
-    confirm_moves = BooleanProperty(False)
+    # TODO
     sound_effects_vol = NumericProperty(0)
     music_vol = NumericProperty(0)
 
     def __init__(self, *args, **kwargs):
         super(OptionsScreen, self).__init__(*args, **kwargs)
+
+    def set_mark_moves(self, state):
+        self.app.game_screen.set_mark_moves(s2b(state))
+
+    def set_mark_captures(self, state):
+        self.app.game_screen.set_mark_captures(s2b(state))
+
+    def set_confirm_moves(self, state):
+        self.app.game_screen.set_confirm_req(s2b(state))
 

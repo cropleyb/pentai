@@ -151,6 +151,7 @@ class PenteApp(App):
         pente_screen = PenteScreen(startup_size, name='Game', filename=self.game_filename)
         pente_screen.app = self
         root.add_widget(pente_screen)
+        self.game_screen = pente_screen
         self.game = game
 
         # TODO: Move stuff into PenteScreen __init__?
@@ -232,6 +233,7 @@ class PenteApp(App):
             scr.app = self
             root.add_widget(scr)
         self.setup_screen = root.get_screen("Setup")
+        self.game_screen = None
 
         # Confirm Quit
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  

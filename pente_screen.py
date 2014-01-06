@@ -51,8 +51,10 @@ class PenteScreen(Screen):
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
         self.moved_marker = [None, None, None]
+        self.mark_moves = True
         self.ghosts = []
         self.ghost_colour = None
+        self.mark_captures = True
         self.req_confirm = False
         self.confirmation_in_progress = None
         self.game = None
@@ -145,8 +147,11 @@ class PenteScreen(Screen):
         self.display_names()
         self.setup_grid()
         self.game_filename = None
-        self.update_captures_and_winner()
+        self.refresh_all()
         self.game.prompt_for_action(self)
+
+    def on_enter(self):
+        self.refresh_all()
 
     def perform(self, dt):
         if self.action_queue.empty():
@@ -154,7 +159,7 @@ class PenteScreen(Screen):
         action = self.action_queue.get()
         try:
             self.game.make_move(action)
-            self.update_captures_and_winner()
+            self.refresh_all()
             Clock.schedule_once(self.prompt_for_action, 0)
         except Exception, e:
             if self.game.was_interrupted():
@@ -177,7 +182,7 @@ class PenteScreen(Screen):
 
     def after_set_occ(self, pos, colour):
         self.make_move_on_the_gui_board(pos, colour)
-        self.update_captures_and_winner()
+        self.refresh_all()
 
     def play_sound(self):
         self.sound = SoundLoader.load(stone_sound)
@@ -219,7 +224,11 @@ class PenteScreen(Screen):
                     except Exception, e:
                         print e
 
-    def update_captures_and_winner(self):
+    def refresh_all(self):
+        self.refresh_moved_markers()
+        self.refresh_captures_and_winner()
+
+    def refresh_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
         # TODO: Only call this when the game is up to date
         for colour in (BLACK, WHITE):
@@ -320,21 +329,29 @@ class PenteScreen(Screen):
         return screen_x, screen_y
 
     def update_moved_marker(self, pos, colour):
-        filename = moved_marker_filename_w
-        if colour == BLACK:
-            filename = moved_marker_filename_b
         mm = self.moved_marker[colour]
         if mm == None:
+            filename = moved_marker_filename_w
+            if colour == BLACK:
+                filename = moved_marker_filename_b
             try:
                 mm = Piece(self.game.size(), source=filename)
                 self.moved_marker[colour] = mm
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
                 return
-        else:
-            self.remove_widget(mm)
         mm.pos = pos
-        self.add_widget(mm)
+
+    def refresh_moved_markers(self):
+        for w in self.moved_marker:
+            if not w is None:
+                # Remove them both first
+                if not w.parent is None:
+                    self.remove_widget(w)
+                # Then put them back ON TOP OF THE PIECES
+                if self.mark_moves:
+                    if w.parent is None:
+                        self.add_widget(w)
 
     def cancel_confirmation(self):
         if self.confirmation_in_progress != None:
@@ -368,30 +385,34 @@ class PenteScreen(Screen):
             self.enqueue_action(board_pos)
             self.cancel_confirmation()
 
-    def toggle_confirm_req(self):
-        self.req_confirm = not self.req_confirm
+    def set_confirm_req(self, req):
+        self.req_confirm = req
         self.cancel_confirmation()
-        confirm_strings = ["    No\nConfirm", "Confirm\n   Req"]
-        self.confirm_status = confirm_strings[self.req_confirm]
+
+    def set_mark_moves(self, mm):
+        self.mark_moves = mm
+
+    def set_mark_captures(self, mc):
+        self.mark_captures = mc
 
     def go_to_the_beginning(self):
         self.game.go_to_the_beginning()
-        self.update_captures_and_winner()
+        self.refresh_all()
         print self.evaluator.utility()
 
     def go_forwards_one(self):
         self.game.go_forwards_one()
-        self.update_captures_and_winner()
+        self.refresh_all()
         print self.evaluator.utility()
 
     def go_backwards_one(self):
         self.game.go_backwards_one()
-        self.update_captures_and_winner()
+        self.refresh_all()
         print self.evaluator.utility()
 
     def go_to_the_end(self):
         self.game.go_to_the_end()
-        self.update_captures_and_winner()
+        self.refresh_all()
         print self.evaluator.utility()
 
     def on_touch_down(self, touch):

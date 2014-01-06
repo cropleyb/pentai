@@ -90,16 +90,25 @@
             text: "Mark last 2 moves?"
         ToggleButton:
             font_size: '20sp'
+            state: 'down'
+            id: mm_widget
+            on_press: root.set_mark_moves(mm_widget.state)
 
         MyLabel:
             text: "Mark recent captures?"
         ToggleButton:
             font_size: '20sp'
+            state: 'down'
+            id: rc_widget
+            on_press: root.set_mark_captures(rc_widget.state)
 
         MyLabel:
             text: "Confirm moves?"
         ToggleButton:
             font_size: '20sp'
+            state: 'normal'
+            id: cm_widget
+            on_press: root.set_confirm_moves(cm_widget.state)
 
         # TODO: Music and Sound Effects
 
