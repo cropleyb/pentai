@@ -43,8 +43,6 @@ class PenteScreen(Screen):
     border_colour = ListProperty([20,0,0,1])
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
-    confirm_status = StringProperty("    No\nConfirm")
-    options_text = StringProperty("Options")
 
     def __init__(self, the_size, filename, *args, **kwargs):
         self.marker = None
@@ -417,10 +415,11 @@ class PenteScreen(Screen):
 
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            if super(PenteScreen, self).on_touch_down(touch):
-                # Controls below the board recognized the touch
-                return True
-            else:
+            # Controls below the board recognized the touch
+            super(PenteScreen, self).on_touch_down(touch)
+
+            # Assuming all controls are to the left of this
+            if touch.pos[0] > self.size[0] * .25:
                 # No controls clicked below the board-> confirm
                 self.confirm_cb(None)
             return True
@@ -442,24 +441,24 @@ class PenteScreen(Screen):
             self.display_error("It is not your turn!")
 
     def on_touch_up(self, touch):
-        if touch.pos[1] < self.board_offset[1]:
-            # This is assuming that controls below the board
-            # are only using touch down.
-            # Lower section of the screen
-            return touch
-        # If there is an active marker,
-        # replace the marker with a piece of the appropriate colour
-        if self.marker != None:
-            self.remove_widget(self.marker)
-            #self.marker = None
+        # This is assuming that controls below the board
+        # are only using touch down.
 
-            board_pos = self.screen_to_board(touch.pos)
+        if touch.pos[1] > self.board_offset[1]:
+            # Upper section of the screen
+            # If there is an active marker,
+            # replace the marker with a piece of the appropriate colour
+            if self.marker != None:
+                self.remove_widget(self.marker)
 
-            if self.req_confirm:
-                self.adjust_confirmation(board_pos)
-            else:
-                # Queue the move
-                self.enqueue_action(board_pos)
+                board_pos = self.screen_to_board(touch.pos)
+
+                if self.req_confirm:
+                    self.adjust_confirmation(board_pos)
+                else:
+                    # Queue the move, this will place the
+                    # new piece widget appropriately
+                    self.enqueue_action(board_pos)
 
     def remove_ghosts(self):
         while len(self.ghosts) > 0:
