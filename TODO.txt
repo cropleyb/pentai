@@ -1,28 +1,22 @@
 
+Order human player first
+Grid option
 Tool for processing a game - which moves were not searched
 GUI thread is lagging at start of game
-Message popup is being dismissed instantly if the cause click overlaps the popup
 Change UI for computer selection
-BF is not being informed of # captures
-Budget Filter stage 2 - pass budget down
-Budget Filter stage 3 - BF utility tuning
 Load Player Type from file (Computer/Human)
-Order human player first?
-Options page
 Add rules explanation
 switch players mid-game?
-GP interface
 Try some profiling
-Narrower search per depth level
-Confirm exit, add save prompt
-Options Page - sep. page
+Add save prompt
 VCR control graphics
 Cython
+Sound effects: place, capture, tick, win, loss, music
 Set names according to computer level?
-AI levels + scrollbar? Computer player names? Probablistic blindness?
+AI levels + scrollbar? Computer player names?
 pente.net interface. html scraping might not be too hard.
 Prettify GUI: Colours, layout, background, fonts
-Sound effects: place, capture, tick, win, loss, music
+GP interface
 Chess Clock, mode on/off
 Music
 load iPhone 
