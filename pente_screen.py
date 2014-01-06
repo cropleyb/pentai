@@ -52,7 +52,7 @@ class PenteScreen(Screen):
         self.mark_moves = True
         self.ghosts = []
         self.ghost_colour = None
-        self.mark_captures = True
+        self.show_ghosts = True
         self.req_confirm = False
         self.confirmation_in_progress = None
         self.game = None
@@ -225,6 +225,7 @@ class PenteScreen(Screen):
     def refresh_all(self):
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
+        self.refresh_ghosts()
 
     def refresh_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
@@ -391,7 +392,7 @@ class PenteScreen(Screen):
         self.mark_moves = mm
 
     def set_mark_captures(self, mc):
-        self.mark_captures = mc
+        self.show_ghosts = mc
 
     def go_to_the_beginning(self):
         self.game.go_to_the_beginning()
@@ -460,16 +461,25 @@ class PenteScreen(Screen):
                     # new piece widget appropriately
                     self.enqueue_action(board_pos)
 
+    def refresh_ghosts(self):
+        for g in self.ghosts:
+            if self.show_ghosts:
+                if g.parent is None:
+                    self.add_widget(g)
+            elif not g.parent is None:
+                self.remove_widget(g)
+
     def remove_ghosts(self):
         while len(self.ghosts) > 0:
             g = self.ghosts.pop()
-            self.remove_widget(g)
+            if not g.parent is None:
+                self.remove_widget(g)
 
     def place_ghost(self, board_pos, colour):
         if colour != self.ghost_colour:
             self.remove_ghosts()
-        filename = ["", black_ghost_filename, white_ghost_filename][colour]
         self.ghost_colour = colour
+        filename = ["", black_ghost_filename, white_ghost_filename][colour]
 
         try:
             # load and place the appropriate stone image
