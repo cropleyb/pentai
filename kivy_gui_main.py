@@ -111,6 +111,9 @@ class PenteApp(App):
     def show_options(self):
         self.root.current = "Options"
 
+    def show_game(self):
+        self.root.current = "Game"
+
     def new_game_cb(self):
         self.game_filename = ""
         self.setup_screen.load_file(None)
