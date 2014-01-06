@@ -97,11 +97,17 @@ class Game():
     def get_move(self, move_number):
         return self.move_history[move_number-1]
 
+    def go_to_the_beginning(self):
+        self.go_to_move(1)
+
     def go_forwards_one(self):
         self.go_to_move(self.get_move_number() + 1)
 
     def go_backwards_one(self):
         self.go_to_move(self.get_move_number() - 1)
+    
+    def go_to_the_end(self):
+        self.go_to_move(len(self.move_history)+1)
 
     def go_to_move(self, move_number):
         current_move = self.get_move_number()
