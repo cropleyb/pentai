@@ -214,18 +214,27 @@
 
             GridLayout:
                 size_hint_x: .3
-                rows: 3
+                cols: 1
                 Button:
                     font_size: '20sp'
                     text: root.options_text
-                    #on_press: root.show_options() # Why isn't this working?
-                    #on_press: root.confirm() # Why isn't this working?
-                ToggleButton:
+                    on_release: root.app.show_options()
+                Button:
+                    font_size: '20sp'
+                    text: "Beginning"
+                    on_release: root.go_to_the_beginning()
+                Button:
                     font_size: '20sp'
                     text: "Back"
-                ToggleButton:
+                    on_release: root.go_backwards_one()
+                Button:
                     font_size: '20sp'
                     text: "Forward"
+                    on_release: root.go_forwards_one()
+                Button:
+                    font_size: '20sp'
+                    text: "End"
+                    on_release: root.go_to_the_end()
             GridLayout:
                 rows: 2
                 # TODO: duplication

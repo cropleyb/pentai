@@ -226,23 +226,23 @@ class PenteScreen(Screen):
             self.update_captures(colour, self.game.get_captured(colour))
 
         if self.game.finished():
-            marker = self.win_marker
+            widget = self.win_marker
             other_marker = self.turn_marker
             colour = self.game.winner()
         else:
-            marker = self.turn_marker
+            widget = self.turn_marker
             other_marker = self.win_marker
             colour = self.game.to_move_colour()
 
-        if marker.parent == None:
-            self.add_widget(marker)
+        if widget.parent == None:
+            self.add_widget(widget)
         if other_marker.parent != None:
             self.remove_widget(other_marker)
 
         size_x, size_y = self.size
         base_y = self.board_offset[1] * .5 * (2.5-colour)
 
-        marker.pos = size_x/2, base_y
+        widget.pos = size_x/2, base_y
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
@@ -374,6 +374,11 @@ class PenteScreen(Screen):
         confirm_strings = ["    No\nConfirm", "Confirm\n   Req"]
         self.confirm_status = confirm_strings[self.req_confirm]
 
+    def go_to_the_beginning(self):
+        self.game.go_to_the_beginning()
+        self.update_captures_and_winner()
+        print self.evaluator.utility()
+
     def go_forwards_one(self):
         self.game.go_forwards_one()
         self.update_captures_and_winner()
@@ -384,20 +389,21 @@ class PenteScreen(Screen):
         self.update_captures_and_winner()
         print self.evaluator.utility()
 
+    def go_to_the_end(self):
+        self.game.go_to_the_end()
+        self.update_captures_and_winner()
+        print self.evaluator.utility()
+
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            # Hack city; should be able to do this with bind etc.
-            if touch.pos[0] < self.size[0] * .25:
-                # Work out which button was pressed
-                if touch.pos[1] < self.board_offset[1] / 3.0:
-                    self.go_forwards_one()
-                elif touch.pos[1] < self.board_offset[1] * 2 / 3.0:
-                    self.go_backwards_one()
-                else:
-                    self.toggle_confirm_req()
+            if super(PenteScreen, self).on_touch_down(touch):
+                # Controls below the board recognized the touch
+                return True
             else:
-                self.confirm_cb(None) # Why isn't it called from the button automatically?
-            return
+                # No controls clicked below the board-> confirm
+                self.confirm_cb(None)
+            return True
+
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
         if current_player.get_type() == "human":
@@ -416,6 +422,8 @@ class PenteScreen(Screen):
 
     def on_touch_up(self, touch):
         if touch.pos[1] < self.board_offset[1]:
+            # This is assuming that controls below the board
+            # are only using touch down.
             # Lower section of the screen
             return touch
         # If there is an active marker,
@@ -479,14 +487,15 @@ class PenteScreen(Screen):
 
     def on_touch_move(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            return touch
+            # This is assuming that controls below the board
+            # are only using touch down.
+            return True
         if self.marker != None:
             # Move the marker position
             try:
                 self.marker.pos = self.snap_to_grid(touch.pos)
             except IllegalMoveException:
                 self.remove_widget(self.marker)
-                # self.marker = None
 
     def on_size(self,*args,**kwargs):
         self.setup_grid()
