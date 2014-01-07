@@ -340,7 +340,7 @@ class PenteScreen(Screen):
         board_x = int(round(GS * bsp[0] / size_x) - 1)
         board_y = int(round(GS * bsp[1] / size_y) - 1)
         if self.game.off_board((board_x, board_y)):
-            raise IllegalMoveException
+            raise OffBoardException
         return board_x, board_y
 
     def board_to_screen(self, board_pos):
@@ -481,7 +481,10 @@ class PenteScreen(Screen):
             if self.marker != None:
                 self.remove_widget(self.marker)
 
-                board_pos = self.screen_to_board(touch.pos)
+                try:
+                    board_pos = self.screen_to_board(touch.pos)
+                except OffBoardException:
+                    return
 
                 if self.req_confirm:
                     self.adjust_confirmation(board_pos)
@@ -553,8 +556,9 @@ class PenteScreen(Screen):
             # Move the marker position
             try:
                 self.marker.pos = self.snap_to_grid(touch.pos)
-            except IllegalMoveException:
+            except OffBoardException:
                 self.remove_widget(self.marker)
+                self.marker = None
 
     def on_size(self,*args,**kwargs):
         self.setup_grid()
