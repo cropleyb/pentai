@@ -124,8 +124,12 @@ class PenteScreen(Screen):
         self.game.prompt_for_action(self)
 
     def display_names(self):
+        flip = self.calc_flip()
         for colour in (BLACK, WHITE):
-            self.player_name[colour] = self.game.get_player_name(colour)
+            level = colour
+            if flip:
+                level = opposite_colour(level)
+            self.player_name[level] = self.game.get_player_name(colour)
 
     def display_error(self, message):
         self.app.display_error(message)
@@ -142,7 +146,6 @@ class PenteScreen(Screen):
         f = open(self.game_filename)
         self.game.autosave_filename = self.game_filename[:]
         self.game.load_game(f.read())
-        self.display_names()
         self.setup_grid()
         self.game_filename = None
         self.refresh_all()
@@ -189,7 +192,7 @@ class PenteScreen(Screen):
             print("Sound is %.3f seconds" % self.sound.length)
         self.sound.play()
 
-    def update_captures(self, colour, captured):
+    def update_captures(self, colour, captured, flip):
         """ Update the display of captured stones below the board """
         if self.game.rules.stones_for_capture_win <= 0:
             # Don't display them if you can't win by captures
@@ -205,7 +208,12 @@ class PenteScreen(Screen):
                     [opposite_colour(colour)]
             size_x, size_y = self.size
             base_x = .9 * size_x
-            base_y = self.board_offset[1] * .5 * (2.2-colour)
+
+            level = colour
+            if flip:
+                level = opposite_colour(level)
+
+            base_y = self.board_offset[1] * .5 * (2.2-level)
             centre = [2, 1, 3, 0, 4]
 
             for i in range(captured / 2):
@@ -223,15 +231,31 @@ class PenteScreen(Screen):
                         print e
 
     def refresh_all(self):
+        self.display_names()
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
 
+    def calc_flip(self):
+        white_player = self.game.get_player(WHITE)
+        black_player = self.game.get_player(BLACK)
+
+        # (W human and (W's turn or B not human))
+        if white_player.get_type() == "human":
+            if self.game.to_move_colour() == WHITE or \
+               black_player.get_type() != "human":
+                return True
+        return False
+
     def refresh_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
         # TODO: Only call this when the game is up to date
+        flip = self.calc_flip()
         for colour in (BLACK, WHITE):
-            self.update_captures(colour, self.game.get_captured(colour))
+            level = colour
+            if flip:
+                level = opposite_colour(level)
+            self.update_captures(colour, self.game.get_captured(colour), flip)
 
         if self.game.finished():
             widget = self.win_marker
@@ -248,7 +272,12 @@ class PenteScreen(Screen):
             self.remove_widget(other_marker)
 
         size_x, size_y = self.size
-        base_y = self.board_offset[1] * .5 * (2.5-colour)
+
+        level = colour
+        if flip:
+            level = opposite_colour(level)
+
+        base_y = self.board_offset[1] * .5 * (2.5-level)
 
         widget.pos = size_x/2, base_y
 
