@@ -26,13 +26,7 @@ class BasePopup(Popup):
     my_active = None
 
     def __init__(self, *args, **kwargs):
-        self.opened = time.time()  
-        self.auto_dismiss = False
         super(BasePopup, self).__init__(*args, **kwargs)
-
-    def waited_long_enough(self):
-        now = time.time()  
-        return now - self.opened >= .1
 
     @staticmethod
     def confirm():
@@ -40,11 +34,9 @@ class BasePopup(Popup):
             BasePopup.my_active.ok_confirm()
 
     def ok_confirm(self):
-        if self.waited_long_enough():
-            BasePopup.my_active = None
-            self.dismiss()
-            return True
-        return False
+        BasePopup.my_active = None
+        self.dismiss()
+        return True
 
     @staticmethod
     def clear():
@@ -56,21 +48,30 @@ class BasePopup(Popup):
         BasePopup.my_active = self 
 
 class MessagePopup(BasePopup):
-    """ Message Popup is for errors so far. Click on them to dismiss. """
+    """ Message Popup is for errors so far. Click anywhere to dismiss. """
+
+    def __init__(self, *args, **kwargs):
+        self.auto_dismiss = True
+        self.going = False
+        super(MessagePopup, self).__init__(*args, **kwargs)
+    
+    def on_touch_down(self, touch):
+        self.going = True
+        return True
 
     def on_touch_up(self, touch):
-        if self.collide_point(*touch.pos):
-            self.dismiss()
-            BasePopup.my_active = None
-            return True
-        return super(MessagePopup, self).on_touch_up(touch)
+        if self.going:
+            self.ok_confirm()
+        self.going = not self.going
+        return super(BasePopup, self).on_touch_up(touch)
 
 class ConfirmPopup(BasePopup):
     """ ConfirmPopup is for True/False confirmation popup with a message """
     confirm_prompt = StringProperty("")
 
     def __init__(self, message, action, *args, **kwargs):
-        self.title = "Confirm"
+        self.auto_dismiss = False
+        self.title = "" # I don't like the default :)
         self.confirm_prompt = message
         self.action = action
         super(ConfirmPopup, self).__init__(*args, **kwargs)
@@ -182,7 +183,7 @@ class PenteApp(App):
                 msg_str = "Are you sure you want to quit?"
                 ConfirmPopup.create_and_open(message=msg_str,
                             action=self.close_confirmed,
-                            size_hint=(.6, .2))
+                            size_hint=(.8, .2))
             return True
         elif key == 13:
             # Enter
