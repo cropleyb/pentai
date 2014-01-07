@@ -3,7 +3,7 @@ from null_filter import *
 
 class Evaluator():
     """
-    This is for help with debugging bad moves.
+    This is to help with debugging bad moves.
     """
     def __init__(self, calculator, state):
         self.state = state
