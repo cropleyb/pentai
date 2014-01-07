@@ -12,10 +12,10 @@ from Cython.Build import cythonize
 cy_modules = [
             'board_strip.pyx',
             'length_lookup_table.pyx',
+            'priority_filter.py',
             ]
 if False:
     cy_modules.extend([
-        'priority_filter.py',
         'budget_searcher.py',
         'utility_calculator.py',
         'utility_stats.py',
@@ -30,10 +30,7 @@ if False:
 setup(
         name = "Pentacular",
         ext_modules = cythonize(
-            [
-            'board_strip.pyx',
-            'length_lookup_table.pyx',
-            ],
+            cy_modules
             # extra_compile_args=["-O3"], # Is this doing anything?
         )
     )
