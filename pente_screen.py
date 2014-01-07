@@ -101,16 +101,16 @@ class PenteScreen(Screen):
         self.display_names()
         self.setup_grid()
 
+        # Need some time for kivy to finish setting up, otherwise
+        # the pieces are all stacked in the bottom left corner,
+        # or we get lots of GUI lag for the screen transition (AI)
         transition_time = 0.7
 
+        start_func = self.make_first_move
         if len(self.game_filename) > 0:
-            # Need some time for kivy to finish setting up, otherwise
-            # the pieces are all stacked in the bottom left corner,
-            # or we get lots of GUI lag for the screen transition (AI)
-            Clock.schedule_once(self.load_file, transition_time)
-        else:
-            # start the game
-            Clock.schedule_once(self.make_first_move, transition_time)
+            start_func = self.load_file
+
+        Clock.schedule_once(start_func, transition_time)
 
     def make_first_move(self, dt):
         """
