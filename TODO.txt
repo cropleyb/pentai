@@ -1,4 +1,6 @@
 
+Name for the app? Pentacular, Pentacle, Pentapp, Pentai, PenteAI
+IOS build: blocked by https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
 Grid option
 Tool for processing a game - which moves were not searched
 GUI thread is lagging at start of game
