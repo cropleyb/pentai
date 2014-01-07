@@ -1,5 +1,4 @@
 
-Order human player first
 Grid option
 Tool for processing a game - which moves were not searched
 GUI thread is lagging at start of game
