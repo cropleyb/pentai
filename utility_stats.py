@@ -40,10 +40,7 @@ class UtilityStats():
 
     def report_length_candidate(self, colour, length, ind_list, inc):
         self.lines[colour][length-1] += inc
-        pos_list = []
-        for i in ind_list:
-            pos = self.ind_to_pos(i)
-            pos_list.append(pos)
+        pos_list = [self.ind_to_pos(i) for i in ind_list]
         if len(pos_list) > 0:
             self.search_filter.add_or_remove_candidates(
                     colour, length, pos_list, inc)
