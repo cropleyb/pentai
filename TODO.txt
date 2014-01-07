@@ -5,8 +5,7 @@ GUI thread is lagging at start of game
 Change UI for computer selection
 Load Player Type from file (Computer/Human)
 Add rules explanation
-switch players mid-game?
-Try some profiling
+Try some more profiling?
 Add save prompt
 VCR control graphics
 Cython
