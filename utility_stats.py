@@ -40,24 +40,22 @@ class UtilityStats():
 
     def report_length_candidate(self, colour, length, ind_list, inc):
         self.lines[colour][length-1] += inc
-        pos_list = [self.ind_to_pos(i) for i in ind_list]
-        if len(pos_list) > 0:
-            self.search_filter.add_or_remove_candidates(
-                    colour, length, pos_list, inc)
+
+        pos_list = [self.i_to_p(i, self.s_num) for i in ind_list]
+
+        self.search_filter.add_or_remove_candidates(
+                colour, length, pos_list, inc)
 
     def report_take(self, colour, ind, inc):
         self.takes[colour] += inc
-        pos = self.ind_to_pos(ind)
+        pos = self.i_to_p(ind, self.s_num)
         self.search_filter.add_or_remove_take(colour, pos, inc)
         
     def report_threat(self, colour, ind, inc):
         self.threats[colour] += inc
-        pos = self.ind_to_pos(ind)
+        pos = self.i_to_p(ind, self.s_num)
         self.search_filter.add_or_remove_threat(colour, pos, inc)
 
-    def ind_to_pos(self, ind):
-        return self.i_to_p(ind, self.s_num)
-     
     def set_ind_to_pos(self, func, s_num):
         # These two should always be set together
         self.i_to_p = func
@@ -65,7 +63,6 @@ class UtilityStats():
     
     def set_or_reset_occs(self, brd, rules, pos, inc):
         # update substrips
-
         ccp = rules.can_capture_pairs
         brd_size = brd.get_size()
 
