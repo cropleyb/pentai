@@ -1,5 +1,6 @@
 
-Name for the app? Pentacular, Pentacle, Pentapp, Pentai, PenteAI
+Name for the app. Pentacular, Pentacle, Pentapp, Pentai, PenteAI
+Icon for the app.
 IOS build: blocked by https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
 Grid option
 Tool for processing a game - which moves were not searched
@@ -28,3 +29,4 @@ Rating system: Python source: http://chess.stackexchange.com/questions/1377/is-t
 Sadistic mode
 Update kivy to remove need for:
    /Applications/Kivy.app/Contents/Resources/kivy/kivy/tools/packaging/pyinstaller_hooks hack
+Get permission from Hasbro? Asked pente.net webmaster 8 Jan 2014
