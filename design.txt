@@ -242,7 +242,14 @@ Only store the version of the position with the lowest value.
 1 rotations is easy: look at N or E direction_strips.
 The flip is also easy: reverse the order of the board strips in a direction_strip
 The last flip is tricky - reversing each of the board strip bit string numbers
+
 Each position has one (or more?) recommended move.
+
+Extracting opening moves from games:
+Generate and/or download lots of top level games.
+Write a tool to add a game to the opening "database".
+pickled dictionary - canonical position to options, each with a count of wins and losses for black.
+Opening filter class - chooses one of the moves that is favorable for the current player, weighted by the wins and losses, then converts this move back to the non-canonical position (by reversing the steps taken to make the position canonical).
 
 computer opponents
 ------------------
