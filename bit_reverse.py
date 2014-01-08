@@ -1,3 +1,4 @@
+# As per http://stackoverflow.com/questions/12681945/reversing-bits-of-python-integer/20918545#20918545
 
 def reverse_mask(x):
     x = ((x & 0x55555555) << 1) | ((x & 0xAAAAAAAA) >> 1)
