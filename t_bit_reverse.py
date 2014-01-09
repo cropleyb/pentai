@@ -41,6 +41,10 @@ class BitReverseTest(unittest.TestCase):
         x = reverse_mask64(0x3333333300000000)
         self.assertEquals(x, 0x00000000CCCCCCCC)
 
+    def test_reverse_doesnt_toggle_colours(self):
+        x = reverse_mask64(0x55555555AAAAAAAA)
+        self.assertEquals(x, 0xAAAAAAAA55555555)
+
 if __name__ == "__main__":
     unittest.main()
 
