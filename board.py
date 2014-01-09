@@ -11,7 +11,7 @@ class Board():
             self.set_to_empty()
 
     def set_to_empty(self):
-        self.strips = []
+        self.strips = [] # TODO Rename to d_strips
         self.strips.append(EDirectionStrips(self.size))
         self.strips.append(SEDirectionStrips(self.size))
         self.strips.append(SDirectionStrips(self.size))
