@@ -54,6 +54,9 @@ class Rules():
             self.border_colour = (0.90,0.81,0.11,1)
         else:
             raise UnknownRuleType
+
+    def __hash__(self):
+        return hash((self.type_str, self.size))
      
 '''
     Standard rules
