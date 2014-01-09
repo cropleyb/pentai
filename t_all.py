@@ -24,6 +24,7 @@ import t_null_filter
 import t_bit_reverse
 import t_game
 import t_blindness_filter
+import t_openings_db
 
 def add_module(m, all_tests):
     suite = unittest.defaultTestLoader.loadTestsFromModule(m)
@@ -53,6 +54,7 @@ def suite():
     add_module(t_game, all_tests)
     add_module(t_bit_reverse, all_tests)
     add_module(t_blindness_filter, all_tests)
+    add_module(t_openings_db, all_tests)
 
     return all_tests
 
