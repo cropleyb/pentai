@@ -157,7 +157,7 @@ class SDirectionStrips(DirectionStrips):
         return 0, board_size-1
 
     def set_up_strips(self, board_size):
-        for i in range(board_size+1):
+        for i in range(board_size):
             self.strips.append(0)
 
     def get_strip(self, pos):
