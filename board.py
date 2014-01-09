@@ -25,6 +25,14 @@ class Board():
         new_board.strips = [s.clone() for s in self.strips]
         return new_board
 
+    def __repr__(self):
+        size = self.size
+        rep = '\n'
+        for j in range(size-1,-1,-1):
+            line = [ ['.','B','W'][self.strips[0].get_occ((i,j))] for i in range(size) ]
+            rep = rep + ' '.join(line) + '\n'
+        return rep
+ 
     def get_size(self):
         return self.size
 
