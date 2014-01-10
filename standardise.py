@@ -50,15 +50,15 @@ def diagonal_flip(state):
     return state
 
 def standardise(orig_state):
-    state = orig_state
+    state = GameState(orig_state.game, parent=orig_state)
     possibilities = []
 
     for operation in [diagonal_flip, calendar_flip,
                       diagonal_flip, calendar_flip,
                       diagonal_flip, calendar_flip,
                       diagonal_flip]:
-        state = GameState(state.game, parent=state)
         possibilities.append(state)
+        state = GameState(state.game, parent=state)
         operation(state)
 
     possibilities.append(state)

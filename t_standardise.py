@@ -118,3 +118,82 @@ class StandardiseTest(unittest.TestCase):
         self.assertEqual(brd.get_occ((0,8)), BLACK)
 
     ###################################################
+    # standardise position tests with two pieces
+
+    def test_standardise_SW_W(self):
+        self.game.load_moves("1. (0,0)\n2. (0, 4)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+    def test_standardise_SW_S(self):
+        self.game.load_moves("1. (0,0)\n2. (4, 0)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+    # !./t_standardise.py StandardiseTest.test_standardise_NW_W
+    def test_standardise_NW_W(self):
+        self.game.load_moves("1. (0,8)\n2. (0, 4)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+    # !./t_standardise.py StandardiseTest.test_standardise_NW_N
+    def test_standardise_NW_N(self):
+        self.game.load_moves("1. (0,8)\n2. (4, 8)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        #print brd
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+    def test_standardise_NE_E(self):
+        self.game.load_moves("1. (8,8)\n2. (8, 4)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+    def test_standardise_NE_N(self):
+        self.game.load_moves("1. (8, 8)\n2. (4, 8)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+    def test_standardise_SE_E(self):
+        self.game.load_moves("1. (8, 0)\n2. (8, 4)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+    def test_standardise_SE_S(self):
+        self.game.load_moves("1. (8, 0)\n2. (4, 0)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+        self.assertEqual(brd.get_occ((4,8)), WHITE)
+
+if __name__ == "__main__":
+    unittest.main()
