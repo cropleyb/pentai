@@ -15,6 +15,9 @@ class StandardiseTest(unittest.TestCase):
         self.rules = Rules(9, "standard")
         self.game = Game(self.rules, Player("BC"), Player("Whoever"))
 
+    ###################################################
+    # flip tests
+
     def test_page_flip(self): # TODO: rename to flip
         self.game.load_moves("1. (0,0)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         gpf = page_flip(self.game.current_state)
@@ -69,22 +72,49 @@ class StandardiseTest(unittest.TestCase):
         self.assertEqual(brd.get_occ((4,5)), WHITE)
 
     def test_diagonal_then_calendar(self):
-        #pdb.set_trace()
         self.game.load_moves("1. (0,0)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         gdf = diagonal_flip(self.game.current_state)
         gcf = calendar_flip(self.game.current_state)
         brd = gcf.get_board()
-        #print brd
 
         self.assertEqual(brd.get_occ((0,8)), BLACK)
         self.assertEqual(brd.get_occ((3,5)), WHITE)
         self.assertEqual(brd.get_occ((4,5)), BLACK)
         self.assertEqual(brd.get_occ((4,3)), WHITE)
-'''
-def standardise(state):
-    copy state
-    for operation in ops:
-        if state in db
-            return state
-        apply operation to state
-'''
+
+    ###################################################
+    # standardise position tests
+
+    def test_standardise_SW_corner_pos(self):
+        self.game.load_moves("1. (0,0)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+
+    def test_standardise_NW_corner_pos(self):
+        self.game.load_moves("1. (0,8)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+
+    def test_standardise_NE_corner_pos(self):
+        self.game.load_moves("1. (8,8)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+
+    def test_standardise_SE_corner_pos(self):
+        self.game.load_moves("1. (8,0)")
+        std = standardise(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(std.get_all_captured(), [0, 0, 0])
+        self.assertEqual(brd.get_occ((0,8)), BLACK)
+
+    ###################################################
