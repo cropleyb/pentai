@@ -277,4 +277,9 @@ Only generate these from depth 2 to max depth - n (tweak)
 size per pos should be board size * 64 bits + 64 bits for captures
  + 128 bits for utility
 16 * 64 = 1 kbit
-intercept ABGame's utility, terminal check
+intercept ABGame's utility, terminal check,
+  alpha_beta "return v" statements need to call game.save_utility
+ABGame.terminal needs to look up the TT; if it is cached, save to ABState and
+return true
+utility needs to look up for a saved value
+ABGame.save_utility
