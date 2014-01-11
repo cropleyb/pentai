@@ -268,3 +268,13 @@ UtilityStats
 Share GameState
   Don't want:
 AB Game, State, PriorityFilter, AI Player
+
+Transposition table
+-------------------
+dict from position to utility score
+position key should include captured info, and EDirectionStrips
+Only generate these from depth 2 to max depth - n (tweak)
+size per pos should be board size * 64 bits + 64 bits for captures
+ + 128 bits for utility
+16 * 64 = 1 kbit
+intercept ABGame's utility, terminal check
