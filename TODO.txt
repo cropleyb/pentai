@@ -1,5 +1,6 @@
 
-Transposition table!
+Fix: Toggle buttons can all be turned off
+If there is a forced move, it should be played quickly.
 Name for the app. Pentacular, Pentacle, Pentapp, Pentai, PenteAI
 Icon for the app.
 IOS build: blocked by https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
