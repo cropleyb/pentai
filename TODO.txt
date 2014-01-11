@@ -1,4 +1,5 @@
 
+Transposition table!
 Name for the app. Pentacular, Pentacle, Pentapp, Pentai, PenteAI
 Icon for the app.
 IOS build: blocked by https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
