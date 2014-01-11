@@ -99,8 +99,7 @@ def fwd7(x, y):
 def rev7(x, y):
     return (x, -y)
 
-operations = [(None,          fwd0, rev0),
-              (diagonal_flip, fwd1, rev1),
+operations = [(diagonal_flip, fwd1, rev1),
               (calendar_flip, fwd2, rev2),
               (diagonal_flip, fwd3, rev3),
               (calendar_flip, fwd4, rev4),
@@ -110,15 +109,12 @@ operations = [(None,          fwd0, rev0),
 
 def standardise(orig_state):
     state = GameState(orig_state.game, parent=orig_state)
-    possibilities = []
+    possibilities = [(state, fwd0, rev0)]
 
     for operation, fwd, rev in operations:
-        possibilities.append((state, fwd, rev))
         state = GameState(state.game, parent=state)
-        if operation != None:
-            operation(state)
-
-    possibilities.append((state, fwd, rev))
+        operation(state)
+        possibilities.append((state, fwd, rev))
 
     pb = [(p[0].board.strips[0].strips, p) for p in possibilities]
 
