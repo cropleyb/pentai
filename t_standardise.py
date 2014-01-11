@@ -87,7 +87,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_SW_corner_pos(self):
         self.game.load_moves("1. (0,0)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -95,7 +95,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_NW_corner_pos(self):
         self.game.load_moves("1. (0,8)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -103,7 +103,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_NE_corner_pos(self):
         self.game.load_moves("1. (8,8)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -111,7 +111,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_SE_corner_pos(self):
         self.game.load_moves("1. (8,0)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -122,7 +122,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_SW_W(self):
         self.game.load_moves("1. (0,0)\n2. (0, 4)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -131,7 +131,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_SW_S(self):
         self.game.load_moves("1. (0,0)\n2. (4, 0)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -141,7 +141,7 @@ class StandardiseTest(unittest.TestCase):
     # !./t_standardise.py StandardiseTest.test_standardise_NW_W
     def test_standardise_NW_W(self):
         self.game.load_moves("1. (0,8)\n2. (0, 4)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -151,7 +151,7 @@ class StandardiseTest(unittest.TestCase):
     # !./t_standardise.py StandardiseTest.test_standardise_NW_N
     def test_standardise_NW_N(self):
         self.game.load_moves("1. (0,8)\n2. (4, 8)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         #print brd
@@ -161,7 +161,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_NE_E(self):
         self.game.load_moves("1. (8,8)\n2. (8, 4)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -170,7 +170,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_NE_N(self):
         self.game.load_moves("1. (8, 8)\n2. (4, 8)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -179,7 +179,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_SE_E(self):
         self.game.load_moves("1. (8, 0)\n2. (8, 4)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
@@ -188,7 +188,7 @@ class StandardiseTest(unittest.TestCase):
 
     def test_standardise_SE_S(self):
         self.game.load_moves("1. (8, 0)\n2. (4, 0)")
-        std = standardise(self.game.current_state)
+        std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
