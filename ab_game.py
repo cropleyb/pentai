@@ -20,6 +20,9 @@ class ABGame():
             state = self.current_state
         return state.to_move()
 
+    def reset_transposition_table(self):
+        self.transposition_table = {}
+
     def utility(self, state, depth):
         if depth >= 3:
             try:

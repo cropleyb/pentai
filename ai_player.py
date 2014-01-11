@@ -54,11 +54,8 @@ class AIPlayer(Player):
 
     def do_the_search(self):
         ab_game = self.ab_game
+        ab_game.reset_transposition_table()
         md = self.max_depth
-        '''
-        if ab_game.current_state.get_move_number() < 10:
-            md = min(md, 4)
-        '''
         # TODO: Move these to ABState.__repr__
         #print ab_game.current_state
 
