@@ -2,6 +2,7 @@
 import pdb
 
 from defines import *
+from standardise import *
 
 class OpeningsDb():
     def __init__(self):
@@ -18,31 +19,37 @@ class OpeningsDb():
         rules = g.rules
         self.games.setdefault(rules, []).append(g)
 
+        for mn in range(1, 1+len(g.move_history)):
+            self.add_position(g, mn)
+
     def add_position(self, game, move_number):
         game.go_to_move(move_number)
 
-        # TODO convert to canonical form
-        NE_strips = tuple(game.get_board().get_direction_strips()[0].strips)
-        #pdb.set_trace()
-
-        position_key = (NE_strips, game.get_captured(BLACK),
+        std_state, fwd, rev = standardise(game.current_state)
+        position_key = (tuple(std_state.board.strips[0].strips), game.get_captured(BLACK),
                     game.get_captured(WHITE))
 
         position_slot = self.positions.setdefault(position_key, [])
         next_move = game.move_history[move_number-1]
-        position_slot.append((next_move, game))
+        #next_move = game.move_history[move_number]
+        position_slot.append((fwd(*next_move), game))
 
     def get_moves(self, game):
-        # TODO convert to canonical form, save the transformation
-        NE_strips = tuple(game.get_board().get_direction_strips()[0].strips)
-
-        position_key = (NE_strips, game.get_captured(BLACK),
+        # TODO: save the transformation
+        std_state, fwd, rev = standardise(game.current_state)
+        position_key = (tuple(std_state.board.strips[0].strips), game.get_captured(BLACK),
                     game.get_captured(WHITE))
 
-        #try:
-        #pdb.set_trace()
-        position_slot = self.positions[position_key]
-        return position_slot
-        #except KeyError:
-            #return []
+        try:
+            position_slot = self.positions[position_key]
+            size = game.size()
+            for pos, game in position_slot:
+                #pdb.set_trace()
+                x, y = rev(*pos)
+                if x < 0: x += size - 1
+                if y < 0: y += size - 1
+                yield (x,y), game
+            #return position_slot
+        except KeyError:
+            return
 
