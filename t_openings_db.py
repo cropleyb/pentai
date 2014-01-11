@@ -6,6 +6,8 @@ from rules import *
 from game import *
 from openings_db import *
 
+import pdb
+
 def load_moves_and_set_win(game, moves, winner):
     game.load_moves(moves)
     game.current_state.set_won_by(winner)
@@ -151,6 +153,46 @@ class ATOTest(unittest.TestCase):
 
         self.assertEquals(len(moves), 1)
         self.assertEquals(moves[0], ((3, 4), self.game))
+
+    def run_and_check_moves(self, moves_str, last_move_pos):
+        o_db = OpeningsDb()
+        self.game.load_moves(moves_str)
+        self.game.make_move(last_move_pos)
+        o_db.add_game(self.game)
+
+        lg = Game(self.rules, Player("Now1"), Player("Now2"))
+        lg.load_moves(moves_str)
+
+        moves = list(o_db.get_moves(lg))
+
+        self.assertEquals(len(moves), 1)
+        self.assertEquals(moves[0], (last_move_pos, self.game))
+
+    def test_NW(self):
+        self.run_and_check_moves("1. (0,8)\n2. (1,8)", (2,8))
+
+    def test_NE(self):
+        self.run_and_check_moves("1. (8,8)\n2. (7,8)", (6,8))
+
+    def test_EN(self):
+        self.run_and_check_moves("1. (8,8)\n2. (8,7)", (8,6))
+
+    def test_ES(self):
+        self.run_and_check_moves("1. (8,0)\n2. (8,1)", (8,2))
+
+    def test_SE(self):
+        self.run_and_check_moves("1. (8,0)\n2. (7,0)", (6,0))
+
+    def test_SW(self):
+        self.run_and_check_moves("1. (0,0)\n2. (1,0)", (2,0))
+
+    def test_WS(self):
+        self.run_and_check_moves("1. (0,0)\n2. (0,1)", (0,2))
+
+    def test_WN(self):
+        self.run_and_check_moves("1. (0,8)\n2. (0,7)", (0,6))
+
+    # TODO random game replay?
 
 if __name__ == "__main__":
     unittest.main()
