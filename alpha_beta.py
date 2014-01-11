@@ -3,8 +3,6 @@ from defines import INFINITY
 def argmax(aspl, fn):
     """ aspl: action state pair list
     """
-    #print "***** In argmax"
-
     vals = [(fn(item), item) for item in aspl]
     # sort is for debug presentation only. Since this function is only called
     # once per search, it should not be a problem.
@@ -19,31 +17,32 @@ def alphabeta_search(state, game, max_depth=4):
 
     def max_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
-            return game.utility(state)
+            return game.utility(state, depth)
         v = -INFINITY
         for (a, s) in game.successors(state, depth):
             v = max(v, min_value(s, alpha, beta, depth+1))
             if v >= beta:
-                return v
+                break
             alpha = max(alpha, v)
+        game.save_utility(state, depth, v)
         return v
 
     def min_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
-            return game.utility(state)
+            return game.utility(state, depth)
         v = INFINITY
         for (a, s) in game.successors(state, depth):
             v = min(v, max_value(s, alpha, beta, depth+1))
             if v <= alpha:
-                return v
+                break
             beta = min(beta, v)
+        game.save_utility(state, depth, v)
         return v
 
     def cutoff_test(state, depth):
         # The default test cuts off at depth d or at a terminal state
         return depth>=max_depth or game.terminal_test(state)
 
-    # print "***** Defining top_min_func"
     def top_min_func(pair):
         a, s = pair
         return min_value(s, -INFINITY, INFINITY, 1)

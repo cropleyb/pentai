@@ -13,13 +13,21 @@ class ABGame():
         s.set_state(base_game.current_state)
         self.base_game = base_game
         self.interrupted = False
+        self.transposition_table = {} # TODO: extract class?
 
     def to_move(self, state=None):
         if state is None:
             state = self.current_state
         return state.to_move()
 
-    def utility(self, state):
+    def utility(self, state, depth):
+        if depth >= 3:
+            try:
+                ret = state.cached_value
+                return ret
+            except AttributeError:
+                pass
+
         return state.utility()
 
     # TODO: Where does this belong?
@@ -46,8 +54,25 @@ class ABGame():
             if self.current_state.terminal():
                 return
 
+    def save_utility(self, state, depth, utility_value):
+        """ Save to transposition table """
+        if depth < 3:
+            return
+        key = state.board().key()
+        self.transposition_table[key] = utility_value
+
     def terminal_test(self, state):
         if self.interrupted:
             return True
+        # Check if we have this position in the transposition table
+        try:
+            key = state.board().key()
+            val = self.transposition_table[key]
+            # Yes, save it for returning from utility()
+            state.cached_value = val
+            # And return this node as terminal
+            return True
+        except KeyError:
+            pass
         return state.terminal()
 

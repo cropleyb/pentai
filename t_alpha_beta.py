@@ -18,7 +18,7 @@ class MockGame:
         for child_state in state.successors:
             yield child_state
 
-    def utility(self, state_name):
+    def utility(self, state_name, depth):
         return self.states[state_name].utility
 
     def terminal_test(self, state_name):
@@ -26,6 +26,9 @@ class MockGame:
 
     def to_move(self, state_name):
         return True # TODO?
+
+    def save_utility(self, state, depth, utility_value):
+        pass
 
 class AlphaBetaTest(unittest.TestCase):
     '''

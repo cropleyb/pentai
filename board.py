@@ -17,6 +17,9 @@ class Board():
         self.strips.append(SDirectionStrips(self.size))
         self.strips.append(SWDirectionStrips(self.size))
 
+    def key(self):
+        return tuple(self.strips[0].strips)
+
     def get_direction_strips(self):
         return self.strips
     
