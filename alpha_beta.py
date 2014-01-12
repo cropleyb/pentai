@@ -3,7 +3,14 @@ from defines import INFINITY
 def argmax(aspl, fn):
     """ aspl: action state pair list
     """
-    vals = [(fn(item), item) for item in aspl]
+    # The original list interpretation was faster but didn't short cut wins
+    vals = []
+    for item in aspl:
+        val = fn(item)
+        vals.append((val, item))
+        if val >= INFINITY:
+            break
+    #vals = [(fn(item), item) for item in aspl]
     # sort is for debug presentation only. Since this function is only called
     # once per search, it should not be a problem.
     #vals.sort()

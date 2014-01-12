@@ -215,4 +215,4 @@ class UtilityCalculator():
     # won game lengthening.
     def winning_score(self, state):
         # TODO: Sadistic mode for Rich - just multiply by move number ;)
-        return INFINITY / state.get_move_number()
+        return INFINITY * 100 / state.get_move_number()
