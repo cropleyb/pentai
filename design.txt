@@ -249,7 +249,44 @@ Extracting opening moves from games:
 Generate and/or download lots of top level games.
 Write a tool to add a game to the opening "database".
 pickled dictionary - canonical position to options, each with a count of wins and losses for black.
-Opening filter class - chooses one of the moves that is favorable for the current player, weighted by the wins and losses, then converts this move back to the non-canonical position (by reversing the steps taken to make the position canonical).
+
+Opening filter class
+--------------------
+ - chooses one of the moves that is favorable for the current player, weighted by the wins and losses, then converts this move back to the non-canonical position (by reversing the steps taken to make the position canonical).
+
+- There may only be one sensible move
+
+- ratio of wins/losses for the search player
+- more weighting for better players
+- less games -> more chance of falling through to standard priority filter
+
+jelly bean approach?:
+for each game (==move):
+	give the move a score scaled by the rating of the player of that side
+
+if that move won, add 1 to the move's numerator
+if that move lost, add 1 to the move's denominator
+
+1 point for falling through to PF.
+
+Add up each move and divide (wins:0 -> 0) - this gives the "proportion"
+Use random(total) to determine which option is chosen
+
+Fall through to PF: should this filter out the existing options?
+Yes: More variety, but may force bad moves - implement later for blindness option
+No: May just choose a bad option anyway. There may not be a good option.
+
+Openings library
+----------------
+generate with lots of games
+rating of computer opponents determined by the filter process, based on depth, width. (save data in the player)
+rating of human opponents calculated (by filter process, later)
+
+rules types: opening filter can choose moves from other DBs if the position
+is not found in the original rule set.
+1st: Standard rules / Tournament rules / Freestyle rules
+2nd: Five-In-A-Row rules
+3rd: No Capture rules
 
 computer opponents
 ------------------
