@@ -38,7 +38,7 @@ class MyCheckBoxList(GridLayout):
             self.val = checkbox.val
 
     def set_active(self, val):
-        """ Set the active value from outside """
+        """ Set the active value from other python code. """
         old = self.widgets_by_val[str(self.val)]
         old.active = False
 
