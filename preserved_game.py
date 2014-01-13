@@ -1,8 +1,16 @@
 from persistent_dict import *
 
 class PreservedGame():
+    def __init__(self, game):
+        self.rules = game.rules # .clone?
+
+        self.player = [None, game.player[1].key(), game.player[2].key()]
+
+        self.move_history = game.move_history[:]
+
     def game_name(self):
         return "Freddo" # TODO
+
 
 class AllPreservedGames():
     def __init__(self, filename):
@@ -11,6 +19,10 @@ class AllPreservedGames():
     def add_game(self, pg):
         self.games[pg.game_name()] = pg
         self.games.sync()
+
+    def preserving(self):
+        return cfp
+
 '''
 # TODO
     with PersistentDict('/tmp/demo.json', 'c', format='json') as d:
