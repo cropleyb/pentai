@@ -1,4 +1,3 @@
-Confirm by clicking on the piece again
 Taken piece for Human vs. Human bug
 Forced AI moves should be quick
 Openings DB:
