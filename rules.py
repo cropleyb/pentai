@@ -8,8 +8,8 @@ class Rules():
         if size > 19:
             raise BoardTooBigException()
         self.size = size
-        ts = type_str.lower()
-        if ts == "standard":
+        tc = type_str.lower()[0]
+        if tc == 's': # "standard"
             # TODO: constrain second black move attr.
             self.center_first = True
             self.stones_for_capture_win = 10
@@ -17,35 +17,35 @@ class Rules():
             self.can_capture_threes = False
             self.exactly_five = False
             self.border_colour = (0.83,0.83,0.83,1)
-        elif ts == "tournament":
+        elif tc == 't': # "tournament"
             self.center_first = True
             self.stones_for_capture_win = 10
             self.can_capture_pairs = True
             self.can_capture_threes = False
             self.exactly_five = False
             self.border_colour = (0.25,0.30,0.60,1)
-        elif ts[:5] == "keryo":
+        elif tc[:5] == 'k': # "keryo"
             self.center_first = True
             self.stones_for_capture_win = 15
             self.can_capture_pairs = True
             self.can_capture_threes = True
             self.exactly_five = False
             self.border_colour = (0.45,0.15,0.40,1)
-        elif ts == "freestyle":
+        elif tc == 'f': # "freestyle"
             self.center_first = False
             self.stones_for_capture_win = 10
             self.can_capture_pairs = True
             self.can_capture_threes = False
             self.exactly_five = False
             self.border_colour = (0.03,0.43,0.30,1)
-        elif ts[:4] == "five":
+        elif tc == '5': # "five in a row"
             self.center_first = False
             self.stones_for_capture_win = 0 # can capture, but wins are only from 5
             self.can_capture_pairs = True
             self.can_capture_threes = False
             self.exactly_five = True
             self.border_colour = (0.48,0.08,0.08,1)
-        elif ts[:2] == "no": # no captures
+        elif tc == 'n': # captures
             self.center_first = False
             self.stones_for_capture_win = 0
             self.can_capture_pairs = False
@@ -56,7 +56,7 @@ class Rules():
             raise UnknownRuleType
 
     def __hash__(self):
-        return hash((self.type_str, self.size))
+        return hash((self.type_str[0], self.size))
      
 '''
     Standard rules
