@@ -8,6 +8,7 @@ from priority_filter_2 import *
 from ai_player import *
 from rules import *
 from preserved_game import *
+from games_db import *
 
 import pdb
 
@@ -28,8 +29,8 @@ class PreservedGameTest(unittest.TestCase):
         orig_game = Game(r, p1, p2)
 
         pg = PreservedGame(orig_game)
-        apg = AllPreservedGames("test_games")
-        apg.add_game(pg)
+        apg = GamesDB("test_games.pkl")
+        apg.add(pg)
         #self.assertEquals(len(l), 0)
 
 if __name__ == "__main__":
