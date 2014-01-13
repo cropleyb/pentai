@@ -27,6 +27,8 @@ import t_game
 import t_blindness_filter
 import t_openings_db
 import t_standardise
+import t_preserved_game
+import t_ai_factory
 
 def add_module(m, all_tests):
     suite = unittest.defaultTestLoader.loadTestsFromModule(m)
@@ -59,6 +61,8 @@ def suite():
     add_module(t_blindness_filter, all_tests)
     add_module(t_openings_db, all_tests)
     add_module(t_standardise, all_tests)
+    add_module(t_preserved_game, all_tests)
+    add_module(t_ai_factory, all_tests)
 
     return all_tests
 
