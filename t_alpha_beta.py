@@ -78,7 +78,7 @@ class AlphaBetaTest(unittest.TestCase):
 
     def test_only_search_one_depth_level(self):
         game = MockGame([
-            MockState("S0", 0, [(0,"S1")]),
+            MockState("S0", 0, [(0,"S1"),(0,"S1")]),
             MockState("S1", 1, [(0,"S2")]),
             MockState("S2", 2, [(0,"S3")]),
             MockState("S3", 3, [])])
@@ -87,7 +87,7 @@ class AlphaBetaTest(unittest.TestCase):
 
     def test_only_search_two_depth_levels(self):
         game = MockGame([
-            MockState("S0", 0, [(0,"S1")]),
+            MockState("S0", 0, [(0,"S1"),(0,"S1")]),
             MockState("S1", 1, [(0,"S2")]),
             MockState("S2", 2, [(0,"S3")]),
             MockState("S3", 3, [])])
@@ -96,7 +96,7 @@ class AlphaBetaTest(unittest.TestCase):
 
     def test_terminal_state(self):
         game = MockGame([
-            MockState("S0", 0, [(0,"S1")]),
+            MockState("S0", 0, [(0,"S1"),(0,"S1")]),
             MockState("S1", 1, [(0,"S2")]),
             MockState("S2", 2, [(0,"S3")]),
             MockState("S3", 3, [])])

@@ -1,16 +1,23 @@
 from defines import INFINITY
 
-def argmax(aspl, fn):
+def argmax(aspi, fn):
     """ aspl: action state pair list
     """
     # The original list interpretation was faster but didn't short cut wins
+    asp_l = list(aspi)
+    only_one = (len(asp_l) == 1)
+
     vals = []
-    for item in aspl:
-        val = fn(item)
+    for item in asp_l:
+        if only_one:
+            # Don't bother searching, there is only one move
+            # TODO: This is assuming that there is only one move because
+            # they have been correctly prioritised, and that the value
+            # returned by the search is irrelevant.
+            val = 0
+        else:
+            val = fn(item)
         vals.append((val, item))
-        if val >= INFINITY:
-            break
-    #vals = [(fn(item), item) for item in aspl]
     # sort is for debug presentation only. Since this function is only called
     # once per search, it should not be a problem.
     #vals.sort()
