@@ -195,11 +195,12 @@ class PenteScreen(Screen):
     def update_captures(self, colour, captured, flip):
         """ Update the display of captured stones below the board """
         if self.game.rules.stones_for_capture_win <= 0:
-            # Don't display them if you can't win by captures
+            # Don't display them if the rules prevent capture wins
             return
         cw = self.captured_widgets[colour]
 
         if len(cw) != captured:
+            # It has changed. Remove them all first
             while len(cw) > 0:
                 w = cw.pop()
                 self.remove_widget(w)
@@ -240,11 +241,9 @@ class PenteScreen(Screen):
         white_player = self.game.get_player(WHITE)
         black_player = self.game.get_player(BLACK)
 
-        # (W human and (W's turn or B not human))
-        if white_player.get_type() == "human":
-            if self.game.to_move_colour() == WHITE or \
-               black_player.get_type() != "human":
-                return True
+        if white_player.get_type() == "human" and \
+           black_player.get_type() != "human":
+            return True
         return False
 
     def refresh_captures_and_winner(self):
