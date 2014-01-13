@@ -1,4 +1,5 @@
 Openings DB:
+  PreservedGame: HumanPlayer add fields; AIPlayer save genome
   More flexible save game format - XML?
   Start generating games in the new format
   Read and write OpeningsDB class(es) - separate files for rule type/size
@@ -17,16 +18,16 @@ Add rules explanation
 Try some more profiling?
 Add save prompt
 VCR control graphics
-Cython
+More Cython?
 Sound effects: place, capture, tick, win, loss, music
 Set names according to computer level?
 AI levels + scrollbar? Computer player names?
 pente.net interface. html scraping might not be too hard.
 Prettify GUI: Colours, layout, background, fonts
-GP interface
+GP interface (?)
 Chess Clock, mode on/off
 Music
-load iPhone 
+load on iPhone 
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
 iPad: "Rich Guano" I am running IOS7 on iPad mini.
 iTunes
