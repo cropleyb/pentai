@@ -296,6 +296,10 @@ width chokes
 blindness (5% intervals)
 openings book on/off
 
+Store AI players in DB - per game or globally? or both?
+Store their genomes - turn the run_ai code into an ai_factory.
+- look up the name of the player in the DB, get the genome
+
 evaluator
 ---------
 Need to see what the score is for any screen position, updated with each move.
