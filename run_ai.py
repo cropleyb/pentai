@@ -9,8 +9,8 @@ import time
 
 from ai_player import *
 from priority_filter import *
+from priority_filter_2 import *
 from blindness_filter import *
-from budget_searcher import *
 from evaluator import *
 
 import pdb
@@ -58,6 +58,7 @@ class Genome():
         self.mmpdl = 9
         self.narrowing = 0
         self.chokes = [(4,2)]
+        self.filter2 = False
 
         self.capture_score_base = 300
         self.take_score_base = 100
@@ -68,14 +69,14 @@ class Genome():
         self.blindness = 0
         self.sub = True
 
-    def create_player(self, name, budget=0):
+    def create_player(self, name):
         #pdb.set_trace()
-        if budget > 0:
-            sf = BudgetSearcher(budget)
+        if self.filter2:
+            sf = PriorityFilter2()
         else:
             sf = PriorityFilter()
-            sf.set_max_moves_per_depth_level(mmpdl=self.mmpdl, narrowing=self.narrowing,
-                    chokes=self.chokes)
+        sf.set_max_moves_per_depth_level(mmpdl=self.mmpdl, narrowing=self.narrowing,
+                chokes=self.chokes)
         if self.blindness > 0:
             bf = BlindnessFilter(sf)
             bf.set_blindness(self.blindness)
@@ -134,7 +135,7 @@ class Match():
     def play_one_game(self, board_size, p1, p2):
         r = rules.Rules(board_size, "standard")
         self.game = game.Game(r, p1, p2)
-        self.evaluator = Evaluator(UtilityCalculator(), self.game.current_state)
+        #self.evaluator = Evaluator(UtilityCalculator(), self.game.current_state)
 
         tt = TwoTimer()
 
@@ -143,7 +144,7 @@ class Match():
             with tt:
                 m = p.do_the_search()
                 self.game.make_move(m)
-                print self.evaluator.utility()
+                #print self.evaluator.utility()
         #pdb.set_trace()
         winner_name = self.game.winner_name()
         winner = self.game.winner()
@@ -152,7 +153,7 @@ class Match():
         else:
             ratio = tt.totals[1] / tt.totals[0]
 
-        print "Game was won by: %s" % winner_name
+        print "Game was won by: %s %s" % (["?", "B", "W"][winner], winner_name)
         print tt
  
         return "%s vs. %s: %s (%sx%s %s) %s" % (p1.name, p2.name, winner_name,
@@ -162,31 +163,34 @@ class Match():
 
         #self.genome2.length_factor = 35
         #self.genome2.take_score_base = 110
-        #self.genome2.capture_score_base = 310
+        #self.genome2.capture_score_base = 310 # Try this again for high depth
         #self.genome2.threat_score_base = 25
-        self.genome1.blindness = 0.30
-        self.genome2.blindness = 0.40
+        #self.genome1.blindness = 0.30
+        #self.genome2.blindness = 0.40
 
+        self.genome2.filter2 = True
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
-        #self.genome2.chokes = []
-        #self.genome2.chokes = [(4,3),(5,1)]
+        #self.genome1.chokes = []
+        #self.genome2.chokes = [(4,5)]
+        #self.genome2.chokes = [(4,3)]
         #self.genome2.chokes = [(2,2)]
         #self.genome1.max_depth_boost = 2
+        #self.genome2.max_depth_boost = 2
         #self.genome2.captures_scale = [0, 1, 10, 100, 1000, 50]
         #self.genome2.captures_scale = [0, 0, 0, 0, 0, 0]
         #self.genome2.move_factor = 10000000
 
-        self.genome1.sub = False
-        self.genome2.sub = False
+        #self.genome1.sub = False
+        #self.genome2.sub = False
         #self.genome2.move_factor = 50
         #self.genome2.move_factor = 5
 
         results = MatchResults()
-        for game_length in range(1, 3):
-            #for board_size in [9, 13, 19]:
-            for board_size in [9, 13, 16, 19]:
+        for game_length in range(3, 4):
+            for board_size in [9, 13, 19]:
+            #for board_size in [9, 13, 16, 19]:
                 for first_player in [0, 1]:
                     self.set_up(game_length)
                     players = [self.p1, self.p2]
@@ -209,4 +213,5 @@ if __name__ == "__main__":
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
 
     s = pstats.Stats("Profile.prof")
-    s.strip_dirs().sort_stats("cumulative").print_stats(10) # or "time"
+    #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
+    s.strip_dirs().sort_stats("time").print_stats(20)
