@@ -55,7 +55,6 @@ class MatchResults():
 
 class Match():
     def __init__(self):
-        pdb.set_trace()
         self.genome1 = Genome("Defender")
         self.genome2 = Genome("Contender")
 
