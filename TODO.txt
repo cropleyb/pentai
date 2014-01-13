@@ -1,7 +1,5 @@
-rules single letter for saving?
 Resume game -> end bug
 Restart AI?
-Interrupted should not play move
 List some DB stories
 DB story tests comma command
 Openings DB:
