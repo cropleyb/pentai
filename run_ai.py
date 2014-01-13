@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import gui
-import human_player
 import rules
 import game
 
@@ -12,12 +10,9 @@ from priority_filter import *
 from priority_filter_2 import *
 from blindness_filter import *
 from evaluator import *
+from ai_factory import *
 
 import pdb
-
-
-import pstats, cProfile
-
 
 class TwoTimer:
     def __init__(self):
@@ -36,68 +31,6 @@ class TwoTimer:
     def __repr__(self):
         tot = self.totals
         return "B: %.2fs, W: %.2fs, B/W: %.2f" % (tot[0], tot[1], tot[0]/tot[1])
-
-class Genome():
-    """
-    max_depth
-    width (max_moves_per_depth_level)
-    narrowing: 0, 1, .5, -0.5 (per depth level)
-    line base
-    capture_score_base
-    take_score_base
-    threat_score_base
-    capture scaling
-    line length scaling
-    the value of the move
-    max_time_per_move (proportion of remaining time)
-    total game time
-    search iterations - 0,1,2,3
-    """
-    def __init__(self):
-        self.max_depth = 6
-        self.mmpdl = 9
-        self.narrowing = 0
-        self.chokes = [(4,2)]
-        self.filter2 = False
-
-        self.capture_score_base = 300
-        self.take_score_base = 100
-        self.threat_score_base = 20
-        self.captures_scale = [0, 1, 1, 1, 1, 1]
-        self.length_factor = 27
-        self.move_factor = 30
-        self.blindness = 0
-        self.sub = True
-
-    def create_player(self, name):
-        #pdb.set_trace()
-        if self.filter2:
-            sf = PriorityFilter2()
-        else:
-            sf = PriorityFilter()
-        sf.set_max_moves_per_depth_level(mmpdl=self.mmpdl, narrowing=self.narrowing,
-                chokes=self.chokes)
-        if self.blindness > 0:
-            bf = BlindnessFilter(sf)
-            bf.set_blindness(self.blindness)
-            sf = bf
-        p = AIPlayer(sf, name=name)
-        self.set_config(p)
-
-        return p
-
-    def set_config(self, player):
-        uc = player.get_utility_calculator()
-        uc.capture_score_base = self.capture_score_base
-        uc.take_score_base = self.take_score_base
-        uc.threat_score_base = self.threat_score_base
-        uc.captures_scale = self.captures_scale
-        uc.length_factor = self.length_factor
-        uc.move_factor = self.move_factor
-        uc.sub = self.sub
-
-        self.max_depth_boost = 0
-        # TODO: pf = player.get_priority_filter()
 
 class MatchResults():
     def __init__(self):
@@ -122,15 +55,16 @@ class MatchResults():
 
 class Match():
     def __init__(self):
-        #pdb.set_trace()
-        self.genome1 = Genome()
-        self.genome2 = Genome()
+        pdb.set_trace()
+        self.genome1 = Genome("Defender")
+        self.genome2 = Genome("Contender")
 
     def set_up(self, game_length):
-        self.p1 = self.genome1.create_player("Defender")
-        self.p2 = self.genome2.create_player("Contender")
-        self.p1.set_max_depth(game_length + self.genome1.max_depth_boost)
-        self.p2.set_max_depth(game_length + self.genome2.max_depth_boost)
+        aif = AIFactory()
+        self.genome1.max_depth = game_length
+        self.genome2.max_depth = game_length
+        self.p1 = aif.create_ai(self.genome1)
+        self.p2 = aif.create_ai(self.genome2)
 
     def play_one_game(self, board_size, p1, p2):
         r = rules.Rules(board_size, "standard")
@@ -203,11 +137,11 @@ class Match():
         print results
 
 import random
+import pstats, cProfile
 
 if __name__ == "__main__":
     random.seed()
     m = Match()
-    '''
     m.play_some_games()
     '''
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
@@ -215,3 +149,4 @@ if __name__ == "__main__":
     s = pstats.Stats("Profile.prof")
     #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
     s.strip_dirs().sort_stats("time").print_stats(20)
+    '''
