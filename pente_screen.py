@@ -391,9 +391,8 @@ class PenteScreen(Screen):
         if self.confirmation_in_progress:
             widget, old_board_pos = self.confirmation_in_progress
             if board_pos == old_board_pos:
-                # Remove the confirmation
-                self.remove_widget(widget)
-                self.confirmation_in_progress = None
+                # Confirm the move
+                self.confirm()
             else:
                 # Adjust the confirmation
                 widget.pos = self.board_to_screen(board_pos)
@@ -407,7 +406,7 @@ class PenteScreen(Screen):
             self.add_widget(widget)
             self.confirmation_in_progress = widget, board_pos
 
-    def confirm_cb(self, dt):
+    def confirm(self):
         if self.confirmation_in_progress != None:
             widget, board_pos = self.confirmation_in_progress
             self.enqueue_action(board_pos)
@@ -451,7 +450,7 @@ class PenteScreen(Screen):
             # Assuming all controls are to the left of this
             if touch.pos[0] > self.size[0] * .25:
                 # No controls clicked below the board-> confirm
-                self.confirm_cb(None)
+                self.cancel_confirmation()
             return True
 
         # Check that it is a human's turn.
