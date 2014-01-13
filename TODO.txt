@@ -1,3 +1,9 @@
+rules single letter for saving?
+Resume game -> end bug
+Restart AI?
+Interrupted should not play move
+List some DB stories
+DB story tests comma command
 Openings DB:
   PreservedGame: HumanPlayer add fields; AIPlayer save genome
   More flexible save game format - XML?
@@ -10,6 +16,7 @@ Name for the app. Pentacular, Pentacle, Pentapp, PentAI, PenteAI
 Icon for the app.
 IOS build: blocked by https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
 Grid option
+Move markers bug - can't reproduce?
 Tool for processing a game - which moves were not searched
 GUI thread is lagging at start of game
 Change UI for computer selection
@@ -36,4 +43,5 @@ Rating system: Python source: http://chess.stackexchange.com/questions/1377/is-t
 Sadistic mode
 Update kivy to remove need for:
    /Applications/Kivy.app/Contents/Resources/kivy/kivy/tools/packaging/pyinstaller_hooks hack
+Patch DB from http://code.activestate.com/recipes/576642/ comments
 Get permission from Hasbro? Asked pente.net webmaster 8 Jan 2014
