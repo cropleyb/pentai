@@ -1,5 +1,3 @@
-Taken piece for Human vs. Human bug
-Forced AI moves should be quick
 Openings DB:
   More flexible save game format - XML?
   Start generating games in the new format
