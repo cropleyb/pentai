@@ -13,6 +13,7 @@ cy_modules = [
             'board_strip.pyx',
             'length_lookup_table.pyx',
             'priority_filter.py',
+            'priority_filter_2.py',
             ]
 if False:
     cy_modules.extend([
