@@ -1,4 +1,11 @@
 
+Forced AI moves should be quick
+Openings DB:
+  More flexible save game format - XML?
+  Start generating games in the new format
+  Read and write OpeningsDB class(es) - separate files for rule type/size
+  Game details class?
+  OpeningsFilter as described in design.txt
 Fix: Toggle buttons can all be turned off - commit to Kivi
 Name for the app. Pentacular, Pentacle, Pentapp, PentAI, PenteAI
 Icon for the app.
