@@ -65,6 +65,7 @@ class AIFactory:
         p = AIPlayer(sf, name=genome.name)
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
         self.set_config(genome, p)
+        p.genome = genome
 
         return p
 
