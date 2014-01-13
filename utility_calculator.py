@@ -197,17 +197,17 @@ class UtilityCalculator():
                 if net_captured > 0:
                     cc = self.captured_contrib(net_captured)
                     score += cc
-            # else: Captured stones are not worth anything
+                # else: Captured stones are not worth anything
 
-            us = state.utility_stats
+                us = state.utility_stats
 
-            # Give takes and threats some value for their ability to help
-            # get 5 in a row.
-            tc = self.take_contrib(us.takes[eval_colour], net_captured)
-            score += tc
+                # Give takes and threats some value for their ability to help
+                # get 5 in a row.
+                tc = self.take_contrib(us.takes[eval_colour], net_captured)
+                score += tc
 
-            tc = self.threat_contrib(us.threats[eval_colour], net_captured)
-            score += tc
+                tc = self.threat_contrib(us.threats[eval_colour], net_captured)
+                score += tc
 
         return score
 
