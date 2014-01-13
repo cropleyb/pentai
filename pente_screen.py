@@ -151,7 +151,7 @@ class PenteScreen(Screen):
         self.refresh_all()
         self.game.prompt_for_action(self)
 
-    def on_enter(self):
+    def on_pre_enter(self):
         self.refresh_all()
 
     def perform(self, dt):
