@@ -49,8 +49,9 @@ class AIPlayer(Player):
 
     def search_thread(self, gui):
         action = self.do_the_search()
-        gui.enqueue_action(action)
-        gui.trig()
+        if action:
+            gui.enqueue_action(action)
+            gui.trig()
 
     def do_the_search(self):
         ab_game = self.ab_game
@@ -61,6 +62,8 @@ class AIPlayer(Player):
 
         move, value = alpha_beta.alphabeta_search(ab_game.current_state,
                 ab_game, max_depth=md)
+        if self.ab_game.interrupted:
+            return
         action = move[0]
         if value < -INFINITY / 1000:
             # No matter what we do, there is a forceable loss.
