@@ -300,6 +300,19 @@ Store AI players in DB - per game or globally? or both?
 Store their genomes - turn the run_ai code into an ai_factory.
 - look up the name of the player in the DB, get the genome
 
+AIPlayer
+Genome
+AIFactory
+Game
+PreservedGame init from Game instance, any need for reverse transform? Replay?
+PreservedGameDB
+AllPreservedGames
+OpeningsManager orders the search through the PositionsDBs, converts games to
+  openings
+PositionsDB - one file/instance per rule type
+AIPlayerDB - just stores the Genomes
+HumanPlayerDB
+
 evaluator
 ---------
 Need to see what the score is for any screen position, updated with each move.
@@ -324,3 +337,17 @@ ABGame.terminal needs to look up the TT; if it is cached, save to ABState and
 return true
 utility needs to look up for a saved value
 ABGame.save_utility
+
+DB stories
+----------
+autosave game to DB
+list recent/unfinished games
+load game from DB from GUI
+replay old game (but no overwrite)
+choose/change player (name) from list
+tweak player
+save player
+load player
+add game to openings DB from run AI
+use openings DB to select a move
+UI for turning openings book on/off
