@@ -11,10 +11,11 @@ class GameManagerTest(unittest.TestCase):
     def setUp(self):
         self.test_players_fn = 'test_players.pkl'
         self.test_gm_fn = 'test_game_manager.pkl'
-        self.gm = GameManager(self.test_players_fn, self.test_gm_fn)
+        self.test_game_fn = 'test_S_9.pkl' # Hacky but it works
+        self.gm = GameManager(self.test_players_fn, self.test_gm_fn, "test_")
 
     def tearDown(self):
-        for filename in [self.test_players_fn, self.test_gm_fn]:
+        for filename in [self.test_players_fn, self.test_gm_fn, self.test_game_fn]:
             try:
                 os.unlink(filename)
             except OSError: pass
@@ -24,21 +25,21 @@ class GameManagerTest(unittest.TestCase):
         g = self.gm.create_game(rules, Player("Freddo"), Player("Sam"))
 
         fn = self.gm.get_filename(g)
-        self.assertEquals(fn, "t_13.pkl")
+        self.assertEquals(fn, "test_t_13.pkl")
 
     def test_game_to_filename2(self):
         rules = Rules(19, "5 in a row")
         g = self.gm.create_game(rules, Player("Alpha"), Player("Romeo"))
 
         fn = self.gm.get_filename(g)
-        self.assertEquals(fn, "5_19.pkl")
+        self.assertEquals(fn, "test_5_19.pkl")
 
     def test_id_to_filename(self):
         rules = Rules(19, "5 in a row")
         g = self.gm.create_game(rules, Player("Freddo"), Player("Sam"))
 
         fn = self.gm.get_filename(g.get_game_id())
-        self.assertEquals(fn, "5_19.pkl")
+        self.assertEquals(fn, "test_5_19.pkl")
 
     def test_save_and_fetch_game(self):
         rules = Rules(9, "Standard")

@@ -2,13 +2,13 @@ from pente_exceptions import *
 
 class Rules():
     def __init__(self, size, type_str):
-        self.type_str = type_str
+        self.type_str = type_str.lower()
         if size < 5:
             raise BoardTooSmallException()
         if size > 19:
             raise BoardTooBigException()
         self.size = size
-        tc = type_str.lower()[0]
+        tc = self.type_str[0]
         if tc == 's': # "standard"
             # TODO: constrain second black move attr.
             self.center_first = True

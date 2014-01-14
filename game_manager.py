@@ -7,9 +7,10 @@ from player_db import *
 from persistent_dict import *
 
 class GameManager(object):
-    def __init__(self, pdb_filename, gm_filename, *args, **kwargs):
+    def __init__(self, pdb_filename, gm_filename, test_prefix="", *args, **kwargs):
         self.files = {}
         self.player_db = PlayerDB(pdb_filename)
+        self.test_prefix = test_prefix
         self.data = PersistentDict(gm_filename, 'c', format='pickle')
 
     def get_filename(self, g):
@@ -20,7 +21,7 @@ class GameManager(object):
         else:
             rk = g
 
-        fn = "%s_%s.pkl" % (rk[1], rk[0])
+        fn = "%s%s_%s.pkl" % (self.test_prefix, rk[1], rk[0])
         return fn
 
     def get_file(self, g):
