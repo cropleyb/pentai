@@ -15,6 +15,7 @@ class AIPlayer(Player):
 
         self.max_depth = 1
         self.search_filter = search_filter
+        self.genome = None # temp hack
 
         self.utility_calculator = UtilityCalculator()
 
