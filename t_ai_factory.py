@@ -3,6 +3,7 @@
 import unittest
 
 from ai_factory import *
+from ai_player_db import *
 
 class GameTest(unittest.TestCase):
     def setUp(self):
@@ -25,7 +26,22 @@ class GameTest(unittest.TestCase):
         genome = Genome("Freddo Frog")
         genome.max_depth = 8
         aif = AIFactory()
-        p = aif.create_ai(genome)
+        p = aif.create_player(genome)
 
-        #sf = p.search_filter
         self.assertEquals(p.max_depth, 8)
+
+    def test_restore_player(self):
+        genome = Genome("Samuel")
+        genome.max_depth = 3
+        aif = AIFactory()
+        orig_player = aif.create_player(genome)
+
+        db = AIPlayerDB('testdb.pkl')
+        db.add(orig_player)
+
+        rp = db.find("Samuel")
+
+        self.assertEquals(rp.__class__, AIPlayer)
+        self.assertEquals(rp.name, "Samuel")
+        self.assertEquals(rp.max_depth, 3)
+

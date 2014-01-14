@@ -47,11 +47,14 @@ class Genome(object):
             raise GenomeException("Cannot set attribute %s" % attr_name)
         super(Genome, self).__setattr__(attr_name, val)
 
+    def key(self):
+        return self.name
+
 class AIFactory:
     def __init__(self):
         pass
 
-    def create_ai(self, genome):
+    def create_player(self, genome):
         if genome.filter2:
             sf = PriorityFilter2()
         else:
