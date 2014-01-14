@@ -86,8 +86,11 @@ class Game(object):
         if self.autosave_filename != None:
             self.save_history()
 
+    def set_won_by(self, colour):
+        self.current_state.set_won_by(colour)
+
     def set_interrupted(self):
-        self.current_state.set_won_by(BLACK + WHITE)
+        self.set_won_by(BLACK + WHITE)
         self.player[BLACK].set_interrupted()
         self.player[WHITE].set_interrupted()
 

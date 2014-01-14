@@ -3,6 +3,7 @@ from base_db import *
 import game
 import preserved_game
 import games_db
+
 from player_db import *
 from persistent_dict import *
 
@@ -12,6 +13,7 @@ class GameManager(object):
         self.player_db = PlayerDB(pdb_filename)
         self.test_prefix = test_prefix
         self.data = PersistentDict(gm_filename, 'c', format='pickle')
+        self.recent_db = games_db.GamesDB("%srecent.pkl" % test_prefix)
 
     def get_filename(self, g):
         if g.__class__ is game.Game:
@@ -24,7 +26,7 @@ class GameManager(object):
         fn = "%s%s_%s.pkl" % (self.test_prefix, rk[1], rk[0])
         return fn
 
-    def get_file(self, g):
+    def get_db(self, g):
         if g is None:
             return None
         fn = self.get_filename(g)
@@ -50,21 +52,40 @@ class GameManager(object):
         g.game_id = rules.key(), uid
         return g
 
-    def save(self, g):
-        f = self.get_file(g)
+    def save(self, g, game_db=None):
+        if game_db is None:
+            game_db = self.get_db(g)
         
         pg = preserved_game.PreservedGame(g)
-        f.add(pg)
+        game_db.add(pg)
+        if g.finished():
+            self.recent_db.remove(g.get_game_id())
+        else:
+            self.recent_db.add(pg)
+
+    def get_game_from_db(self, g_id, game_db):
+        if g_id is None:
+            return None
+
+        pg = game_db.find(g_id)
+        if pg is None:
+            return None
+        g = pg.restore(self.player_db)
+        return g
+    
+    def get_recent_game(self, g_id):
+        return self.get_game_from_db(g_id, self.recent_db)
 
     def get_game(self, g_id):
         if g_id is None:
             return None
 
-        game_file = self.get_file(g_id)
-        if game_file is None:
-            return None
+        game_db = self.get_db(g_id)
 
-        pg = game_file.find(g_id)
+        return self.get_game_from_db(g_id, game_db)
+
+    def get_game_from_db(self, g_id, game_db):
+        pg = game_db.find(g_id)
         if pg is None:
             return None
         g = pg.restore(self.player_db)

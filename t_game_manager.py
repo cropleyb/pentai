@@ -15,7 +15,8 @@ class GameManagerTest(unittest.TestCase):
         self.gm = GameManager(self.test_players_fn, self.test_gm_fn, "test_")
 
     def tearDown(self):
-        for filename in [self.test_players_fn, self.test_gm_fn, self.test_game_fn]:
+        for filename in [self.test_players_fn, self.test_gm_fn,
+                self.test_game_fn, "test_recent.pkl"]:
             try:
                 os.unlink(filename)
             except OSError: pass
@@ -76,6 +77,38 @@ class GameManagerTest(unittest.TestCase):
         fg2 = self.gm.get_game(g2.get_game_id())
         self.assertNotEquals(fg2, None)
         self.assertEquals(fg2.move_history, [(8,2)])
+
+    def test_save_unfinished_game_goes_to_unfinished_list(self):
+        rules = Rules(9, "Standard")
+        g1 = self.gm.create_game(rules, HumanPlayer("Glacier"), HumanPlayer("Slug"))
+        g1.make_move((5,3))
+        self.gm.save(g1)
+
+        fg1 = self.gm.get_recent_game(g1.get_game_id())
+        self.assertNotEquals(fg1, None)
+        self.assertEquals(fg1.move_history, [(5,3)])
+
+    def test_save_finished_game_doesnt_go_to_unfinished_list(self):
+        rules = Rules(9, "Standard")
+        g1 = self.gm.create_game(rules, HumanPlayer("Glacier"), HumanPlayer("Slug"))
+        g1.make_move((5,3))
+        g1.set_won_by(BLACK)
+        self.gm.save(g1)
+
+        fg1 = self.gm.get_recent_game(g1.get_game_id())
+        self.assertEquals(fg1, None)
+
+    def test_newly_finished_game_is_removed_from_unfinished_list(self):
+        rules = Rules(9, "Standard")
+        g1 = self.gm.create_game(rules, HumanPlayer("Glacier"), HumanPlayer("Slug"))
+        g1.make_move((5,3))
+        self.gm.save(g1)
+        g1.make_move((6,3))
+        g1.set_won_by(BLACK)
+        self.gm.save(g1)
+
+        fg1 = self.gm.get_recent_game(g1.get_game_id())
+        self.assertEquals(fg1, None)
 
 if __name__ == "__main__":
     unittest.main()

@@ -9,7 +9,12 @@ class BaseDB(object):
         self.objs.sync()
 
     def remove(self, key):
-        del self.objs[key]
+        try:
+            del self.objs[key]
+            self.objs.sync()
+            return True
+        except KeyError:
+            return False
 
     def find(self, key):
         try:

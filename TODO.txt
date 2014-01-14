@@ -1,13 +1,8 @@
-convert human players to/from DB format
 Resume game -> end bug
 Restart AI?
-DB story tests comma command
 Openings DB:
-  PreservedGame: HumanPlayer add fields; AIPlayer save genome
-  More flexible save game format - XML?
   Start generating games in the new format
   Read and write OpeningsDB class(es) - separate files for rule type/size
-  Game details class?
   OpeningsFilter as described in design.txt
 Fix: Toggle buttons can all be turned off - commit to Kivi
 Name for the app. Pentacular, Pentacle, Pentapp, PentAI, PenteAI
@@ -21,6 +16,7 @@ Change UI for computer selection
 Load Player Type from file (Computer/Human)
 Add rules explanation
 Try some more profiling?
+DB story tests comma command? If it is slow...
 Add save prompt
 VCR control graphics
 More Cython?
