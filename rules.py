@@ -55,8 +55,11 @@ class Rules():
         else:
             raise UnknownRuleType
 
+    def key(self):
+        return (self.size, self.type_str[0])
+
     def __hash__(self):
-        return hash((self.type_str[0], self.size))
+        return hash(self.key())
      
 '''
     Standard rules
