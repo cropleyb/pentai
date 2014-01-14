@@ -3,7 +3,7 @@
 import unittest
 
 from ai_factory import *
-from ai_player_db import *
+from player_db import *
 from human_player import *
 
 class AIFactoryTest(unittest.TestCase):

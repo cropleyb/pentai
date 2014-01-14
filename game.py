@@ -151,9 +151,9 @@ class Game():
         player_line, size_line, rules_line, the_rest = s.split('\n', 3)
 
         # TODO: This is ugly - these values will be replaced shortly
-        if self.player[BLACK] == None:
+        if self.player[BLACK] is None:
             self.player = [None, Player("Black"), Player("White")]
-        if self.rules == None:
+        if self.rules is None:
             self.rules = Rules(5,"standard")
 
         players = player_line.split(" versus ", 1)

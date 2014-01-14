@@ -1,5 +1,4 @@
-convert players to/from DB format
-use player db in game db test
+convert human players to/from DB format
 Resume game -> end bug
 Restart AI?
 DB story tests comma command

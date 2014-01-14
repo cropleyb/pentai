@@ -29,6 +29,7 @@ import t_openings_db
 import t_standardise
 import t_preserved_game
 import t_ai_factory
+import t_player_db
 
 def add_module(m, all_tests):
     suite = unittest.defaultTestLoader.loadTestsFromModule(m)
@@ -63,6 +64,7 @@ def suite():
     add_module(t_standardise, all_tests)
     add_module(t_preserved_game, all_tests)
     add_module(t_ai_factory, all_tests)
+    add_module(t_player_db, all_tests)
 
     return all_tests
 

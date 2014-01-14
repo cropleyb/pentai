@@ -3,13 +3,9 @@
 
 import unittest
 from game import *
-from priority_filter_2 import *
-from ai_player import *
-from rules import *
 from preserved_game import *
-from games_db import *
 from ai_factory import *
-from ai_player_db import *
+from player_db import * # TODO remove dependance, use mock
 
 import pdb
 
@@ -53,7 +49,7 @@ class PreservedGameTest(unittest.TestCase):
         genome2 = Genome("Hubert")
         p2 = self.create_player(genome2)
 
-        ai_db = AIPlayerDB("test_ai_players.pkl")
+        ai_db = PlayerDB("test_ai_players.pkl")
         ai_db.add(p1)
         ai_db.add(p2)
 
@@ -81,7 +77,6 @@ class PreservedGameTest(unittest.TestCase):
 
         black_player = orig_game.players[BLACK]
         self.assertEquals(black_player, p1)
-        self.assertEquals(black_player.search_filter.chokes, p1.search_filter.chokes)
 
         white_player = orig_game.players[WHITE]
         self.assertEquals(white_player, p2)
