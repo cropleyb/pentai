@@ -4,13 +4,13 @@ import game
 import preserved_game
 import games_db
 from player_db import *
+from persistent_dict import *
 
-class GameManager(BaseDB):
-    def __init__(self, pdb_filename, *args, **kwargs):
+class GameManager(object):
+    def __init__(self, pdb_filename, gm_filename, *args, **kwargs):
         self.files = {}
         self.player_db = PlayerDB(pdb_filename)
-
-        super(GameManager, self).__init__(*args, **kwargs)
+        self.data = PersistentDict(gm_filename, 'c', format='pickle')
 
     def get_filename(self, g):
         if g.__class__ is game.Game:
@@ -24,6 +24,8 @@ class GameManager(BaseDB):
         return fn
 
     def get_file(self, g):
+        if g is None:
+            return None
         fn = self.get_filename(g)
         try:
             f = self.files[fn]
@@ -31,9 +33,19 @@ class GameManager(BaseDB):
             f = self.files[fn] = games_db.GamesDB(fn)
         return f
 
+    def next_id(self):
+        try:
+            curr_id = self.data["id"]
+        except KeyError:
+            curr_id = 0
+        curr_id += 1
+        self.data["id"] = curr_id
+        self.data.sync()
+        return curr_id
+
     def create_game(self, rules, p1, p2):
         g = game.Game(rules, p1, p2)
-        uid = 1 # TODO
+        uid = self.next_id()
         g.game_id = rules.key(), uid
         return g
 
@@ -44,7 +56,12 @@ class GameManager(BaseDB):
         f.add(pg)
 
     def get_game(self, g_id):
+        if g_id is None:
+            return None
+
         game_file = self.get_file(g_id)
+        if game_file is None:
+            return None
 
         pg = game_file.find(g_id)
         if pg is None:
