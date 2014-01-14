@@ -10,11 +10,12 @@ class PreservedGame():
 
             self.winner = game.winner()
             self.moves = game.move_history[:]
+            self.game_id = game.game_id
 
     def key(self):
-        return "Freddo" # TODO
+        return self.game_id
 
-    def reincarnate(self, ai_db):
+    def restore(self, ai_db):
         orig_game = Game()
         orig_game.rules = Rules(*self.rules)
         orig_game.date = self.date

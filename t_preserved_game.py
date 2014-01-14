@@ -63,7 +63,7 @@ class PreservedGameTest(unittest.TestCase):
         today = datetime.date.today()
         pg.date = today
 
-        orig_game = pg.reincarnate(ai_db)
+        orig_game = pg.restore(ai_db)
 
         self.assertEquals(orig_game.rules.key(), (9, 'f'))
 

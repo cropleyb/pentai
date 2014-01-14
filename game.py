@@ -6,9 +6,10 @@ from rules import *
 import pdb
 import datetime
 
-class Game():
+class Game(object):
 
     def __init__(self, rules=None, player1=None, player2=None):
+        self.game_id = None
         self.rules = rules
         if rules != None:
             self.current_state = GameState(self)
