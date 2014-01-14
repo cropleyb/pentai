@@ -12,11 +12,14 @@ class AIPlayer(Player):
 
     def __init__(self, search_filter, *args, **vargs):
         Player.__init__(self, *args, **vargs)
-        self.max_depth = 1
 
+        self.max_depth = 1
         self.search_filter = search_filter
 
         self.utility_calculator = UtilityCalculator()
+
+    def __eq__(self, other):
+        return self.genome == other.genome
 
     def set_max_depth(self, max_depth):
         self.max_depth = max_depth
@@ -78,4 +81,3 @@ class AIPlayer(Player):
 
     def set_interrupted(self):
         self.ab_game.interrupted = True
-

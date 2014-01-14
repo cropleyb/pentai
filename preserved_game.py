@@ -14,15 +14,12 @@ class PreservedGame():
     def key(self):
         return "Freddo" # TODO
 
-    def reincarnate(self):
+    def reincarnate(self, ai_db):
         orig_game = Game()
         orig_game.rules = Rules(*self.rules)
         orig_game.date = self.date
         orig_game.winner = self.winner
         orig_game.move_history = self.moves[:]
-
-        # TODO: reincarnate players from player db
-        orig_game.players = self.players[:]
-        #orig_game.players = [None, self.players[1].key(), self.players[2].key()]
+        orig_game.players = [ai_db.find(p) for p in self.players]
 
         return orig_game
