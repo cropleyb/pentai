@@ -5,7 +5,7 @@ import unittest
 from ai_factory import *
 from ai_player_db import *
 
-class GameTest(unittest.TestCase):
+class AIFactoryTest(unittest.TestCase):
     def setUp(self):
         pass
 
