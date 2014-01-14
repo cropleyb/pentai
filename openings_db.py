@@ -31,11 +31,9 @@ class OpeningsDb():
 
         position_slot = self.positions.setdefault(position_key, [])
         next_move = game.move_history[move_number-1]
-        #next_move = game.move_history[move_number]
         position_slot.append((fwd(*next_move), game))
 
     def get_moves(self, game):
-        # TODO: save the transformation
         std_state, fwd, rev = standardise(game.current_state)
         position_key = (tuple(std_state.board.strips[0].strips), game.get_captured(BLACK),
                     game.get_captured(WHITE))
@@ -44,12 +42,10 @@ class OpeningsDb():
             position_slot = self.positions[position_key]
             size = game.size()
             for pos, game in position_slot:
-                #pdb.set_trace()
                 x, y = rev(*pos)
                 if x < 0: x += size - 1
                 if y < 0: y += size - 1
                 yield (x,y), game
-            #return position_slot
         except KeyError:
             return
 
