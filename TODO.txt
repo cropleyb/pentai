@@ -1,6 +1,5 @@
 Resume game -> end bug
 Restart AI?
-List some DB stories
 DB story tests comma command
 Openings DB:
   PreservedGame: HumanPlayer add fields; AIPlayer save genome
