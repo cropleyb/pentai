@@ -14,7 +14,7 @@ class Game(object):
         if rules != None:
             self.current_state = GameState(self)
 
-        self.player = [None, player1, player2]
+        self.player = [None, player1, player2] # TODO: Rename to players
         if player1 != None:
             player1.attach_to_game(self)
         if player2 != None:
@@ -44,6 +44,9 @@ class Game(object):
 
     def get_player(self, player_number):
         return self.player[player_number]
+    
+    def get_all_players(self):
+        return self.players
     
     def get_player_name(self, player_number):
         return self.player[player_number].get_name()

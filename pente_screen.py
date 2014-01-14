@@ -27,6 +27,7 @@ black_confirm_filename = "./media/b_confirm.png"
 white_confirm_filename = "./media/w_confirm.png"
 win_filename = "./media/winning_flag.png"
 turn_filename = "./media/turn_marker.png"
+computer_filename = "./media/DT.png"
 x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
@@ -58,7 +59,7 @@ class PenteScreen(Screen):
         self.game = None
         self.game_filename = filename
 
-        self.turn_marker = Piece(13, source=turn_filename)
+        self.turn_markers = None
         self.win_marker = Piece(13, source=win_filename)
 
         self.calc_board_offset(the_size)
@@ -82,6 +83,19 @@ class PenteScreen(Screen):
         """ Callback from game_state """
         self.clean_board()
 
+    def setup_turn_markers(self):
+        self.turn_markers = [None]
+        for colour in [BLACK, WHITE]:
+            player = self.game.get_player(colour)
+
+            if player.get_type() == "human":
+                filename = turn_filename
+            else:
+                filename = computer_filename
+
+            tm = Piece(13, source=filename)
+            self.turn_markers.append(tm)
+
     def set_game(self, game):
         self.clean_board()
         self.game = game
@@ -95,6 +109,7 @@ class PenteScreen(Screen):
         # We must watch what happens to the logical board, and update accordingly
         cs = game.get_current_state()
         cs.add_observer(self)
+
         self.evaluator = Evaluator(UtilityCalculator(), cs)
 
         self.trig = Clock.create_trigger(self.perform)
@@ -151,7 +166,7 @@ class PenteScreen(Screen):
         self.refresh_all()
         self.game.prompt_for_action(self)
 
-    def on_pre_enter(self):
+    def on_enter(self):
         self.refresh_all()
 
     def perform(self, dt):
@@ -237,6 +252,11 @@ class PenteScreen(Screen):
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
 
+    def get_turn_marker(self, colour):
+        if self.turn_markers is None:
+            self.setup_turn_markers()
+        return self.turn_markers[colour]
+
     def calc_flip(self):
         white_player = self.game.get_player(WHITE)
         black_player = self.game.get_player(BLACK)
@@ -258,17 +278,19 @@ class PenteScreen(Screen):
 
         if self.game.finished():
             widget = self.win_marker
-            other_marker = self.turn_marker
             colour = self.game.winner()
+            other_markers = [self.get_turn_marker(colour)]
         else:
-            widget = self.turn_marker
-            other_marker = self.win_marker
             colour = self.game.to_move_colour()
+            widget = self.get_turn_marker(colour)
+            other_markers = [self.win_marker]
 
+        other_markers.append(self.get_turn_marker(opposite_colour(colour)))
         if widget.parent == None:
             self.add_widget(widget)
-        if other_marker.parent != None:
-            self.remove_widget(other_marker)
+        for om in other_markers:
+            if om.parent != None:
+                self.remove_widget(om)
 
         size_x, size_y = self.size
 
