@@ -36,7 +36,7 @@ class GameTest(unittest.TestCase):
         aif = AIFactory()
         orig_player = aif.create_player(genome)
 
-        db = AIPlayerDB('testdb.pkl')
+        db = AIPlayerDB('test_ai.pkl')
         db.add(orig_player)
 
         rp = db.find("Samuel")
