@@ -25,6 +25,9 @@ class Game():
     def get_date(self):
         return self.date
 
+    def get_game_id(self):
+        return self.game_id
+
     # TODO: get_size for consistency
     def size(self):
         return self.rules.size

@@ -338,6 +338,16 @@ return true
 utility needs to look up for a saved value
 ABGame.save_utility
 
+Game Manager
+------------
+- recent/unfinished games: "unfinished" key
+- finished games list? do we need this?
+- dispense game unique ids? "last" a key to this. for the val, inc rules
+- find games in appropriate DB (filename calc from rules)
+- create games?
+- list of games per player? Later?
+- remove game from DB? Later.
+
 DB stories
 ----------
 autosave game to DB
