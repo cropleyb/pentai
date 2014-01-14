@@ -4,6 +4,7 @@ from player import *
 from rules import *
 
 import pdb
+import datetime
 
 class Game():
 
@@ -19,6 +20,10 @@ class Game():
             player2.attach_to_game(self)
         self.move_history = []
         self.autosave_filename = None
+        self.date = datetime.date.today() # TODO
+
+    def get_date(self):
+        return self.date
 
     # TODO: get_size for consistency
     def size(self):
