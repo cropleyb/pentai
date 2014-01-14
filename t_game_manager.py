@@ -9,7 +9,15 @@ from game_manager import *
 
 class GameManagerTest(unittest.TestCase):
     def setUp(self):
-        self.gm = GameManager("test_players.pkl", "test_game_manager.pkl")
+        self.test_players_fn = 'test_players.pkl'
+        self.test_gm_fn = 'test_game_manager.pkl'
+        self.gm = GameManager(self.test_players_fn, self.test_gm_fn)
+
+    def tearDown(self):
+        for filename in [self.test_players_fn, self.test_gm_fn]:
+            try:
+                os.unlink(filename)
+            except OSError: pass
 
     def test_game_to_filename(self):
         rules = Rules(13, "tournament")

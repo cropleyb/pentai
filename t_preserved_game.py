@@ -11,7 +11,13 @@ import pdb
 
 class PreservedGameTest(unittest.TestCase):
     def setUp(self):
+        self.test_players_fn = 'test_players.pkl'
         self.aif = AIFactory()
+
+    def tearDown(self):
+        try:
+            os.unlink(self.test_players_fn)
+        except OSError: pass
 
     def create_player(self, genome):
         return self.aif.create_player(genome)
@@ -49,7 +55,7 @@ class PreservedGameTest(unittest.TestCase):
         genome2 = Genome("Hubert")
         p2 = self.create_player(genome2)
 
-        ai_db = PlayerDB("test_ai_players.pkl")
+        ai_db = PlayerDB(self.test_players_fn)
         ai_db.add(p1)
         ai_db.add(p2)
 
