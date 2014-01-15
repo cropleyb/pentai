@@ -372,6 +372,7 @@ BaseDB - wrapper around PersistentDict
 OpeningsDB -> OpeningsMgr done
 PlayerDB -> PlayersMgr done
 game_manager -> GamesMgr done
+Convert the GameMgr player_mgr param from str to obj. done
 
 DB stories
 ----------

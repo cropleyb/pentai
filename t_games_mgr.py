@@ -6,13 +6,15 @@ from game import *
 from rules import *
 from human_player import *
 from games_mgr import *
+from players_mgr import *
 
 class GamesMgrTest(unittest.TestCase):
     def setUp(self):
         self.test_players_fn = 'test_players.pkl'
+        self.test_players = PlayersMgr(self.test_players_fn)
         self.test_gm_fn = 'test_game_manager.pkl'
         self.test_game_fn = 'test_S_9.pkl' # Hacky but it works
-        self.gm = GamesMgr(self.test_players_fn, self.test_gm_fn, "test_")
+        self.gm = GamesMgr(self.test_players, self.test_gm_fn, "test_")
 
     def tearDown(self):
         for filename in [self.test_players_fn, self.test_gm_fn,

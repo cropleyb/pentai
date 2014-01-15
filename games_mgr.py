@@ -4,13 +4,13 @@ import game
 import preserved_game
 from base_db import *
 
-from players_mgr import *
+#from players_mgr import *
 from persistent_dict import *
 
 class GamesMgr(object):
-    def __init__(self, pdb_filename, gm_filename, test_prefix="", *args, **kwargs):
+    def __init__(self, players_mgr, gm_filename, test_prefix="", *args, **kwargs):
         self.files = {}
-        self.player_mgr = PlayersMgr(pdb_filename)
+        self.player_mgr = players_mgr # PlayersMgr(pdb_filename)
         self.test_prefix = test_prefix
         self.data = PersistentDict(gm_filename, 'c', format='pickle')
         self.recent_db = BaseDB("%srecent.pkl" % test_prefix)
