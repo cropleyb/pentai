@@ -16,7 +16,14 @@ class ATOTest(unittest.TestCase):
     def setUp(self):
         self.rules = Rules(9, "standard")
         self.game = self.create_game()
-        self.o_mgr = OpeningsMgr()
+        self.o_mgr = OpeningsMgr(prefix="test_")
+
+    def tearDown(self):
+        for fn in ("test_positions.pkl",):
+            try:
+                os.unlink(fn)
+            except:
+                pass
 
     def create_game(self):
         # Game to be recorded
@@ -181,6 +188,24 @@ class ATOTest(unittest.TestCase):
         self.run_and_check_moves("1. (0,8)\n2. (0,7)", (0,6))
 
     # TODO random game replay?
+
+    ################################
+    # Persistence tests
+
+    def test_persist_position(self):
+        load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.o_mgr.add_position(self.game, 1, sync=True)
+
+        o_mgr2 = OpeningsMgr(prefix="test_")
+
+        g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
+        moves = list(o_mgr2.get_moves(g2))
+        self.assertEquals(len(moves), 1)
+        self.assertEquals(moves[0], ((4,4), self.game))
+
+    # TODO: rules clash persistence tests
+
+    # TODO: rules types delegation tests
 
 if __name__ == "__main__":
     unittest.main()
