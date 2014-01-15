@@ -28,6 +28,7 @@ import t_blindness_filter
 import t_openings_mgr
 import t_standardise
 import t_preserved_game
+import t_ai_genome
 import t_ai_factory
 import t_players_mgr
 import t_games_mgr
@@ -65,6 +66,7 @@ def suite():
     add_module(t_openings_mgr, all_tests)
     add_module(t_standardise, all_tests)
     add_module(t_preserved_game, all_tests)
+    add_module(t_ai_genome, all_tests)
     add_module(t_ai_factory, all_tests)
     add_module(t_players_mgr, all_tests)
     add_module(t_games_mgr, all_tests)

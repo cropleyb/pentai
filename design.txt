@@ -359,20 +359,22 @@ GameMgr - creates and stores games/preserved games,
 		   owns recent games DB (just the keys to the games)
 		   Uses the PlayersMgr to reconstitute players
 PreservedGame - Converts to/from game/preserved game
-OpeningsManager -> contains several Position DBs? Converts a game to positions
+OpeningsMgr -> contains several Position DBs? Converts a game to positions
 OpeningsFilter - uses the results of the OpeningsDB (PositionsDBs per rules)
-AIFactory - Converts between Genome and AIPlayer (hidden inside PlayerDB?)
+AIFactory - Converts between Genome and AIPlayer (hidden inside PlayerMgr?)
 Genome - Preservable form of AIPlayer
-PlayerManager - Stores the Players HumanPlayers directly,
+PlayerMgr - Stores the Players HumanPlayers directly,
            AIPlayer as Genomes via AIFactory
 AIPlayer(?)
 DatabaseMgr? Container for all these singletons?
-BaseDB - wrapper around PersistentDict
+
+BaseDB - wrapper around PersistentDict - rename? remove?
 
 OpeningsDB -> OpeningsMgr done
 PlayerDB -> PlayersMgr done
 game_manager -> GamesMgr done
 Convert the GameMgr player_mgr param from str to obj. done
+Split Genome out of AIFactory. -> AIGenome. done
 
 DB stories
 ----------
