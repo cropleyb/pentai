@@ -1,11 +1,11 @@
 
+DB Manager?
 Thinking in opponent's time - swap search colour then reuse position cache
 icons for everything
-Computer icon for computer turns
 GameManager in App class? Share attribute with all screens?
 Split up pente_screen?
 Resume game shouldn't replay to the end
-Restart AI?
+Restart AI button?
 Openings DB:
   Start generating games in the new format
   Read and write OpeningsDB class(es) - separate files for rule type/size
