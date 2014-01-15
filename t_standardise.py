@@ -4,7 +4,7 @@ import unittest
 
 from game_state import *
 from game import *
-from openings_db import *
+from openings_mgr import *
 from rules import *
 from standardise import *
 

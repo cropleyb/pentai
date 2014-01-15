@@ -5,7 +5,7 @@ import unittest
 from game import *
 from preserved_game import *
 from ai_factory import *
-from player_db import * # TODO remove dependance, use mock
+from players_mgr import * # TODO remove dependance, use mock
 
 import pdb
 
@@ -55,7 +55,7 @@ class PreservedGameTest(unittest.TestCase):
         genome2 = Genome("Hubert")
         p2 = self.create_player(genome2)
 
-        ai_db = PlayerDB(self.test_players_fn)
+        ai_db = PlayersMgr(self.test_players_fn)
         ai_db.add(p1)
         ai_db.add(p2)
 

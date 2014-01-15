@@ -4,13 +4,13 @@ import game
 import preserved_game
 import games_db
 
-from player_db import *
+from players_mgr import *
 from persistent_dict import *
 
 class GameManager(object):
     def __init__(self, pdb_filename, gm_filename, test_prefix="", *args, **kwargs):
         self.files = {}
-        self.player_db = PlayerDB(pdb_filename)
+        self.player_mgr = PlayersMgr(pdb_filename)
         self.test_prefix = test_prefix
         self.data = PersistentDict(gm_filename, 'c', format='pickle')
         self.recent_db = games_db.GamesDB("%srecent.pkl" % test_prefix)
@@ -70,7 +70,7 @@ class GameManager(object):
         pg = game_db.find(g_id)
         if pg is None:
             return None
-        g = pg.restore(self.player_db)
+        g = pg.restore(self.player_mgr)
         return g
     
     def get_recent_game(self, g_id):
@@ -88,6 +88,6 @@ class GameManager(object):
         pg = game_db.find(g_id)
         if pg is None:
             return None
-        g = pg.restore(self.player_db)
+        g = pg.restore(self.player_mgr)
         return g
         
