@@ -369,8 +369,9 @@ AIPlayer(?)
 DatabaseMgr? Container for all these singletons?
 BaseDB - wrapper around PersistentDict
 
-OpeningsDB -> OpeningsManager
-PlayerDB -> PlayersManager
+OpeningsDB -> OpeningsManager done
+PlayerDB -> PlayersManager done
+game_manager -> games_mgr done
 GamesDB cull
 
 DB stories

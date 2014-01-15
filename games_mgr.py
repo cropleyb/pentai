@@ -2,7 +2,7 @@ from base_db import *
 
 import game
 import preserved_game
-import games_db
+from base_db import *
 
 from players_mgr import *
 from persistent_dict import *
@@ -13,7 +13,7 @@ class GamesMgr(object):
         self.player_mgr = PlayersMgr(pdb_filename)
         self.test_prefix = test_prefix
         self.data = PersistentDict(gm_filename, 'c', format='pickle')
-        self.recent_db = games_db.GamesDB("%srecent.pkl" % test_prefix)
+        self.recent_db = BaseDB("%srecent.pkl" % test_prefix)
 
     def get_filename(self, g):
         if g.__class__ is game.Game:
@@ -33,7 +33,7 @@ class GamesMgr(object):
         try:
             f = self.files[fn]
         except KeyError:
-            f = self.files[fn] = games_db.GamesDB(fn)
+            f = self.files[fn] = BaseDB(fn)
         return f
 
     def next_id(self):
