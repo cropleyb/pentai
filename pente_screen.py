@@ -336,8 +336,10 @@ class PenteScreen(Screen):
     def setup_colour_border(self, size_x, size_y):
         w = 6 # TODO this is copied and pasted from kv
         # This is ugly, but using the "rectangle" feature causes issues in the corners
-        self.border_lines = [0,w, size_x,w, w,w, w,size_y, 0,size_y-w, size_x,size_y-w]
-        self.border_lines.extend([size_x-w,size_y, size_x-w,w])
+        self.border_lines = [w,w, size_x,w, w,w, w,size_y, w,size_y-w, size_x,size_y-w]
+        self.border_lines.extend([size_x-w,size_y, size_x-w,w, w,w, w,0])
+        # The last two points are just to fill in a point that is missing
+        # at the bottom left.
         self.border_colour = self.game.rules.border_colour
 
     def setup_grid(self, _dt=None):
