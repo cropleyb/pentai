@@ -19,6 +19,7 @@ import pdb
 
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
+        # TODO: integrate GamesMgr
         sf = PriorityFilter2()
         sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0, chokes=[(4,3)])
         p = ai_player.AIPlayer(sf, name=player_name)
@@ -148,19 +149,7 @@ class SetupScreen(Screen):
         player1 = create_player(self.black_type_widget, self.black_name, max_depth)
         player2 = create_player(self.white_type_widget, self.white_name, max_depth)
 
-        '''
-        # HACK TIME
-        if self.app.game != None:
-            pdb.set_trace()
-            g = self.app.game
-            g.player1 = player1
-            g.player2 = player2
-            g.max_depth = max_depth
-        else:
-            g = game.Game(r, player1, player2)
-        return g
-        '''
-        g = game.Game(r, player1, player2)
+        g = self.app.games_mgr.create_game(r, player1, player2)
         return g
 
     def set_player_name(self, widget, val):
@@ -171,6 +160,7 @@ class SetupScreen(Screen):
 
     def set_GUI_from_file(self, filename):
         f = open(filename)
+        #g = self.app.games_mgr.create_game(r, player1, player2)
         g = game.Game(None, None, None) # Hmmm. TODO
         g.configure_from_str(f.read())
         self.start_button.text = "Resume"
