@@ -5,10 +5,9 @@ class OpeningsFilter(object):
     def set_move_games(self, mgs):
         self.move_games = mgs
 
-    def get_iter(self, colour):
-        if len(self.move_games) == 0:
-            return
+    #def get_iter(self, colour): TODO
 
+    def get_a_good_move(self, colour):
         wins = 0
         losses = 0
         totals = []
@@ -25,8 +24,9 @@ class OpeningsFilter(object):
             totals.append((move, wins, losses))
 
         scores = [(move, wins/(losses or 0.1)) for move, wins, losses in totals]
-
         scores.sort(reverse=True)
         
-        yield scores[0][0]
+        if len(scores) == 0:
+            return
+        return scores[0][0]
 

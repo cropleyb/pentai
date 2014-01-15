@@ -20,16 +20,15 @@ class OpeningsFilterTest(unittest.TestCase):
     def test_no_moves_available_suggest_nothing(self):
         move_games = []
         self.of.set_move_games(move_games)
-        l = list(self.of.get_iter(BLACK))
-        self.assertEquals(len(l), 0)
+        move = self.of.get_a_good_move(BLACK)
+        self.assertEquals(move, None)
 
     def test_one_favourable_game(self):
-        #pdb.set_trace()
         g1 = MockGame(BLACK)
         move_games = [((4,4), (g1,))]
         self.of.set_move_games(move_games)
-        l = list(self.of.get_iter(BLACK))
-        self.assertEquals(len(l), 1)
+        move = self.of.get_a_good_move(BLACK)
+        self.assertEquals(move, (4,4))
 
 if __name__ == "__main__":
     unittest.main()
