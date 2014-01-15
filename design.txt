@@ -354,10 +354,10 @@ DB Manager?
 DB Classes
 ----------
 Game (?)
-Game Manager - creates and stores games/preserved games,
-               allocates unique ids. Owns Games DBs,
-               owns recent games DB (just the keys to the games)
-               Uses the PlayersManager to reconstitute players
+GameMgr - creates and stores games/preserved games,
+		   allocates unique ids. Owns Games DBs,
+		   owns recent games DB (just the keys to the games)
+		   Uses the PlayersMgr to reconstitute players
 PreservedGame - Converts to/from game/preserved game
 OpeningsManager -> contains several Position DBs? Converts a game to positions
 OpeningsFilter - uses the results of the OpeningsDB (PositionsDBs per rules)
@@ -369,10 +369,9 @@ AIPlayer(?)
 DatabaseMgr? Container for all these singletons?
 BaseDB - wrapper around PersistentDict
 
-OpeningsDB -> OpeningsManager done
-PlayerDB -> PlayersManager done
-game_manager -> games_mgr done
-GamesDB cull
+OpeningsDB -> OpeningsMgr done
+PlayerDB -> PlayersMgr done
+game_manager -> GamesMgr done
 
 DB stories
 ----------
