@@ -10,6 +10,7 @@ from setup_screen import *
 from options_screen import *
 from pente_screen import *
 from menu_screen import *
+from games_mgr import *
 
 from kivy.properties import ObjectProperty
 
@@ -197,7 +198,7 @@ class PenteApp(App):
                     self.show_load()
                 else:
                     # Game in progress, prompt
-                    msg_str = "Quit this game?"
+                    msg_str = "Leave this game?"
                     ConfirmPopup.create_and_open(message=msg_str,
                         action=self.show_load,
                         size_hint=(.6, .2))
@@ -226,12 +227,17 @@ class PenteApp(App):
         self.root = root
 
         self.game = None
+        player_db_filename = os.path.join("db", "players.pkl")
+        game_manager_filename = os.path.join("db", "games.pkl")
+        self.games_mgr = GamesMgr(player_db_filename, \
+                game_manager_filename)
 
         screens = [(LoadScreen, "Load"), (OptionsScreen, "Options"), \
                    (MenuScreen, "Menu"), (SetupScreen, "Setup")]
         for scr_cls, scr_name in screens:
             scr = scr_cls(name=scr_name)
             scr.app = self
+            scr.gm = self.games_mgr
             root.add_widget(scr)
         self.setup_screen = root.get_screen("Setup")
         self.game_screen = None
