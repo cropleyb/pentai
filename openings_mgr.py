@@ -61,7 +61,7 @@ class OpeningsMgr(object):
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
         arr = pos_slot.setdefault(standardised_move, [])
-        arr.append(game)
+        arr.append(game.game_id)
 
         if sync:
             db.sync()

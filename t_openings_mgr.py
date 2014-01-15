@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
+import random
 
 from rules import *
 from game import *
@@ -29,7 +30,11 @@ class ATOTest(unittest.TestCase):
     def create_game(self):
         # Game to be recorded
         game = Game(self.rules, Player("BC"), Player("Whoever"))
+        game.game_id = random.randint(0,1000)
         return game
+
+    def gid(self):
+        return self.game.game_id
 
     def test_empty_db(self):
         games = self.o_mgr.get_games(self.rules)
@@ -68,7 +73,7 @@ class ATOTest(unittest.TestCase):
         moves = list(self.o_mgr.get_move_games(g2))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((4,4), [self.game]))
+        self.assertEquals(moves[0], ((4,4), [self.gid()]))
 
     def test_add_first_white_move(self):
         # Force assymetry
@@ -81,7 +86,7 @@ class ATOTest(unittest.TestCase):
         moves = list(self.o_mgr.get_move_games(g2))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((3,3), [self.game]))
+        self.assertEquals(moves[0], ((3,3), [self.gid()]))
 
     def test_suggest_second_black_move(self):
         load_moves_and_set_win(self.game,
@@ -94,7 +99,7 @@ class ATOTest(unittest.TestCase):
         moves = list(self.o_mgr.get_move_games(g2))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((3,4), [self.game]))
+        self.assertEquals(moves[0], ((3,4), [self.gid()]))
 
     def test_add_second_white_move(self):
         load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
@@ -106,7 +111,7 @@ class ATOTest(unittest.TestCase):
         moves = list(self.o_mgr.get_move_games(g2))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((5,4), [self.game]))
+        self.assertEquals(moves[0], ((5,4), [self.gid()]))
 
     def test_find_two_alternatives(self):
         load_moves_and_set_win(self.game, "1. (1,3)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
@@ -126,7 +131,9 @@ class ATOTest(unittest.TestCase):
 
         self.assertEquals(len(move_games), 2)
         move_games.sort()
-        self.assertEquals(move_games, [((2,2), [sg]), ((3,3), [self.game])])
+        self.assertEquals(move_games,
+                [((2,2), [sg.game_id]),
+                 ((3,3), [self.gid()])])
 
     def test_find_a_symmetrical_starting_move(self):
         self.game.load_moves("1. (3,4)")
@@ -150,7 +157,7 @@ class ATOTest(unittest.TestCase):
         moves = list(self.o_mgr.get_move_games(lg))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((3, 4), [self.game]))
+        self.assertEquals(moves[0], ((3, 4), [self.gid()]))
 
     def run_and_check_moves(self, moves_str, last_move_pos):
         self.game.load_moves(moves_str)
@@ -163,7 +170,7 @@ class ATOTest(unittest.TestCase):
         moves = list(self.o_mgr.get_move_games(lg))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], (last_move_pos, [self.game]))
+        self.assertEquals(moves[0], (last_move_pos, [self.gid()]))
 
     def test_NW(self):
         self.run_and_check_moves("1. (0,8)\n2. (1,8)", (2,8))
@@ -203,7 +210,7 @@ class ATOTest(unittest.TestCase):
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((4,4), [self.game]))
+        self.assertEquals(moves[0], ((4,4), [self.gid()]))
 
     def test_persist_position_lookup_different_size(self):
         load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
@@ -226,6 +233,7 @@ class ATOTest(unittest.TestCase):
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))
         self.assertEquals(len(moves), 0)
+
     # TODO: rules types delegation tests
 
 if __name__ == "__main__":
