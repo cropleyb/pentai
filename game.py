@@ -23,6 +23,11 @@ class Game(object):
         self.autosave_filename = None
         self.date = datetime.date.today() # TODO
 
+    def __eq__(self, other):
+        if not other.__class__ is Game:
+            return False
+        return self.game_id == other.game_id
+
     def get_date(self):
         return self.date
 
