@@ -4,7 +4,7 @@ import pdb
 from defines import *
 from standardise import *
 
-class OpeningsDb():
+class OpeningsMgr():
     def __init__(self):
         self.games = {}
         self.positions = {}
