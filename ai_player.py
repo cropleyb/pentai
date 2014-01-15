@@ -59,9 +59,12 @@ class AIPlayer(Player):
 
     def do_the_search(self):
         ab_game = self.ab_game
+        # TODO: Don't reset if it is our move, we have "thinking
+        # in opponents time" turned on, and our opponent is not a computer
         ab_game.reset_transposition_table()
+
         md = self.max_depth
-        # TODO: Move these to ABState.__repr__
+
         #print ab_game.current_state
 
         move, value = alpha_beta.alphabeta_search(ab_game.current_state,
@@ -76,6 +79,10 @@ class AIPlayer(Player):
             sf = ab_game.current_state.utility_stats.search_filter
             our_colour = ab_game.current_state.to_move_colour()
             action = sf.get_iter(our_colour).next()
+
+        # TODO: Start thinking in opponents time thread here.
+
+        # TODO: if we were thinking in the opponent's time, return nothing
 
         #print " => %s" % (action,)
         return action
