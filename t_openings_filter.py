@@ -23,12 +23,52 @@ class OpeningsFilterTest(unittest.TestCase):
         move = self.of.get_a_good_move(BLACK)
         self.assertEquals(move, None)
 
+    def multiple_tries(self, tries, func, *args, **kwargs):
+        answers = {}
+        for iters in range(tries):
+            answer = func(*args, **kwargs)
+            if not answers.has_key(answer):
+                answers[answer] = 1
+            else:
+                answers[answer] += 1
+        return answers
+
+    def test_one_favourable_game_mostly_doesnt_fall_through(self):
+        g1 = MockGame(BLACK)
+        move_games = [((4,4), (g1,))]
+        self.of.set_move_games(move_games)
+
+        answers = self.multiple_tries(1000, self.of.get_a_good_move, BLACK)
+
+        self.assertGreater(answers[(4,4)], 600)
+        self.assertGreater(answers[None], 100)
+
+    def test_one_unfavourable_game_mostly_falls_through(self):
+        g1 = MockGame(WHITE)
+        move_games = [((4,4), (g1,))]
+        self.of.set_move_games(move_games)
+
+        answers = {}
+        for iters in range(1000):
+            move = self.of.get_a_good_move(BLACK)
+            if not answers.has_key(move):
+                answers[move] = 1
+            else:
+                answers[move] += 1
+
+        self.assertGreater(answers[(4,4)], 100)
+        self.assertGreater(answers[None], 600)
+
+    '''
     def test_one_favourable_game(self):
         g1 = MockGame(BLACK)
         move_games = [((4,4), (g1,))]
         self.of.set_move_games(move_games)
         move = self.of.get_a_good_move(BLACK)
         self.assertEquals(move, (4,4))
+    '''
+
+# TODO: jelly beans approach
 
 if __name__ == "__main__":
     unittest.main()

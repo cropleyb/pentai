@@ -1,3 +1,8 @@
+import random
+import pdb
+
+from defines import *
+
 class OpeningsFilter(object):
     def __init__(self):
         self.move_games = None
@@ -19,14 +24,27 @@ class OpeningsFilter(object):
                 if win_colour == colour:
                     wins += 1
                 else:
-                    assert(win_colour == other_colour(colour))
+                    assert(win_colour == opposite_colour(colour))
                     losses += 1
             totals.append((move, wins, losses))
 
-        scores = [(move, wins/(losses or 0.1)) for move, wins, losses in totals]
-        scores.sort(reverse=True)
+        total_score = 1 # For fall through to inner filter
+
+        #pdb.set_trace()
+
+        move_scores = []
+        for move, wins, losses in totals:
+            score = (wins or .2)/(losses or .2)
+            move_scores.append((move, score))
+            total_score += score
         
-        if len(scores) == 0:
-            return
-        return scores[0][0]
+        rand_val = random.random() * total_score
+
+        for move, score in move_scores:
+            if score > rand_val:
+                return move
+            rand_val -= score
+
+        # Fall through to inner filter
+        return None
 
