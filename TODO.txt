@@ -1,4 +1,5 @@
 
+Border is ugly when the screen is in transition
 Thinking in opponent's time - swap search colour then reuse position cache
 icons for everything
 Computer icon for computer turns
