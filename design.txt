@@ -348,6 +348,31 @@ Game Manager
 - list of games per player? Later?
 - remove game from DB? Later.
 
+DB Manager?
+-----------
+
+DB Classes
+----------
+Game (?)
+Game Manager - creates and stores games/preserved games,
+               allocates unique ids. Owns Games DBs,
+               owns recent games DB (just the keys to the games)
+               Uses the PlayersManager to reconstitute players
+PreservedGame - Converts to/from game/preserved game
+OpeningsManager -> contains several Position DBs? Converts a game to positions
+OpeningsFilter - uses the results of the OpeningsDB (PositionsDBs per rules)
+AIFactory - Converts between Genome and AIPlayer (hidden inside PlayerDB?)
+Genome - Preservable form of AIPlayer
+PlayerManager - Stores the Players HumanPlayers directly,
+           AIPlayer as Genomes via AIFactory
+AIPlayer(?)
+DatabaseMgr? Container for all these singletons?
+BaseDB - wrapper around PersistentDict
+
+OpeningsDB -> OpeningsManager
+PlayerDB -> PlayersManager
+GamesDB cull
+
 DB stories
 ----------
 autosave game to DB
@@ -361,3 +386,4 @@ load player
 add game to openings DB from run AI
 use openings DB to select a move
 UI for turning openings book on/off
+
