@@ -30,7 +30,7 @@ import t_standardise
 import t_preserved_game
 import t_ai_factory
 import t_players_mgr
-import t_game_manager
+import t_games_mgr
 import t_openings_filter
 
 def add_module(m, all_tests):
@@ -67,7 +67,7 @@ def suite():
     add_module(t_preserved_game, all_tests)
     add_module(t_ai_factory, all_tests)
     add_module(t_players_mgr, all_tests)
-    add_module(t_game_manager, all_tests)
+    add_module(t_games_mgr, all_tests)
     add_module(t_openings_filter, all_tests)
 
     return all_tests

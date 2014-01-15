@@ -7,7 +7,7 @@ import games_db
 from players_mgr import *
 from persistent_dict import *
 
-class GameManager(object):
+class GamesMgr(object):
     def __init__(self, pdb_filename, gm_filename, test_prefix="", *args, **kwargs):
         self.files = {}
         self.player_mgr = PlayersMgr(pdb_filename)
