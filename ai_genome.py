@@ -6,6 +6,7 @@ class Genome(object):
     def __init__(self, name):
         defaults = {
             "name": name,
+            "make_opening_move": True,
             # Search params
             "max_depth": 6,
             "max_depth_boost": 0,

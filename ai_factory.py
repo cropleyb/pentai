@@ -20,6 +20,7 @@ class AIFactory: # TODO: These are just functions
             bf.set_blindness(genome.blindness)
             sf = bf
         p = AIPlayer(sf, name=genome.name)
+        p.make_opening_move = genome.make_opening_move
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
         self.set_config(genome, p)
         p.genome = genome

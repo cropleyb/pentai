@@ -2,6 +2,8 @@ import ab_game
 import alpha_beta
 from gui import *
 
+from openings_filter import *
+from openings_mgr import *
 from player import *
 from utility_calculator import *
 
@@ -16,6 +18,8 @@ class AIPlayer(Player):
         self.max_depth = 1
         self.search_filter = search_filter
         self.genome = None # temp hack
+        self.make_opening_move = True
+        self.openings_mgr = OpeningsMgr()
 
         self.utility_calculator = UtilityCalculator()
 
@@ -35,6 +39,7 @@ class AIPlayer(Player):
         self.ab_game = ab_game.ABGame(
             base_game, search_filter=self.search_filter,
             utility_calculator=self.utility_calculator)
+        self.openings_filter = OpeningsFilter(self.openings_mgr, base_game)
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:
@@ -58,7 +63,17 @@ class AIPlayer(Player):
             gui.trig()
 
     def do_the_search(self):
+        if self.make_opening_move:
+            base_game = self.ab_game.base_game
+            colour = base_game.to_move_colour()
+            move = self.openings_filter.get_a_good_move()
+            if move:
+                return move
+            else: # TODO: min depth for turning off openings book
+                self.make_opening_move = False
+
         ab_game = self.ab_game
+
         # TODO: Don't reset if it is our move, we have "thinking
         # in opponents time" turned on, and our opponent is not a computer
         ab_game.reset_transposition_table()
