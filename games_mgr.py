@@ -1,29 +1,31 @@
 from base_db import *
 
 import game
-import preserved_game
+from preserved_game import *
 from base_db import *
 
-#from players_mgr import *
 from persistent_dict import *
 
 class GamesMgr(object):
-    def __init__(self, players_mgr, gm_filename, test_prefix="", *args, **kwargs):
-        self.files = {}
-        self.player_mgr = players_mgr # PlayersMgr(pdb_filename)
-        self.test_prefix = test_prefix
+    def __init__(self, players_mgr, gm_filename, prefix=None, *args, **kwargs):
+        self.games_dbs = {}
+        self.player_mgr = players_mgr
+        if prefix is None:
+            prefix = os.path.join("db","")
+        self.prefix = prefix
+        # TODO: test file for unique id db == self.data
         self.data = PersistentDict(gm_filename, 'c', format='pickle')
-        self.recent_db = BaseDB("%srecent.pkl" % test_prefix)
+        self.recent_db = BaseDB("%srecent.pkl" % prefix)
 
     def get_filename(self, g):
         if g.__class__ is game.Game:
             rk = g.rules.key()
-        elif g.__class__ is tuple:
-            rk = g[0]
         else:
-            rk = g
+            # Must be a game id / key already
+            assert g.__class__ is tuple
+            rk = g[0]
 
-        fn = "%s%s_%s.pkl" % (self.test_prefix, rk[1], rk[0])
+        fn = "%s%s_%s.pkl" % (self.prefix, rk[1], rk[0])
         return fn
 
     def get_db(self, g):
@@ -31,9 +33,9 @@ class GamesMgr(object):
             return None
         fn = self.get_filename(g)
         try:
-            f = self.files[fn]
+            f = self.games_dbs[fn]
         except KeyError:
-            f = self.files[fn] = BaseDB(fn)
+            f = self.games_dbs[fn] = BaseDB(fn)
         return f
 
     def next_id(self):
@@ -56,23 +58,13 @@ class GamesMgr(object):
         if game_db is None:
             game_db = self.get_db(g)
         
-        pg = preserved_game.PreservedGame(g)
+        pg = PreservedGame(g)
         game_db.add(pg)
         if g.finished():
             self.recent_db.remove(g.get_game_id())
         else:
             self.recent_db.add(pg)
 
-    def get_game_from_db(self, g_id, game_db):
-        if g_id is None:
-            return None
-
-        pg = game_db.find(g_id)
-        if pg is None:
-            return None
-        g = pg.restore(self.player_mgr)
-        return g
-    
     def get_recent_game(self, g_id):
         return self.get_game_from_db(g_id, self.recent_db)
 
@@ -85,9 +77,11 @@ class GamesMgr(object):
         return self.get_game_from_db(g_id, game_db)
 
     def get_game_from_db(self, g_id, game_db):
+        if g_id is None:
+            return None
+
         pg = game_db.find(g_id)
         if pg is None:
             return None
         g = pg.restore(self.player_mgr)
         return g
-        
