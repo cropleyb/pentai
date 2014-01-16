@@ -392,3 +392,13 @@ add game to openings DB from run AI
 use openings DB to select a move
 UI for turning openings book on/off
 
+Games
+game_id is a unique id, but it isn't enough to look up the DB files
+that are for getting the preserved (and then unpreserved) games back.
+Either use a key of (rules key, id), or
+Have another persistent dict for id to rules key for unpacking.
+If we find a game in the openings db, we have the rules type already
+so if we can optionally pass that in to the unpacking function then
+we save a lookup. Actually we can get the DB for all the games unpacking
+once since they all use the same one for a particular active game.
+I seem to have implemented the former.
