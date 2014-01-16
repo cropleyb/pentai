@@ -4,20 +4,19 @@ import pdb
 from defines import *
 
 class OpeningsFilter(object):
-    def __init__(self):
-        self.move_games = None
-
-    def set_move_games(self, mgs):
-        self.move_games = mgs
-
+    def __init__(self, openings_mgr):
+        self.openings_mgr = openings_mgr
     #def get_iter(self, colour): TODO
 
-    def get_a_good_move(self, colour):
+    def get_a_good_move(self, game):
         wins = 0
         losses = 0
         totals = []
+
+        move_games = self.openings_mgr.get_move_games(game)
+        colour = game.to_move_colour()
         
-        for mg in self.move_games:
+        for mg in move_games:
             move, games = mg
             for game in games:
                 win_colour = game.winner()
