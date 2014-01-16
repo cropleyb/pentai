@@ -9,7 +9,7 @@ from persistent_dict import *
 class GamesMgr(object):
     def __init__(self, players_mgr, prefix=None, *args, **kwargs):
         self.games_dbs = {}
-        self.player_mgr = players_mgr
+        self.players_mgr = players_mgr
         if prefix is None:
             prefix = os.path.join("db","")
         self.prefix = prefix
@@ -88,5 +88,6 @@ class GamesMgr(object):
         if pg is None:
             return None
 
-        g = pg.restore(self.player_mgr)
+        assert not self.players_mgr is None
+        g = pg.restore(self.players_mgr)
         return g
