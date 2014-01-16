@@ -51,7 +51,9 @@ class GamesMgr(object):
     def create_game(self, rules, p1, p2):
         g = game.Game(rules, p1, p2)
         uid = self.next_id()
-        g.game_id = rules.key(), uid
+        universal_key = rules.key(), uid
+        g.game_id = universal_key
+        self.id_lookup[uid] = universal_key
         return g
 
     def save(self, g, game_db=None):
