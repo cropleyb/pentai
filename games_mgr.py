@@ -15,7 +15,7 @@ class GamesMgr(object):
         self.prefix = prefix
         id_filename = "%sid_map.pkl" % prefix
         self.id_lookup = PersistentDict(id_filename, 'c', format='pickle')
-        self.recent_db = BaseDB("%srecent.pkl" % prefix)
+        self.unfinished_db = PersistentDict("%sunfinished.pkl" % prefix, 'c', format='pickle')
 
     def get_filename(self, key):
         if key.__class__ is game.Game:
@@ -61,13 +61,23 @@ class GamesMgr(object):
         
         pg = PreservedGame(g)
         game_db.add(pg)
-        if g.finished():
-            self.recent_db.remove(g.get_game_id())
-        else:
-            self.recent_db.add(pg)
+        gid = g.get_game_id()
 
-    def get_recent_game(self, g_id):
-        return self.get_game_from_db(g_id, self.recent_db)
+        if g.finished():
+            try:
+                del self.unfinished_db[gid]
+            except KeyError:
+                pass
+        else:
+            self.unfinished_db[gid] = gid
+
+    def get_unfinished_game(self, g_id):
+        try:
+            g_id = self.unfinished_db[g_id]
+            db = self.get_db(g_id)
+            return self.get_game_from_db(g_id, db)
+        except KeyError:
+            return None
 
     def get_game(self, g_id):
         if g_id is None:

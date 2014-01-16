@@ -17,7 +17,7 @@ class GamesMgrTest(unittest.TestCase):
 
     def tearDown(self):
         for filename in [self.test_players_fn, 
-                self.test_game_fn, "test_recent.pkl"]:
+                self.test_game_fn, "test_unfinished.pkl"]:
             try:
                 os.unlink(filename)
             except OSError: pass
@@ -85,7 +85,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.make_move((5,3))
         self.gm.save(g1)
 
-        fg1 = self.gm.get_recent_game(g1.get_game_id())
+        fg1 = self.gm.get_unfinished_game(g1.get_game_id())
         self.assertNotEquals(fg1, None)
         self.assertEquals(fg1.move_history, [(5,3)])
 
@@ -96,7 +96,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.set_won_by(BLACK)
         self.gm.save(g1)
 
-        fg1 = self.gm.get_recent_game(g1.get_game_id())
+        fg1 = self.gm.get_unfinished_game(g1.get_game_id())
         self.assertEquals(fg1, None)
 
     def test_newly_finished_game_is_removed_from_unfinished_list(self):
@@ -108,7 +108,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.set_won_by(BLACK)
         self.gm.save(g1)
 
-        fg1 = self.gm.get_recent_game(g1.get_game_id())
+        fg1 = self.gm.get_unfinished_game(g1.get_game_id())
         self.assertEquals(fg1, None)
 
     ############################
