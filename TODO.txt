@@ -1,4 +1,4 @@
-
+see why the games per position are all None
 DB Manager?
 Thinking in opponent's time - swap search colour then reuse position cache
 icons for everything
