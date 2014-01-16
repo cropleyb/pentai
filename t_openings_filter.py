@@ -30,7 +30,7 @@ class OpeningsFilterTest(unittest.TestCase):
     def test_no_moves_available_suggest_nothing(self):
         move_games = []
         self.set_move_games(move_games)
-        move = self.of.get_a_good_move(self.msg, BLACK)
+        move = self.of.get_a_good_move()
         self.assertEquals(move, None)
 
     def multiple_tries(self, tries,  *args, **kwargs):
@@ -48,7 +48,7 @@ class OpeningsFilterTest(unittest.TestCase):
         move_games = [((4,4), (g1,))]
         self.set_move_games(move_games)
 
-        answers = self.multiple_tries(1000, self.msg, BLACK)
+        answers = self.multiple_tries(1000)
 
         self.assertGreater(answers[(4,4)], 600)
         self.assertGreater(answers[None], 100)
@@ -58,7 +58,7 @@ class OpeningsFilterTest(unittest.TestCase):
         move_games = [((4,4), (g1,))]
         self.set_move_games(move_games)
 
-        answers = self.multiple_tries(1000, self.msg, BLACK)
+        answers = self.multiple_tries(1000)
 
         self.assertGreater(answers[(4,4)], 100)
         self.assertGreater(answers[None], 600)
@@ -68,7 +68,7 @@ class OpeningsFilterTest(unittest.TestCase):
         g2 = MockFoundGame(WHITE)
         move_games = [((4,4), (g1,g2))]
         self.set_move_games(move_games)
-        answers = self.multiple_tries(1000, self.msg, BLACK)
+        answers = self.multiple_tries(1000)
 
         self.assertGreater(answers[(4,4)], 350)
         self.assertGreater(answers[None], 350)
@@ -78,7 +78,7 @@ class OpeningsFilterTest(unittest.TestCase):
         g2 = MockFoundGame(WHITE)
         move_games = [((4,4), (g1,)), ((3,4),(g2,))]
         self.set_move_games(move_games)
-        answers = self.multiple_tries(1000, self.msg, BLACK)
+        answers = self.multiple_tries(1000)
 
         self.assertGreater(answers[(4,4)], 650)
         self.assertGreater(answers[(3,4)], 50)
