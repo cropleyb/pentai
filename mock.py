@@ -60,7 +60,7 @@ import re
 class MockInterfaceError(Exception):
     pass
 
-class Mock:
+class Mock(object):
     """
     The Mock class emulates any other class for testing purposes.
     All method calls are stored for later examination.
