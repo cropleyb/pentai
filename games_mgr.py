@@ -35,7 +35,8 @@ class GamesMgr(object):
         try:
             f = self.games_dbs[fn]
         except KeyError:
-            f = self.games_dbs[fn] = BaseDB(fn)
+            f = self.games_dbs[fn] = \
+                PersistentDict(fn, 'c', format='pickle')
         return f
 
     def next_id(self):
@@ -60,7 +61,7 @@ class GamesMgr(object):
             game_db = self.get_db(g)
         
         pg = PreservedGame(g)
-        game_db.add(pg)
+        game_db[pg.key()] = pg
         gid = g.get_game_id()
 
         if g.finished():
@@ -72,27 +73,20 @@ class GamesMgr(object):
             self.unfinished_db[gid] = gid
 
     def get_unfinished_game(self, g_id):
-        try:
-            g_id = self.unfinished_db[g_id]
-            db = self.get_db(g_id)
-            return self.get_game_from_db(g_id, db)
-        except KeyError:
+        if not g_id in self.unfinished_db:
             return None
+        return self.get_game(g_id)
 
-    def get_game(self, g_id):
+    def get_game(self, g_id, game_db=None):
         if g_id is None:
             return None
 
-        game_db = self.get_db(g_id)
+        if game_db is None:
+            game_db = self.get_db(g_id)
 
-        return self.get_game_from_db(g_id, game_db)
-
-    def get_game_from_db(self, g_id, game_db):
-        if g_id is None:
-            return None
-
-        pg = game_db.find(g_id)
+        pg = game_db[g_id]
         if pg is None:
             return None
+
         g = pg.restore(self.player_mgr)
         return g
