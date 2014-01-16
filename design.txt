@@ -371,6 +371,9 @@ DatabaseMgr? Container for all these singletons?
 
 BaseDB - wrapper around PersistentDict - rename? remove?
 
+Rename OpeningsFilter to openings_mover
+Rename OpeningsMgr to openings_library
+save the games_mgr in run_ai to save the game_id to game mapping
 Generate some data for the OpeningsMgr in run_ai.py
 OpeningsMgr needs to store things persistently. done
 OpeningsDB -> OpeningsMgr done
@@ -403,3 +406,9 @@ If we find a game in the openings db, we have the rules type already
 so if we can optionally pass that in to the unpacking function then
 we save a lookup. Actually we can get the DB for all the games unpacking
 once since they all use the same one for a particular active game.
+
+Openings book search integration
+--------------------------------
+We don't need to follow the filter pattern because it isn't going into
+the search algorithm.
+
