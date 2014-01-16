@@ -112,6 +112,18 @@ class GamesMgrTest(unittest.TestCase):
         fg1 = self.gm.get_recent_game(g1.get_game_id())
         self.assertEquals(fg1, None)
 
+    ############################
+
+    def test_unpack_game_without_db(self):
+        rules = Rules(9, "Standard")
+        g1 = self.gm.create_game(rules, HumanPlayer("Nadia"),
+                                        HumanPlayer("Roberto"))
+        g1.make_move((6,3))
+        self.gm.save(g1)
+
+        fg = self.gm.get_game(g1.get_game_id())
+        self.assertEquals(fg, g1)
+
 if __name__ == "__main__":
     unittest.main()
 
