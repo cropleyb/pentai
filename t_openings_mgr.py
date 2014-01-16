@@ -7,8 +7,6 @@ from rules import *
 from game import *
 from openings_mgr import *
 
-import pdb
-
 def load_moves_and_set_win(game, moves, winner):
     game.load_moves(moves)
     game.current_state.set_won_by(winner)
@@ -20,7 +18,6 @@ class ATOTest(unittest.TestCase):
         self.o_mgr = OpeningsMgr(prefix="test_")
 
     def tearDown(self):
-        #for fn in ("test_positions.pkl","test_s_9_openings.pkl"):
         for fn in (["test_s_9_openings.pkl"]):
             try:
                 os.unlink(fn)
@@ -35,27 +32,6 @@ class ATOTest(unittest.TestCase):
 
     def gid(self):
         return self.game.game_id
-
-    def test_empty_db(self):
-        games = self.o_mgr.get_games(self.rules)
-        self.assertEquals(len(games), 0)
-
-    def test_add_9_game(self):
-        self.rules = Rules(9, "standard")
-        self.game = self.create_game()
-
-        self.o_mgr.add_game(self.game)
-
-        self.assertEquals(len(self.o_mgr.get_games(self.rules)), 1)
-
-    def test_add_13_game(self):
-        self.rules = Rules(13, "standard")
-        self.game = Game(self.rules, Player("BC"), Player("Whoever"))
-        load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
-
-        self.o_mgr.add_game(self.game)
-
-        self.assertEquals(len(self.o_mgr.get_games(self.rules)), 1)
 
     def test_no_suggestions(self):
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))

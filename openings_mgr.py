@@ -1,13 +1,10 @@
 
-import pdb
 from game import *
-from defines import *
 from standardise import *
 from persistent_dict import *
 
 class OpeningsMgr(object):
     def __init__(self, prefix=None):
-        self.games = {}
         self.positions_dbs = {}
         if prefix is None:
             prefix = os.path.join("db","")
@@ -34,15 +31,8 @@ class OpeningsMgr(object):
             f = self.positions_dbs[fn] = PersistentDict(fn)
         return f
 
-    def get_games(self, rules):
-        try:
-            return self.games[rules]
-        except KeyError:
-            return []
-
     def add_game(self, g):
         rules = g.rules
-        self.games.setdefault(rules, []).append(g)
 
         for mn in range(1, 1+len(g.move_history)):
             self.add_position(g, mn)
