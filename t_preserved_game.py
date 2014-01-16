@@ -30,6 +30,7 @@ class PreservedGameTest(unittest.TestCase):
 
         r = Rules(13, "standard")
         orig_game = Game(r, p1, p2)
+        orig_game.game_id = ((13, 's'), 1)
         orig_game.make_move((7,3))
 
         pg = PreservedGame(orig_game)
@@ -63,6 +64,8 @@ class PreservedGameTest(unittest.TestCase):
         pg.players = [None, "Marjory", "Hubert"]
 
         pg.rules = (9, 'f')
+        pg.game_id = ((9, 'f'), 1)
+
         pg.moves = [(8,1)]
         pg.winner = BLACK
 
