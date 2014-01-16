@@ -17,7 +17,10 @@ class AIPlayerTest(unittest.TestCase):
     def create_player(self, name, mmpdl, narrowing):
         sf = PriorityFilter()
         sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
-        return AIPlayer(sf, name=name)
+        
+        player = AIPlayer(sf, name=name)
+        player.make_opening_move = False
+        return player
 
     def setUp(self):
         self.p1 = self.create_player("Deep thunk", 9, 0)
