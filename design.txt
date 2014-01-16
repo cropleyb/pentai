@@ -371,7 +371,8 @@ DatabaseMgr? Container for all these singletons?
 
 BaseDB - wrapper around PersistentDict - rename? remove?
 
-****   OpeningsMgr needs to store things persistently
+Generate some data for the OpeningsMgr in run_ai.py
+OpeningsMgr needs to store things persistently. done
 OpeningsDB -> OpeningsMgr done
 PlayerDB -> PlayersMgr done
 game_manager -> GamesMgr done
