@@ -31,13 +31,13 @@ class OpeningsMgr(object):
             f = self.positions_dbs[fn] = PersistentDict(fn)
         return f
 
-    def add_game(self, g):
-        rules = g.rules
-
+    def add_game(self, g, db=None):
         for mn in range(1, 1+len(g.move_history)):
-            self.add_position(g, mn)
+            # Only needs to be looked up the first time
+            db = self.add_position(g, mn, db)
+        db.sync()
 
-    def add_position(self, game, move_number, sync=False):
+    def add_position(self, game, move_number, db=None, sync=False):
         game.go_to_move(move_number)
 
         std_state, fwd, rev = standardise(game.current_state)
@@ -46,7 +46,8 @@ class OpeningsMgr(object):
                 game.get_captured(WHITE))
 
         # Get the appropriate file for positions of this rule type and size
-        db = self.get_db(game)
+        if db is None:
+            db = self.get_db(game)
         pos_slot = db.setdefault(position_key, {})
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
@@ -55,6 +56,7 @@ class OpeningsMgr(object):
 
         if sync:
             db.sync()
+        return db
 
     def get_move_games(self, game):
         std_state, fwd, rev = standardise(game.current_state)
@@ -71,6 +73,7 @@ class OpeningsMgr(object):
                 x, y = rev(*pos)
                 if x < 0: x += size - 1
                 if y < 0: y += size - 1
+                # TODO: Convert the game_ids to games
                 yield (x,y), games
         except KeyError:
             return
