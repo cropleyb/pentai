@@ -17,21 +17,21 @@ class GamesMgr(object):
         self.id_lookup = PersistentDict(id_filename, 'c', format='pickle')
         self.recent_db = BaseDB("%srecent.pkl" % prefix)
 
-    def get_filename(self, g):
-        if g.__class__ is game.Game:
-            rk = g.rules.key()
+    def get_filename(self, key):
+        if key.__class__ is game.Game:
+            rk = key.rules.key()
+        elif key.__class__ is tuple:
+            rk = key[0]
         else:
-            # Must be a game id / key already
-            assert g.__class__ is tuple
-            rk = g[0]
+            rk = self.id_lookup[key]
 
         fn = "%s%s_%s.pkl" % (self.prefix, rk[1], rk[0])
         return fn
 
-    def get_db(self, g):
-        if g is None:
+    def get_db(self, key):
+        if key is None:
             return None
-        fn = self.get_filename(g)
+        fn = self.get_filename(key)
         try:
             f = self.games_dbs[fn]
         except KeyError:
@@ -51,9 +51,8 @@ class GamesMgr(object):
     def create_game(self, rules, p1, p2):
         g = game.Game(rules, p1, p2)
         uid = self.next_id()
-        universal_key = rules.key(), uid
-        g.game_id = universal_key
-        self.id_lookup[uid] = universal_key
+        g.game_id = uid
+        self.id_lookup[uid] = rules.key()
         return g
 
     def save(self, g, game_db=None):
