@@ -12,12 +12,11 @@ class GamesMgrTest(unittest.TestCase):
     def setUp(self):
         self.test_players_fn = 'test_players.pkl'
         self.test_players = PlayersMgr(self.test_players_fn)
-        self.test_gm_fn = 'test_game_manager.pkl'
         self.test_game_fn = 'test_S_9.pkl' # Hacky but it works
-        self.gm = GamesMgr(self.test_players, self.test_gm_fn, "test_")
+        self.gm = GamesMgr(self.test_players, "test_")
 
     def tearDown(self):
-        for filename in [self.test_players_fn, self.test_gm_fn,
+        for filename in [self.test_players_fn, 
                 self.test_game_fn, "test_recent.pkl"]:
             try:
                 os.unlink(filename)

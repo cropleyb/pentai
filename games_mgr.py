@@ -7,14 +7,14 @@ from base_db import *
 from persistent_dict import *
 
 class GamesMgr(object):
-    def __init__(self, players_mgr, gm_filename, prefix=None, *args, **kwargs):
+    def __init__(self, players_mgr, prefix=None, *args, **kwargs):
         self.games_dbs = {}
         self.player_mgr = players_mgr
         if prefix is None:
             prefix = os.path.join("db","")
         self.prefix = prefix
-        # TODO: test file for unique id db == self.data
-        self.data = PersistentDict(gm_filename, 'c', format='pickle')
+        id_filename = "%sid_map.pkl" % prefix
+        self.id_lookup = PersistentDict(id_filename, 'c', format='pickle')
         self.recent_db = BaseDB("%srecent.pkl" % prefix)
 
     def get_filename(self, g):
@@ -40,12 +40,12 @@ class GamesMgr(object):
 
     def next_id(self):
         try:
-            curr_id = self.data["id"]
+            curr_id = self.id_lookup["id"]
         except KeyError:
             curr_id = 0
         curr_id += 1
-        self.data["id"] = curr_id
-        self.data.sync()
+        self.id_lookup["id"] = curr_id
+        self.id_lookup.sync()
         return curr_id
 
     def create_game(self, rules, p1, p2):
