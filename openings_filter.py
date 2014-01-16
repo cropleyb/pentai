@@ -8,17 +8,16 @@ class OpeningsFilter(object):
         self.openings_mgr = openings_mgr
         self.game = game
 
-    def get_iter(self, colour):
-        m = self.get_a_good_move(self, self.game)
-        yield m
-
-    def get_a_good_move(self, game, colour):
+    def get_a_good_move(self):
         wins = 0
         losses = 0
         totals = []
 
-        move_games = self.openings_mgr.get_move_games(game)
-        #colour = game.to_move_colour()
+        colour = self.game.to_move_colour()
+
+        #pdb.set_trace()
+
+        move_games = self.openings_mgr.get_move_games(self.game)
         
         for mg in move_games:
             move, games = mg
