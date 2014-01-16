@@ -63,7 +63,7 @@ class OpeningsFilterTest(unittest.TestCase):
         self.assertGreater(answers[(4,4)], 350)
         self.assertGreater(answers[None], 350)
 
-    def test_two_moves_on_good_one_bad(self):
+    def test_two_moves_one_good_one_bad(self):
         g1 = MockGame(BLACK)
         g2 = MockGame(WHITE)
         move_games = [((4,4), (g1,)), ((3,4),(g2,))]
