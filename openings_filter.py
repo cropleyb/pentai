@@ -15,14 +15,13 @@ class OpeningsFilter(object):
 
         colour = self.game.to_move_colour()
 
-        #pdb.set_trace()
-
         move_games = self.o_mgr.get_move_games(self.game)
         
         for mg in move_games:
             move, games = mg
-            for game in games:
-                win_colour = game.winner()
+            for g in games:
+                win_colour = g.winner()
+
                 if win_colour == colour:
                     wins += 1
                 else:
@@ -31,8 +30,6 @@ class OpeningsFilter(object):
             totals.append((move, wins, losses))
 
         total_score = 1 # For fall through to inner filter
-
-        #pdb.set_trace()
 
         move_scores = []
         for move, wins, losses in totals:
