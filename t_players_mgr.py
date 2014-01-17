@@ -6,10 +6,11 @@ import unittest
 from ai_factory import *
 from players_mgr import *
 from human_player import *
+from ai_player import *
 
 class AIFactoryTest(unittest.TestCase):
     def setUp(self):
-        self.test_db_filename = 'test_player.pkl'
+        self.test_db_filename = 'test_players.pkl'
 
     def tearDown(self):
         os.unlink(self.test_db_filename)
@@ -20,7 +21,7 @@ class AIFactoryTest(unittest.TestCase):
         aif = AIFactory()
         orig_player = aif.create_player(genome)
 
-        db = PlayersMgr(self.test_db_filename)
+        db = PlayersMgr(prefix="test_")
         db.add(orig_player)
 
         rp = db.find("Samuel")
@@ -31,13 +32,13 @@ class AIFactoryTest(unittest.TestCase):
 
 class HumanDBTest(unittest.TestCase):
     def setUp(self):
-        self.test_db_filename = 'test_player.pkl'
+        self.test_db_filename = 'test_players.pkl'
 
     def tearDown(self):
         os.unlink(self.test_db_filename)
 
     def test_human_save_to_db(self):
-        db = PlayersMgr(self.test_db_filename)
+        db = PlayersMgr(prefix="test_")
         p = HumanPlayer("Sandra")
         db.add(p)
 

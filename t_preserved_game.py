@@ -56,7 +56,7 @@ class PreservedGameTest(unittest.TestCase):
         genome2 = Genome("Hubert")
         p2 = self.create_player(genome2)
 
-        ai_db = PlayersMgr(self.test_players_fn)
+        ai_db = PlayersMgr(prefix="test_")
         ai_db.add(p1)
         ai_db.add(p2)
 
