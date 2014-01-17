@@ -10,8 +10,8 @@ from kivy.uix.screenmanager import Screen
 import rules
 import game
 import human_player
-import ai_player
-from priority_filter_2 import *
+import ai_genome
+import ai_factory
 
 from defines import *
 
@@ -19,11 +19,12 @@ import pdb
 
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
-        # TODO: integrate GamesMgr
-        sf = PriorityFilter2()
-        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0, chokes=[(4,3)])
-        p = ai_player.AIPlayer(sf, name=player_name)
-        p.set_max_depth(max_depth)
+        genome = ai_genome.Genome(player_name)
+        genome.max_depth = max_depth
+        # TODO: configure openings book usage
+
+        aif = ai_factory.AIFactory()
+        p = aif.create_player(genome)
     else:
         p = human_player.HumanPlayer(player_name)
     return p
