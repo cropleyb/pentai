@@ -11,6 +11,8 @@ from priority_filter_2 import *
 from blindness_filter import *
 from evaluator import *
 from ai_factory import *
+from openings_mgr import *
+from games_mgr import *
 
 import pdb
 
@@ -57,17 +59,20 @@ class Match():
     def __init__(self):
         self.genome1 = Genome("Defender")
         self.genome2 = Genome("Contender")
+        # We're not doing player lookups, so we don't need the players_mgr
+        self.games_mgr = GamesMgr()
+        self.openings_mgr = OpeningsMgr(self.games_mgr)
 
     def set_up(self, game_length):
         aif = AIFactory()
         self.genome1.max_depth = game_length
         self.genome2.max_depth = game_length
-        self.p1 = aif.create_ai(self.genome1)
-        self.p2 = aif.create_ai(self.genome2)
+        self.p1 = aif.create_player(self.genome1)
+        self.p2 = aif.create_player(self.genome2)
 
     def play_one_game(self, board_size, p1, p2):
         r = rules.Rules(board_size, "standard")
-        self.game = game.Game(r, p1, p2)
+        self.game = self.games_mgr.create_game(r, p1, p2)
         #self.evaluator = Evaluator(UtilityCalculator(), self.game.current_state)
 
         tt = TwoTimer()
@@ -81,6 +86,11 @@ class Match():
         #pdb.set_trace()
         winner_name = self.game.winner_name()
         winner = self.game.winner()
+
+        #pdb.set_trace()
+        self.openings_mgr.add_game(self.game)
+        self.games_mgr.save(self.game)
+        
         if p1.name == "Contender":
             ratio = tt.totals[0] / tt.totals[1]
         else:
