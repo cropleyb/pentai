@@ -12,8 +12,8 @@ class Genome(object):
             "max_depth_boost": 0,
             "mmpdl": 9,
             "narrowing": 0,
-            "chokes": [(4,2)],
-            "filter2": False,
+            "chokes": [(4,5)],
+            "filter2": True,
             # Utility function
             "capture_score_base": 300,
             "take_score_base": 100,
