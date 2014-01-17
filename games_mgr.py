@@ -2,8 +2,7 @@ from base_db import *
 
 import game
 from preserved_game import *
-from base_db import *
-from players_mgr import *
+import players_mgr
 
 from persistent_dict import *
 
@@ -15,7 +14,7 @@ class GamesMgr(object):
             prefix = os.path.join("db","")
         self.prefix = prefix
 
-        self.players_mgr = PlayersMgr(prefix=prefix)
+        self.players_mgr = players_mgr.PlayersMgr(prefix=prefix)
         id_filename = "%sid_map.pkl" % prefix
         self.id_lookup = PersistentDict(id_filename, 'c', format='pickle')
         self.unfinished_db = PersistentDict("%sunfinished.pkl" % prefix, 'c', format='pickle')

@@ -4,8 +4,8 @@ import pdb
 from defines import *
 
 class OpeningsFilter(object):
-    def __init__(self, openings_mgr, game):
-        self.openings_mgr = openings_mgr
+    def __init__(self, o_mgr, game):
+        self.o_mgr = o_mgr
         self.game = game
 
     def get_a_good_move(self):
@@ -17,7 +17,7 @@ class OpeningsFilter(object):
 
         #pdb.set_trace()
 
-        move_games = self.openings_mgr.get_move_games(self.game)
+        move_games = self.o_mgr.get_move_games(self.game)
         
         for mg in move_games:
             move, games = mg

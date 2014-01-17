@@ -2,8 +2,8 @@ import ab_game
 import alpha_beta
 from gui import *
 
-from openings_filter import *
-from openings_mgr import *
+import openings_filter
+import openings_mgr
 from player import *
 from utility_calculator import *
 
@@ -19,7 +19,7 @@ class AIPlayer(Player):
         self.search_filter = search_filter
         self.genome = None # temp hack
         self.openings_mgr = None
-        self.openings_filter = None
+        self.openings_filt = None
 
         self.utility_calculator = UtilityCalculator()
 
@@ -71,13 +71,13 @@ class AIPlayer(Player):
         if self.use_openings_book():
             base_game = self.ab_game.base_game
 
-            if self.openings_filter is None:
+            if self.openings_filt is None:
                 # ie first run through
-                self.openings_filter = OpeningsFilter(self.openings_mgr,
-                        base_game)
+                self.openings_filt = openings_filter.OpeningsFilter(
+                        self.openings_mgr, base_game)
 
             colour = base_game.to_move_colour()
-            move = self.openings_filter.get_a_good_move()
+            move = self.openings_filt.get_a_good_move()
             if move:
                 return move
             else: # TODO: min depth for turning off openings book

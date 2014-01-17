@@ -4,6 +4,8 @@ from ai_player import *
 from priority_filter import *
 from priority_filter_2 import *
 from blindness_filter import *
+import openings_mgr
+import games_mgr
 from ai_genome import *
 
 class AIFactory: # TODO: These are just functions
@@ -20,7 +22,12 @@ class AIFactory: # TODO: These are just functions
             bf.set_blindness(genome.blindness)
             sf = bf
         p = AIPlayer(sf, name=genome.name)
-        p.make_opening_move = genome.make_opening_move
+        
+        if genome.use_openings_book:
+            gm = games_mgr.GamesMgr()
+            om = openings_mgr.OpeningsMgr(gm)
+            p.set_use_openings_book(om)
+
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
         self.set_config(genome, p)
         p.genome = genome

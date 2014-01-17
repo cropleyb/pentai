@@ -1,13 +1,15 @@
-from ai_factory import *
+import ai_factory
+import ai_genome
+import persistent_dict
 
 class PlayersMgr():
     # TODO: Borg pattern?
     def __init__(self, prefix=None, *args, **kwargs):
-        self.factory = AIFactory()
+        self.factory = ai_factory.AIFactory()
         if prefix is None:
             prefix = os.path.join("db","")
         filename = "%splayers.pkl" % prefix
-        self.players = PersistentDict(filename, 'c', format='pickle')
+        self.players = persistent_dict.PersistentDict(filename, 'c', format='pickle')
 
     def add(self, player):
         try:
@@ -22,7 +24,7 @@ class PlayersMgr():
             g = self.players[key]
         except KeyError:
             return None
-        if g.__class__ is Genome:
+        if g.__class__ is ai_genome.Genome:
             p = self.factory.create_player(g)
         else:
             # HumanPlayers are stored directly
