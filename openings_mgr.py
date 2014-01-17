@@ -33,11 +33,13 @@ class OpeningsMgr(object):
         return f
 
     def add_game(self, g, db=None):
+        # Save the game first, before it is manipulated
+        self.games_mgr.save(g)
+
         for mn in range(1, 1+len(g.move_history)):
             # Only needs to be looked up the first time
             db = self.add_position(g, mn, db)
         db.sync()
-        self.games_mgr.save(g)
 
     def add_position(self, game, move_number, db=None, sync=False):
         game.go_to_move(move_number)
@@ -78,14 +80,6 @@ class OpeningsMgr(object):
                 if y < 0: y += size - 1
 
                 # Convert the game_ids to games
-                '''
-                games = []
-                for gid in gids:
-                    g = self.games_mgr.get_game(gid)
-                    #assert not (g is None)
-                    games.append(g)
-                '''
-
                 games = [self.games_mgr.get_game(gid) for gid in gids]
 
                 yield (x,y), games
