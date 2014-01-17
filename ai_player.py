@@ -18,13 +18,19 @@ class AIPlayer(Player):
         self.max_depth = 1
         self.search_filter = search_filter
         self.genome = None # temp hack
-        self.make_opening_move = True
-        self.openings_mgr = OpeningsMgr()
+        self.openings_mgr = None
+        self.openings_filter = None
 
         self.utility_calculator = UtilityCalculator()
 
     def __eq__(self, other):
         return self.genome == other.genome
+
+    def use_openings_book(self):
+        return not self.openings_mgr is None
+
+    def set_use_openings_book(self, openings_mgr):
+        self.openings_mgr = openings_mgr
 
     def set_max_depth(self, max_depth):
         self.max_depth = max_depth
@@ -39,7 +45,6 @@ class AIPlayer(Player):
         self.ab_game = ab_game.ABGame(
             base_game, search_filter=self.search_filter,
             utility_calculator=self.utility_calculator)
-        self.openings_filter = OpeningsFilter(self.openings_mgr, base_game)
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:
@@ -63,8 +68,14 @@ class AIPlayer(Player):
             gui.trig()
 
     def do_the_search(self):
-        if self.make_opening_move:
+        if self.use_openings_book():
             base_game = self.ab_game.base_game
+
+            if self.openings_filter is None:
+                # ie first run through
+                self.openings_filter = OpeningsFilter(self.openings_mgr,
+                        base_game)
+
             colour = base_game.to_move_colour()
             move = self.openings_filter.get_a_good_move()
             if move:
