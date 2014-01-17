@@ -83,13 +83,11 @@ class Match():
                 m = p.do_the_search()
                 self.game.make_move(m)
                 #print self.evaluator.utility()
-        #pdb.set_trace()
+
         winner_name = self.game.winner_name()
         winner = self.game.winner()
 
-        #pdb.set_trace()
         self.openings_mgr.add_game(self.game)
-        self.games_mgr.save(self.game)
         
         if p1.name == "Contender":
             ratio = tt.totals[0] / tt.totals[1]
@@ -111,7 +109,7 @@ class Match():
         #self.genome1.blindness = 0.30
         #self.genome2.blindness = 0.40
 
-        self.genome2.filter2 = True
+        #self.genome2.filter2 = True
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
@@ -131,7 +129,7 @@ class Match():
         #self.genome2.move_factor = 5
 
         results = MatchResults()
-        for game_length in range(3, 4):
+        for game_length in range(3, 5):
             for board_size in [9, 13, 19]:
             #for board_size in [9, 13, 16, 19]:
                 for first_player in [0, 1]:
