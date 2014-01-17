@@ -82,12 +82,12 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(len(orig_game.move_history), 1)
         self.assertEquals(orig_game.move_history[0], (8,1))
 
-        self.assertEquals(orig_game.winner, BLACK)
+        self.assertEquals(orig_game.winner(), BLACK)
 
-        black_player = orig_game.players[BLACK]
+        black_player = orig_game.player[BLACK]
         self.assertEquals(black_player, p1)
 
-        white_player = orig_game.players[WHITE]
+        white_player = orig_game.player[WHITE]
         self.assertEquals(white_player, p2)
 
 if __name__ == "__main__":
