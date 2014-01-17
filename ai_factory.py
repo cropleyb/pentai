@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
-from ai_player import *
+import ai_player
 from priority_filter import *
 from priority_filter_2 import *
 from blindness_filter import *
+
 import openings_mgr
 import games_mgr
+
 from ai_genome import *
 
 class AIFactory: # TODO: These are just functions
@@ -21,7 +23,7 @@ class AIFactory: # TODO: These are just functions
             bf = BlindnessFilter(sf)
             bf.set_blindness(genome.blindness)
             sf = bf
-        p = AIPlayer(sf, name=genome.name)
+        p = ai_player.AIPlayer(sf, name=genome.name)
         
         if genome.use_openings_book:
             gm = games_mgr.GamesMgr()
