@@ -426,3 +426,15 @@ Circular dependency:
 players mgr -> ai_factory -> ai_player -> games_mgr -> players_mgr
 
 the link from ai_player to games_mgr seems least important
+
+another one:
+ai_factory -> games_mgr directly
+
+so here the line from games_mgr to players_mgr seems weakest
+
+Hmmm. If the imports are of the form:
+    import module
+rather than:
+    from module import *
+Then these circular dependencies aren't a problem because they
+don't share a namespace.
