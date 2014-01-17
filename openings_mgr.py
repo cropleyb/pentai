@@ -4,7 +4,8 @@ from standardise import *
 from persistent_dict import *
 
 class OpeningsMgr(object):
-    def __init__(self, prefix=None):
+    def __init__(self, games_mgr, prefix=None):
+        self.games_mgr = games_mgr
         self.positions_dbs = {}
         if prefix is None:
             prefix = os.path.join("db","")
@@ -36,6 +37,7 @@ class OpeningsMgr(object):
             # Only needs to be looked up the first time
             db = self.add_position(g, mn, db)
         db.sync()
+        self.games_mgr.save(g)
 
     def add_position(self, game, move_number, db=None, sync=False):
         game.go_to_move(move_number)
@@ -56,6 +58,7 @@ class OpeningsMgr(object):
 
         if sync:
             db.sync()
+            self.games_mgr.save(game)
         return db
 
     def get_move_games(self, game):
@@ -69,11 +72,22 @@ class OpeningsMgr(object):
         try:
             pos_slot = db[position_key]
             size = game.size()
-            for pos, games in pos_slot.iteritems():
+            for pos, gids in pos_slot.iteritems():
                 x, y = rev(*pos)
                 if x < 0: x += size - 1
                 if y < 0: y += size - 1
-                # TODO: Convert the game_ids to games
+
+                # Convert the game_ids to games
+                '''
+                games = []
+                for gid in gids:
+                    g = self.games_mgr.get_game(gid)
+                    #assert not (g is None)
+                    games.append(g)
+                '''
+
+                games = [self.games_mgr.get_game(gid) for gid in gids]
+
                 yield (x,y), games
         except KeyError:
             return
