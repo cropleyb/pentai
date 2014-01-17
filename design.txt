@@ -412,3 +412,17 @@ Openings book search integration
 We don't need to follow the filter pattern because it isn't going into
 the search algorithm.
 
+
+reconstitution of games and players for use by openings move selection.
+perhaps we only need the preserved games and ai genomes?
+game_mgr.get_preserved?
+I'd rather keep them as implementation details for storage only, but?
+or if we have a singleton for each of these managers then it isn't a big problem
+to get all the extra info.
+Singleton base class?
+
+Circular dependency:
+
+players mgr -> ai_factory -> ai_player -> games_mgr -> players_mgr
+
+the link from ai_player to games_mgr seems least important
