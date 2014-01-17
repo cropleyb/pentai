@@ -1,3 +1,4 @@
+AIFactory needs to call set_use_openings_book
 DB Manager?
 Thinking in opponent's time - swap search colour then reuse position cache
 icons for everything
