@@ -23,9 +23,9 @@ class PreservedGameTest(unittest.TestCase):
         return self.aif.create_player(genome)
 
     def test_preserve_game(self):
-        genome1 = Genome("Sonia")
+        genome1 = AIGenome("Sonia")
         p1 = self.create_player(genome1)
-        genome2 = Genome("Toby")
+        genome2 = AIGenome("Toby")
         p2 = self.create_player(genome2)
 
         r = Rules(13, "standard")
@@ -50,10 +50,10 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(pg.winner, 0)
 
     def test_restore_game(self):
-        genome1 = Genome("Marjory")
+        genome1 = AIGenome("Marjory")
         genome1.chokes = [(4,3),(5,1)]
         p1 = self.create_player(genome1)
-        genome2 = Genome("Hubert")
+        genome2 = AIGenome("Hubert")
         p2 = self.create_player(genome2)
 
         ai_db = PlayersMgr(prefix="test_")
@@ -89,6 +89,8 @@ class PreservedGameTest(unittest.TestCase):
 
         white_player = orig_game.player[WHITE]
         self.assertEquals(white_player, p2)
+
+    # TODO: Test restore of human player
 
 if __name__ == "__main__":
     unittest.main()

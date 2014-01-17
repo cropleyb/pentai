@@ -57,8 +57,8 @@ class MatchResults():
 
 class Match():
     def __init__(self):
-        self.genome1 = Genome("Defender")
-        self.genome2 = Genome("Contender")
+        self.genome1 = AIGenome("Defender")
+        self.genome2 = AIGenome("Contender")
         # We're not doing player lookups, so we don't need the players_mgr
         self.games_mgr = GamesMgr()
         self.openings_mgr = OpeningsMgr(self.games_mgr)

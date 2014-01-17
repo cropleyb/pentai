@@ -24,7 +24,7 @@ class PlayersMgr():
             g = self.players[key]
         except KeyError:
             return None
-        if g.__class__ is ai_genome.Genome:
+        if g.__class__ is ai_genome.AIGenome:
             p = self.factory.create_player(g)
         else:
             # HumanPlayers are stored directly

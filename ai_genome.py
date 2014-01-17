@@ -1,8 +1,8 @@
 
-class GenomeException(Exception):
+class AIGenomeException(Exception):
     pass
 
-class Genome(object):
+class AIGenome(object):
     def __init__(self, name):
         defaults = {
             "name": name,
@@ -24,12 +24,12 @@ class Genome(object):
             "blindness": 0,
             "sub": True,
         }
-        super(Genome, self).__setattr__("__dict__", defaults)
+        super(AIGenome, self).__setattr__("__dict__", defaults)
 
     def __setattr__(self, attr_name, val):
         if not hasattr(self, attr_name):
-            raise GenomeException("Cannot set attribute %s" % attr_name)
-        super(Genome, self).__setattr__(attr_name, val)
+            raise AIGenomeException("Cannot set attribute %s" % attr_name)
+        super(AIGenome, self).__setattr__(attr_name, val)
 
     def key(self):
         return self.name

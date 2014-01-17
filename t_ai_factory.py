@@ -6,7 +6,7 @@ from ai_factory import *
 
 class AIFactoryTest(unittest.TestCase):
     def test_ai_factory_create_from_genome(self):
-        genome = Genome("Freddo Frog")
+        genome = AIGenome("Freddo Frog")
         genome.max_depth = 8
         aif = AIFactory()
         p = aif.create_player(genome)

@@ -16,7 +16,7 @@ class AIFactoryTest(unittest.TestCase):
         os.unlink(self.test_db_filename)
 
     def test_ai_restore_player(self):
-        genome = Genome("Samuel")
+        genome = AIGenome("Samuel")
         genome.max_depth = 3
         aif = AIFactory()
         orig_player = aif.create_player(genome)
