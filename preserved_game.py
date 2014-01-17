@@ -8,7 +8,6 @@ class PreservedGame():
             self.rules = game.rules.key()
             self.date = game.get_date()
             self.players = [None, game.player[1].key(), game.player[2].key()]
-
             self.winner = game.winner()
             self.moves = game.move_history[:]
 
@@ -16,12 +15,12 @@ class PreservedGame():
         return self.game_id
 
     def restore(self, ai_db):
-        orig_game = Game()
+        p1 = ai_db.find(self.players[1])
+        p2 = ai_db.find(self.players[2])
+        orig_game = Game(Rules(*self.rules), p1, p2)
         orig_game.game_id = self.game_id
-        orig_game.rules = Rules(*self.rules)
         orig_game.date = self.date
-        orig_game.winner = self.winner
+        orig_game.set_won_by(self.winner)
         orig_game.move_history = self.moves[:]
-        orig_game.players = [ai_db.find(p) for p in self.players]
 
         return orig_game
