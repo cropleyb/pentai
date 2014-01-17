@@ -1,27 +1,31 @@
-import base_db
 from ai_factory import *
 
-class PlayersMgr(base_db.BaseDB):
-    def __init__(self, *args, **kwargs):
+class PlayersMgr():
+    # TODO: Borg pattern?
+    def __init__(self, prefix=None, *args, **kwargs):
         self.factory = AIFactory()
-        super(PlayersMgr, self).__init__(*args, **kwargs)
+        if prefix is None:
+            prefix = os.path.join("db","")
+        filename = "%splayers.pkl" % prefix
+        self.players = PersistentDict(filename, 'c', format='pickle')
 
     def add(self, player):
         try:
             player = player.genome
         except AttributeError:
             pass
-        super(PlayersMgr, self).add(player)
+        self.players[player.key()] = player
+        self.players.sync()
 
     def find(self, key):
         try:
-            g = self.objs[key]
+            g = self.players[key]
         except KeyError:
             return None
         if g.__class__ is Genome:
             p = self.factory.create_player(g)
         else:
-            # HumanPlayer is stored directly
+            # HumanPlayers are stored directly
             p = g
         return p
 
