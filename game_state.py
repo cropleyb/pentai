@@ -1,6 +1,8 @@
 
 from pente_exceptions import *
-from board import *
+from defines import *
+import board
+import board_strip
 
 class GameState():
     """ This is for the state of a game as of a particular move. 
@@ -28,7 +30,7 @@ class GameState():
     def reset(self, game=None):
         if game is None:
             game = self.game
-        self.board = Board(game.size())
+        self.board = board.Board(game.size())
         # 3 for convenience, should only use [1] and [2]
         self.captured = [0,0,0]
         self.set_won_by(EMPTY)
@@ -105,7 +107,7 @@ class GameState():
     def check_direction_for_5_in_a_row(self, ds, move_pos, my_colour):
         s, strip_num = ds.get_strip(move_pos)
         move_ind = ds.get_index(move_pos)
-        if match_five_in_a_row(s, move_ind, my_colour):
+        if board_strip.match_five_in_a_row(s, move_ind, my_colour):
             self.set_won_by(my_colour)
 
     def process_direction_captures(self, ds, move_pos, my_colour):
