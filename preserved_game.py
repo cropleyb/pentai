@@ -17,7 +17,7 @@ class PreservedGame():
     def restore(self, ai_db):
         p1 = ai_db.find(self.players[1])
         p2 = ai_db.find(self.players[2])
-        orig_game = Game(Rules(*self.rules), p1, p2)
+        orig_game = Game(rules.Rules(*self.rules), p1, p2)
         orig_game.game_id = self.game_id
         orig_game.date = self.date
         orig_game.set_won_by(self.winner)

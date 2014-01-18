@@ -23,21 +23,21 @@ class GamesMgrTest(unittest.TestCase):
 
     def test_game_to_filename(self):
         rules = Rules(13, "tournament")
-        g = self.gm.create_game(rules, Player("Freddo"), Player("Sam"))
+        g = self.gm.create_game(rules, player.Player("Freddo"), player.Player("Sam"))
 
         fn = self.gm.get_filename(g)
         self.assertEquals(fn, "test_t_13.pkl")
 
     def test_game_to_filename2(self):
         rules = Rules(19, "5 in a row")
-        g = self.gm.create_game(rules, Player("Alpha"), Player("Romeo"))
+        g = self.gm.create_game(rules, player.Player("Alpha"), player.Player("Romeo"))
 
         fn = self.gm.get_filename(g)
         self.assertEquals(fn, "test_5_19.pkl")
 
     def test_id_to_filename(self):
         rules = Rules(19, "5 in a row")
-        g = self.gm.create_game(rules, Player("Freddo"), Player("Sam"))
+        g = self.gm.create_game(rules, player.Player("Freddo"), player.Player("Sam"))
 
         fn = self.gm.get_filename(g.get_game_id())
         self.assertEquals(fn, "test_5_19.pkl")

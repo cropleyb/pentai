@@ -13,7 +13,7 @@ import pdb
 class StandardiseTest(unittest.TestCase):
     def setUp(self):
         self.rules = Rules(9, "standard")
-        self.game = Game(self.rules, Player("BC"), Player("Whoever"))
+        self.game = Game(self.rules, player.Player("BC"), player.Player("Whoever"))
 
     ###################################################
     # flip tests

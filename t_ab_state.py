@@ -12,6 +12,7 @@ from board import *
 
 from ab_state import *
 from utility_calculator import *
+from pente_exceptions import *
 
 import pdb
 
@@ -201,7 +202,7 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
     def test_cannot_place_off_e_edge(self):
         try:
             g1 = self.s.create_state((-1,2)) # B
-        except game.IllegalMoveException:
+        except IllegalMoveException:
             return
         self.assertFail()
     

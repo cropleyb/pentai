@@ -1,9 +1,9 @@
 
-from game_state import *
-from player import *
-from rules import *
+import game_state
+import player
+import rules
+from defines import *
 
-import pdb
 import datetime
 
 class Game(object):
@@ -12,7 +12,7 @@ class Game(object):
         self.game_id = None
         self.rules = rules
         if rules != None:
-            self.current_state = GameState(self)
+            self.current_state = game_state.GameState(self)
 
         self.player = [None, player1, player2] # TODO: Rename to players
         if player1 != None:
@@ -167,9 +167,9 @@ class Game(object):
 
         # TODO: This is ugly - these values will be replaced shortly
         if self.player[BLACK] is None:
-            self.player = [None, Player("Black"), Player("White")]
+            self.player = [None, player.Player("Black"), player.Player("White")]
         if self.rules is None:
-            self.rules = Rules(5,"standard")
+            self.rules = rules.Rules(5,"standard")
 
         players = player_line.split(" versus ", 1)
         self.player[1].name = players[0]

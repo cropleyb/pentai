@@ -28,7 +28,7 @@ class PreservedGameTest(unittest.TestCase):
         genome2 = AIGenome("Toby")
         p2 = self.create_player(genome2)
 
-        r = Rules(13, "standard")
+        r = rules.Rules(13, "standard")
         orig_game = Game(r, p1, p2)
         orig_game.game_id = ((13, 's'), 1)
         orig_game.make_move((7,3))

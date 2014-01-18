@@ -7,6 +7,7 @@ from rules import *
 from game import *
 from openings_book import *
 from games_mgr import *
+from player import *
 
 import pdb
 
