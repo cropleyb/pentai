@@ -13,7 +13,6 @@ import t_utility
 import t_ai_player
 import t_board_strip
 import t_direction_strips
-import t_nearby_filter
 import t_take_counter
 import t_threat_counter
 import t_priority_filter
@@ -48,7 +47,6 @@ def suite():
     add_module(t_ai_player, all_tests)
     add_module(t_board_strip, all_tests)
     add_module(t_direction_strips, all_tests)
-    add_module(t_nearby_filter, all_tests)
     add_module(t_take_counter, all_tests)
     add_module(t_priority_filter, all_tests)
     add_module(t_priority_filter_2, all_tests)
