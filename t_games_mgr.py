@@ -66,7 +66,8 @@ class GamesMgrTest(unittest.TestCase):
         g1 = self.gm.create_game(rules, HumanPlayer("Alfredo"), HumanPlayer("Candice"))
         g1.make_move((5,3))
         self.gm.save(g1)
-        g2 = self.gm.create_game(rules, HumanPlayer("Gertrude Smythe"), HumanPlayer("Tony-Basil"))
+        g2 = self.gm.create_game(rules, HumanPlayer("Gertrude Smythe"),
+                HumanPlayer("Tony-Basil"))
         g2.make_move((8,2))
         self.gm.save(g2)
 
@@ -121,6 +122,32 @@ class GamesMgrTest(unittest.TestCase):
 
         fg = self.gm.get_game(g1.get_game_id())
         self.assertEquals(fg, g1)
+
+    ############################
+
+    def test_restore_human_players(self):
+        rules = Rules(9, "Standard")
+        p1_orig = HumanPlayer("Walt")
+        p2_orig = HumanPlayer("Disney")
+        g1 = self.gm.create_game(rules, p1_orig, p2_orig)
+        self.gm.save(g1)
+
+        gm2 = GamesMgr("test_")
+        g1_restored = self.gm.get_game(g1.get_game_id())
+        self.assertNotEquals(g1_restored, None)
+        self.assertEquals(g1_restored.get_player(1), p1_orig)
+
+    def test_restore_ai_players(self):
+        rules = Rules(9, "Standard")
+        p1_orig = HumanPlayer("Walt")
+        p2_orig = HumanPlayer("Disney")
+        g1 = self.gm.create_game(rules, p1_orig, p2_orig)
+        self.gm.save(g1)
+
+        gm2 = GamesMgr("test_")
+        g1_restored = self.gm.get_game(g1.get_game_id())
+        self.assertNotEquals(g1_restored, None)
+        self.assertEquals(g1_restored.get_player(1), p1_orig)
 
 if __name__ == "__main__":
     unittest.main()
