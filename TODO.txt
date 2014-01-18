@@ -1,3 +1,6 @@
+"Ratings" for all players
+Utility for converting from old to new saved games
+Utility for converting all the games into openings
 manual openings lib testing
 script to import historical human games
 Save GUI AI games to openings db
