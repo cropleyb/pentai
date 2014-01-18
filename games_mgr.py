@@ -14,8 +14,9 @@ class GamesMgr(object):
 
         self.players_mgr = players_mgr.PlayersMgr(prefix=prefix)
         id_filename = "%sid_map.pkl" % prefix
-        self.id_lookup = pd_m.PersistentDict(id_filename, 'c', format='pickle')
-        self.unfinished_db = pd_m.PersistentDict("%sunfinished.pkl" % prefix, 'c', format='pickle')
+        self.id_lookup = pd_m.PersistentDict(id_filename)
+        u_f = "%sunfinished.pkl" % prefix
+        self.unfinished_db = pd_m.PersistentDict(u_f)
 
     def get_filename(self, key):
         if key.__class__ is game.Game:
@@ -36,7 +37,7 @@ class GamesMgr(object):
             f = self.games_dbs[fn]
         except KeyError:
             f = self.games_dbs[fn] = \
-                pd_m.PersistentDict(fn, 'c', format='pickle')
+                pd_m.PersistentDict(fn)
         return f
 
     def next_id(self):

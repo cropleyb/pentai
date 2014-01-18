@@ -9,7 +9,7 @@ class PlayersMgr():
         if prefix is None:
             prefix = os.path.join("db","")
         filename = "%splayers.pkl" % prefix
-        self.players = persistent_dict.PersistentDict(filename, 'c', format='pickle')
+        self.players = persistent_dict.PersistentDict(filename)
 
     def add(self, player):
         try:
