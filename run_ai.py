@@ -154,6 +154,7 @@ if __name__ == "__main__":
         m = Match()
         m.play_some_games()
     '''
+    m = Match()
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
 
     s = pstats.Stats("Profile.prof")
