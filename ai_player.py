@@ -80,8 +80,11 @@ class AIPlayer(Player):
             move = self.openings_filt.get_a_good_move()
             if move:
                 return move
-            else: # TODO: min depth for turning off openings book
-                self.make_opening_move = False
+            else:
+                # min depth for turning off openings book
+                turn = base_game.get_move_number()
+                if turn > 7: # This is a complete guess
+                    self.make_opening_move = False
 
         ab_game = self.ab_game
 
