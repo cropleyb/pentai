@@ -24,6 +24,9 @@ class Player():
     def get_action(self, game, gui):
         pass
 
+    def rating_factor(self):
+        return 1
+
     def attach_to_game(self, base_game):
         pass
 
