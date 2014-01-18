@@ -50,12 +50,14 @@ class GamesMgr(object):
         self.id_lookup.sync()
         return curr_id
 
-    def create_game(self, rules, p1, p2):
+    def create_game(self, rules=None, p1=None, p2=None):
         g = game.Game(rules, p1, p2)
         uid = self.next_id()
         g.game_id = uid
-        self.id_lookup[uid] = rules.key()
-        self.id_lookup.sync()
+        if not rules is None:
+            # Might as well save it now.
+            self.id_lookup[uid] = rules.key()
+            self.id_lookup.sync()
         return g
 
     def save(self, g, game_db=None):
@@ -65,6 +67,10 @@ class GamesMgr(object):
         pg = pg_m.PreservedGame(g)
         game_db[pg.key()] = pg
         game_db.sync()
+
+        self.id_lookup[g.game_id] = g.rules.key()
+        self.id_lookup.sync()
+
         gid = g.get_game_id()
 
         if g.finished():
@@ -75,6 +81,10 @@ class GamesMgr(object):
         else:
             self.unfinished_db[gid] = gid
         self.unfinished_db.sync()
+
+        # Save players
+        self.players_mgr.add(g.get_player(1))
+        self.players_mgr.add(g.get_player(2))
 
     def get_unfinished_game(self, g_id):
         if not g_id in self.unfinished_db:
