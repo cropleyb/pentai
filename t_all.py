@@ -11,7 +11,6 @@ import t_text_gui
 import t_game_state
 import t_utility
 import t_ai_player
-import t_simpleton
 import t_board_strip
 import t_direction_strips
 import t_nearby_filter
@@ -47,7 +46,6 @@ def suite():
     add_module(t_game_state, all_tests)
     add_module(t_utility, all_tests)
     add_module(t_ai_player, all_tests)
-    add_module(t_simpleton, all_tests)
     add_module(t_board_strip, all_tests)
     add_module(t_direction_strips, all_tests)
     add_module(t_nearby_filter, all_tests)
