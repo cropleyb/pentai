@@ -21,7 +21,7 @@ class UtilityTest(unittest.TestCase):
         self.util_calc = UtilityCalculator()
         self.s = ABState(search_filter=self.search_filter,
                 utility_calculator=self.util_calc)
-        self.us = UtilityStats()
+        self.us = us_m.UtilityStats()
         self.rules = Mock()
         self.rules.stones_for_capture_win = 10
         self.rules.can_capture_pairs = True
