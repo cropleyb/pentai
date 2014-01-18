@@ -389,12 +389,12 @@ list recent/unfinished games
 load game from DB from GUI
 replay old game (but no overwrite)
 choose/change player (name) from list
-tweak player
-save player
 load player
-add game to openings DB from run AI
-use openings DB to select a move
+save player
+edit player
 UI for turning openings book on/off
+add game to openings DB from run AI (done)
+use openings DB to select a move (done)
 
 Games
 game_id is a unique id, but it isn't enough to look up the DB files
@@ -438,3 +438,14 @@ rather than:
     from module import *
 Then these circular dependencies aren't a problem because they
 don't share a namespace.
+
+Player Database
+---------------
+the player keys should be uids as for games - store these in games,
+allocate from players_mgr
+key -> genome in persistent dict.
+How do we avoid duplicate players?
+- Additional lookup by name (built at runtime)
+- Additional lookup by genome (runtime linear search)
+- Generated "names" for AIs? Hmmm.
+- Choose players
