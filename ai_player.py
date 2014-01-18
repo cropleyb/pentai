@@ -76,7 +76,6 @@ class AIPlayer(p_m.Player):
                 self.openings_filt = openings_mover.OpeningsMover(
                         self.openings_book, base_game)
 
-            colour = base_game.to_move_colour()
             move = self.openings_filt.get_a_good_move()
             if move:
                 return move
@@ -115,6 +114,9 @@ class AIPlayer(p_m.Player):
 
         #print " => %s" % (action,)
         return action
+
+    def rating_factor(self):
+        return self.max_depth / 2.0
 
     def set_interrupted(self):
         self.ab_game.interrupted = True
