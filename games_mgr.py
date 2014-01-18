@@ -1,10 +1,8 @@
-from base_db import *
-
 import game
-from preserved_game import *
 import players_mgr
-
-from persistent_dict import *
+import preserved_game as pg_m
+import persistent_dict as pd_m
+import os
 
 class GamesMgr(object):
     # TODO: Borg pattern?
@@ -16,8 +14,8 @@ class GamesMgr(object):
 
         self.players_mgr = players_mgr.PlayersMgr(prefix=prefix)
         id_filename = "%sid_map.pkl" % prefix
-        self.id_lookup = PersistentDict(id_filename, 'c', format='pickle')
-        self.unfinished_db = PersistentDict("%sunfinished.pkl" % prefix, 'c', format='pickle')
+        self.id_lookup = pd_m.PersistentDict(id_filename, 'c', format='pickle')
+        self.unfinished_db = pd_m.PersistentDict("%sunfinished.pkl" % prefix, 'c', format='pickle')
 
     def get_filename(self, key):
         if key.__class__ is game.Game:
@@ -38,7 +36,7 @@ class GamesMgr(object):
             f = self.games_dbs[fn]
         except KeyError:
             f = self.games_dbs[fn] = \
-                PersistentDict(fn, 'c', format='pickle')
+                pd_m.PersistentDict(fn, 'c', format='pickle')
         return f
 
     def next_id(self):
@@ -63,7 +61,7 @@ class GamesMgr(object):
         if game_db is None:
             game_db = self.get_db(g)
         
-        pg = PreservedGame(g)
+        pg = pg_m.PreservedGame(g)
         game_db[pg.key()] = pg
         game_db.sync()
         gid = g.get_game_id()
