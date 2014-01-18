@@ -1,7 +1,5 @@
 from defines import *
 
-import pdb
-
 def max_moves_sample_func(depth):
     return 9
 
@@ -102,7 +100,6 @@ class PriorityFilter2():
         return ret
 
     def get_iter(self, our_colour, depth=0):
-        #pdb.set_trace()
         their_colour = opposite_colour(our_colour)
         candidate_slots = self.get_priority_levels(our_colour)
         

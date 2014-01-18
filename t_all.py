@@ -9,8 +9,6 @@ import t_ab_state
 import t_rules
 import t_text_gui
 import t_game_state
-import t_search_order
-import t_search_filter
 import t_utility
 import t_ai_player
 import t_simpleton
@@ -47,13 +45,11 @@ def suite():
     add_module(t_rules, all_tests)
     add_module(t_text_gui, all_tests)
     add_module(t_game_state, all_tests)
-    add_module(t_search_order, all_tests)
     add_module(t_utility, all_tests)
     add_module(t_ai_player, all_tests)
     add_module(t_simpleton, all_tests)
     add_module(t_board_strip, all_tests)
     add_module(t_direction_strips, all_tests)
-    add_module(t_search_filter, all_tests)
     add_module(t_nearby_filter, all_tests)
     add_module(t_take_counter, all_tests)
     add_module(t_priority_filter, all_tests)

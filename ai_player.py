@@ -1,19 +1,19 @@
 import ab_game
 import alpha_beta
-from gui import *
-
 import openings_mover
 import openings_book
-from player import *
-from utility_calculator import *
+import player as p_m
+import utility_calculator as uc_m
+
+from defines import *
 
 import threading
 
-class AIPlayer(Player):
+class AIPlayer(p_m.Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
     def __init__(self, search_filter, *args, **vargs):
-        Player.__init__(self, *args, **vargs)
+        p_m.Player.__init__(self, *args, **vargs)
 
         self.max_depth = 1
         self.search_filter = search_filter
@@ -21,7 +21,7 @@ class AIPlayer(Player):
         self.openings_book = None
         self.openings_filt = None
 
-        self.utility_calculator = UtilityCalculator()
+        self.utility_calculator = uc_m.UtilityCalculator()
 
     def __eq__(self, other):
         return self.genome == other.genome

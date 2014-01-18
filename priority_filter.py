@@ -1,7 +1,5 @@
 from defines import *
 
-import pdb
-
 def max_moves_sample_func(depth):
     return 9
 

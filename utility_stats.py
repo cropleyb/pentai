@@ -1,6 +1,6 @@
+import board_strip as bs_m
+import length_lookup_table as llt_m
 from defines import *
-from board_strip import *
-from length_lookup_table import *
 
 # TODO: move this to test code?
 def pass_through_func(a, ignored):
@@ -85,9 +85,9 @@ class UtilityStats():
             # These have different parameter lists because of the different
             # lengths of the matching required.
             # TODO move min_ind into process_substrips
-            process_substrips(bs, min_ind, max_ind, self, inc)
+            llt_m.process_substrips(bs, min_ind, max_ind, self, inc)
 
             if ccp:
-                process_takes(bs, ind, strip_min, strip_max, self, inc)
-                process_threats(bs, ind, strip_min, strip_max, self, inc)
+                bs_m.process_takes(bs, ind, strip_min, strip_max, self, inc)
+                bs_m.process_threats(bs, ind, strip_min, strip_max, self, inc)
 

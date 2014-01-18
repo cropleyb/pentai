@@ -1,8 +1,7 @@
 
-from direction_strips import *
+import direction_strips as ds_m
 from pente_exceptions import *
-
-import array
+from defines import *
 
 class Board():
     def __init__(self, size, clone_it=False):
@@ -12,10 +11,10 @@ class Board():
 
     def set_to_empty(self):
         self.strips = [] # TODO Rename to d_strips
-        self.strips.append(EDirectionStrips(self.size))
-        self.strips.append(SEDirectionStrips(self.size))
-        self.strips.append(SDirectionStrips(self.size))
-        self.strips.append(SWDirectionStrips(self.size))
+        self.strips.append(ds_m.EDirectionStrips(self.size))
+        self.strips.append(ds_m.SEDirectionStrips(self.size))
+        self.strips.append(ds_m.SDirectionStrips(self.size))
+        self.strips.append(ds_m.SWDirectionStrips(self.size))
 
     def key(self):
         return tuple(self.strips[0].strips)
