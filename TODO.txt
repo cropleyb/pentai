@@ -1,5 +1,8 @@
-AIFactory needs to call set_use_openings_book
-DB Manager?
+manual openings lib testing
+script to import historical human games
+rename openings_filter to opening_mover?
+rename openings_mgr to openings_book
+Save GUI AI games to openings db
 Thinking in opponent's time - swap search colour then reuse position cache
 icons for everything
 GameManager in App class? Share attribute with all screens?
