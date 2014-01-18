@@ -1,7 +1,9 @@
 
-from game import *
-from standardise import *
-from persistent_dict import *
+import game
+import standardise
+import persistent_dict as pd_m
+import os
+from defines import *
 
 class OpeningsBook(object):
     def __init__(self, games_mgr, prefix=None):
@@ -12,7 +14,7 @@ class OpeningsBook(object):
         self.prefix = prefix
 
     def get_filename(self, g):
-        if g.__class__ is Game:
+        if g.__class__ is game.Game:
             rk = g.rules.key()
         elif g.__class__ is tuple:
             rk = g[0]
@@ -29,7 +31,7 @@ class OpeningsBook(object):
         try:
             f = self.positions_dbs[fn]
         except KeyError:
-            f = self.positions_dbs[fn] = PersistentDict(fn)
+            f = self.positions_dbs[fn] = pd_m.PersistentDict(fn)
         return f
 
     def add_game(self, g, db=None):
@@ -44,7 +46,7 @@ class OpeningsBook(object):
     def add_position(self, game, move_number, db=None, sync=False):
         game.go_to_move(move_number)
 
-        std_state, fwd, rev = standardise(game.current_state)
+        std_state, fwd, rev = standardise.standardise(game.current_state)
         position_key = (tuple(std_state.board.strips[0].strips),
                 game.get_captured(BLACK),
                 game.get_captured(WHITE))
@@ -64,7 +66,7 @@ class OpeningsBook(object):
         return db
 
     def get_move_games(self, game):
-        std_state, fwd, rev = standardise(game.current_state)
+        std_state, fwd, rev = standardise.standardise(game.current_state)
 
         position_key = (tuple(std_state.board.strips[0].strips),
                               game.get_captured(BLACK),
