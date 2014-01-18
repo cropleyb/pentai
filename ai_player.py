@@ -3,7 +3,7 @@ import alpha_beta
 from gui import *
 
 import openings_filter
-import openings_mgr
+import openings_book
 from player import *
 from utility_calculator import *
 
@@ -18,7 +18,7 @@ class AIPlayer(Player):
         self.max_depth = 1
         self.search_filter = search_filter
         self.genome = None # temp hack
-        self.openings_mgr = None
+        self.openings_book = None
         self.openings_filt = None
 
         self.utility_calculator = UtilityCalculator()
@@ -27,10 +27,10 @@ class AIPlayer(Player):
         return self.genome == other.genome
 
     def use_openings_book(self):
-        return not self.openings_mgr is None
+        return not self.openings_book is None
 
-    def set_use_openings_book(self, openings_mgr):
-        self.openings_mgr = openings_mgr
+    def set_use_openings_book(self, openings_book):
+        self.openings_book = openings_book
 
     def set_max_depth(self, max_depth):
         self.max_depth = max_depth
@@ -74,7 +74,7 @@ class AIPlayer(Player):
             if self.openings_filt is None:
                 # ie first run through
                 self.openings_filt = openings_filter.OpeningsFilter(
-                        self.openings_mgr, base_game)
+                        self.openings_book, base_game)
 
             colour = base_game.to_move_colour()
             move = self.openings_filt.get_a_good_move()

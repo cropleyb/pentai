@@ -11,7 +11,7 @@ from priority_filter_2 import *
 from blindness_filter import *
 from evaluator import *
 from ai_factory import *
-from openings_mgr import *
+from openings_book import *
 from games_mgr import *
 
 import pdb
@@ -61,7 +61,7 @@ class Match():
         self.genome2 = AIGenome("Contender")
         # We're not doing player lookups, so we don't need the players_mgr
         self.games_mgr = GamesMgr()
-        self.openings_mgr = OpeningsMgr(self.games_mgr)
+        self.openings_book = OpeningsBook(self.games_mgr)
 
     def set_up(self, game_length):
         aif = AIFactory()
@@ -87,7 +87,7 @@ class Match():
         winner_name = self.game.winner_name()
         winner = self.game.winner()
 
-        self.openings_mgr.add_game(self.game)
+        self.openings_book.add_game(self.game)
         
         if p1.name == "Contender":
             ratio = tt.totals[0] / tt.totals[1]
@@ -102,6 +102,7 @@ class Match():
 
     def play_some_games(self):
 
+        self.genome1.use_openings_book = False
         #self.genome2.length_factor = 35
         #self.genome2.take_score_base = 110
         #self.genome2.capture_score_base = 310 # Try this again for high depth
@@ -129,9 +130,10 @@ class Match():
         #self.genome2.move_factor = 5
 
         results = MatchResults()
-        for game_length in range(3, 5):
-            for board_size in [9, 13, 19]:
-            #for board_size in [9, 13, 16, 19]:
+        for game_length in range(3,6):
+        #for game_length in range(8,9):
+            for board_size in [13]:
+            #for board_size in [9, 13, 19]:
                 for first_player in [0, 1]:
                     self.set_up(game_length)
                     players = [self.p1, self.p2]
@@ -148,8 +150,9 @@ import pstats, cProfile
 
 if __name__ == "__main__":
     random.seed()
-    m = Match()
-    m.play_some_games()
+    while True:
+        m = Match()
+        m.play_some_games()
     '''
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
 

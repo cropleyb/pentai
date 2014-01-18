@@ -25,7 +25,7 @@ import t_null_filter
 import t_bit_reverse
 import t_game
 import t_blindness_filter
-import t_openings_mgr
+import t_openings_book
 import t_standardise
 import t_preserved_game
 import t_ai_genome
@@ -63,7 +63,7 @@ def suite():
     add_module(t_game, all_tests)
     add_module(t_bit_reverse, all_tests)
     add_module(t_blindness_filter, all_tests)
-    add_module(t_openings_mgr, all_tests)
+    add_module(t_openings_book, all_tests)
     add_module(t_standardise, all_tests)
     add_module(t_preserved_game, all_tests)
     add_module(t_ai_genome, all_tests)

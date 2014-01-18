@@ -5,7 +5,7 @@ import random
 
 from rules import *
 from game import *
-from openings_mgr import *
+from openings_book import *
 from games_mgr import *
 
 import pdb
@@ -21,7 +21,7 @@ class ATOTest(unittest.TestCase):
         p1 = Player("BC")
         p2 = Player("Whoever")
         self.game = self.games_mgr.create_game(self.rules, p1, p2)
-        self.o_mgr = OpeningsMgr(self.games_mgr, prefix="test_")
+        self.o_mgr = OpeningsBook(self.games_mgr, prefix="test_")
 
     def tearDown(self):
         for fn in (["test_s_9_openings.pkl", "test_id_map.pkl",
@@ -178,13 +178,13 @@ class ATOTest(unittest.TestCase):
     ################################
     # Persistence tests
 
-    # ! ./t_openings_mgr.py ATOTest.test_persist_position
+    # ! ./t_openings_book.py ATOTest.test_persist_position
     def test_persist_position(self):
         load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
         self.o_mgr.add_position(self.game, 1, sync=True)
 
         games_mgr = GamesMgr(prefix="test_")
-        o_mgr2 = OpeningsMgr(games_mgr=games_mgr, prefix="test_")
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))
@@ -196,7 +196,7 @@ class ATOTest(unittest.TestCase):
         self.o_mgr.add_position(self.game, 1, sync=True)
 
         games_mgr = GamesMgr(prefix="test_")
-        o_mgr2 = OpeningsMgr(games_mgr=games_mgr, prefix="test_")
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
 
         rules2 = Rules(13, "standard")
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))
@@ -208,7 +208,7 @@ class ATOTest(unittest.TestCase):
         self.o_mgr.add_position(self.game, 1, sync=True)
 
         games_mgr = GamesMgr(prefix="test_")
-        o_mgr2 = OpeningsMgr(games_mgr=games_mgr, prefix="test_")
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
 
         rules2 = Rules(9, "5 in a row")
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))

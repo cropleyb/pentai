@@ -3,7 +3,7 @@ from game import *
 from standardise import *
 from persistent_dict import *
 
-class OpeningsMgr(object):
+class OpeningsBook(object):
     def __init__(self, games_mgr, prefix=None):
         self.games_mgr = games_mgr
         self.positions_dbs = {}

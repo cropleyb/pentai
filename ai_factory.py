@@ -5,7 +5,7 @@ from priority_filter import *
 from priority_filter_2 import *
 from blindness_filter import *
 
-import openings_mgr
+import openings_book
 import games_mgr
 
 from ai_genome import *
@@ -27,7 +27,7 @@ class AIFactory: # TODO: These are just functions
         
         if genome.use_openings_book:
             gm = games_mgr.GamesMgr()
-            om = openings_mgr.OpeningsMgr(gm)
+            om = openings_book.OpeningsBook(gm)
             p.set_use_openings_book(om)
 
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
