@@ -108,7 +108,7 @@ class Game(object):
     def finished(self):
         return self.current_state.get_won_by() > 0
 
-    def winner(self): # TODO: rename to get_won_by
+    def get_won_by(self):
         return self.current_state.get_won_by()
 
     def winner_name(self):

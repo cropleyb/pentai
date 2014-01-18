@@ -278,7 +278,7 @@ class PenteScreen(Screen):
 
         if self.game.finished():
             widget = self.win_marker
-            colour = self.game.winner()
+            colour = self.game.get_won_by()
             other_markers = [self.get_turn_marker(colour)]
         else:
             colour = self.game.to_move_colour()

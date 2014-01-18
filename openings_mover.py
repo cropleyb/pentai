@@ -20,13 +20,17 @@ class OpeningsMover(object):
         for mg in move_games:
             move, games = mg
             for g in games:
-                win_colour = g.winner()
+                win_colour = g.get_won_by()
 
                 if win_colour == colour:
                     wins += 1
                 else:
                     assert(win_colour == opposite_colour(colour))
                     losses += 1
+
+                # TODO: calc & save the maximum rating of the players
+                # who made this move
+                # move_player = game.
             totals.append((move, wins, losses))
 
         total_score = 1 # For fall through to inner filter

@@ -8,7 +8,7 @@ class PreservedGame():
             self.rules = game.rules.key()
             self.date = game.get_date()
             self.players = [None, game.player[1].key(), game.player[2].key()]
-            self.winner = game.winner()
+            self.won_by = game.get_won_by()
             self.moves = game.move_history[:]
 
     def key(self):
@@ -20,7 +20,12 @@ class PreservedGame():
         orig_game = Game(rules.Rules(*self.rules), p1, p2)
         orig_game.game_id = self.game_id
         orig_game.date = self.date
-        orig_game.set_won_by(self.winner)
+        try:
+            won_by = self.won_by
+        except AttributeError:
+            # Backward compatibility
+            won_by = self.winner
+        orig_game.set_won_by(won_by)
         orig_game.move_history = self.moves[:]
 
         return orig_game

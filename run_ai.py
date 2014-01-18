@@ -85,7 +85,7 @@ class Match():
                 #print self.evaluator.utility()
 
         winner_name = self.game.winner_name()
-        winner = self.game.winner()
+        winner = self.game.get_won_by()
 
         self.openings_book.add_game(self.game)
         

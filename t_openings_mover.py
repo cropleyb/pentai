@@ -12,10 +12,10 @@ class MockFoundGame:
     """ This one is for games that have been found in the opening book
     """
     def __init__(self, wc):
-        self.winner_colour = wc
+        self.won_by = wc
 
-    def winner(self):
-        return self.winner_colour
+    def get_won_by(self):
+        return self.won_by
 
 class OpeningsMoverTest(unittest.TestCase):
     def setUp(self):

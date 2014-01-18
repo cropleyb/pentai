@@ -47,7 +47,7 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(len(pg.moves), 1)
         self.assertEquals(pg.moves[0], (7,3))
 
-        self.assertEquals(pg.winner, 0)
+        self.assertEquals(pg.won_by, 0)
 
     def test_restore_game(self):
         genome1 = AIGenome("Marjory")
@@ -67,7 +67,7 @@ class PreservedGameTest(unittest.TestCase):
         pg.game_id = ((9, 'f'), 1)
 
         pg.moves = [(8,1)]
-        pg.winner = BLACK
+        pg.won_by = BLACK
 
         today = datetime.date.today()
         pg.date = today
@@ -82,7 +82,7 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(len(orig_game.move_history), 1)
         self.assertEquals(orig_game.move_history[0], (8,1))
 
-        self.assertEquals(orig_game.winner(), BLACK)
+        self.assertEquals(orig_game.get_won_by(), BLACK)
 
         black_player = orig_game.player[BLACK]
         self.assertEquals(black_player, p1)
