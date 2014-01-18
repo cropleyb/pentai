@@ -3,7 +3,7 @@ import pdb
 
 from defines import *
 
-class OpeningsFilter(object):
+class OpeningsMover(object):
     def __init__(self, o_mgr, game):
         self.o_mgr = o_mgr
         self.game = game

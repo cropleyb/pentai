@@ -2,7 +2,7 @@ import ab_game
 import alpha_beta
 from gui import *
 
-import openings_filter
+import openings_mover
 import openings_book
 from player import *
 from utility_calculator import *
@@ -73,7 +73,7 @@ class AIPlayer(Player):
 
             if self.openings_filt is None:
                 # ie first run through
-                self.openings_filt = openings_filter.OpeningsFilter(
+                self.openings_filt = openings_mover.OpeningsMover(
                         self.openings_book, base_game)
 
             colour = base_game.to_move_colour()

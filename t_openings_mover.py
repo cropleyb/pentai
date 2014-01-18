@@ -3,7 +3,7 @@
 import unittest
 
 from mock import Mock
-from openings_filter import *
+from openings_mover import *
 from board import *
 
 import pdb
@@ -17,11 +17,11 @@ class MockFoundGame:
     def winner(self):
         return self.winner_colour
 
-class OpeningsFilterTest(unittest.TestCase):
+class OpeningsMoverTest(unittest.TestCase):
     def setUp(self):
         self.mom = Mock() # Mock Openings Manager
         self.msg = Mock() # Mock Search Game
-        self.of = OpeningsFilter(self.mom, self.msg)
+        self.of = OpeningsMover(self.mom, self.msg)
         self.msg.mockAddReturnValues(to_move_colour=BLACK)
 
     def set_move_games(self, move_games):
