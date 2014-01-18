@@ -14,6 +14,7 @@ class OpeningsMover(object):
         totals = []
 
         colour = self.game.to_move_colour()
+        max_rating_factor = 1
 
         move_games = self.o_mgr.get_move_games(self.game)
         
@@ -30,14 +31,21 @@ class OpeningsMover(object):
 
                 # TODO: calc & save the maximum rating of the players
                 # who made this move
-                # move_player = game.
-            totals.append((move, wins, losses))
+                move_player = g.get_player(colour)
+
+                max_rating_factor = 1
+                '''
+                max_rating_factor = \
+                        max(max_rating_factor, move_player.rating_factor())
+                '''
+
+            totals.append((move, wins, losses, max_rating_factor))
 
         total_score = 1 # For fall through to inner filter
 
         move_scores = []
-        for move, wins, losses in totals:
-            score = (wins or .2)/(losses or .2)
+        for move, wins, losses, mrf in totals:
+            score = (mrf * (wins or .2))/(losses or .2)
             move_scores.append((move, score))
             total_score += score
         
