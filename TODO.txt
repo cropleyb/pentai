@@ -1,8 +1,8 @@
+Resume game and change player (setup screen) shouldn't replay to the end
 Minimum depth level for opening move selection = our depth
-Confirm style: select pente.org or Lachie.
+Clean up settings screen -> kivy file
 Should there be a lookup for players and games that gives the same object
   so they are shared across the process?
-Utility for converting from old to new saved games
 Utility for converting all the games into openings
 manual openings lib testing
 script to import historical human games
@@ -12,7 +12,6 @@ Thinking in opponent's time - swap search colour then reuse position cache
 icons for everything for internationalization
 GameManager in App class? Share attribute with all screens?
 Split up pente_screen?
-Resume game shouldn't replay to the end
 Restart AI button?
 video or recorded moves explaining the rules of pente
 Openings DB:
