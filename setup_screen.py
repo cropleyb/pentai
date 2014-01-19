@@ -19,6 +19,7 @@ import pdb
 
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
+        # TODO: This doesn't really belong here.
         genome = ai_genome.AIGenome(player_name)
         genome.max_depth = max_depth
         # TODO: configure openings book usage
@@ -29,7 +30,7 @@ def create_player(player_type_widget, player_name, max_depth):
         p = human_player.HumanPlayer(player_name)
     return p
 
-class MyCheckBoxList(GridLayout):
+class CheckBoxList(GridLayout):
     text = StringProperty("")
     group = StringProperty("")
     values = ListProperty([])
@@ -49,7 +50,7 @@ class MyCheckBoxList(GridLayout):
         self.val = str(val)
 
     def __init__(self, *args, **kwargs):
-        super(MyCheckBoxList, self).__init__(*args, **kwargs)
+        super(CheckBoxList, self).__init__(*args, **kwargs)
         l = Label(text=self.text)
         self.add_widget(l)
         vals_gl = GridLayout(cols=2)
@@ -88,11 +89,11 @@ class SetupScreen(Screen):
 
         bs_r_gl = GridLayout(cols=2)
         top_gl.add_widget(bs_r_gl)
-        self.board_size_widget = MyCheckBoxList(group="board_size", text="Board Size",
+        self.board_size_widget = CheckBoxList(group="board_size", text="Board Size",
                 values=["9", "13", "19"])
         bs_r_gl.add_widget(self.board_size_widget)
 
-        self.rules_widget = MyCheckBoxList(group="rules", text="Rules",
+        self.rules_widget = CheckBoxList(group="rules", text="Rules",
 				values=['standard', 'tournament', 'keryo',
                     'freestyle', '5 in a row', 'no captures'])
         bs_r_gl.add_widget(self.rules_widget)
@@ -107,7 +108,7 @@ class SetupScreen(Screen):
         self.black_name_widget = TextInput(text=self.black_name)
         self.black_name_widget.bind(text=self.set_player_name)
         gl.add_widget(self.black_name_widget)
-        self.black_type_widget = MyCheckBoxList(group="black_type", text="",
+        self.black_type_widget = CheckBoxList(group="black_type", text="",
                 values=('Human', 'Computer'))
         gl.add_widget(self.black_type_widget)
 
@@ -119,11 +120,11 @@ class SetupScreen(Screen):
         self.white_name_widget = TextInput(text=self.white_name)
         self.white_name_widget.bind(text=self.set_player_name)
         gl.add_widget(self.white_name_widget)
-        self.white_type_widget = MyCheckBoxList(group="white_type", text="",
+        self.white_type_widget = CheckBoxList(group="white_type", text="",
                 values=('Human', 'Computer'))
         gl.add_widget(self.white_type_widget)
 
-        self.max_depth_widget = MyCheckBoxList(group="max_depth", text="Max Search Depth",
+        self.max_depth_widget = CheckBoxList(group="max_depth", text="Max Search Depth",
                 values=('2', '4', '6', '8', '10', '12'))
         top_gl.add_widget(self.max_depth_widget)
 
