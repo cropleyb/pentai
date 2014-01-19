@@ -54,7 +54,7 @@ class PenteScreen(Screen):
         self.ghosts = []
         self.ghost_colour = None
         self.show_ghosts = True
-        self.req_confirm = False
+        self.confirm_type = 0
         self.confirmation_in_progress = None
         self.game = None
         self.game_filename = filename
@@ -418,8 +418,11 @@ class PenteScreen(Screen):
         if self.confirmation_in_progress:
             widget, old_board_pos = self.confirmation_in_progress
             if board_pos == old_board_pos:
-                # Confirm the move
-                self.confirm()
+                if self.confirm_type == 1:
+                    # Confirm the move
+                    self.confirm()
+                else:
+                    self.cancel_confirmation()
             else:
                 # Adjust the confirmation
                 widget.pos = self.board_to_screen(board_pos)
@@ -440,7 +443,7 @@ class PenteScreen(Screen):
             self.cancel_confirmation()
 
     def set_confirm_req(self, req):
-        self.req_confirm = req
+        self.confirm_type = req
         self.cancel_confirmation()
 
     def set_mark_moves(self, mm):
@@ -477,7 +480,11 @@ class PenteScreen(Screen):
             # Assuming all controls are to the left of this
             if touch.pos[0] > self.size[0] * .25:
                 # No controls clicked below the board-> confirm
-                self.cancel_confirmation()
+                if self.confirm_type == 2:
+                    # Confirm the move
+                    self.confirm()
+                else:
+                    self.cancel_confirmation()
             return True
 
         # Check that it is a human's turn.
@@ -512,7 +519,7 @@ class PenteScreen(Screen):
                 except OffBoardException:
                     return
 
-                if self.req_confirm:
+                if self.confirm_type:
                     self.adjust_confirmation(board_pos)
                 else:
                     # Queue the move, this will place the
