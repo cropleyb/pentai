@@ -36,6 +36,7 @@ class OpeningsBook(object):
 
     def add_game(self, g, db=None):
         # Save the game first, before it is manipulated
+        # TODO: Fix this time order dependency
         self.games_mgr.save(g)
 
         for mn in range(1, 1+len(g.move_history)):
@@ -87,4 +88,9 @@ class OpeningsBook(object):
                 yield (x,y), games
         except KeyError:
             return
+
+    def after_game_won(self, game, colour):
+        # TODO: Add the game to the openings library if req.
+        # (i.e. we're subscribed)
+        self.add_game(game)
 

@@ -286,6 +286,15 @@ class ObserverTest(unittest.TestCase):
         # Before and after inc. two captures
         self.assertEquals(len(all_calls), 12)
         
+    def test_set_won_by_observed(self):
+        m = Mock()
+        self.gs.add_observer(m)
+        self.gs.set_won_by(WHITE)
+
+        all_calls = m.mockGetAllCalls()
+        self.assertEquals(len(all_calls), 1)
+        m.mockCheckCall(0, 'after_game_won', self.game, WHITE)
+
 
 if __name__ == "__main__":
     unittest.main()

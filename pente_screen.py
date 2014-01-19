@@ -200,6 +200,10 @@ class PenteScreen(Screen):
         self.make_move_on_the_gui_board(pos, colour)
         self.refresh_all()
 
+    def after_game_won(self, game, colour):
+        # TODO: play win or loss sound
+        pass
+
     def play_sound(self):
         self.sound = SoundLoader.load(stone_sound)
         if self.sound:
@@ -548,6 +552,8 @@ class PenteScreen(Screen):
         if colour == self.ghost_colour:
             self.remove_ghosts()
         if self.stones_by_board_pos.has_key(board_pos) or colour == EMPTY:
+            # TODO: It would be cleaner if this was handled by a separate
+            # removed stone notification. (or two: capture, undo)
             # There is a piece there already, remove it.
             assert colour == EMPTY
             curr_piece, curr_colour = self.stones_by_board_pos.pop(board_pos)

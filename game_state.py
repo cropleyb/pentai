@@ -126,6 +126,8 @@ class GameState():
 
     def set_won_by(self, wb):
         self._won_by = wb
+        for ob in self.observers:
+            ob.after_game_won(self.game, wb)
 
     def get_won_by(self):
         return self._won_by

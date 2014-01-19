@@ -106,6 +106,9 @@ class ABState():
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, 1)
 
+    def after_game_won(self, game, colour):
+        pass
+
     def create_state(self, move_pos):
         ab_child = ABState(self)
 
