@@ -29,15 +29,13 @@ class OpeningsMover(object):
                     assert(win_colour == opposite_colour(colour))
                     losses += 1
 
-                # TODO: calc & save the maximum rating of the players
+                # Calc & save the maximum rating of the players
                 # who made this move
                 move_player = g.get_player(colour)
 
-                max_rating_factor = 1
-                '''
-                max_rating_factor = \
+                if move_player:
+                    max_rating_factor = \
                         max(max_rating_factor, move_player.rating_factor())
-                '''
 
             totals.append((move, wins, losses, max_rating_factor))
 

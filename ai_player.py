@@ -116,7 +116,7 @@ class AIPlayer(p_m.Player):
         return action
 
     def rating_factor(self):
-        return self.max_depth / 2.0
+        return max(self.max_depth-3, 0)
 
     def set_interrupted(self):
         self.ab_game.interrupted = True
