@@ -20,6 +20,7 @@ class Game(object):
         if player2 != None:
             player2.attach_to_game(self)
         self.move_history = []
+        self.temp_move_number = None
         self.autosave_filename = None
         self.date = datetime.date.today() # TODO
 
@@ -91,6 +92,7 @@ class Game(object):
             self.move_history = self.move_history[:self.get_move_number()-1]
         self.current_state.make_move(move)
         self.move_history.append(move)
+        self.temp_move_number = len(self.move_history)
         if self.autosave_filename != None:
             self.save_history()
 
@@ -193,6 +195,8 @@ class Game(object):
     def load_game(self, game_str):
         remainder = self.configure_from_str(game_str)
         self.load_moves(remainder)
+        if hasattr(self, "temp_move_number") and self.temp_move_number:
+            self.go_to_move(self.temp_move_number)
 
     def load_moves(self, game_str):
         # e.g. "1. (4,4)\n2. (3,3)\n"
