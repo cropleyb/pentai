@@ -1,5 +1,4 @@
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.checkbox import CheckBox
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -12,6 +11,8 @@ import game
 import human_player
 import ai_genome
 import ai_factory
+
+import checkbox_list as cb_l
 
 from defines import *
 
@@ -30,48 +31,6 @@ def create_player(player_type_widget, player_name, max_depth):
         p = human_player.HumanPlayer(player_name)
     return p
 
-class CheckBoxList(GridLayout):
-    text = StringProperty("")
-    group = StringProperty("")
-    values = ListProperty([])
-    active = StringProperty("")
-
-    def on_checkbox_active(self, checkbox, value):
-        if checkbox.active:
-            self.val = checkbox.val
-
-    def set_active(self, val):
-        """ Set the active value from other python code. """
-        old = self.widgets_by_val[str(self.val)]
-        old.active = False
-
-        w = self.widgets_by_val[str(val)]
-        w.active = True
-        self.val = str(val)
-
-    def __init__(self, *args, **kwargs):
-        super(CheckBoxList, self).__init__(*args, **kwargs)
-        l = Label(text=self.text)
-        self.add_widget(l)
-        vals_gl = GridLayout(cols=2)
-        self.add_widget(vals_gl)
-        self.widgets_by_val = {}
-
-        first = True
-        for v in self.values:
-            l = Label(text=v)
-            vals_gl.add_widget(l)
-
-            cb = CheckBox(group=self.group, active=first)
-            cb.bind(active=self.on_checkbox_active)
-            cb.val = v
-            if first:
-                self.on_checkbox_active(cb, None)
-            vals_gl.add_widget(cb)
-            self.widgets_by_val[v] = cb
-
-            first = False
-
 class SetupScreen(Screen):
     black_name = StringProperty("Black")
     white_name = StringProperty("White")
@@ -89,11 +48,11 @@ class SetupScreen(Screen):
 
         bs_r_gl = GridLayout(cols=2)
         top_gl.add_widget(bs_r_gl)
-        self.board_size_widget = CheckBoxList(group="board_size", text="Board Size",
+        self.board_size_widget = cb_l.CheckBoxList(group="board_size", text="Board Size",
                 values=["9", "13", "19"])
         bs_r_gl.add_widget(self.board_size_widget)
 
-        self.rules_widget = CheckBoxList(group="rules", text="Rules",
+        self.rules_widget = cb_l.CheckBoxList(group="rules", text="Rules",
 				values=['standard', 'tournament', 'keryo',
                     'freestyle', '5 in a row', 'no captures'])
         bs_r_gl.add_widget(self.rules_widget)
@@ -108,7 +67,7 @@ class SetupScreen(Screen):
         self.black_name_widget = TextInput(text=self.black_name)
         self.black_name_widget.bind(text=self.set_player_name)
         gl.add_widget(self.black_name_widget)
-        self.black_type_widget = CheckBoxList(group="black_type", text="",
+        self.black_type_widget = cb_l.CheckBoxList(group="black_type", text="",
                 values=('Human', 'Computer'))
         gl.add_widget(self.black_type_widget)
 
@@ -120,11 +79,11 @@ class SetupScreen(Screen):
         self.white_name_widget = TextInput(text=self.white_name)
         self.white_name_widget.bind(text=self.set_player_name)
         gl.add_widget(self.white_name_widget)
-        self.white_type_widget = CheckBoxList(group="white_type", text="",
+        self.white_type_widget = cb_l.CheckBoxList(group="white_type", text="",
                 values=('Human', 'Computer'))
         gl.add_widget(self.white_type_widget)
 
-        self.max_depth_widget = CheckBoxList(group="max_depth", text="Max Search Depth",
+        self.max_depth_widget = cb_l.CheckBoxList(group="max_depth", text="Max Search Depth",
                 values=('2', '4', '6', '8', '10', '12'))
         top_gl.add_widget(self.max_depth_widget)
 
