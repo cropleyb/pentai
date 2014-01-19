@@ -107,11 +107,12 @@
 
         MyLabel:
             text: "Confirm moves?"
-        ToggleButton:
-            font_size: '20sp'
-            state: 'normal'
-            id: cm_widget
-            on_press: root.set_confirm_moves(cm_widget.state)
+
+        CheckBoxList:
+            text: "Confirm style"
+			group: "confirm_options"
+			values: ["None", "Off Board", "On Piece"]
+			on_active_val: root.set_confirm_mode(self.val)
 
         # TODO: Music and Sound Effects
 
