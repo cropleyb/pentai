@@ -5,8 +5,11 @@ import unittest
 from game import *
 from rules import *
 from human_player import *
+import ai_player as ai_m
 from games_mgr import *
 from players_mgr import *
+import ai_factory as aif_m
+import ai_genome as aig_m
 
 class GamesMgrTest(unittest.TestCase):
     def setUp(self):
@@ -139,24 +142,29 @@ class GamesMgrTest(unittest.TestCase):
         self.assertEquals(g1_restored.get_player(1), p1_orig)
         self.assertEquals(g1_restored.get_player(2), p2_orig)
 
-    """
     def test_restore_ai_players(self):
         rules = Rules(9, "Standard")
-        p1_orig = HumanPlayer("Walt") # TODO AI
-        p2_orig = HumanPlayer("Disney")
+        aif = aif_m.AIFactory()
 
-        # TEMP HACK
-        p1_orig.key = 1
-        p2_orig.key = 2
+        genome1 = aig_m.AIGenome("Walt")
+        genome1.max_depth = 5
+        p1_orig = aif.create_player(genome1)
+
+        genome2 = aig_m.AIGenome("Disney")
+        genome2.max_depth = 8
+        genome2.mmpdl = 12
+        genome2.narrowing = 1
+        p2_orig = aif.create_player(genome2)
 
         g1 = self.gm.create_game(rules, p1_orig, p2_orig)
         self.gm.save(g1)
 
         gm2 = GamesMgr("test_")
+
         g1_restored = self.gm.get_game(g1.get_game_id())
         self.assertNotEquals(g1_restored, None)
         self.assertEquals(g1_restored.get_player(1), p1_orig)
-    """
+        self.assertEquals(g1_restored.get_player(2), p2_orig)
 
 if __name__ == "__main__":
     unittest.main()
