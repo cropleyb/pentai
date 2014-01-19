@@ -6,6 +6,7 @@ class AIGenome(object):
     def __init__(self, name):
         defaults = {
             "name": name,
+            "key": None,
             "use_openings_book": True,
             # Search params
             "max_depth": 6,
@@ -31,5 +32,3 @@ class AIGenome(object):
             raise AIGenomeException("Cannot set attribute %s" % attr_name)
         super(AIGenome, self).__setattr__(attr_name, val)
 
-    def key(self):
-        return self.name

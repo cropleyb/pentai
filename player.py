@@ -2,7 +2,7 @@
 # This is just be a base class / interface to be filled out by 
 # human and AI players.
 
-# TODO: Undo
+# TODO: Undo support?
 # TODO: Resign
 
 class Player():
@@ -12,8 +12,8 @@ class Player():
     def __repr__(self):
         return self.name
 
-    def key(self):
-        return self.name
+    def get_key(self):
+        return self.key
 
     def get_name(self):
         return self.name

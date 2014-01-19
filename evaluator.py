@@ -33,16 +33,16 @@ class Evaluator():
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, 1)
 
+    def after_game_won(self, game, colour):
+        pass
+    
     def search_player_colour(self):
         """ The AI player who is performing the search.
             For the evaluator, we will always show it from one
             player's perspective
+            TODO: first AI Player?
         """
         return BLACK
-        '''
-        game = self.game()
-        return game.to_move_colour()
-        '''
 
     def to_move_colour(self):
         return self.state.to_move_colour()

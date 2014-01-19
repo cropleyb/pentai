@@ -24,6 +24,8 @@ class AIFactory: # TODO: These are just functions
             bf.set_blindness(genome.blindness)
             sf = bf
         p = ai_player.AIPlayer(sf, name=genome.name)
+
+        p.key = genome.key
         
         if genome.use_openings_book:
             gm = games_mgr.GamesMgr()

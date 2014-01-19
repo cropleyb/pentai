@@ -14,7 +14,7 @@ class Game(object):
         if rules != None:
             self.current_state = game_state.GameState(self)
 
-        self.player = [None, player1, player2] # TODO: Rename to players
+        self.players = [None, player1, player2]
         if player1 != None:
             player1.attach_to_game(self)
         if player2 != None:
@@ -48,13 +48,13 @@ class Game(object):
         return self.get_board().off_board(pos)
 
     def get_player(self, player_number):
-        return self.player[player_number]
+        return self.players[player_number]
     
     def get_all_players(self):
         return self.players
     
     def get_player_name(self, player_number):
-        return self.player[player_number].get_name()
+        return self.players[player_number].get_name()
 
     def get_current_player(self):
         return self.current_state.to_move_player()
@@ -99,8 +99,8 @@ class Game(object):
 
     def set_interrupted(self):
         self.set_won_by(BLACK + WHITE)
-        self.player[BLACK].set_interrupted()
-        self.player[WHITE].set_interrupted()
+        self.players[BLACK].set_interrupted()
+        self.players[WHITE].set_interrupted()
 
     def was_interrupted(self):
         return self.current_state.get_won_by() == BLACK + WHITE
@@ -112,7 +112,7 @@ class Game(object):
         return self.current_state.get_won_by()
 
     def winner_name(self):
-        return self.player[self.current_state.get_won_by()]
+        return self.players[self.current_state.get_won_by()]
 
     def get_move(self, move_number):
         return self.move_history[move_number-1]
@@ -166,14 +166,14 @@ class Game(object):
         player_line, size_line, rules_line, the_rest = s.split('\n', 3)
 
         # TODO: This is ugly - these values will be replaced shortly
-        if self.player[BLACK] is None:
-            self.player = [None, player.Player("Black"), player.Player("White")]
+        if self.players[BLACK] is None:
+            self.players = [None, player.Player("Black"), player.Player("White")]
         if self.rules is None:
             self.rules = rules.Rules(5,"standard")
 
         players = player_line.split(" versus ", 1)
-        self.player[1].name = players[0]
-        self.player[2].name = players[1]
+        self.players[1].name = players[0]
+        self.players[2].name = players[1]
 
         side_length, ignored = size_line.split('x', 1)
         self.rules.size = int(side_length)

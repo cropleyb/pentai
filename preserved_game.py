@@ -7,7 +7,9 @@ class PreservedGame():
             self.game_id = game.game_id
             self.rules = game.rules.key()
             self.date = game.get_date()
-            self.players = [None, game.player[1].key(), game.player[2].key()]
+            self.players = [None,
+                    game.get_player(1).get_key(),
+                    game.get_player(2).get_key()]
             self.won_by = game.get_won_by()
             self.moves = game.move_history[:]
 

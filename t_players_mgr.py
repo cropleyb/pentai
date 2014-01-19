@@ -22,9 +22,9 @@ class AIFactoryTest(unittest.TestCase):
         orig_player = aif.create_player(genome)
 
         db = PlayersMgr(prefix="test_")
-        db.add(orig_player)
+        db.save(orig_player)
 
-        rp = db.find("Samuel")
+        rp = db.find_by_name("Samuel")
 
         self.assertEquals(rp.__class__, AIPlayer)
         self.assertEquals(rp.name, "Samuel")
@@ -40,9 +40,9 @@ class HumanDBTest(unittest.TestCase):
     def test_human_save_to_db(self):
         db = PlayersMgr(prefix="test_")
         p = HumanPlayer("Sandra")
-        db.add(p)
+        db.save(p)
 
-        fp = db.find("Sandra")
+        fp = db.find_by_name("Sandra")
         self.assertEquals(fp.__class__, HumanPlayer)
         self.assertEquals(fp.name, "Sandra")
 

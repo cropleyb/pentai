@@ -8,6 +8,7 @@ from ai_factory import *
 from players_mgr import * # TODO remove dependance, use mock
 
 import pdb
+import random
 
 class PreservedGameTest(unittest.TestCase):
     def setUp(self):
@@ -20,7 +21,10 @@ class PreservedGameTest(unittest.TestCase):
         except OSError: pass
 
     def create_player(self, genome):
-        return self.aif.create_player(genome)
+        p = self.aif.create_player(genome)
+        p.key = random.randint(0, 1000)
+        genome.key = p.key
+        return p
 
     def test_preserve_game(self):
         genome1 = AIGenome("Sonia")
@@ -37,9 +41,9 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(pg.rules, (13, 's'))
 
         black_player = pg.players[BLACK]
-        self.assertEquals(black_player, "Sonia")
+        self.assertEquals(black_player, genome1.key)
         white_player = pg.players[WHITE]
-        self.assertEquals(white_player, "Toby")
+        self.assertEquals(white_player, genome2.key)
 
         today = datetime.date.today()
         self.assertEquals(pg.date, today)
@@ -57,11 +61,11 @@ class PreservedGameTest(unittest.TestCase):
         p2 = self.create_player(genome2)
 
         ai_db = PlayersMgr(prefix="test_")
-        ai_db.add(p1)
-        ai_db.add(p2)
+        ai_db.save(p1)
+        ai_db.save(p2)
 
         pg = PreservedGame()
-        pg.players = [None, "Marjory", "Hubert"]
+        pg.players = [None, genome1.key, genome2.key]
 
         pg.rules = (9, 'f')
         pg.game_id = ((9, 'f'), 1)
@@ -84,10 +88,10 @@ class PreservedGameTest(unittest.TestCase):
 
         self.assertEquals(orig_game.get_won_by(), BLACK)
 
-        black_player = orig_game.player[BLACK]
+        black_player = orig_game.get_player(BLACK)
         self.assertEquals(black_player, p1)
 
-        white_player = orig_game.player[WHITE]
+        white_player = orig_game.get_player(WHITE)
         self.assertEquals(white_player, p2)
 
     # TODO: Test restore of human player

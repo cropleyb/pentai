@@ -61,6 +61,9 @@ class GamesMgr(object):
         return g
 
     def save(self, g, game_db=None):
+        for p in g.get_all_players()[1:]:
+            self.players_mgr.ensure_has_key(p)
+
         if game_db is None:
             game_db = self.get_db(g)
         
@@ -83,8 +86,8 @@ class GamesMgr(object):
         self.unfinished_db.sync()
 
         # Save players
-        self.players_mgr.add(g.get_player(1))
-        self.players_mgr.add(g.get_player(2))
+        self.players_mgr.save(g.get_player(1))
+        self.players_mgr.save(g.get_player(2))
 
     def get_unfinished_game(self, g_id):
         if not g_id in self.unfinished_db:
@@ -104,3 +107,7 @@ class GamesMgr(object):
 
         g = pg.restore(self.players_mgr)
         return g
+
+    def after_game_won(self, game, colour):
+        self.save(game)
+

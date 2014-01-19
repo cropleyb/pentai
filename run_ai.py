@@ -107,7 +107,7 @@ class Match():
         #self.genome2.take_score_base = 110
         #self.genome2.capture_score_base = 310 # Try this again for high depth
         #self.genome2.threat_score_base = 25
-        #self.genome1.blindness = 0.30
+        self.genome1.blindness = 0.02
         #self.genome2.blindness = 0.40
 
         #self.genome2.filter2 = True

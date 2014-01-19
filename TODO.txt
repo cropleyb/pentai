@@ -1,3 +1,6 @@
+Should there be a lookup for players and games that gives the same object
+  so they are shared across the process?
+Allocate and assign ids from players_mgr
 "Ratings" for all players
 Utility for converting from old to new saved games
 Utility for converting all the games into openings
