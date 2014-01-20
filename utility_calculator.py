@@ -54,7 +54,8 @@ class UtilityCalculator():
         # Check for immediate wins first, then forceable wins
         for win_eval_func in (self.zero_turn_win, self.one_turn_win):
             for eval_colour in (turn_colour, other_colour):
-                util, won = win_eval_func(state, eval_colour, turn_colour)
+                our_eval = (eval_colour == search_colour)
+                util, won = win_eval_func(state, eval_colour, turn_colour, our_eval)
 
                 if won:
                     if search_colour == eval_colour:
@@ -90,15 +91,6 @@ class UtilityCalculator():
             except:
                 pdb.set_trace()
         '''
-        #if ret == 147571: # 9,7 descendant
-        #if ret == 314642.0: # 8,4 descendant
-        #if ret == -14362: # 9,7 descendant
-            #if ret == -9358: # 8,4 descendant
-            #pdb.set_trace()
-        #if ret == -9431:
-        #    pdb.set_trace()
-        #if ret == -9358: # or ret == -9431:
-        if ret == -9431:
             print
             print state.history_string()
             print utility_stats
@@ -111,7 +103,7 @@ class UtilityCalculator():
 
         return ret
 
-    def zero_turn_win(self, state, eval_colour, turn_colour):
+    def zero_turn_win(self, state, eval_colour, turn_colour, our_eval):
         """ Detect a win in this position """
         eval_captured = state.get_captured(eval_colour)
         eval_lines = state.utility_stats.lines[eval_colour]
@@ -121,7 +113,7 @@ class UtilityCalculator():
             # that the search is not continued from this node.
             # TODO: we shouldn't be modifying "state" here.
             state.set_won_by(eval_colour)
-            return self.winning_score(state), True
+            return self.winning_score(state, our_eval), True
 
         rules = self.rules
         sfcw = rules.stones_for_capture_win
@@ -133,12 +125,12 @@ class UtilityCalculator():
                 # that the search is not continued from this node.
                 # TODO: we shouldn't be modifying "state" here.
                 state.set_won_by(eval_colour)
-                return self.winning_score(state), True
+                return self.winning_score(state, our_eval), True
 
         return 0, False
 
     def one_turn_win(self, state, eval_colour, \
-            turn_colour):
+            turn_colour, our_eval):
         """ Detect a forceable win after one turn each """
         rules = self.rules
         sfcw = rules.stones_for_capture_win
@@ -149,14 +141,14 @@ class UtilityCalculator():
         if eval_lines[3] > 0:
             if eval_colour == turn_colour:
                 # An unanswered line of four out of five will win
-                return self.winning_score(state) / 100, True
+                return self.winning_score(state, our_eval) / 100, True
 
             if eval_lines[3] > 1:
                 # Two or more lines of four, with no danger of being
                 # captured is a win.
                 if ccp:
                     if state.get_takes()[opposite_colour(eval_colour)] == 0:
-                        return self.winning_score(state) / 100, True
+                        return self.winning_score(state, our_eval) / 100, True
 
         if ccp and sfcw > 0:
             # Can win by captures
@@ -164,11 +156,11 @@ class UtilityCalculator():
             if eval_colour == turn_colour:
                 if (sfcw - eval_captured) <= 2 and my_takes > 0:
                     # eval_colour can take the last pair for a win
-                    return self.winning_score(state) / 100, True
+                    return self.winning_score(state, our_eval) / 100, True
             else:
                 if (sfcw - eval_captured) <= 2 and my_takes > 2:
                     # eval_colour can take the last pair for a win
-                    return self.winning_score(state) / 100, True
+                    return self.winning_score(state, our_eval) / 100, True
 
         return 0, False
 
@@ -213,6 +205,13 @@ class UtilityCalculator():
 
     # Scale these INFINITIES down to discourage sadistic
     # won game lengthening.
-    def winning_score(self, state):
-        # TODO: Sadistic mode for Rich - just multiply by move number ;)
-        return INFINITY * 100 / state.get_move_number()
+    def winning_score(self, state, our_eval):
+        # our_eval = (search_player == eval_player)
+        if our_eval:
+            # If the winner is us then / by move number.
+            return INFINITY * 100 / state.get_move_number()
+        else:
+            # If the winner is not us the * by move_number
+            return INFINITY * state.get_move_number()
+
+        # TODO: Sadistic mode for Rich - always multiply by move number ;)

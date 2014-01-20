@@ -100,13 +100,6 @@ class AIPlayer(p_m.Player):
         if self.ab_game.interrupted:
             return
         action = move[0]
-        if value < -INFINITY / 1000:
-            # No matter what we do, there is a forceable loss.
-            # Just take the first move suggested by the search filter -
-            # it will look better than the AB suggestion
-            sf = ab_game.current_state.utility_stats.search_filter
-            our_colour = ab_game.current_state.to_move_colour()
-            action = sf.get_iter(our_colour).next()
 
         # TODO: Start thinking in opponents time thread here.
 
