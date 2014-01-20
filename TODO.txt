@@ -1,3 +1,4 @@
+New bug in AI?
 Resume game and change player (setup screen) shouldn't replay to the end
 Minimum depth level for opening move selection = our depth
 Clean up settings screen -> kivy file
