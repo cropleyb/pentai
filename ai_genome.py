@@ -14,7 +14,7 @@ class AIGenome(object):
             "mmpdl": 9,
             "narrowing": 0,
             "chokes": [(4,5)],
-            "filter2": True,
+            "filter2": False,
             # Utility function
             "capture_score_base": 300,
             "take_score_base": 100,
