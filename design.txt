@@ -449,3 +449,29 @@ How do we avoid duplicate players?
 - Additional lookup by genome (runtime linear search)
 - Generated "names" for AIs? Hmmm.
 - Choose players
+
+Screen coordination & DBs
+-------------------------
+App - 
+Menu page - Choose: New game, Load game (unfinished), Review, Edit players
+    # edit openings?
+Load Screen - Should select a Game from the GamesMgr
+Player Edit Screen - Create player, type: human/computer(eventually online),
+        rating, speed, openings use
+New Game Screen - Select players (dropdown), rules type, size, time controls
+Setup Screen - disabled for production version (keyboard only?),
+        but use New Game Screen
+Options Screen - music, sound, + as per now. (persistent?)
+Games Screen - Same as Load Screen?
+Pente Screen - Where it is played :)
+BoardGUI - upper PenteScreen
+ControlsGUI - lower panel of PenteScreen
+Demo Screen - wrapper around PenteScreen
+
+DBs:
+Games
+Players
+Openings
+
+keyboard handling? No such thing in apps, so must be supported another way
+as well
