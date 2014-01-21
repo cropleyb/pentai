@@ -468,10 +468,13 @@ BoardGUI - upper PenteScreen
 ControlsGUI - lower panel of PenteScreen
 Demo Screen - wrapper around PenteScreen
 
-DBs:
-Games
-Players
-Openings
+DBs, needed by:
+Games: load, pente screen after win or on exit, game passed in as opened
+Players: player edit, new game. only edit ai genomes?
+Openings: pente screen only
+
+Where to start? Menu/Start screen
 
 keyboard handling? No such thing in apps, so must be supported another way
 as well
+
