@@ -1,9 +1,15 @@
+Play a new game with same opponent (auto set loser to first player)
+Interrupt search thread faster?
+IOS build: simulation blocked by: https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
+Hold down forward/backward buttons for fast traversal (after delay)
+Starting a new game should set the settings page back to defaults
+Web page processor for pente.org and pente.net
 New bug in AI?
-Resume game and change player (setup screen) shouldn't replay to the end
 Minimum depth level for opening move selection = our depth
-Clean up settings screen -> kivy file
 Should there be a lookup for players and games that gives the same object
   so they are shared across the process?
+Trim the openings positions to a fixed depth?
+Trim the transposition table?
 Utility for converting all the games into openings
 manual openings lib testing
 script to import historical human games
@@ -13,6 +19,7 @@ Thinking in opponent's time - swap search colour then reuse position cache
 icons for everything for internationalization
 GameManager in App class? Share attribute with all screens?
 Split up pente_screen?
+Killer Heuristic? History Heuristic?
 Restart AI button?
 video or recorded moves explaining the rules of pente
 Openings DB:
@@ -22,7 +29,6 @@ Openings DB:
 Fix: Toggle buttons can all be turned off - commit to Kivi
 Name for the app. Pentacular, Pentacle, Pentapp, PentAI, PenteAI
 Icon for the app.
-IOS build: blocked by https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
 Grid option
 Move markers bug - can't reproduce?
 Tool for processing a game - which moves were not searched
@@ -54,3 +60,4 @@ Update kivy to remove need for:
    /Applications/Kivy.app/Contents/Resources/kivy/kivy/tools/packaging/pyinstaller_hooks hack
 Patch DB from http://code.activestate.com/recipes/576642/ comments
 Get permission from Hasbro? Asked pente.net webmaster 8 Jan 2014
+# Ask about games/openings library - 20 Jan 2014
