@@ -89,7 +89,10 @@ class AIPlayer(p_m.Player):
 
         # TODO: Don't reset if it is our move, we have "thinking
         # in opponents time" turned on, and our opponent is not a computer
+        '''
+        print "size of transposition table: %s" % len(ab_game.transposition_table)
         ab_game.reset_transposition_table()
+        '''
 
         md = self.max_depth
 

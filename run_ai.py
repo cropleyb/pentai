@@ -102,15 +102,15 @@ class Match():
 
     def play_some_games(self):
 
-        self.genome1.use_openings_book = False
+        #self.genome1.use_openings_book = False
         #self.genome2.length_factor = 35
         #self.genome2.take_score_base = 110
         #self.genome2.capture_score_base = 310 # Try this again for high depth
         #self.genome2.threat_score_base = 25
-        self.genome1.blindness = 0.02
+        #self.genome1.blindness = 0.02
         #self.genome2.blindness = 0.40
 
-        #self.genome2.filter2 = True
+        self.genome2.filter2 = True
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
@@ -131,7 +131,7 @@ class Match():
 
         results = MatchResults()
         for game_length in range(3,6):
-        #for game_length in range(8,9):
+        #for game_length in range(5,8):
             for board_size in [13]:
             #for board_size in [9, 13, 19]:
                 for first_player in [0, 1]:
@@ -141,6 +141,10 @@ class Match():
                     res = self.play_one_game(board_size,
                                              players[first_player],
                                              players[second_player])
+                    '''
+                    hits = [players[i].ab_game.transposition_hits for i in [0,1]]
+                    print "Hits: %s" % hits
+                    '''
                     results.add(res)
 
         print results

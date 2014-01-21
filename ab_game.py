@@ -12,6 +12,7 @@ class ABGame():
         self.base_game = base_game
         self.interrupted = False
         self.transposition_table = {} # TODO: extract class?
+        #self.transposition_hits = 0
 
     def to_move(self, state=None):
         if state is None:
@@ -71,6 +72,7 @@ class ABGame():
             val = self.transposition_table[key]
             # Yes, save it for returning from utility()
             state.cached_value = val
+            #self.transposition_hits += 1
             # And return this node as terminal
             return True
         except KeyError:
