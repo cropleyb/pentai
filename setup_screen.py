@@ -58,14 +58,17 @@ class SetupScreen(Screen):
         g = self.app.games_mgr.create_game(r, player1, player2)
         return g
 
-    def set_GUI_from_file(self, filename):
-        f = open(filename)
-        # TODO: New method set GUI from game.
-        #g = self.app.games_mgr.create_game(r, player1, player2)
-        g = game.Game(None, None, None) # Hmmm. TODO
-        g.configure_from_str(f.read())
-        self.ids.start_button.text = "Resume"
+    def set_GUI_from_game(self, g):
         self.ids.black_name_id.text = g.get_player_name(BLACK)
         self.ids.white_name_id.text = g.get_player_name(WHITE)
         self.ids.bs_id.set_active(g.rules.size)
         self.ids.rules_id.set_active(g.rules.type_str)
+
+    def set_GUI_from_file(self, filename):
+        f = open(filename)
+        # TODO
+        #g = self.app.games_mgr.create_game(r, player1, player2)
+        g = game.Game(None, None, None) # Hmmm. TODO
+        g.configure_from_str(f.read())
+        self.ids.start_button.text = "Resume"
+        self.set_GUI_from_game(g)
