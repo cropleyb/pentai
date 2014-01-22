@@ -26,9 +26,6 @@ class ABState():
     def get_utility_stats(self):
         return self.utility_stats
 
-    def reset_state(self):
-        self.utility_stats.reset()
-
     def get_takes(self):
         return self.utility_stats.takes
 
@@ -97,12 +94,15 @@ class ABState():
     def set_won_by(self, colour):
         self.state.set_won_by(colour)
 
+    def reset_state(self, game):
+        self.utility_stats.reset()
+
     # TODO: Could these two be moved to utility_stats too?
-    def before_set_occ(self, pos, colour):
+    def before_set_occ(self, game, pos, colour):
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, -1)
 
-    def after_set_occ(self, pos, colour):
+    def after_set_occ(self, game, pos, colour):
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, 1)
 

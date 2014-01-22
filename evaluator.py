@@ -22,14 +22,14 @@ class Evaluator():
     def get_rules(self):
         return self.game().rules
 
-    def reset_state(self):
+    def reset_state(self, game):
         self.utility_stats.reset()
 
-    def before_set_occ(self, pos, colour):
+    def before_set_occ(self, game, pos, colour):
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, -1)
 
-    def after_set_occ(self, pos, colour):
+    def after_set_occ(self, game, pos, colour):
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, 1)
 

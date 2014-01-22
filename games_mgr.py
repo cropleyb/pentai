@@ -58,6 +58,10 @@ class GamesMgr(object):
             # Might as well save it now.
             self.id_lookup[uid] = rules.key()
             self.id_lookup.sync()
+
+            # And save it to the DB when the game is finished
+            if not self.prefix: # TODO: Make this a boolean self.test
+                g.current_state.add_observer(self)
         return g
 
     def save(self, g, game_db=None):
@@ -105,8 +109,19 @@ class GamesMgr(object):
         if pg is None:
             return None
 
+        # TODO: Observe game?
+
         g = pg.restore(self.players_mgr)
         return g
+
+    def reset_state(self, game):
+        pass
+
+    def before_set_occ(self, game, pos, colour):
+        pass
+
+    def after_set_occ(self, game, pos, colour):
+        self.save(game)
 
     def after_game_won(self, game, colour):
         self.save(game)

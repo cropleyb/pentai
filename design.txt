@@ -473,7 +473,10 @@ Games: load, pente screen after win or on exit, game passed in as opened
 Players: player edit, new game. only edit ai genomes?
 Openings: pente screen only
 
-Where to start? Menu/Start screen
+Where to start? Menu/Start screen...
+Save game to DB on leave game call from pente screen (to menu)?
+On game finished? Automatic callback to game state observer? Both of these.
+Used observers for both single move and end of game.
 
 keyboard handling? No such thing in apps, so must be supported another way
 as well

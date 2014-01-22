@@ -79,10 +79,6 @@ class PenteScreen(Screen):
         self.remove_ghosts()
         self.cancel_confirmation()
 
-    def reset_state(self):
-        """ Callback from game_state """
-        self.clean_board()
-
     def setup_turn_markers(self):
         self.turn_markers = [None]
         for colour in [BLACK, WHITE]:
@@ -193,10 +189,14 @@ class PenteScreen(Screen):
         """ The Grid on the screen allows extra space at the edges """
         return self.game.size() + 1
 
-    def before_set_occ(self, pos, colour):
+    def reset_state(self, game):
+        """ Callback from game_state """
+        self.clean_board()
+
+    def before_set_occ(self, game, pos, colour):
         pass
 
-    def after_set_occ(self, pos, colour):
+    def after_set_occ(self, game, pos, colour):
         self.make_move_on_the_gui_board(pos, colour)
         self.refresh_all()
 

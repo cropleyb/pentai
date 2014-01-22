@@ -52,17 +52,11 @@ class Board():
         colour_new = self.strips[0].get_occ(pos)
         return colour_new
 
-    def set_occ(self, pos, colour, observers=()):
+    def set_occ(self, pos, colour):
         if self.off_board(pos):
             raise OffBoardException
-
-        for o in observers:
-            o.before_set_occ(pos, colour)
 
         for s in self.strips:
             # We maintain the board position in four ways, update them all
             s.set_occ(pos, colour)
-
-        for o in observers:
-            o.after_set_occ(pos, colour)
 

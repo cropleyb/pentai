@@ -36,7 +36,7 @@ class GameState():
         self.set_won_by(EMPTY)
         self.move_number = 1
         for o in self.observers:
-            o.reset_state()
+            o.reset_state(self)
 
     def get_rules(self):
         return self.game.rules
@@ -64,7 +64,13 @@ class GameState():
         self.captured[player_num] = pieces
 
     def set_occ(self, move_pos, my_colour):
-        self.board.set_occ(move_pos, my_colour, self.observers)
+        for o in self.observers:
+            o.before_set_occ(self.game, move_pos, my_colour)
+
+        self.board.set_occ(move_pos, my_colour)
+
+        for o in self.observers:
+            o.after_set_occ(self.game, move_pos, my_colour)
 
     def make_move(self, move_pos):
         if self.board.off_board(move_pos):
