@@ -460,7 +460,7 @@ Player Edit Screen - Create player, type: human/computer(eventually online),
         rating, speed, openings use
 New Game Screen - Select players (dropdown), rules type, size, time controls
 Setup Screen - disabled for production version (keyboard only?),
-        but use New Game Screen
+        but use New Game Screen (rename)
 Options Screen - music, sound, + as per now. (persistent?)
 Games Screen - Same as Load Screen?
 Pente Screen - Where it is played :)
@@ -477,7 +477,31 @@ Where to start? Menu/Start screen...
 Save game to DB on leave game call from pente screen (to menu)?
 On game finished? Automatic callback to game state observer? Both of these.
 Used observers for both single move and end of game.
+load game from games mgr - need to know which game -> GUI or hardcode for now.
+create a new game from games mgr
 
 keyboard handling? No such thing in apps, so must be supported another way
 as well
 
+Utility Function
+----------------
+Subtraction mode versus Divide mode - for calculating an overall value
+for the position from scores for each side.
+Sub mode seems to produce a better win rate, but gives skewed results
+occasionally due to favouring bigger own scores
+Div mode has a much lower win rate, why?
+
+We want a UF that consistently ranks positions from best to worst
+Our Score = OS; Their Score = TS
+Sub: OS - TS Add lots of small stuff to both sides -> cancels
+Div: OS / TS Add lots of small stuff to both sides -> no cancel
+
+Do we need to encode the "initiative" into the utility score?
+i.e. player with max length, or the turn if equal and no takes
+How much is it worth?
+
+-> Write more direct utility tests.
+
+Sub mode seems to work except when early in the game when it sometimes
+sacrifices a capture for a 3 or so.
+Compensate: ratio of pieces on the board?
