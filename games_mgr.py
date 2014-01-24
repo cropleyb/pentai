@@ -121,8 +121,9 @@ class GamesMgr(object):
         pass
 
     def after_set_occ(self, game, pos, colour):
-        self.save(game)
+        pass
 
     def after_game_won(self, game, colour):
+        # TODO: Check draws trigger this.
         self.save(game)
 
