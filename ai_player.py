@@ -1,7 +1,7 @@
+from pente_exceptions import *
 import ab_game
 import alpha_beta
-import openings_mover
-import openings_book
+import openings_mover as om_m
 import player as p_m
 import utility_calculator as uc_m
 
@@ -19,7 +19,7 @@ class AIPlayer(p_m.Player):
         self.search_filter = search_filter
         self.genome = None # temp hack
         self.openings_book = None
-        self.openings_filt = None
+        self.openings_mover = None
 
         self.utility_calculator = uc_m.UtilityCalculator()
 
@@ -63,27 +63,39 @@ class AIPlayer(p_m.Player):
 
     def search_thread(self, gui):
         action = self.do_the_search()
-        if action:
-            gui.enqueue_action(action)
-            gui.trig()
+        gui.enqueue_action(action)
 
-    def do_the_search(self):
+    def get_openings_mover(self):
+        if self.openings_mover is None:
+            # ie first run through
+            self.openings_mover = om_m.OpeningsMover(
+                    self.openings_book, self.ab_game.base_game)
+        return self.openings_mover
+
+    def make_opening_move(self):
         if self.use_openings_book():
             base_game = self.ab_game.base_game
 
-            if self.openings_filt is None:
-                # ie first run through
-                self.openings_filt = openings_mover.OpeningsMover(
-                        self.openings_book, base_game)
-
-            move = self.openings_filt.get_a_good_move()
+            om = self.get_openings_mover()
+            move = om.get_a_good_move()
             if move:
                 return move
             else:
                 # min depth for turning off openings book
                 turn = base_game.get_move_number()
-                if turn > 7: # This is a complete guess
-                    self.make_opening_move = False
+                if turn > 15: # This is a complete guess
+                    self.openings_book = None
+
+    def do_the_search(self):
+        try:
+            return self.do_the_search_inner()
+        except NoMovesException:
+            self.ab_game.base_game.set_won_by(BLACK+WHITE)
+
+    def do_the_search_inner(self):
+        move = self.make_opening_move()
+        if move:
+            return move
 
         ab_game = self.ab_game
 
