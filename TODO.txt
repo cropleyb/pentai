@@ -1,4 +1,11 @@
-Play a new game with same opponent (auto set loser to first player)
+Detect Human vs. Human draws
+Display draws via kivy
+scale the capture diff score back with the move number?
+Search until there are no 4 attacks and our move.
+Conversion utility to read in every game and write it back.
+Try another calculation mode: diff / sum ; scale to avoid "strange" result.
+Subscribe the games_mgr to restored games?
+GUI - Play a new game with same opponent (auto set loser to first player)
 Interrupt search thread faster?
 IOS build: simulation blocked by: https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
 Hold down forward/backward buttons for fast traversal (after delay)
