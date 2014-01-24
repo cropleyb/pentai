@@ -5,6 +5,7 @@ class AIGenomeException(Exception):
 class AIGenome(object):
     def __init__(self, name):
         defaults = {
+            "override": False,
             "name": name,
             "key": None,
             "use_openings_book": True,
@@ -29,8 +30,12 @@ class AIGenome(object):
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 
+    def set_override(self, val):
+        self.override = val
+
     def __setattr__(self, attr_name, val):
-        if not hasattr(self, attr_name):
-            raise AIGenomeException("Cannot set attribute %s" % attr_name)
+        if hasattr(self, "override") and not self.override:
+            if not hasattr(self, attr_name):
+                raise AIGenomeException("Cannot set attribute %s" % attr_name)
         super(AIGenome, self).__setattr__(attr_name, val)
 

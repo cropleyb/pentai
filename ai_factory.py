@@ -49,16 +49,9 @@ class AIFactory: # TODO: These are just functions
         uc.captures_scale = genome.captures_scale
         uc.length_factor = genome.length_factor
         uc.move_factor = genome.move_factor
-        try: 
-            uc.calc_mode = genome.calc_mode
-        except AttributeError:
-            uc.calc_mode = 1
-        try: 
-            uc.use_net_captures = genome.use_net_captures
-        except AttributeError:
-            uc.use_net_captures = True
-        try: 
-            uc.scale_pob = genome.scale_pob
-        except AttributeError:
-            uc.scale_pob = False
+        genome.set_override(True)
+        uc.calc_mode = genome.calc_mode
+        uc.use_net_captures = genome.use_net_captures
+        uc.scale_pob = genome.scale_pob
+        genome.set_override(False)
 
