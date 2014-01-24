@@ -14,12 +14,12 @@ cy_modules = [
             'length_lookup_table.pyx',
             'priority_filter.py',
             'priority_filter_2.py',
+            'utility_stats.py',
             ]
 if False:
     cy_modules.extend([
         'budget_searcher.py',
         'utility_calculator.py',
-        'utility_stats.py',
         'direction_strips.py',
         'alpha_beta.py',
         'ab_state.py',
