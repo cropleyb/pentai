@@ -169,6 +169,9 @@ class PenteScreen(Screen):
         if self.action_queue.empty():
             return
         action = self.action_queue.get()
+        if not action:
+            if self.game.get_won_by() == (BLACK+WHITE):
+                print "Draw detected"
         try:
             self.game.make_move(action)
             self.refresh_all()
@@ -279,6 +282,11 @@ class PenteScreen(Screen):
             if flip:
                 level = opposite_colour(level)
             self.update_captures(colour, self.game.get_captured(colour), flip)
+
+        # TODO: Show draws somehow
+        if self.game.get_won_by() == BLACK + WHITE:
+            print "TODO! Display draws as such!"
+            return
 
         if self.game.finished():
             widget = self.win_marker
