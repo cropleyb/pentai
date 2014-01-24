@@ -63,6 +63,7 @@ class SetupScreen(Screen):
         self.ids.white_name_id.text = g.get_player_name(WHITE)
         self.ids.bs_id.set_active(g.rules.size)
         self.ids.rules_id.set_active(g.rules.type_str)
+        # TODO: Player type, AI Parameters?
 
     def set_GUI_from_file(self, filename):
         f = open(filename)
