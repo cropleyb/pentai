@@ -5,6 +5,8 @@ import persistent_dict as pd_m
 import os
 from defines import *
 
+instance = None
+
 class OpeningsBook(object):
     def __init__(self, games_mgr, prefix=None):
         self.games_mgr = games_mgr
@@ -12,6 +14,9 @@ class OpeningsBook(object):
         if prefix is None:
             prefix = os.path.join("db","")
         self.prefix = prefix
+
+        global instance
+        instance = self
 
     def get_filename(self, g):
         if g.__class__ is game.Game:

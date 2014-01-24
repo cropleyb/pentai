@@ -5,7 +5,7 @@ from priority_filter import *
 from priority_filter_2 import *
 from blindness_filter import *
 
-import openings_book
+import openings_book as ob_m
 import games_mgr
 
 from ai_genome import *
@@ -28,9 +28,12 @@ class AIFactory: # TODO: These are just functions
         p.key = genome.key
         
         if genome.use_openings_book:
-            gm = games_mgr.GamesMgr()
-            om = openings_book.OpeningsBook(gm)
-            p.set_use_openings_book(om)
+            ob = ob_m.instance
+            if not ob:
+                gm = games_mgr.GamesMgr()
+                ob = ob_m.OpeningsBook(gm)
+                ob_m.instance = ob
+            p.set_use_openings_book(ob)
 
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
         self.set_config(genome, p)
@@ -46,5 +49,16 @@ class AIFactory: # TODO: These are just functions
         uc.captures_scale = genome.captures_scale
         uc.length_factor = genome.length_factor
         uc.move_factor = genome.move_factor
-        uc.sub = genome.sub
+        try: 
+            uc.calc_mode = genome.calc_mode
+        except AttributeError:
+            uc.calc_mode = 1
+        try: 
+            uc.use_net_captures = genome.use_net_captures
+        except AttributeError:
+            uc.use_net_captures = True
+        try: 
+            uc.scale_pob = genome.scale_pob
+        except AttributeError:
+            uc.scale_pob = False
 
