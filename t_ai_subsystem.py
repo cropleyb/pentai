@@ -8,21 +8,30 @@ import rules
 import game
 
 from ai_player import *
-from priority_filter import *
+from ai_factory import *
+#from priority_filter import *
 
 import pdb
 
 class AIPlayerSubsystemTest(unittest.TestCase):
 
-    def create_player(self, name, mmpdl, narrowing, chokes):
+    def create_player(self): #, name, mmpdl, narrowing, chokes):
+        aif = AIFactory()
+        genome = AIGenome("Whatever")
+        genome.use_openings_book = False
+        return aif.create_player(genome)
+        '''
         sf = PriorityFilter()
         sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0, chokes=chokes)
         return AIPlayer(sf, name=name)
+        '''
 
     def setUp(self):
-        chokes = [(4,3),(5,1)]
-        self.p1 = self.create_player("Deep thunk", 9, 0, chokes)
-        self.p2 = self.create_player("Deep thunk2", 9, 0, chokes)
+        #chokes = [(4,3),(5,1)]
+        #self.p1 = self.create_player("Deep thunk", 9, 0, chokes)
+        #self.p2 = self.create_player("Deep thunk2", 9, 0, chokes)
+        self.p1 = self.create_player()
+        self.p2 = self.create_player()
 
         r = rules.Rules(13, "standard")
         self.game = game.Game(r, self.p1, self.p2)
@@ -197,12 +206,169 @@ standard rules
         m = self.p1.do_the_search()
         self.assertEquals(m, (8,7))
 
-'''
-TODO: Enable lots of logging again
-Create freebie.txt
-Run just freebie.
-(check it on screen)
-'''
+    def atest_strange(self):
+        #pdb.set_trace()
+        self.p1.set_max_depth(6)
+        game_str = \
+"""Mark versus DT
+13x13
+standard rules
+1. (6, 6)
+2. (6, 7)
+3. (4, 6)
+4. (5, 8)
+5. (7, 6)
+6. (5, 6)
+7. (4, 9)
+"""
+        self.game.load_game(game_str)
+        m = self.p1.do_the_search()
+        self.assertEquals(m, (8,6))
+
+    def test_draw(self): # TODO
+        #pdb.set_trace()
+        r = rules.Rules(9, "standard")
+        self.game = game.Game(r, self.p1, self.p2)
+
+        self.p1.set_max_depth(6)
+        game_str = \
+"""DT versus Itself
+9x9
+standard rules
+1. (4, 4)
+2. (5, 5)
+3. (6, 4)
+4. (5, 4)
+5. (5, 6)
+6. (5, 3)
+7. (5, 2)
+8. (6, 5)
+9. (7, 6)
+10. (4, 5)
+11. (4, 3)
+12. (6, 5)
+13. (3, 5)
+14. (2, 6)
+15. (3, 5)
+16. (7, 5)
+17. (8, 5)
+18. (6, 1)
+19. (6, 6)
+20. (4, 6)
+21. (3, 7)
+22. (4, 6)
+23. (3, 6)
+24. (3, 4)
+25. (2, 3)
+26. (3, 4)
+27. (4, 3)
+28. (5, 5)
+29. (5, 1)
+30. (1, 4)
+31. (3, 3)
+32. (2, 4)
+33. (4, 4)
+34. (2, 8)
+35. (4, 2)
+36. (2, 7)
+37. (2, 5)
+38. (4, 7)
+39. (2, 5)
+40. (2, 2)
+41. (4, 4)
+42. (4, 1)
+43. (3, 3)
+44. (0, 3)
+45. (1, 5)
+46. (4, 5)
+47. (3, 6)
+48. (0, 4)
+49. (0, 5)
+50. (0, 2)
+51. (0, 0)
+52. (4, 8)
+53. (3, 8)
+54. (4, 0)
+55. (1, 3)
+56. (5, 0)
+57. (3, 0)
+58. (6, 0)
+59. (8, 4)
+60. (8, 0)
+61. (7, 0)
+62. (8, 6)
+63. (8, 3)
+64. (8, 2)
+65. (7, 4)
+66. (5, 4)
+67. (7, 2)
+68. (6, 3)
+69. (7, 1)
+70. (7, 3)
+71. (8, 7)
+72. (8, 8)
+73. (6, 8)
+74. (2, 1)
+75. (0, 1)
+76. (6, 2)
+77. (1, 0)
+78. (2, 0)
+79. (1, 1)
+80. (3, 1)
+"""
+        self.game.load_game(game_str)
+        m = self.p1.do_the_search()
+        self.assertEquals(self.game.finished(), True)
+        self.assertEquals(self.game.get_won_by(), BLACK+WHITE)
+
+        '''
+        TODO: Enable lots of logging again
+        Create freebie.txt
+        Run just freebie.
+        (check it on screen)
+        '''
+
+    def test_missed_win(self): # TODO
+        self.p1.set_max_depth(2)
+        game_str = \
+"""Black versus White
+13x13
+standard rules
+1. (6, 6)
+2. (8, 4)
+3. (8, 6)
+4. (10, 6)
+5. (7, 6)
+6. (5, 6)
+7. (6, 4)
+8. (9, 5)
+9. (7, 3)
+10. (11, 7)
+11. (12, 8)
+12. (8, 2)
+13. (5, 5)
+14. (8, 1)
+15. (3, 7)
+16. (4, 6)
+17. (3, 6)
+18. (4, 6)
+19. (8, 3)
+20. (6, 3)
+21. (9, 3)
+22. (10, 3)
+23. (10, 5)
+24. (11, 4)
+25. (5, 6)
+26. (9, 6)
+27. (11, 6)
+28. (9, 6)
+29. (7, 7)
+30. (9, 2)
+31. (8, 0)
+"""
+        self.game.load_game(game_str)
+        m = self.p2.do_the_search()
+        self.assertEquals(m, (8,1))
 
 if __name__ == "__main__":
     unittest.main()
