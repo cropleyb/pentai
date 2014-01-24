@@ -19,7 +19,7 @@ class AIPlayerTest(unittest.TestCase):
         sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
         
         player = AIPlayer(sf, name=name)
-        player.make_opening_move = False
+        player.use_opening_book = False
         return player
 
     def setUp(self):
