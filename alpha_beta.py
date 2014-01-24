@@ -1,10 +1,13 @@
 from defines import INFINITY
+from pente_exceptions import *
 
 def argmax(aspi, fn):
     """ aspl: action state pair list
     """
     # The original list interpretation was faster but didn't short cut wins
     asp_l = list(aspi)
+    if len(asp_l) == 0:
+        raise NoMovesException()
     only_one = (len(asp_l) == 1)
 
     vals = []
