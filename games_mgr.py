@@ -29,6 +29,12 @@ class GamesMgr(object):
         fn = "%s%s_%s.pkl" % (self.prefix, rk[1], rk[0])
         return fn
 
+    def remove_id(self, key):
+        if key is None:
+            return None
+        del self.id_lookup[key]
+        self.id_lookup.sync()
+
     def get_db(self, key):
         if key is None:
             return None
