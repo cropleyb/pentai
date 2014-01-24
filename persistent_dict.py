@@ -1,6 +1,6 @@
 #/usr/bin/python
 
-import pickle, json, csv, os, shutil
+import cPickle, json, csv, os, shutil
 
 class PersistentDict(dict):
     ''' Persistent dictionary with an API compatible with shelve and anydbm.
@@ -60,13 +60,13 @@ class PersistentDict(dict):
         elif self.format == 'json':
             json.dump(self, fileobj, separators=(',', ':'))
         elif self.format == 'pickle':
-            pickle.dump(dict(self), fileobj, 2)
+            cPickle.dump(dict(self), fileobj, 2)
         else:
             raise NotImplementedError('Unknown format: ' + repr(self.format))
 
     def load(self, fileobj):
         # try formats from most restrictive to least restrictive
-        for loader in (pickle.load, json.load, csv.reader):
+        for loader in (cPickle.load, json.load, csv.reader):
             fileobj.seek(0)
             try:
                 return self.update(loader(fileobj))
