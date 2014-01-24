@@ -10,6 +10,9 @@ class BoardTooBigException(Exception):
 class BoardTooSmallException(Exception):
     pass
 
+class NoMovesException(Exception):
+    pass
+
 class IncompatibleFileException(Exception):
     pass
 
