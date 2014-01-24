@@ -6,13 +6,17 @@ import pdb
 
 class UtilityCalculator():
     def __init__(self):
+        # TODO: Remove?!
         self.capture_score_base = 300
         self.take_score_base = 100
         self.threat_score_base = 20
+        self.use_net_captures = True
         self.captures_scale = [1, 1, 1, 1, 1, 1]
         self.length_factor = 27
         self.move_factor = 30 # Irrelevant with subtraction mode
-        self.sub = True
+        self.calc_mode = 1
+        self.scale_pob = False
+        #self.sub = True
 
     def set_rules(self, rules):
         self.rules = rules
@@ -50,6 +54,8 @@ class UtilityCalculator():
         search_colour = state.search_player_colour()
         other_colour = opposite_colour(turn_colour)
 
+        move_number = state.get_move_number()
+
         # Check for immediate wins first, then forceable wins
         for win_eval_func in (self.zero_turn_win, self.one_turn_win):
             for eval_colour in (turn_colour, other_colour):
@@ -58,7 +64,6 @@ class UtilityCalculator():
                 if won:
                     # Scale these INFINITIES down to discourage sadistic
                     # won game lengthening.
-                    move_number = state.get_move_number()
                     if search_colour == eval_colour:
                         # If the winner is us then / by move number.
                         return INFINITY * 100 / move_number
@@ -67,6 +72,13 @@ class UtilityCalculator():
                         return -INFINITY * move_number
                     # TODO: Sadistic mode for Rich
                     # - always multiply by move number ;)
+
+        if utility_stats.lines == [None, [0,0,0,0,0], [0,0,0,0,0]] and \
+                state.get_takes() == [0, 0, 0] and move_number > 1:
+            # Draw
+            #pdb.set_trace()
+            state.set_won_by(BLACK + WHITE)
+            return 0
 
         # No forceable win has been found, so fudge up a score
         util_scores = [None, None, None]
@@ -82,20 +94,62 @@ class UtilityCalculator():
         # positions at different depth levels
         util_scores[turn_colour] *= self.move_factor
 
-        if self.sub:
+        our_score = util_scores[turn_colour]
+        their_score = util_scores[other_colour]
+
+        if self.scale_pob:
+            # Scale by the piece on the board
+            eval_captured = state.get_captured(eval_colour)
+            other_colour = opposite_colour(eval_colour)
+            other_captured = state.get_captured(other_colour)
+            #move_number = state.get_move_number()
+            our_pob = move_number / 2 - other_captured
+            other_pob = move_number / 2 - eval_captured
+            our_score *= our_pob
+            their_score *= other_pob
+
+        if self.calc_mode == 1:
             if search_colour == turn_colour:
-                ret = util_scores[turn_colour] - util_scores[other_colour]
+                ret = our_score - their_score
             else:
-                ret = util_scores[other_colour] - util_scores[turn_colour]
+                ret = their_score - our_score
+        elif self.calc_mode == 2:
+            if search_colour == turn_colour:
+                ret = float(our_score) / (their_score or 1)
+            else:
+                ret = float(their_score) / (our_score or 1)
         else:
-            try:
-                if search_colour == turn_colour:
-                    ret = float(util_scores[turn_colour]) / (util_scores[other_colour] or 1)
-                else:
-                    ret = float(util_scores[other_colour]) / (util_scores[turn_colour] or 1)
-            except:
-                pdb.set_trace()
+            assert self.calc_mode == 3
+            both_scores = our_score + their_score
+            if search_colour == turn_colour:
+                ret = float(our_score - their_score) / both_scores
+            else:
+                ret = float(their_score - our_score) / both_scores
+
         '''
+        if self.scale_pob:
+            ret /= (our_pob + other_pob)
+
+        if self.scale_pob:
+            # Scale by the piece on the board
+            eval_captured = state.get_captured(eval_colour)
+            other_colour = opposite_colour(eval_colour)
+            other_captured = state.get_captured(other_colour)
+            #move_number = state.get_move_number()
+            our_pob = move_number / 2 - other_captured
+            other_pob = move_number / 2 - eval_captured
+
+            ret *= our_pob
+            if other_pob > 0:
+                ret /= other_pob
+        '''
+
+        '''
+        #if ret == 2960:
+        if ret == 6531:
+            # TODO When I'm awake
+            #pdb.set_trace()
+
             print
             print state.history_string()
             print utility_stats
@@ -178,7 +232,11 @@ class UtilityCalculator():
         eval_captured = state.get_captured(eval_colour)
         other_colour = opposite_colour(eval_colour)
         other_captured = state.get_captured(other_colour)
-        net_captured = eval_captured - other_captured
+
+        if self.use_net_captures:
+            captured = eval_captured - other_captured
+        else:
+            captured = eval_captured
         eval_lines = state.utility_stats.lines[eval_colour]
 
         score = 0
@@ -191,20 +249,23 @@ class UtilityCalculator():
 
         if ccp:
             if sfcw > 0:
-                if net_captured > 0:
-                    cc = self.captured_contrib(net_captured)
+                if captured > 0:
+                    cc = self.captured_contrib(captured)
                     score += cc
-                # else: Captured stones are not worth anything
 
                 us = state.utility_stats
 
                 # Give takes and threats some value for their ability to help
                 # get 5 in a row.
-                tc = self.take_contrib(us.takes[eval_colour], net_captured)
+                #tc = self.take_contrib(us.takes[eval_colour], net_captured)
+                tc = self.take_contrib(us.takes[eval_colour], captured)
                 score += tc
 
-                tc = self.threat_contrib(us.threats[eval_colour], net_captured)
+                #tc = self.threat_contrib(us.threats[eval_colour], net_captured)
+                tc = self.threat_contrib(us.threats[eval_colour], captured)
                 score += tc
+
+            # else: Captured stones are not worth anything
 
         return score
 

@@ -390,6 +390,20 @@ class UtilityTest(unittest.TestCase):
         u = self.s.utility()
         self.assertGreater(u, inf)
 
+    def atest_four_pairs_captured_and_three_takes_will_win(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_black_lines([0,0,3,0,0])
+        self.set_white_lines([0,0,0,0,0])
+        self.set_captured(0, 2)
+        self.set_takes(0, 0)
+
+        u = self.s.utility()
+        self.assertGreater(u, inf)
+
+    ######################################################
+
     def test_tricky_pos_1(self):
         '''
     assert:
@@ -439,6 +453,40 @@ class UtilityTest(unittest.TestCase):
         u2= self.s.utility()
 
         self.assertGreater(u1, u2)
+
+    def atest_strange(self):
+        self.set_search_player_colour(WHITE)
+        self.set_turn_player_colour(WHITE)
+
+        self.set_captured(2, 2)
+        self.set_takes(1, 0)
+        self.set_threats(0, 2)
+        self.set_black_lines([45, 5, 0, 0, 0])
+        self.set_white_lines([41, 1, 0, 0, 0])
+        u1= self.s.utility()
+
+        '''
+Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 2, 2]))]   
+        '''
+        self.set_captured(2, 2)
+        self.set_takes(1, 1)
+        self.set_threats(0, 2)
+        self.set_black_lines([53, 8, 0, 0, 0])
+        self.set_white_lines([36, 2, 0, 0, 0])
+        u2= self.s.utility()
+
+        self.assertGreater(u1, u2)
+        '''
+        [None, [45, 5, 0, 0, 0], [41, 1, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 2], Best: [{}, {}, {}]
+
+#(2960, ((8, 6), 9. Lines: [None, [29, 2, 0, 0, 0], [33, 1, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 2])),
+#(1207, ((8, 6), 9. Lines: [None, [29, 2, 0, 0, 0], [33, 1, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 2])),
+Should be >
+(6531, ((5, 8), 9. Lines: [None, [53, 3, 0, 0, 0], [24, 3, 0, 0, 0]], Takes: [0, 0, 1], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 0]))]
+Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 2, 2]))]   
+
+
+        '''
 
     def atest_tricky_pos_2b(self):
         # TODO

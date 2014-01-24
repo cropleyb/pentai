@@ -16,14 +16,16 @@ class AIGenome(object):
             "chokes": [(4,5)],
             "filter2": False,
             # Utility function
+            "calc_mode": 1,
             "capture_score_base": 300,
             "take_score_base": 100,
             "threat_score_base": 20,
-            "captures_scale": [0, 1, 1, 1, 1, 1],
+            "use_net_captures": True,
+            "captures_scale": [1, 1, 1, 1, 1, 1],
             "length_factor": 27,
             "move_factor": 30,
             "blindness": 0,
-            "sub": True,
+            "scale_pob": False,
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 
