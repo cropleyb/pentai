@@ -1,6 +1,7 @@
 import ai_factory
 import ai_genome
 import persistent_dict
+import os
 
 class PlayersMgr():
     # TODO: Borg pattern?
@@ -20,6 +21,9 @@ class PlayersMgr():
         return player.key
 
     def save(self, player):
+        if player.__class__ is type(0):
+            player = self.find(player)
+
         key = self.ensure_has_key(player)
 
         try:
@@ -41,14 +45,14 @@ class PlayersMgr():
 
     def find(self, key):
         try:
-            g = self.players[key]
+            p = self.players[key]
         except KeyError:
             return None
-        if g.__class__ is ai_genome.AIGenome:
-            p = self.factory.create_player(g)
+        if p.__class__ is ai_genome.AIGenome:
+            p = self.factory.create_player(p)
         else:
             # HumanPlayers are stored directly
-            p = g
+            pass
         return p
 
     def next_id(self):
