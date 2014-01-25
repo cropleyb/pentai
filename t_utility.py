@@ -37,6 +37,11 @@ class UtilityTest(unittest.TestCase):
         self.set_search_player_colour(BLACK)
         self.s.set_state(self.gs)
 
+    def utility(self):
+        util = self.s.utility()[0]
+        #util = self.s.utility()
+        return util
+
     def set_black_lines(self, lines):
         self.s.utility_stats.lines[BLACK] = lines
 
@@ -64,56 +69,56 @@ class UtilityTest(unittest.TestCase):
     def test_utility_single_stone_better_than_none(self):
         self.set_black_lines([20,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_singles_is_better(self):
         self.set_black_lines([1,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_twos_is_better(self):
         self.set_black_lines([0,1,0,0,0])
         self.set_white_lines([0,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_threes_is_better(self):
         self.set_black_lines([0,0,1,0,0])
         self.set_white_lines([0,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_utility_more_fours_is_better(self):
         self.set_black_lines([0,0,0,1,0])
         self.set_white_lines([0,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_utility_less_ones_is_worse(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([1,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, 0)
 
     def test_utility_less_ones_is_worse(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([1,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, 0)
 
     def test_utility_five_is_a_win(self):
         self.set_black_lines([0,0,0,0,1])
         self.set_white_lines([99,99,99,99,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreaterEqual(u, inf)
 
     def test_black_win_by_captures(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
         self.set_captured(10, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreaterEqual(u, inf)
 
     def test_black_no_win_by_captures_for_five_in_a_row(self):
@@ -121,14 +126,14 @@ class UtilityTest(unittest.TestCase):
         self.set_white_lines([0,0,0,0,0])
         self.set_captured(10, 0)
         self.rules.stones_for_capture_win = 0
-        u = self.s.utility()
+        u = self.utility()
         self.assertEqual(u, 0)
 
     def test_white_win_by_captures(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
         self.set_captured(0, 10)
-        u = self.s.utility()
+        u = self.utility()
         self.assertLessEqual(u, -inf)
 
     def test_white_no_win_by_captures_for_five_in_a_row(self):
@@ -136,14 +141,14 @@ class UtilityTest(unittest.TestCase):
         self.set_white_lines([0,0,0,0,0])
         self.set_captured(0, 10)
         self.rules.stones_for_capture_win = 0
-        u = self.s.utility()
+        u = self.utility()
         self.assertEqual(u, 0)
 
     def test_one_capture_worth_more_than_a_three(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
         self.set_captured(2, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreaterEqual(u, 0)
 
     def test_one_capture_worth_less_than_a_four(self):
@@ -151,7 +156,7 @@ class UtilityTest(unittest.TestCase):
         self.set_white_lines([0,0,0,1,0])
         self.set_turn_player_colour(WHITE)
         self.set_captured(2, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertLessEqual(u, 0)
 
     ######################
@@ -161,7 +166,7 @@ class UtilityTest(unittest.TestCase):
         self.set_search_player_colour(WHITE)
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreaterEqual(u, 0)
 
     def test_white_capture(self):
@@ -170,7 +175,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
         self.set_captured(0, 2)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreaterEqual(u, 0)
 
     def test_black_to_move_advantage(self):
@@ -179,7 +184,7 @@ class UtilityTest(unittest.TestCase):
         self.set_search_player_colour(WHITE)
         self.set_black_lines([1,0,0,0,0])
         self.set_white_lines([1,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertLessEqual(u, 0)
 
     ###########
@@ -192,10 +197,10 @@ class UtilityTest(unittest.TestCase):
         self.set_white_lines([2,0,0,0,0])
 
         self.set_turn_player_colour(WHITE)
-        u_with_move = self.s.utility()
+        u_with_move = self.utility()
 
         self.set_turn_player_colour(BLACK)
-        u_not_to_move = self.s.utility()
+        u_not_to_move = self.utility()
 
         self.assertGreater(u_with_move, u_not_to_move)
 
@@ -205,11 +210,11 @@ class UtilityTest(unittest.TestCase):
         self.set_white_lines([2,0,0,0,0])
 
         self.set_turn_player_colour(BLACK)
-        u_with_move = self.s.utility()
+        u_with_move = self.utility()
 
         self.set_turn_player_colour(WHITE)
         self.set_search_player_colour(BLACK)
-        u_not_to_move = self.s.utility()
+        u_not_to_move = self.utility()
 
         self.assertGreater(u_with_move, u_not_to_move)
 
@@ -221,12 +226,12 @@ class UtilityTest(unittest.TestCase):
         # (-783, [16, 0, 0, 0, 0][11, 0, 0, 0, 0] - (3, 3) next to 4,4
         self.set_black_lines([16,0,0,0,0])
         self.set_white_lines([11,0,0,0,0])
-        u_adjacent = self.s.utility()
+        u_adjacent = self.utility()
 
         # (-588, [17, 0, 0, 0, 0][7, 0, 0, 0, 0] - (6, 6) with a gap
         self.set_black_lines([17,0,0,0,0])
         self.set_white_lines([7,0,0,0,0])
-        u_dist = self.s.utility()
+        u_dist = self.utility()
 
         self.assertGreater(u_adjacent, u_dist)
 
@@ -239,7 +244,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([11,3,0,0,0])
         self.set_takes(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_one_take_is_worth_more_than_two_threes(self):
@@ -250,7 +255,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,2,0,0])
         self.set_takes(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def atest_one_take_is_worth_less_than_three_threes(self):
@@ -260,7 +265,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,3,0,0])
         self.set_takes(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, 0)
 
     def test_one_take_with_the_move_is_worth_more_than_one_three(self):
@@ -270,7 +275,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
         self.set_takes(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_one_three_with_the_move_is_worth_more_than_one_take(self):
@@ -280,7 +285,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
         self.set_takes(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, 0)
 
     def test_four_captures_worth_more_than_3_threes(self):
@@ -290,7 +295,7 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,3,0,0])
         self.set_captured(8, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_four_in_a_row_with_the_move_is_a_win(self):
@@ -299,7 +304,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,1,0])
         self.set_white_lines([0,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, inf)
 
     def test_four_in_a_row_without_the_move_is_not_won(self):
@@ -308,7 +313,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,1,0])
         self.set_white_lines([0,0,0,0,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, inf)
 
     def test_four_in_a_row_for_opposition_with_the_move_is_a_loss(self):
@@ -317,7 +322,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,1,0])
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, -inf)
 
     def test_four_captures_and_a_threat_with_the_move_is_a_win(self):
@@ -326,7 +331,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_captured(8, 0)
         self.set_takes(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, inf)
 
     def test_four_captures_with_no_threats_with_the_move_is_not_a_win(self):
@@ -335,7 +340,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_captured(8, 0)
         self.set_takes(0, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, inf)
 
     def test_four_captures_and_a_threat_for_oppenent_with_the_move_is_a_loss(self):
@@ -344,7 +349,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_captured(0, 8)
         self.set_takes(0, 1)
-        u = self.s.utility()
+        u = self.utility()
         self.assertLess(u, -inf)
 
     def test_three_captures_and_a_threat_for_oppenent_with_the_move_is_not_a_loss(self):
@@ -353,7 +358,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_captured(0, 6)
         self.set_takes(0, 1)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, -inf)
 
     def test_take_has_a_value(self):
@@ -361,7 +366,7 @@ class UtilityTest(unittest.TestCase):
         self.set_turn_player_colour(WHITE)
 
         self.set_takes(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_threat_has_a_value(self):
@@ -369,7 +374,7 @@ class UtilityTest(unittest.TestCase):
         self.set_turn_player_colour(WHITE)
 
         self.set_threats(1, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, 0)
 
     def test_two_fours_with_no_danger_of_being_captured_is_a_win(self):
@@ -378,7 +383,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_black_lines([0,0,0,2,0])
         self.set_takes(0, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, inf)
 
     def test_four_pairs_captured_and_three_takes_will_win(self):
@@ -387,7 +392,7 @@ class UtilityTest(unittest.TestCase):
 
         self.set_captured(8, 0)
         self.set_takes(3, 0)
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, inf)
 
     def atest_four_pairs_captured_and_three_takes_will_win(self):
@@ -399,7 +404,7 @@ class UtilityTest(unittest.TestCase):
         self.set_captured(0, 2)
         self.set_takes(0, 0)
 
-        u = self.s.utility()
+        u = self.utility()
         self.assertGreater(u, inf)
 
     ######################################################
@@ -422,14 +427,14 @@ class UtilityTest(unittest.TestCase):
         self.set_threats(0, 0)
         self.set_black_lines([78, 9, 1, 1, 0])
         self.set_white_lines([36, 2, 0, 0, 0])
-        u1= self.s.utility()
+        u1= self.utility()
 
         self.set_captured(0, 0)
         self.set_takes(0, 0)
         self.set_threats(2, 2)
         self.set_black_lines([51, 8, 0, 0, 0])
         self.set_white_lines([28, 3, 1, 0, 0])
-        u2= self.s.utility()
+        u2= self.utility()
 
         self.assertGreater(u1, u2)
 
@@ -443,37 +448,37 @@ class UtilityTest(unittest.TestCase):
         self.set_threats(0, 0)
         self.set_black_lines([34, 5, 1, 0, 0])
         self.set_white_lines([49, 6, 0, 0, 0])
-        u1= self.s.utility()
+        u1= self.utility()
 
         self.set_captured(2, 2)
         self.set_takes(0, 0)
         self.set_threats(2, 0)
         self.set_black_lines([49, 4, 0, 0, 0])
         self.set_white_lines([48, 5, 1, 0, 0])
-        u2= self.s.utility()
+        u2= self.utility()
 
         self.assertGreater(u1, u2)
 
-    def atest_strange(self):
+    def test_strange(self):
+        #pdb.set_trace()
+        #((2960, 0), ((8, 6), 9. Lines: [None, [29, 2, 0, 0, 0], [33, 1, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 2]))
         self.set_search_player_colour(WHITE)
         self.set_turn_player_colour(WHITE)
 
         self.set_captured(2, 2)
-        self.set_takes(1, 0)
-        self.set_threats(0, 2)
-        self.set_black_lines([45, 5, 0, 0, 0])
-        self.set_white_lines([41, 1, 0, 0, 0])
-        u1= self.s.utility()
+        self.set_takes(0, 0)
+        self.set_threats(0, 0)
+        self.set_black_lines([29, 2, 0, 0, 0])
+        self.set_white_lines([33, 1, 0, 0, 0])
+        u1= self.utility()
 
-        '''
-Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 2, 2]))]   
-        '''
-        self.set_captured(2, 2)
-        self.set_takes(1, 1)
-        self.set_threats(0, 2)
-        self.set_black_lines([53, 8, 0, 0, 0])
-        self.set_white_lines([36, 2, 0, 0, 0])
-        u2= self.s.utility()
+        # ((3721, 0), ((5, 8), 9. Lines: [None, [53, 3, 0, 0, 0], [24, 3, 0, 0, 0]], Takes: [0, 0, 1], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 0]))
+        self.set_captured(2, 0)
+        self.set_takes(0, 1)
+        self.set_threats(0, 0)
+        self.set_black_lines([53, 3, 0, 0, 0])
+        self.set_white_lines([24, 3, 0, 0, 0])
+        u2= self.utility()
 
         self.assertGreater(u1, u2)
         '''
@@ -499,7 +504,7 @@ Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0
         self.set_threats(0, 0)
         self.set_black_lines([59, 4, 0, 0, 0])
         self.set_white_lines([61, 3, 1, 0, 0])
-        u1= self.s.utility()
+        u1= self.utility()
         '''
         Lines: [None, [59, 4, 0, 0, 0], [61, 3, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}]
         Captured: [0, 2, 2]
@@ -511,7 +516,7 @@ Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0
         self.set_threats(2, 0)
         self.set_black_lines([49, 4, 0, 0, 0])
         self.set_white_lines([48, 5, 1, 0, 0])
-        u2= self.s.utility()
+        u2= self.utility()
         '''
         Lines: [None, [49, 4, 0, 0, 0], [48, 5, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 0], Best: [{}, {}, {}]
         Captured: [0, 2, 2]

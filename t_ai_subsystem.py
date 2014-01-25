@@ -206,7 +206,8 @@ standard rules
         m = self.p1.do_the_search()
         self.assertEquals(m, (8,7))
 
-    def atest_strange(self):
+    # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_strange
+    def test_strange(self):
         #pdb.set_trace()
         self.p1.set_max_depth(6)
         game_str = \

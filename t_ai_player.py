@@ -48,7 +48,7 @@ class AIPlayerTest(unittest.TestCase):
 
         p = self.p2
         ma = p.prompt_for_action(self.game, self.gui, test=True)
-        self.assertEquals(ma, (5,4))
+        self.assertIn(ma, [(5,4),(3,4)])
 
 if __name__ == "__main__":
     unittest.main()

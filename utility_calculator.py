@@ -2,6 +2,8 @@
 
 from defines import *
 
+import utility_stats as us_m # For debugging
+
 import pdb
 
 class UtilityCalculator():
@@ -24,7 +26,7 @@ class UtilityCalculator():
     """ Captures become increasingly important as we approach 5 """
     def captured_contrib(self, captures):
         contrib = captures * self.capture_score_base * \
-                self.captures_scale[captures/2]
+                self.captures_scale[abs(captures/2)]
         # Unless we're playing keryo, captures_scale only needs to operate
         # on pairs
         return contrib
@@ -32,16 +34,23 @@ class UtilityCalculator():
     def take_contrib(self, takes, captures):
         """ takes become increasingly important as we approach 5 captures """
         contrib = takes * self.take_score_base * \
-                self.captures_scale[captures/2]
+                self.captures_scale[abs(captures/2)]
         return contrib
 
     def threat_contrib(self, threats, captures):
         """ threats become increasingly important as we approach 5 captures """
         contrib = threats * self.threat_score_base * \
-                self.captures_scale[captures/2]
+                self.captures_scale[abs(captures/2)]
         return contrib
 
     def utility(self, state, utility_stats):
+        '''
+        '''
+        # us_copy = us_m.UtilityStats(utility_stats)
+        # return self.utility_inner(state, utility_stats), us_copy
+        return self.utility_inner(state, utility_stats), 0
+
+    def utility_inner(self, state, utility_stats):
         """ This is the entry point into the position evaluation function """
         # The search_colour is the colour of the
         # AI player doing the search.
@@ -90,15 +99,13 @@ class UtilityCalculator():
             util_scores[eval_colour] = util
 
         # It is a very significant advantage to have the move
-        # This doesn't seem to have any effect until we compare
-        # positions at different depth levels
         util_scores[turn_colour] *= self.move_factor
 
         our_score = util_scores[turn_colour]
         their_score = util_scores[other_colour]
 
         if self.scale_pob:
-            # Scale by the piece on the board
+            # Scale by the pieces on the board
             eval_captured = state.get_captured(eval_colour)
             other_colour = opposite_colour(eval_colour)
             other_captured = state.get_captured(other_colour)
@@ -249,7 +256,7 @@ class UtilityCalculator():
 
         if ccp:
             if sfcw > 0:
-                if captured > 0:
+                if captured != 0:
                     cc = self.captured_contrib(captured)
                     score += cc
 

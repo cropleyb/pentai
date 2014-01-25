@@ -96,15 +96,13 @@ class AlphaBetaTest(unittest.TestCase):
 
     def test_terminal_state(self):
         game = MockGame([
-            MockState("S0", 0, [(0,"S1"),(0,"S1")]),
-            MockState("S1", 1, [(0,"S2")]),
-            MockState("S2", 2, [(0,"S3")]),
-            MockState("S3", 3, [])])
+            MockState("S0", (0,0), [(0,"S1"),(0,"S1")]),
+            MockState("S1", (1,0), [(0,"S2")]),
+            MockState("S2", (2,0), [(0,"S3")]),
+            MockState("S3", (3,0), [])])
         action, value = alphabeta_search(state="S0", max_depth=4, game=game)
-        self.assertEquals(value, 3)
+        self.assertEquals(value[0], 3)
 
 if __name__ == "__main__":
     unittest.main()
-
-
 

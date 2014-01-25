@@ -1,6 +1,9 @@
 from defines import INFINITY
 from pente_exceptions import *
 
+INF = INFINITY, 0
+NEGINF = -INFINITY, 0
+
 def argmax(aspi, fn):
     """ aspl: action state pair list
     """
@@ -23,8 +26,10 @@ def argmax(aspi, fn):
         vals.append((val, item))
     # sort is for debug presentation only. Since this function is only called
     # once per search, it should not be a problem.
+    #print "Deep util"
     #vals.sort()
-    #print "\n%s" % vals
+    #for v in vals:
+        #print v
     best = max(vals)
     return best[1], best[0]
 
@@ -35,7 +40,7 @@ def alphabeta_search(state, game, max_depth=4):
     def max_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
             return game.utility(state, depth)
-        v = -INFINITY
+        v = NEGINF
         for (a, s) in game.successors(state, depth):
             v = max(v, min_value(s, alpha, beta, depth+1))
             if v >= beta:
@@ -47,7 +52,7 @@ def alphabeta_search(state, game, max_depth=4):
     def min_value(state, alpha, beta, depth):
         if cutoff_test(state, depth):
             return game.utility(state, depth)
-        v = INFINITY
+        v = INF
         for (a, s) in game.successors(state, depth):
             v = min(v, max_value(s, alpha, beta, depth+1))
             if v <= alpha:
@@ -62,7 +67,7 @@ def alphabeta_search(state, game, max_depth=4):
 
     def top_min_func(pair):
         a, s = pair
-        return min_value(s, -INFINITY, INFINITY, 1)
+        return min_value(s, NEGINF, INF, 1)
 
     # Body of alphabeta_search starts here:
     action, value = argmax(game.successors(state, 1), top_min_func)
