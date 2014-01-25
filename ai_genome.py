@@ -19,14 +19,14 @@ class AIGenome(object):
             # Utility function
             "calc_mode": 1,
             "capture_score_base": 300,
-            "take_score_base": 100,
+            "take_score_base": 80,
             "threat_score_base": 20,
-            "use_net_captures": True,
-            "captures_scale": [1, 1, 1, 1, 1, 1],
-            "length_factor": 27,
-            "move_factor": 30,
+            "use_net_captures": False,
+            "captures_scale": [1, 1, 1, 2, 4, 8],
+            "length_factor": 35,
+            "move_factor": 45,
             "blindness": 0,
-            "scale_pob": False,
+            "scale_pob": True,
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 

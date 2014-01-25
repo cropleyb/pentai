@@ -102,15 +102,15 @@ class Match():
 
     def play_some_games(self):
 
-        self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = True
+        #self.genome1.use_openings_book = False
+        #self.genome2.use_openings_book = True
         #self.genome2.use_net_captures = False
-        #self.genome2.length_factor = 20
-        #self.genome2.take_score_base = 60
-        #self.genome2.capture_score_base = 150 # Try this again for high depth
-        #self.genome2.threat_score_base = 25
+        #self.genome2.length_factor = 40
+        #self.genome2.take_score_base = 70
+        #self.genome2.capture_score_base = 350 # Try this again for high depth
+        #self.genome2.threat_score_base = 25 # Wins more for shallower depth
         #self.genome1.blindness = 0.02
-        #self.genome2.blindness = 0.40
+        #self.genome2.blindness = 0.02
 
         #self.genome2.filter2 = True
         #self.genome2.narrowing = 3
@@ -122,7 +122,7 @@ class Match():
         #self.genome2.chokes = [(2,2)]
         #self.genome1.max_depth_boost = 2
         #self.genome2.max_depth_boost = 2
-        #self.genome2.captures_scale = [0, 1, 2, 4, 8, 50]
+        #self.genome2.captures_scale = [1, 1, 1, 1, 2, 4]
         #self.genome2.captures_scale = [0, 0, 0, 0, 0, 0]
         #self.genome2.move_factor = 10000000
 
@@ -130,8 +130,9 @@ class Match():
         #self.genome2.calc_mode = 3
         #self.genome2.use_net_captures = False
         #self.genome2.move_factor = 50
+        #self.genome2.move_factor = 45
         #self.genome2.move_factor = 5
-        self.genome2.scale_pob = False
+        #self.genome2.scale_pob = True
 
         results = MatchResults()
         for game_length in range(2,5):
@@ -157,7 +158,6 @@ import pstats, cProfile
 
 if __name__ == "__main__":
     random.seed()
-    '''
     #while True:
     m = Match()
     m.play_some_games()
@@ -168,3 +168,4 @@ if __name__ == "__main__":
     s = pstats.Stats("Profile.prof")
     #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
     s.strip_dirs().sort_stats("time").print_stats(20)
+    '''
