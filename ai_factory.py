@@ -42,12 +42,12 @@ class AIFactory: # TODO: These are just functions
         except:
             p.force_depth = genome.force_depth = 0
         genome.set_override(False)
-        self.set_config(genome, p)
+        self.set_utility_config(genome, p)
         p.genome = genome
 
         return p
 
-    def set_config(self, genome, player):
+    def set_utility_config(self, genome, player):
         uc = player.get_utility_calculator()
         uc.capture_score_base = genome.capture_score_base
         uc.take_score_base = genome.take_score_base
