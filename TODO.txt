@@ -1,3 +1,4 @@
+Merciful ending broken
 Detect Human vs. Human draws
 Display draws via kivy
 scale the capture diff score back with the move number?
