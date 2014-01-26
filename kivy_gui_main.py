@@ -161,7 +161,8 @@ class PenteApp(App):
                 return True
         elif key == 100: # 'd'
             # Debug
-            ab_m.debug = True
+            ab_m.debug = not ab_m.debug
+            print "Debug set to %s" % ab_m.debug
             return True
         else:
             if self.root.current == "Game" and \
