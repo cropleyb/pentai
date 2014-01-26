@@ -102,8 +102,8 @@ class Match():
 
     def play_some_games(self):
 
-        #self.genome1.use_openings_book = False
-        #self.genome2.use_openings_book = True
+        self.genome1.use_openings_book = False
+        self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
         #self.genome2.length_factor = 40
         #self.genome2.take_score_base = 70
@@ -124,18 +124,19 @@ class Match():
         #self.genome2.max_depth_boost = 2
         #self.genome2.captures_scale = [1, 1, 1, 1, 2, 4]
         #self.genome2.captures_scale = [0, 0, 0, 0, 0, 0]
+        #self.genome2.length_scale = [0, 0, 0, 0, 0, 0]
         #self.genome2.move_factor = 10000000
 
         #self.genome1.calc_mode = 3
         #self.genome2.calc_mode = 3
-        #self.genome2.use_net_captures = False
+        self.genome2.use_net_captures = True
         #self.genome2.move_factor = 50
         #self.genome2.move_factor = 45
         #self.genome2.move_factor = 5
-        #self.genome2.scale_pob = True
+        self.genome2.scale_pob = False
 
         results = MatchResults()
-        for game_length in range(2,5):
+        for game_length in range(2,6):
         #for game_length in range(5,6):
         #for game_length in range(5,8):
             #for board_size in [13]:
