@@ -28,7 +28,7 @@ class AIGenome(object):
             "move_factor": 45,
             "blindness": 0,
             "scale_pob": True,
-            "force_depth": 3,
+            "force_depth": 0,
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 
