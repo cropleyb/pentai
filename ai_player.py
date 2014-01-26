@@ -101,8 +101,8 @@ class AIPlayer(p_m.Player):
         # in opponents time" turned on, and our opponent is not a computer
         '''
         print "size of transposition table: %s" % len(ab_game.transposition_table)
-        ab_game.reset_transposition_table()
         '''
+        ab_game.reset_transposition_table()
 
         #print ab_game.current_state
 
