@@ -20,6 +20,8 @@ class AIPlayerTest(unittest.TestCase):
         
         player = AIPlayer(sf, name=name)
         player.use_opening_book = False
+        player.force_depth = 0
+
         return player
 
     def setUp(self):
