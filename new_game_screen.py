@@ -21,7 +21,6 @@ import pdb
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
         # TODO: This doesn't really belong here.
-        #pdb.set_trace()
         genome = ai_genome.AIGenome(player_name)
         genome.max_depth = max_depth
         # TODO: configure openings book usage
@@ -32,10 +31,10 @@ def create_player(player_type_widget, player_name, max_depth):
         p = human_player.HumanPlayer(player_name)
     return p
 
-class SetupScreen(Screen):
+class NewGameScreen(Screen):
 
     def __init__(self, *args, **kwargs):
-        super(SetupScreen, self).__init__(*args, **kwargs)
+        super(NewGameScreen, self).__init__(*args, **kwargs)
         
     def load_file(self, filename):
         if filename:
@@ -59,18 +58,23 @@ class SetupScreen(Screen):
         g = self.app.games_mgr.create_game(r, player1, player2)
         return g
 
-    def set_GUI_from_game(self, g):
+    def set_GUI_from_game(self, game):
         self.ids.black_name_id.text = g.get_player_name(BLACK)
         self.ids.white_name_id.text = g.get_player_name(WHITE)
         self.ids.bs_id.set_active(g.rules.size)
         self.ids.rules_id.set_active(g.rules.type_str)
-        # TODO: Player type, AI Parameters?
 
     def set_GUI_from_file(self, filename):
         f = open(filename)
-        # TODO
+        # TODO: New method set GUI from game.
         #g = self.app.games_mgr.create_game(r, player1, player2)
         g = game.Game(None, None, None) # Hmmm. TODO
         g.configure_from_str(f.read())
         self.ids.start_button.text = "Resume"
         self.set_GUI_from_game(g)
+        '''
+        self.ids.black_name_id.text = g.get_player_name(BLACK)
+        self.ids.white_name_id.text = g.get_player_name(WHITE)
+        self.ids.bs_id.set_active(g.rules.size)
+        self.ids.rules_id.set_active(g.rules.type_str)
+        '''

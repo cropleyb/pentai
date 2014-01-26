@@ -42,6 +42,38 @@
             text: "Load"
             on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)
 
+<PlayerScreen>:
+    GridLayout:
+        cols: 2
+        height:120
+
+        GridLayout:
+            cols:2
+            height:20
+            MyLabel:
+                text: 'Player'
+            Spinner:
+                values: root.players
+            TextInput
+                text: ''
+                id: black_name_id
+            CheckBoxList:
+                group: 'player_type'
+                text: ''
+                values: ('Human', 'Computer')
+                id: type_id
+
+        CheckBoxList:
+            group: 'max_depth'
+            text: 'Max Depth'
+            values: ('0', '2', '4', '6', '8', '10', '12')
+            id: max_depth_id
+
+        Button:
+            size_hint: (.2, .2)
+            text: 'Return'
+            on_press: root.start_game() # TODO
+            id: start_button
 
 <MenuScreen>:
     GridLayout:
@@ -50,7 +82,7 @@
 
         Button:
             text: "New Game"
-            on_release: root.app.new_game_cb()
+            on_release: root.app.new_gameX_cb()
 
         Button:
             text: "Load Game"
@@ -59,7 +91,7 @@
 
         Button:
             text: "Edit Players"
-            # TODO
+            on_release: root.app.show_players_cb()
 
         Button:
             text: "Review Game"
@@ -123,6 +155,73 @@
             text: "Resume"
             on_release: root.app.show_game()
 
+# Player selection: Spinner
+<NewGameScreen>:
+    GridLayout:
+        cols: 1
+        GridLayout:
+            cols: 2
+            size_hint: 1, None
+            height: 200
+
+
+            CheckBoxList:
+                text: 'Rules'
+                group: 'rules'
+                values: ['standard', 'tournament', 'keryo', 'freestyle', '5', 'no']
+                id: rules_id
+
+            CheckBoxList:
+                text: 'Board Size'
+                group: 'board_size'
+                values: ['9', '13', '19']
+                id: bs_id
+
+            
+        GridLayout:
+            cols: 2
+            height:120
+
+            GridLayout:
+                cols:2
+                height:120
+                MyLabel:
+                    text: 'Black\nPlayer\nName'
+                TextInput
+                    text: 'Black'
+                    id: black_name_id
+                CheckBoxList:
+                    group: 'black_type'
+                    text: ''
+                    values: ('Human', 'Computer')
+                    id: black_type_id
+
+            GridLayout:
+                cols:2
+                height:50
+                MyLabel:
+                    text: 'White\nPlayer\nName'
+                TextInput
+                    text: 'White'
+                    id: white_name_id
+                CheckBoxList:
+                    group: 'white_type'
+                    text: ''
+                    values: ('Human', 'Computer')
+                    id: white_type_id
+
+            CheckBoxList:
+                group: 'max_depth'
+                text: 'Max Depth'
+                values: ('0', '2', '4', '6', '8', '10', '12')
+                id: max_depth_id
+
+            Button:
+                size_hint: (.2, .2)
+                text: 'Start Game'
+                on_press: root.start_game()
+                id: start_button
+
 <SetupScreen>:
     GridLayout:
         cols: 1
@@ -180,7 +279,7 @@
             CheckBoxList:
                 group: 'max_depth'
                 text: 'Max Depth'
-                values: ('2', '4', '6', '8', '10', '12')
+                values: ('0', '2', '4', '6', '8', '10', '12')
                 id: max_depth_id
 
             Button:

@@ -6,15 +6,18 @@ from kivy.base import *
 
 from kivy.uix.screenmanager import *
 
+from new_game_screen import *
 from setup_screen import *
 from options_screen import *
 from pente_screen import *
 from menu_screen import *
+from player_screen import *
 from popup import *
 from games_mgr import *
 
 from kivy.properties import ObjectProperty
 
+import alpha_beta as ab_m
 import os # TODO: Remove?
 import time
 
@@ -56,10 +59,18 @@ class PenteApp(App):
     def show_game(self):
         self.root.current = "Game"
 
+    def show_players_cb(self):
+        self.root.current = "Player"
+
     def new_game_cb(self):
         self.game_filename = ""
         self.setup_screen.load_file(None)
         self.root.current = "Setup"
+
+    def new_gameX_cb(self):
+        self.game_filename = ""
+        self.new_game_screen.load_file(None)
+        self.root.current = "New"
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
@@ -148,6 +159,10 @@ class PenteApp(App):
                 # or any other screen with text input
                 self.show_options()
                 return True
+        elif key == 100: # 'd'
+            # Debug
+            ab_m.debug = True
+            return True
         else:
             if self.root.current == "Game" and \
                     key == 115:
@@ -169,20 +184,25 @@ class PenteApp(App):
         self.game = None
         player_db_filename = os.path.join("db", "players.pkl")
         game_manager_filename = os.path.join("db", "games.pkl")
+
+        # TODO: Fix the parameters?!
         self.games_mgr = GamesMgr(player_db_filename, \
                 game_manager_filename)
 
         screens = [(LoadScreen, "Load"), (OptionsScreen, "Options"),
-                   (MenuScreen, "Menu"), (SetupScreen, "Setup")]
-        #screens = [(MenuScreen, "Menu"), (LoadScreen, "Load"),
-        #           (OptionsScreen, "Options"), (SetupScreen, "Setup")]
+                   (MenuScreen, "Menu"), (SetupScreen, "Setup"),
+                   (NewGameScreen, "New"), (PlayerScreen, "Player")]
         for scr_cls, scr_name in screens:
             scr = scr_cls(name=scr_name)
             scr.app = self
             scr.gm = self.games_mgr
             root.add_widget(scr)
         self.setup_screen = root.get_screen("Setup")
+        # self.new_game_screen = root.get_screen("New")
         self.game_screen = None
+
+        # TEMP for testing
+        #self.root.current = "Menu"
 
         # Confirm Quit
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
