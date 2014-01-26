@@ -23,10 +23,12 @@ class AIGenome(object):
             "threat_score_base": 20,
             "use_net_captures": False,
             "captures_scale": [1, 1, 1, 2, 4, 8],
+            "length_scale": [1, 1, 1, 1, 1, 1],
             "length_factor": 35,
             "move_factor": 45,
             "blindness": 0,
             "scale_pob": True,
+            "force_depth": 3,
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 

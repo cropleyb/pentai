@@ -14,6 +14,7 @@ class UtilityCalculator():
         self.threat_score_base = 20
         self.use_net_captures = True
         self.captures_scale = [1, 1, 1, 1, 1, 1]
+        self.length_scale = [1, 1, 1, 1, 1, 1]
         self.length_factor = 27
         self.move_factor = 30 # Irrelevant with subtraction mode
         self.calc_mode = 1
@@ -26,7 +27,7 @@ class UtilityCalculator():
     """ Captures become increasingly important as we approach 5 """
     def captured_contrib(self, captures):
         contrib = captures * self.capture_score_base * \
-                self.captures_scale[abs(captures/2)]
+                self.captures_scale[abs(captures/2)] # /2 for pairs
         # Unless we're playing keryo, captures_scale only needs to operate
         # on pairs
         return contrib
@@ -104,7 +105,7 @@ class UtilityCalculator():
         our_score = util_scores[turn_colour]
         their_score = util_scores[other_colour]
 
-        if self.scale_pob:
+        if self.scale_pob and move_number < 10:
             # Scale by the pieces on the board
             eval_captured = state.get_captured(eval_colour)
             other_colour = opposite_colour(eval_colour)
@@ -252,7 +253,7 @@ class UtilityCalculator():
         for i in range(len(eval_lines)):
             score *= lf
             rev = 4 - i
-            score += eval_lines[rev]
+            score += eval_lines[rev] * self.length_scale[rev]
 
         if ccp:
             if sfcw > 0:

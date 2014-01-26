@@ -35,7 +35,13 @@ class AIFactory: # TODO: These are just functions
                 ob_m.instance = ob
             p.set_use_openings_book(ob)
 
+        genome.set_override(True)
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
+        try:
+            p.force_depth = genome.force_depth
+        except:
+            p.force_depth = genome.force_depth = 0
+        genome.set_override(False)
         self.set_config(genome, p)
         p.genome = genome
 
@@ -53,5 +59,10 @@ class AIFactory: # TODO: These are just functions
         uc.calc_mode = genome.calc_mode
         uc.use_net_captures = genome.use_net_captures
         uc.scale_pob = genome.scale_pob
+        try:
+            uc.length_scale = genome.length_scale
+        except:
+            uc.length_scale = genome.length_scale = [1,1,1,1,1,1]
+
         genome.set_override(False)
 
