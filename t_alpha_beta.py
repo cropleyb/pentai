@@ -10,8 +10,9 @@ class MockState(object):
         self.successors = successors
 
 class MockGame:
-    def __init__(self, states):
+    def __init__(self, states, max_depth=4):
         self.states = dict([(s.name, s) for s in states])
+        self.max_depth = max_depth
      
     def successors(self, state_name, depth):
         state = self.states[state_name]
@@ -21,7 +22,9 @@ class MockGame:
     def utility(self, state_name, depth):
         return self.states[state_name].utility
 
-    def terminal_test(self, state_name):
+    def terminal_test(self, state_name, depth):
+        if depth >= self.max_depth:
+            return True
         return len(self.states[state_name].successors) == 0
 
     def to_move(self, state_name):
@@ -81,8 +84,8 @@ class AlphaBetaTest(unittest.TestCase):
             MockState("S0", 0, [(0,"S1"),(0,"S1")]),
             MockState("S1", 1, [(0,"S2")]),
             MockState("S2", 2, [(0,"S3")]),
-            MockState("S3", 3, [])])
-        action, value = alphabeta_search(state="S0", max_depth=1, game=game)
+            MockState("S3", 3, [])], max_depth=1)
+        action, value = alphabeta_search(state="S0", game=game)
         self.assertEquals(value, 1)
 
     def test_only_search_two_depth_levels(self):
@@ -90,8 +93,8 @@ class AlphaBetaTest(unittest.TestCase):
             MockState("S0", 0, [(0,"S1"),(0,"S1")]),
             MockState("S1", 1, [(0,"S2")]),
             MockState("S2", 2, [(0,"S3")]),
-            MockState("S3", 3, [])])
-        action, value = alphabeta_search(state="S0", max_depth=2, game=game)
+            MockState("S3", 3, [])], max_depth=2)
+        action, value = alphabeta_search(state="S0", game=game)
         self.assertEquals(value, 2)
 
     def test_terminal_state(self):
@@ -99,8 +102,8 @@ class AlphaBetaTest(unittest.TestCase):
             MockState("S0", (0,0), [(0,"S1"),(0,"S1")]),
             MockState("S1", (1,0), [(0,"S2")]),
             MockState("S2", (2,0), [(0,"S3")]),
-            MockState("S3", (3,0), [])])
-        action, value = alphabeta_search(state="S0", max_depth=4, game=game)
+            MockState("S3", (3,0), [])], max_depth=4)
+        action, value = alphabeta_search(state="S0", game=game)
         self.assertEquals(value[0], 3)
 
 if __name__ == "__main__":

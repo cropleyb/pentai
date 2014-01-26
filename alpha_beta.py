@@ -4,6 +4,8 @@ from pente_exceptions import *
 INF = INFINITY, 0
 NEGINF = -INFINITY, 0
 
+debug=False
+
 def argmax(aspi, fn):
     """ aspl: action state pair list
     """
@@ -26,14 +28,16 @@ def argmax(aspi, fn):
         vals.append((val, item))
     # sort is for debug presentation only. Since this function is only called
     # once per search, it should not be a problem.
-    #print "Deep util"
-    #vals.sort()
-    #for v in vals:
-        #print v
+    if debug:
+        print "Deep util"
+        vals.sort()
+        for v in vals:
+            print v
+
     best = max(vals)
     return best[1], best[0]
 
-def alphabeta_search(state, game, max_depth=4):
+def alphabeta_search(state, game): #, max_depth=4):
     """Search game to determine best action; use alpha-beta pruning.
     This version cuts off search and uses an evaluation function."""
 
@@ -63,7 +67,7 @@ def alphabeta_search(state, game, max_depth=4):
 
     def cutoff_test(state, depth):
         # The default test cuts off at depth d or at a terminal state
-        return depth>=max_depth or game.terminal_test(state)
+        return game.terminal_test(state, depth)
 
     def top_min_func(pair):
         a, s = pair

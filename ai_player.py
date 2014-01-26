@@ -1,6 +1,6 @@
 from pente_exceptions import *
 import ab_game
-import alpha_beta
+import alpha_beta as ab_m
 import openings_mover as om_m
 import player as p_m
 import utility_calculator as uc_m
@@ -42,9 +42,7 @@ class AIPlayer(p_m.Player):
         return self.search_filter
 
     def attach_to_game(self, base_game):
-        self.ab_game = ab_game.ABGame(
-            base_game, search_filter=self.search_filter,
-            utility_calculator=self.utility_calculator)
+        self.ab_game = ab_game.ABGame(self, base_game)
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:
@@ -106,12 +104,9 @@ class AIPlayer(p_m.Player):
         ab_game.reset_transposition_table()
         '''
 
-        md = self.max_depth
-
         #print ab_game.current_state
 
-        move, value = alpha_beta.alphabeta_search(ab_game.current_state,
-                ab_game, max_depth=md)
+        move, value = ab_m.alphabeta_search(ab_game.current_state, ab_game)
         if self.ab_game.interrupted:
             return
         action = move[0]

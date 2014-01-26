@@ -5,8 +5,11 @@ import ab_state as ab_m
 
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
-    def __init__(self, base_game, search_filter=None,
-                 utility_calculator=None):
+    def __init__(self, player, base_game):
+        search_filter = player.search_filter
+        utility_calculator = player.utility_calculator
+        self.max_depth = player.max_depth
+
         s = self.current_state = ab_m.ABState(None, search_filter, utility_calculator)
         s.set_state(base_game.current_state)
         self.base_game = base_game
@@ -63,7 +66,7 @@ class ABGame():
         key = state.board().key()
         self.transposition_table[key] = utility_value
 
-    def terminal_test(self, state):
+    def terminal_test(self, state, depth):
         if self.interrupted:
             return True
         # Check if we have this position in the transposition table
@@ -77,5 +80,7 @@ class ABGame():
             return True
         except KeyError:
             pass
+        if depth >= self.max_depth:
+            return True
         return state.terminal()
 
