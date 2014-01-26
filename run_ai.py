@@ -129,14 +129,15 @@ class Match():
 
         #self.genome1.calc_mode = 3
         #self.genome2.calc_mode = 3
-        self.genome2.use_net_captures = True
+        #self.genome2.use_net_captures = True
         #self.genome2.move_factor = 50
         #self.genome2.move_factor = 45
         #self.genome2.move_factor = 5
-        self.genome2.scale_pob = False
+        #self.genome2.scale_pob = False
+        #self.genome2.force_depth = 4 FAIL ;)
 
         results = MatchResults()
-        for game_length in range(2,6):
+        for game_length in range(2,5):
         #for game_length in range(5,6):
         #for game_length in range(5,8):
             #for board_size in [13]:
