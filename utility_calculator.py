@@ -84,7 +84,7 @@ class UtilityCalculator():
                     # - always multiply by move number ;)
 
         if utility_stats.lines == [None, [0,0,0,0,0], [0,0,0,0,0]] and \
-                state.get_takes() == [0, 0, 0] and move_number > 1:
+                state.get_takes() == [0, 0, 0] and move_number > 30:
             # Draw
             #pdb.set_trace()
             state.set_won_by(BLACK + WHITE)
@@ -111,8 +111,8 @@ class UtilityCalculator():
             other_colour = opposite_colour(eval_colour)
             other_captured = state.get_captured(other_colour)
             #move_number = state.get_move_number()
-            our_pob = move_number / 2 - other_captured
-            other_pob = move_number / 2 - eval_captured
+            our_pob = (1+move_number) / 2 - other_captured
+            other_pob = (1+move_number) / 2 - eval_captured
             our_score *= our_pob
             their_score *= other_pob
 
