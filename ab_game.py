@@ -9,6 +9,7 @@ class ABGame():
         search_filter = player.search_filter
         utility_calculator = player.utility_calculator
         self.max_depth = player.max_depth
+        self.force_depth = player.force_depth
 
         s = self.current_state = ab_m.ABState(None, search_filter, utility_calculator)
         s.set_state(base_game.current_state)
@@ -46,7 +47,12 @@ class ABGame():
             p_i = [centre_pos]
         else:
             pos_iter = state.get_iter(state.to_move())
-            p_i = pos_iter.get_iter(state.to_move_colour(), depth=depth)
+            min_priority = 0
+            if depth > self.max_depth:
+                min_priority = 3
+                if depth % 2:
+                    min_priority = 5
+            p_i = pos_iter.get_iter(state.to_move_colour(), depth, min_priority)
         tried_count = 0
         for pos in p_i:
             # create an ABState for each possible move from state
@@ -80,7 +86,7 @@ class ABGame():
             return True
         except KeyError:
             pass
-        if depth >= self.max_depth:
+        if depth >= (self.max_depth + self.force_depth):
             return True
         return state.terminal()
 
