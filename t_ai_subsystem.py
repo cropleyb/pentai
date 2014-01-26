@@ -9,7 +9,6 @@ import game
 
 from ai_player import *
 from ai_factory import *
-#from priority_filter import *
 
 import pdb
 
@@ -20,16 +19,8 @@ class AIPlayerSubsystemTest(unittest.TestCase):
         genome = AIGenome("Whatever")
         genome.use_openings_book = False
         return aif.create_player(genome)
-        '''
-        sf = PriorityFilter()
-        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0, chokes=chokes)
-        return AIPlayer(sf, name=name)
-        '''
 
     def setUp(self):
-        #chokes = [(4,3),(5,1)]
-        #self.p1 = self.create_player("Deep thunk", 9, 0, chokes)
-        #self.p2 = self.create_player("Deep thunk2", 9, 0, chokes)
         self.p1 = self.create_player()
         self.p2 = self.create_player()
 
@@ -108,7 +99,7 @@ standard rules
         self.assertNotEquals(m, (7,5))
         # Why not 9,7? i.e. why does 7,5 have a high score?
 
-    '''
+    """
 10.  Captures: [0, 0, 0]  Lines: [None, [50, 1, 1, 0, 0], [23, 6, 1, 0, 0]], Takes: [0, 1, 0], Threats: [0, 2, 0], Best: [{}, {}, {}] 
 [(-31739848.999999996, ((7, 8), )), (-6948522.0, ((6, 10), )), (-6926498.0, ((7, 9), )), (-6913542.0, ((9, 8), )), (-6913424.0, ((10, 9), )), (-6912718.0, ((7, 4), )), (-6911684.0, ((6, 9), )), (75972, ((9, 7), )), (1488020, ((7, 5), ))]
  => (7, 5)
@@ -135,7 +126,7 @@ Now compare for black's next move:
     '11. (9, 7) 12. (10, 8) 13. (6, 9) 14. (6, 10) 15. (8, 7) '
     Lines: [None, [78, 9, 1, 1, 0], [36, 2, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(6, 10): 0, (6, 5): 1}, {}] Captured: [0, 4, 4]
 
-    '''
+    """
     def test_dodgy_move_part2(self):
         #pdb.set_trace()
         self.p1.set_max_depth(5)
@@ -157,7 +148,7 @@ standard rules
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
         self.assertEquals(m, (9,7))
-        '''
+        """
 Black should respond 9,7
 
 11.  Captures: [0, 0, 0]  Lines: [None, [42, 1, 1, 0, 0], [22, 8, 4, 0, 0]], Takes: [0, 1, 0], Threats: [0, 2, 0], Best: [{}, {}, {}] 
@@ -180,7 +171,7 @@ Work out the inputs for the 2 positions that are evaluating incorrectly
 (i.e. the UtilityStats at the leaf nodes)
 Check the positions on the board, and write a utility function test
 for the correct order.
-'''
+"""
 
     def test_freebie(self):
         #pdb.set_trace()
@@ -322,13 +313,6 @@ standard rules
         self.assertEquals(self.game.finished(), True)
         self.assertEquals(self.game.get_won_by(), BLACK+WHITE)
 
-        '''
-        TODO: Enable lots of logging again
-        Create freebie.txt
-        Run just freebie.
-        (check it on screen)
-        '''
-
     def test_missed_win(self): # TODO
         self.p1.set_max_depth(2)
         game_str = \
@@ -370,6 +354,54 @@ standard rules
         self.game.load_game(game_str)
         m = self.p2.do_the_search()
         self.assertEquals(m, (8,1))
+
+    def test_pacifist(self):
+        self.p1.set_max_depth(4)
+        game_str = \
+"""Black versus White
+9x9
+standard rules
+1. (4, 4)
+2. (5, 4)
+3. (2, 6)
+4. (5, 5)
+5. (3, 5)
+6. (5, 3)
+7. (5, 6)
+8. (1, 7)
+9. (5, 2)
+10. (6, 3)
+11. (4, 3)
+12. (4, 5)
+13. (6, 5)
+14. (4, 5)
+15. (3, 6)
+16. (4, 6)
+"""
+        self.game.load_game(game_str)
+        m = self.p1.do_the_search()
+        self.assertEquals(m, (4,7))
+
+    def test_another(self):
+        self.p1.set_max_depth(4)
+        game_str = \
+"""Black versus White
+13x13
+standard rules
+1. (6, 6)
+2. (7, 5)
+3. (5, 5)
+4. (7, 7)
+5. (4, 4)
+6. (3, 3)
+7. (7, 6)
+8. (8, 6)
+9. (9, 7)
+10. (6, 4)
+"""
+        self.game.load_game(game_str)
+        m = self.p1.do_the_search()
+        self.assertNotEquals(m, (4,6))
 
 if __name__ == "__main__":
     unittest.main()
