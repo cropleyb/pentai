@@ -76,12 +76,12 @@ class UtilityCalculator():
                     # won game lengthening.
                     if search_colour == eval_colour:
                         # If the winner is us then / by move number.
-                        return INFINITY * 100 / move_number
+                        return INFINITY * 100 / (move_number*move_number)
+                        # TODO: Sadistic mode for Rich
+                        # - multiply by move number ;)
                     else:
-                        # If the winner is not us then * by move_number
-                        return -INFINITY * move_number
-                    # TODO: Sadistic mode for Rich
-                    # - always multiply by move number ;)
+                        # If the winner is not us then also / by move_number
+                        return -INFINITY * 100 / (move_number*move_number)
 
         if utility_stats.lines == [None, [0,0,0,0,0], [0,0,0,0,0]] and \
                 state.get_takes() == [0, 0, 0] and move_number > 30:
@@ -133,40 +133,6 @@ class UtilityCalculator():
                 ret = float(our_score - their_score) / both_scores
             else:
                 ret = float(their_score - our_score) / both_scores
-
-        '''
-        if self.scale_pob:
-            ret /= (our_pob + other_pob)
-
-        if self.scale_pob:
-            # Scale by the piece on the board
-            eval_captured = state.get_captured(eval_colour)
-            other_colour = opposite_colour(eval_colour)
-            other_captured = state.get_captured(other_colour)
-            #move_number = state.get_move_number()
-            our_pob = move_number / 2 - other_captured
-            other_pob = move_number / 2 - eval_captured
-
-            ret *= our_pob
-            if other_pob > 0:
-                ret /= other_pob
-        '''
-
-        '''
-        #if ret == 2960:
-        if ret == 6531:
-            # TODO When I'm awake
-            #pdb.set_trace()
-
-            print
-            print state.history_string()
-            print utility_stats
-            print "Captured: [0, %s, %s]" % \
-                (state.get_captured(1),
-                 state.get_captured(2))
-            print "Util scores: %s, ret: %s" % (util_scores, ret)
-            #pdb.set_trace()
-        '''
 
         return ret
 

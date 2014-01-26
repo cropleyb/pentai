@@ -35,11 +35,10 @@ class UtilityTest(unittest.TestCase):
         self.rules = Mock()
         self.rules.stones_for_capture_win = 10
         self.rules.can_capture_pairs = True
-        self.move_number = 10
         self.game = Mock()
         self.captured = [0, 0, 0] # This is individual stones, E/B/W
         self.gs = Mock({"get_all_captured": self.captured,
-            "get_move_number": self.move_number,
+            "get_move_number": 10,
             "game":self.game,
             "get_won_by": EMPTY,
             "get_rules":self.rules}) 
@@ -79,8 +78,32 @@ class UtilityTest(unittest.TestCase):
         self.game.mockAddReturnValues(to_move_colour=search_player_colour)
 
     def set_move_number(self, mn):
-        self.move_number = mn
+        self.gs.mockAddReturnValues(get_move_number=mn)
         
+    def test_won_game_shortening(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+        self.set_black_lines([0,0,0,4,0])
+
+        self.set_move_number(10)
+        u1 = self.utility()
+
+        self.set_move_number(11)
+        u2 = self.utility()
+        self.assertGreater(u1, u2)
+
+    def test_lost_game_lengthening(self):
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(WHITE)
+        self.set_white_lines([0,0,0,4,0])
+
+        self.set_move_number(10)
+        u1 = self.utility()
+
+        self.set_move_number(11)
+        u2 = self.utility()
+        self.assertGreater(u2, u1)
+
     def test_utility_single_stone_better_than_none(self):
         self.set_black_lines([20,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
