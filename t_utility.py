@@ -10,6 +10,8 @@ from player import *
 import game_state
 from board import *
 from mock import *
+import ai_genome as aig_m
+import ai_factory as aif_m
 
 inf = INFINITY / 1000
 
@@ -17,18 +19,28 @@ import pdb
 
 class UtilityTest(unittest.TestCase):
     def setUp(self):
+
         self.search_filter = PriorityFilter()
         self.util_calc = UtilityCalculator()
+
+        # Set defaults for utility calculation
+        player = Mock({"get_utility_calculator":self.util_calc})
+        genome = aig_m.AIGenome("Irrelevant")
+        aif = aif_m.AIFactory()
+        aif.set_utility_config(genome, player)
+
         self.s = ABState(search_filter=self.search_filter,
                 utility_calculator=self.util_calc)
         self.us = us_m.UtilityStats()
         self.rules = Mock()
         self.rules.stones_for_capture_win = 10
         self.rules.can_capture_pairs = True
+        self.move_number = 10
         self.game = Mock()
         self.captured = [0, 0, 0] # This is individual stones, E/B/W
         self.gs = Mock({"get_all_captured": self.captured,
-            "get_move_number": 1, "game":self.game,
+            "get_move_number": self.move_number,
+            "game":self.game,
             "get_won_by": EMPTY,
             "get_rules":self.rules}) 
         self.gs.board = Board(13)
@@ -65,6 +77,9 @@ class UtilityTest(unittest.TestCase):
     def set_search_player_colour(self, search_player_colour):
         """ Set whose move it is at the leaf state """
         self.game.mockAddReturnValues(to_move_colour=search_player_colour)
+
+    def set_move_number(self, mn):
+        self.move_number = mn
         
     def test_utility_single_stone_better_than_none(self):
         self.set_black_lines([20,0,0,0,0])
@@ -171,6 +186,7 @@ class UtilityTest(unittest.TestCase):
 
     def test_white_capture(self):
         """ Search by white """
+        #pdb.set_trace()
         self.set_search_player_colour(WHITE)
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
@@ -206,6 +222,7 @@ class UtilityTest(unittest.TestCase):
 
     def test_black_having_the_move_gets_a_higher_util(self):
         """ Search by black """
+        #pdb.set_trace()
         self.set_black_lines([1,0,0,0,0])
         self.set_white_lines([2,0,0,0,0])
 
@@ -410,14 +427,6 @@ class UtilityTest(unittest.TestCase):
     ######################################################
 
     def test_tricky_pos_1(self):
-        '''
-    assert:
-    '11. (9, 7) 12. (10, 8) 13. (6, 9) 14. (6, 10) 15. (8, 7) '
-    Lines: [None, [78, 9, 1, 1, 0], [36, 2, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(6, 10): 0, (6, 5): 1}, {}] Captured: [0, 4, 4]
-    should be >
-    '11. (7, 4) 12. (9, 7) 13. (7, 9) 14. (6, 9) 15. (10, 9) '
-    Lines: [None, [51, 8, 0, 0, 0], [23, 8, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 2], Best: [{}, {}, {}] Captured: [0, 0, 0]
-        '''
         #pdb.set_trace()
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(WHITE)
@@ -461,7 +470,6 @@ class UtilityTest(unittest.TestCase):
 
     def test_strange(self):
         #pdb.set_trace()
-        #((2960, 0), ((8, 6), 9. Lines: [None, [29, 2, 0, 0, 0], [33, 1, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 2]))
         self.set_search_player_colour(WHITE)
         self.set_turn_player_colour(WHITE)
 
@@ -472,7 +480,6 @@ class UtilityTest(unittest.TestCase):
         self.set_white_lines([33, 1, 0, 0, 0])
         u1= self.utility()
 
-        # ((3721, 0), ((5, 8), 9. Lines: [None, [53, 3, 0, 0, 0], [24, 3, 0, 0, 0]], Takes: [0, 0, 1], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 0]))
         self.set_captured(2, 0)
         self.set_takes(0, 1)
         self.set_threats(0, 0)
@@ -481,17 +488,6 @@ class UtilityTest(unittest.TestCase):
         u2= self.utility()
 
         self.assertGreater(u1, u2)
-        '''
-        [None, [45, 5, 0, 0, 0], [41, 1, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 2], Best: [{}, {}, {}]
-
-#(2960, ((8, 6), 9. Lines: [None, [29, 2, 0, 0, 0], [33, 1, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 2])),
-#(1207, ((8, 6), 9. Lines: [None, [29, 2, 0, 0, 0], [33, 1, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 2])),
-Should be >
-(6531, ((5, 8), 9. Lines: [None, [53, 3, 0, 0, 0], [24, 3, 0, 0, 0]], Takes: [0, 0, 1], Threats: [0, 0, 0], Best: [{}, {}, {}] Captures: [0, 2, 0]))]
-Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 2, 2]))]   
-
-
-        '''
 
     def atest_tricky_pos_2b(self):
         # TODO
@@ -505,11 +501,6 @@ Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0
         self.set_black_lines([59, 4, 0, 0, 0])
         self.set_white_lines([61, 3, 1, 0, 0])
         u1= self.utility()
-        '''
-        Lines: [None, [59, 4, 0, 0, 0], [61, 3, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {}, {}]
-        Captured: [0, 2, 2]
-        Util scores: [None, 5390, 14821], ret: -9431
-        '''
 
         self.set_captured(2, 2)
         self.set_takes(0, 0)
@@ -517,34 +508,42 @@ Lines: [None, [53, 8, 0, 0, 0], [36, 2, 0, 0, 0]], Takes: [0, 1, 1], Threats: [0
         self.set_black_lines([49, 4, 0, 0, 0])
         self.set_white_lines([48, 5, 1, 0, 0])
         u2= self.utility()
-        '''
-        Lines: [None, [49, 4, 0, 0, 0], [48, 5, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 0], Best: [{}, {}, {}]
-        Captured: [0, 2, 2]
-        Util scores: [None, 5690, 15048], ret: -9358
-        '''
 
         self.assertGreater(u1, u2)
+
+    def test_yet_another(self):
+        # pdb.set_trace()
+        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(BLACK)
+
         '''
-OLD
-        9,7
-        Lines: [None, [34, 5, 1, 0, 0], [49, 6, 0, 0, 0]], Takes: [0, 0, 1], Threats: [0, 0, 0], Best: [{}, {(11, 9): 0}, {}]
-        (no captures)
+This should have got the highest score
+((-55692, 0), ((9, 6), 14. Lines: [None, [38, 5, 0, 0, 0], [29, 0, 0, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 4, 4]))
 
-        Should be > 
+But these all scored much higher
+((33504, 0), ((5, 8), 14. Lines: [None, [35, 4, 0, 0, 0], [52, 1, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 2, 4]))
+((35313, 0), ((2, 2), 14. Lines: [None, [30, 4, 1, 0, 0], [56, 3, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 2, 4]))
+((36080, 0), ((9, 9), 14. Lines: [None, [35, 4, 1, 0, 0], [56, 3, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 2], Best: [{}, {}, {}] Captures: [0, 2, 4]))
+((82186, 0), ((6, 7), 14. Lines: [None, [26, 8, 0, 0, 0], [49, 1, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 4], Best: [{}, {}, {}] Captures: [0, 2, 4]))
 
-        8,4
-        Lines: [None, [49, 4, 0, 0, 0], [48, 5, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 0], Best: [{}, {}, {}]
-        Captures: [0, 2, 2]
-
-NEW
-(-9431, ((9, 7), ))
-Lines: [None, [59, 4, 0, 0, 0], [61, 3, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 0, 0], Best: [{}, {(11, 9): 0}, {}]
-Captured: [0, 2, 2]
-
-(-9358, ((8, 4), ))
-Lines: [None, [49, 4, 0, 0, 0], [48, 5, 1, 0, 0]], Takes: [0, 0, 0], Threats: [0, 2, 0], Best: [{}, {}, {}]
-Captured: [0, 2, 2]
+Utility for 14: (-22938, 0) (Lines: [None, [26, 8, 0, 0, 0], [49, 1, 0, 0, 0]], Takes: [0, 1, 0], Threats: [0, 0, 4], Best: NullFilter)
         '''
+        self.set_captured(4, 4)
+        self.set_takes(0, 0)
+        self.set_threats(0, 2)
+        self.set_move_number(14)
+        self.set_black_lines([38, 5, 0, 0, 0])
+        self.set_white_lines([29, 0, 0, 0, 0])
+        u1= self.utility()
+
+        self.set_captured(2, 4)
+        self.set_takes(1, 0)
+        self.set_threats(0, 4)
+        self.set_black_lines([26, 8, 0, 0, 0])
+        self.set_white_lines([49, 1, 0, 0, 0])
+        u2= self.utility()
+
+        self.assertGreater(u1, u2)
 
 if __name__ == "__main__":
     unittest.main()
