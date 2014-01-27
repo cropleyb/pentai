@@ -9,6 +9,10 @@ from defines import *
 
 import threading
 
+skip_openings_book = False
+def set_skip_openings_book(val):
+    skip_openings_book = val
+
 class AIPlayer(p_m.Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
@@ -27,7 +31,7 @@ class AIPlayer(p_m.Player):
         return self.genome == other.genome
 
     def use_openings_book(self):
-        return not self.openings_book is None
+        return not self.openings_book is None and not skip_openings_book
 
     def set_use_openings_book(self, openings_book):
         self.openings_book = openings_book

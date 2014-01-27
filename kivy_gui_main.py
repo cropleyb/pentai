@@ -20,6 +20,7 @@ from kivy.properties import ObjectProperty
 import alpha_beta as ab_m
 import os # TODO: Remove?
 import time
+import ai_player as aip_m # hack for debugging
 
 class LoadScreen(Screen):
     load = ObjectProperty(None)
@@ -101,20 +102,19 @@ class PenteApp(App):
         except ScreenManagerException:
             pass
 
-        pente_screen = PenteScreen(startup_size, name='Game', filename=self.game_filename)
-        pente_screen.app = self
-        root.add_widget(pente_screen)
-        self.game_screen = pente_screen
+        self.add_screen(PenteScreen,
+            'Game', the_size=startup_size,
+            filename=self.game_filename)
+
+        self.game_screen = root.get_screen("Game")
         self.game = game
 
-        # TODO: Move stuff into PenteScreen __init__?
-
         # load the game screen
-        pente_screen.set_game(game)
+        self.game_screen.set_game(game)
 
-        # TODO: It would be nice if the board did not display until the grid was
-        # correctly positioned
-        Clock.schedule_once(pente_screen.setup_grid, 1)
+        # TODO: It would be nice if the board did not display
+        # until the grid was correctly positioned
+        Clock.schedule_once(self.game_screen.setup_grid, 1)
 
         self.root.current = "Game"
 
@@ -162,6 +162,7 @@ class PenteApp(App):
         elif key == 100: # 'd'
             # Debug
             ab_m.debug = not ab_m.debug
+            aip_m.set_skip_openings_book(ab_m.debug)
             print "Debug set to %s" % ab_m.debug
             return True
         else:
@@ -172,6 +173,12 @@ class PenteApp(App):
                 self.load_game_file()
                 return True
         return False
+
+    def add_screen(self, scr_cls, scr_name, **kwargs):
+        scr = scr_cls(name=scr_name, **kwargs)
+        scr.app = self
+        scr.gm = self.games_mgr
+        self.root.add_widget(scr)
 
     def build(self):
         '''
@@ -193,11 +200,10 @@ class PenteApp(App):
         screens = [(LoadScreen, "Load"), (OptionsScreen, "Options"),
                    (MenuScreen, "Menu"), (SetupScreen, "Setup"),
                    (NewGameScreen, "New"), (PlayerScreen, "Player")]
+
         for scr_cls, scr_name in screens:
-            scr = scr_cls(name=scr_name)
-            scr.app = self
-            scr.gm = self.games_mgr
-            root.add_widget(scr)
+            self.add_screen(scr_cls, scr_name)
+
         self.setup_screen = root.get_screen("Setup")
         # self.new_game_screen = root.get_screen("New")
         self.game_screen = None
