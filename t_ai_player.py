@@ -2,25 +2,23 @@
 
 import unittest
 
-import gui
-import human_player
 import rules
-import game
+import game as g_m
 
 from ai_player import *
-from priority_filter import *
+import ai_genome as aig_m
+import ai_factory as aif_m
 
 import pdb
 
 class AIPlayerTest(unittest.TestCase):
 
     def create_player(self, name, mmpdl, narrowing):
-        sf = PriorityFilter()
-        sf.set_max_moves_per_depth_level(mmpdl=9, narrowing=0)
-        
-        player = AIPlayer(sf, name=name)
-        player.use_opening_book = False
-        player.force_depth = 0
+        aig = aig_m.AIGenome(name)
+        aif = aif_m.AIFactory()
+        aig.use_openings_book = False # override to make it deterministic
+        aig.max_depth = 1
+        player = aif.create_player(aig)
 
         return player
 
@@ -28,7 +26,7 @@ class AIPlayerTest(unittest.TestCase):
         self.p1 = self.create_player("Deep thunk", 9, 0)
         self.p2 = self.create_player("Deep thunk2", 9, 0)
         r = rules.Rules(9, "standard")
-        self.game = game.Game(r, self.p1, self.p2)
+        self.game = g_m.Game(r, self.p1, self.p2)
         self.p1.attach_to_game(self.game)
         self.p2.attach_to_game(self.game)
         self.gui = None
@@ -50,7 +48,7 @@ class AIPlayerTest(unittest.TestCase):
 
         p = self.p2
         ma = p.prompt_for_action(self.game, self.gui, test=True)
-        self.assertIn(ma, [(5,4),(3,4)])
+        self.assertIn(ma, [(5,5),(3,3),(5,4)])
 
 if __name__ == "__main__":
     unittest.main()
