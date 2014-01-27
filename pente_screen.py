@@ -106,7 +106,7 @@ class PenteScreen(Screen):
         cs = game.get_current_state()
         cs.add_observer(self)
 
-        self.evaluator = Evaluator(UtilityCalculator(), cs)
+        self.evaluator = Evaluator(cs)
 
         self.trig = Clock.create_trigger(self.perform)
         self.display_names()

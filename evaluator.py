@@ -1,17 +1,22 @@
 from utility_stats import *
 from null_filter import *
+import ai_factory as aif_m
+import ai_genome as aig_m
 
 class Evaluator():
     """
     This is to help with debugging bad moves.
     """
-    def __init__(self, calculator, state):
+    def __init__(self, state):
         self.state = state
-        self.calculator = calculator
-        calculator.set_rules(self.get_rules())
+        aig = aig_m.AIGenome("Evaluator")
+        aif = aif_m.AIFactory()
+        p = aif.create_player(aig)
+        c = p.utility_calculator
+        c.set_rules(self.get_rules())
+        self.calculator = c
         self.utility_stats = UtilityStats(parent=None, search_filter=NullFilter())
         state.add_observer(self)
-        #self.rules = self.get_rules() # TODO
 
     def board(self):
         return self.state.board
