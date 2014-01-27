@@ -35,13 +35,12 @@ class AIFactory: # TODO: These are just functions
                 ob_m.instance = ob
             p.set_use_openings_book(ob)
 
+        p.force_depth = genome.force_depth
+
         genome.set_override(True)
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
-        try:
-            p.force_depth = genome.force_depth
-        except:
-            p.force_depth = genome.force_depth = 0
         genome.set_override(False)
+
         self.set_utility_config(genome, p)
         p.genome = genome
 
@@ -53,16 +52,22 @@ class AIFactory: # TODO: These are just functions
         uc.take_score_base = genome.take_score_base
         uc.threat_score_base = genome.threat_score_base
         uc.captures_scale = genome.captures_scale
-        uc.length_factor = genome.length_factor
         uc.move_factor = genome.move_factor
-        genome.set_override(True)
-        uc.calc_mode = genome.calc_mode
+
+        uc.length_factor = genome.length_factor
         uc.use_net_captures = genome.use_net_captures
+        uc.length_scale = genome.length_scale
         uc.scale_pob = genome.scale_pob
+        uc.calc_mode = genome.calc_mode
+
+        genome.set_override(True)
+        '''
+        # Example of how to handle new fields:
         try:
             uc.length_scale = genome.length_scale
         except:
             uc.length_scale = genome.length_scale = [1,1,1,1,1,1]
-
+        # Then run upgrade_dbs.py
+        '''
         genome.set_override(False)
 

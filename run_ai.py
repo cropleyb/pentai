@@ -73,7 +73,7 @@ class Match():
     def play_one_game(self, board_size, p1, p2):
         r = rules.Rules(board_size, "standard")
         self.game = self.games_mgr.create_game(r, p1, p2)
-        #self.evaluator = Evaluator(UtilityCalculator(), self.game.current_state)
+        #self.evaluator = Evaluator(self.game.current_state)
 
         tt = TwoTimer()
 
@@ -102,10 +102,11 @@ class Match():
 
     def play_some_games(self):
 
-        self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = False
+        #self.genome1.use_openings_book = False
+        #self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
-        #self.genome2.length_factor = 40
+
+        #self.genome2.length_factor = 35
         #self.genome2.take_score_base = 70
         #self.genome2.capture_score_base = 350 # Try this again for high depth
         #self.genome2.threat_score_base = 25 # Wins more for shallower depth
@@ -128,16 +129,17 @@ class Match():
         #self.genome2.move_factor = 10000000
 
         #self.genome1.calc_mode = 3
-        #self.genome2.calc_mode = 3
-        #self.genome2.use_net_captures = True
+
+        #self.genome2.calc_mode = 2
+        #self.genome2.use_net_captures = False
+        #self.genome2.scale_pob = True
         #self.genome2.move_factor = 50
         #self.genome2.move_factor = 45
         #self.genome2.move_factor = 5
-        #self.genome2.scale_pob = False
         #self.genome2.force_depth = 4 FAIL ;)
 
         results = MatchResults()
-        for game_length in range(2,5):
+        for game_length in range(2,4):
         #for game_length in range(5,6):
         #for game_length in range(5,8):
             #for board_size in [13]:
