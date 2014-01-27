@@ -505,3 +505,9 @@ How much is it worth?
 Sub mode seems to work except when early in the game when it sometimes
 sacrifices a capture for a 3 or so.
 Compensate: ratio of pieces on the board?
+
+----------------------
+Resuming game from setup screen
+
+game class currently stores a temp_move_number for resuming after option
+changes. - does it really belong there? Should it be saved in the DB? Yeah.
