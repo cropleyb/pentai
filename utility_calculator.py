@@ -8,18 +8,7 @@ import pdb
 
 class UtilityCalculator():
     def __init__(self):
-        # TODO: Remove?!
-        self.capture_score_base = 300
-        self.take_score_base = 100
-        self.threat_score_base = 20
-        self.use_net_captures = True
-        self.captures_scale = [1, 1, 1, 1, 1, 1]
-        self.length_scale = [1, 1, 1, 1, 1, 1]
-        self.length_factor = 27
-        self.move_factor = 30 # Irrelevant with subtraction mode
-        self.calc_mode = 1
-        self.scale_pob = False
-        #self.sub = True
+        pass
 
     def set_rules(self, rules):
         self.rules = rules
