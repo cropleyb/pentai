@@ -16,12 +16,9 @@ import checkbox_list as cb_l
 
 from defines import *
 
-import pdb
-
 def create_player(player_type_widget, player_name, max_depth):
     if player_type_widget.val == 'Computer':
         # TODO: This doesn't really belong here.
-        #pdb.set_trace()
         genome = ai_genome.AIGenome(player_name)
         genome.max_depth = max_depth
         # TODO: configure openings book usage

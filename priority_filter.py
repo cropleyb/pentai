@@ -52,7 +52,6 @@ class PriorityFilter():
         return PriorityFilter(orig=self, min_priority=min_priority)
 
     def get_iter(self, our_colour, depth=0, min_priority=0):
-        #pdb.set_trace()
         other_colour = opposite_colour(our_colour)
         tried = set() 
 
