@@ -13,3 +13,5 @@ def opposite_colour(col):
         return WHITE
     if col == WHITE:
         return BLACK
+
+from pdb import set_trace as st
