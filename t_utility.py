@@ -15,8 +15,6 @@ import ai_factory as aif_m
 
 inf = INFINITY / 1000
 
-import pdb
-
 class UtilityTest(unittest.TestCase):
     def setUp(self):
 
@@ -209,7 +207,6 @@ class UtilityTest(unittest.TestCase):
 
     def test_white_capture(self):
         """ Search by white """
-        #pdb.set_trace()
         self.set_search_player_colour(WHITE)
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
@@ -245,7 +242,6 @@ class UtilityTest(unittest.TestCase):
 
     def test_black_having_the_move_gets_a_higher_util(self):
         """ Search by black """
-        #pdb.set_trace()
         self.set_black_lines([1,0,0,0,0])
         self.set_white_lines([2,0,0,0,0])
 
@@ -450,7 +446,6 @@ class UtilityTest(unittest.TestCase):
     ######################################################
 
     def test_tricky_pos_1(self):
-        #pdb.set_trace()
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(WHITE)
 
@@ -471,7 +466,6 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u1, u2)
 
     def test_tricky_pos_2(self):
-        #pdb.set_trace()
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
@@ -492,7 +486,6 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u1, u2)
 
     def test_strange(self):
-        #pdb.set_trace()
         self.set_search_player_colour(WHITE)
         self.set_turn_player_colour(WHITE)
 
@@ -514,7 +507,6 @@ class UtilityTest(unittest.TestCase):
 
     def atest_tricky_pos_2b(self):
         # TODO
-        #pdb.set_trace()
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 
@@ -535,7 +527,6 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u1, u2)
 
     def test_yet_another(self):
-        # pdb.set_trace()
         self.set_search_player_colour(BLACK)
         self.set_turn_player_colour(BLACK)
 

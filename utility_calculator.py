@@ -4,8 +4,6 @@ from defines import *
 
 import utility_stats as us_m # For debugging
 
-import pdb
-
 class UtilityCalculator():
     def __init__(self):
         pass
@@ -75,7 +73,6 @@ class UtilityCalculator():
         if utility_stats.lines == [None, [0,0,0,0,0], [0,0,0,0,0]] and \
                 state.get_takes() == [0, 0, 0] and move_number > 30:
             # Draw
-            #pdb.set_trace()
             state.set_won_by(BLACK + WHITE)
             return 0
 

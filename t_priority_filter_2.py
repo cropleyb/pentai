@@ -4,8 +4,6 @@ import unittest
 from priority_filter_2 import *
 from board import *
 
-import pdb
-
 class PriorityFilter2Test(unittest.TestCase):
     def setUp(self):
         self.pf2 = PriorityFilter2()
@@ -68,7 +66,6 @@ class PriorityFilter2Test(unittest.TestCase):
         # But we need to choose one or the other
 
     def test_finish_capture_win(self):
-        #pdb.set_trace()
         self.set_captured_by(BLACK, 8)
         self.ar_take(BLACK, (1,2))
         self.arc(WHITE, 4, ((3,4),))
