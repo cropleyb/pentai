@@ -10,8 +10,6 @@ import game
 from ai_player import *
 from ai_factory import *
 
-import pdb
-
 class AIPlayerSubsystemTest(unittest.TestCase):
 
     def create_player(self): #, name, mmpdl, narrowing, chokes):
@@ -27,6 +25,7 @@ class AIPlayerSubsystemTest(unittest.TestCase):
         r = rules.Rules(13, "standard")
         self.game = game.Game(r, self.p1, self.p2)
 
+    '''
     # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_find_one_move
     def test_find_one_move(self):
         self.p2.set_max_depth(2)
@@ -128,7 +127,6 @@ Now compare for black's next move:
 
     """
     def test_dodgy_move_part2(self):
-        #pdb.set_trace()
         self.p1.set_max_depth(5)
         game_str = \
 """Black versus White
@@ -174,7 +172,6 @@ for the correct order.
 """
 
     def test_freebie(self):
-        #pdb.set_trace()
         self.p1.set_max_depth(8)
         game_str = \
 """Black versus White
@@ -199,7 +196,6 @@ standard rules
 
     # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_strange
     def test_strange(self):
-        #pdb.set_trace()
         self.p1.set_max_depth(6)
         game_str = \
 """Mark versus DT
@@ -218,7 +214,6 @@ standard rules
         self.assertEquals(m, (8,6))
 
     def test_draw(self): # TODO
-        #pdb.set_trace()
         r = rules.Rules(9, "standard")
         self.game = game.Game(r, self.p1, self.p2)
 
@@ -402,6 +397,28 @@ standard rules
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
         self.assertNotEquals(m, (4,6))
+    '''
+
+    def test_bother(self):
+        self.p1.set_max_depth(8)
+        game_str = \
+"""DT versus BC
+13x13
+standard rules
+1. (6, 6)
+2. (5, 7)
+3. (8, 8)
+4. (7, 7)
+5. (8, 7)
+6. (8, 6)
+7. (6, 8)
+8. (9, 5)
+9. (6, 7)
+10. (6, 5)"""
+        self.game.load_game(game_str)
+        m = self.p1.do_the_search()
+        print m
+        self.assertNotIn(m, ((7,8),(5,8)))
 
 if __name__ == "__main__":
     unittest.main()
