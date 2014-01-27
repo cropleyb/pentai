@@ -12,6 +12,7 @@ class PreservedGame():
                     game.get_player(2).get_key()]
             self.won_by = game.get_won_by()
             self.moves = game.move_history[:]
+            self.resume_move_number = game.resume_move_number
 
     def key(self):
         return self.game_id
@@ -29,5 +30,6 @@ class PreservedGame():
             won_by = self.winner
         orig_game.set_won_by(won_by)
         orig_game.move_history = self.moves[:]
+        orig_game.resume_move_number = self.resume_move_number
 
         return orig_game
