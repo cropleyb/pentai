@@ -9,7 +9,6 @@ from openings_book import *
 from games_mgr import *
 from player import *
 
-import pdb
 
 def load_moves_and_set_win(game, moves, winner):
     game.load_moves(moves)
@@ -64,7 +63,6 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((3,3), [self.game]))
 
     def test_suggest_second_black_move(self):
-        #pdb.set_trace()
         load_moves_and_set_win(self.game,
                 "1. (1,4)\n2. (2,3)\n3. (3,4)\n4. (5,4)", BLACK)
         self.o_mgr.add_game(self.game)
@@ -90,8 +88,6 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((5,4), [self.game]))
 
     def test_find_two_alternatives(self):
-        #import pdb
-        #pdb.set_trace()
         load_moves_and_set_win(self.game, "1. (1,3)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
         self.o_mgr.add_game(self.game)
         

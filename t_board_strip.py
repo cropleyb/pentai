@@ -4,8 +4,6 @@ import unittest
 
 from board_strip import *
 
-import pdb
-
 class BoardStripTest(unittest.TestCase):
     def test_empty_board_strip_is_empty(self):
         bs = 0
@@ -304,7 +302,6 @@ class BoardStrip2Test(unittest.TestCase):
         self.assertEquals(match_five_in_a_row(bs, 0, BLACK), False)
 
     def test_match_5_in_middle(self):
-        #pdb.set_trace()
         bs = set_occ(0, 0, BLACK)
         bs = set_occ(bs, 1, BLACK)
         bs = set_occ(bs, 2, BLACK)
@@ -313,7 +310,6 @@ class BoardStrip2Test(unittest.TestCase):
         self.assertEquals(match_five_in_a_row(bs, 2, BLACK), True)
 
     def test_match_5_white_in_middle(self):
-        #pdb.set_trace()
         bs = set_occ(0, 0, WHITE)
         bs = set_occ(bs, 1, WHITE)
         bs = set_occ(bs, 2, WHITE)
@@ -322,7 +318,6 @@ class BoardStrip2Test(unittest.TestCase):
         self.assertEquals(match_five_in_a_row(bs, 2, WHITE), True)
 
     def test_dont_match_5_zebra_in_middle(self):
-        #pdb.set_trace()
         bs = set_occ(0, 0, BLACK)
         bs = set_occ(bs, 1, WHITE)
         bs = set_occ(bs, 2, BLACK)
