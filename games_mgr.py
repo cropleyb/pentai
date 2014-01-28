@@ -4,6 +4,8 @@ import preserved_game as pg_m
 import persistent_dict as pd_m
 import os
 
+from defines import *
+
 class GamesMgr(object):
     # TODO: Borg pattern?
     def __init__(self, prefix=None, *args, **kwargs):
@@ -11,8 +13,7 @@ class GamesMgr(object):
         if prefix is None:
             prefix = os.path.join("db","")
         self.prefix = prefix
-
-        self.players_mgr = players_mgr.PlayersMgr(prefix=prefix)
+        self.players_mgr = players_mgr.PlayersMgr(prefix=prefix[:])
         id_filename = "%sid_map.pkl" % prefix
         self.id_lookup = pd_m.PersistentDict(id_filename)
         u_f = "%sunfinished.pkl" % prefix
@@ -24,7 +25,10 @@ class GamesMgr(object):
         elif key.__class__ is tuple:
             rk = key[0]
         else:
-            rk = self.id_lookup[key]
+            try:
+                rk = self.id_lookup[key]
+            except KeyError:
+                return None
 
         fn = "%s%s_%s.pkl" % (self.prefix, rk[1], rk[0])
         return fn
@@ -35,10 +39,35 @@ class GamesMgr(object):
         del self.id_lookup[key]
         self.id_lookup.sync()
 
+    def delete_game(self, key):
+        game_db = self.get_db(key)
+        if game_db is None:
+            # No such game
+            return
+        
+        del game_db[key]
+        game_db.sync()
+
+        try:
+            del self.unfinished_db[key]
+            self.unfinished_db.sync()
+        except KeyError:
+            pass
+
+        try:
+            del self.id_lookup[key]
+            self.id_lookup.sync()
+        except KeyError:
+            pass
+
     def get_db(self, key):
         if key is None:
             return None
+        
         fn = self.get_filename(key)
+        if fn is None:
+            return None
+
         try:
             f = self.games_dbs[fn]
         except KeyError:
@@ -99,12 +128,22 @@ class GamesMgr(object):
         self.players_mgr.save(g.get_player(1))
         self.players_mgr.save(g.get_player(2))
 
+    def sync_all(self):
+        self.unfinished_db.sync()
+        self.id_lookup.sync()
+        for g_db in self.games_dbs.itervalues():
+            g_db.sync()
+        self.players_mgr.sync()
+        # TODO: Openings DB?
+
     def get_unfinished_game(self, g_id):
         if not g_id in self.unfinished_db:
             return None
         return self.get_game(g_id)
 
     def get_all_unfinished(self):
+        for g_id in self.unfinished_db.iterkeys():
+            g = self.get_game(g_id)
         return [self.get_game(g_id) for g_id in self.unfinished_db.iterkeys() ]
 
     def get_game(self, g_id, game_db=None):
@@ -113,6 +152,8 @@ class GamesMgr(object):
 
         if game_db is None:
             game_db = self.get_db(g_id)
+            if game_db is None:
+                return None
 
         pg = game_db[g_id]
         if pg is None:
