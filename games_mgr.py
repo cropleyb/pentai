@@ -104,6 +104,9 @@ class GamesMgr(object):
             return None
         return self.get_game(g_id)
 
+    def get_all_unfinished(self):
+        return [self.get_game(g_id) for g_id in self.unfinished_db.iterkeys() ]
+
     def get_game(self, g_id, game_db=None):
         if g_id is None:
             return None
