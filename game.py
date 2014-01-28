@@ -132,6 +132,7 @@ class Game(object):
         self.go_to_move(len(self.move_history)+1)
 
     def go_to_move(self, move_number):
+        # TODO: All these +1 and -1 shifts look a bit dodgy.
         current_move = self.get_move_number()
         if move_number < current_move:
             # Have to go back to the start, and replay all the moves,
