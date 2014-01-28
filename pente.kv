@@ -51,10 +51,10 @@
             size_hint: (1, .07)
             Button:
                 text: "Delete"
-                on_release: root.delete_game()
+                on_release: root.delete_game(root.selected_gid)
             Button:
                 text: "Edit"
-                on_release: root.edit_game()
+                on_release: root.edit_game(root.selected_gid)
             Button:
                 text: "Load"
                 on_release: root.load_game(root.selected_gid)
@@ -180,11 +180,11 @@
             size_hint: 1, None
             height: 200
 
-
             CheckBoxList:
                 text: 'Rules'
                 group: 'rules'
-                values: ['standard', 'tournament', 'keryo', 'freestyle', '5', 'no']
+                # TODO: Get these from the rules class
+                values: ['Standard', 'Tournament', 'Keryo', 'Freestyle', '5-In-A-Row', 'No Captures']
                 id: rules_id
 
             CheckBoxList:
@@ -250,7 +250,8 @@
             CheckBoxList:
                 text: 'Rules'
                 group: 'rules'
-                values: ['standard', 'tournament', 'keryo', 'freestyle', '5', 'no']
+                # TODO: Get these from the rules class
+                values: ['Standard', 'Tournament', 'Keryo', 'Freestyle', '5-In-A-Row', 'No Captures']
                 id: rules_id
 
             CheckBoxList:
