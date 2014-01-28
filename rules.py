@@ -1,4 +1,5 @@
 from pente_exceptions import *
+from defines import *
 
 class Rules():
     def __init__(self, size, type_str):
@@ -61,6 +62,17 @@ class Rules():
     def __hash__(self):
         return hash(self.key())
      
+    types = {'s': "Standard",
+             't': "Tournament",
+             'k': "Keryo-Pente",
+             'f': "Freestyle",
+             '5': "Five-In-A-Row",
+             'n': "No Capture"
+             }
+
+    def get_type_name(self):
+        return self.types[self.type_str[0]]
+
 '''
     Standard rules
     First player must move on the center point - all subsequent moves are open. pairs can be captured. Win by placing 5 or more stones in a row, OR by capturing 5 or more pairs of the opponent's stones.

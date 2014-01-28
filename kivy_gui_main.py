@@ -11,7 +11,7 @@ from setup_screen import *
 from options_screen import *
 from pente_screen import *
 from menu_screen import *
-from player_screen import *
+from games_screen import *
 from popup import *
 from games_mgr import *
 
@@ -41,8 +41,8 @@ class PenteApp(App):
             if self.game != None:
                 self.game.set_interrupted()
                 self.game = None
-            game_screen = self.root.get_screen("Game")
-            self.root.remove_widget(game_screen)
+            pente_screen = self.root.get_screen("Pente")
+            self.root.remove_widget(pente_screen)
         except ScreenManagerException:
             pass
 
@@ -57,21 +57,16 @@ class PenteApp(App):
         self.resume_screen = self.root.current
         self.root.current = "Options"
 
-    def show_game(self):
-        self.root.current = "Game"
+    def show_pente_screen(self):
+        self.root.current = "Pente"
 
-    def show_players_cb(self):
-        self.root.current = "Player"
+    def show_games_screen(self):
+        self.root.current = "Games"
 
-    def new_game_cb(self):
+    def show_new_game_screen(self):
         self.game_filename = ""
         self.setup_screen.load_file(None)
         self.root.current = "Setup"
-
-    def new_gameX_cb(self):
-        self.game_filename = ""
-        self.new_game_screen.load_file(None)
-        self.root.current = "New"
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
@@ -92,31 +87,31 @@ class PenteApp(App):
         # TODO production app should start game here.
         self.root.current = "Setup"
 
-    def start_game(self, game, startup_size):
+    def start_game(self, game, screen_size):
         # TODO: Move this?
         root = self.root
         try:
-            old_game_screen = root.get_screen("Game")
+            old_game_screen = root.get_screen("Pente")
             if old_game_screen != None:
                 root.remove_widget(old_game_screen)
         except ScreenManagerException:
             pass
 
         self.add_screen(PenteScreen,
-            'Game', the_size=startup_size,
+            'Pente', screen_size=screen_size,
             filename=self.game_filename)
 
-        self.game_screen = root.get_screen("Game")
+        self.pente_screen = root.get_screen("Pente")
         self.game = game
 
         # load the game screen
-        self.game_screen.set_game(game)
+        self.pente_screen.set_game(game)
 
         # TODO: It would be nice if the board did not display
         # until the grid was correctly positioned
-        Clock.schedule_once(self.game_screen.setup_grid, 1)
+        Clock.schedule_once(self.pente_screen.setup_grid, 1)
 
-        self.root.current = "Game"
+        self.show_pente_screen()
 
     def close_confirmed(self):
         # TODO Send to the current screen?
@@ -144,7 +139,7 @@ class PenteApp(App):
         elif key == 32:
             # Space
             # Ignore spaces on other pages, could be entering names
-            if self.root.current == "Game":
+            if self.root.current == "Pente":
                 if self.game.finished():
                     self.show_load()
                 else:
@@ -155,7 +150,7 @@ class PenteApp(App):
                         size_hint=(.6, .2))
                 return True
         elif key == 111:
-            if self.root.current in ("Load", "Game"):
+            if self.root.current in ("Load", "Pente"):
                 # or any other screen with text input
                 self.show_options()
                 return True
@@ -166,7 +161,7 @@ class PenteApp(App):
             print "Debug set to %s" % ab_m.debug
             return True
         else:
-            if self.root.current == "Game" and \
+            if self.root.current == "Pente" and \
                     key == 115:
                 # 's' for options TODO: o
                 # Go to options page
@@ -199,17 +194,16 @@ class PenteApp(App):
 
         screens = [(LoadScreen, "Load"), (OptionsScreen, "Options"),
                    (MenuScreen, "Menu"), (SetupScreen, "Setup"),
-                   (NewGameScreen, "New"), (PlayerScreen, "Player")]
+                   (NewGameScreen, "New"), (GamesScreen, "Games")]
 
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
 
         self.setup_screen = root.get_screen("Setup")
-        # self.new_game_screen = root.get_screen("New")
-        self.game_screen = None
+        self.pente_screen = None
 
         # TEMP for testing
-        #self.root.current = "Menu"
+        self.root.current = "Games"
 
         # Confirm Quit
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  

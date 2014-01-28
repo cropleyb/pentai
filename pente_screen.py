@@ -45,7 +45,7 @@ class PenteScreen(Screen):
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
 
-    def __init__(self, the_size, filename, *args, **kwargs):
+    def __init__(self, screen_size, filename, *args, **kwargs):
         self.marker = None
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
@@ -62,12 +62,12 @@ class PenteScreen(Screen):
         self.turn_markers = None
         self.win_marker = Piece(13, source=win_filename)
 
-        self.calc_board_offset(the_size)
+        self.calc_board_offset(screen_size)
 
         super(PenteScreen, self).__init__(*args, **kwargs)
 
-    def calc_board_offset(self, the_size):
-        x, y = the_size
+    def calc_board_offset(self, screen_size):
+        x, y = screen_size
         # bo = y - x # Square board
         bo = y * .35 # Same vertical ratio
         self.board_offset[1] = bo
@@ -120,6 +120,8 @@ class PenteScreen(Screen):
         start_func = self.make_first_move
         if len(self.game_filename) > 0:
             start_func = self.load_file
+        elif self.game.resume_move_number:
+            start_func = self.load_moves
 
         Clock.schedule_once(start_func, transition_time)
 
@@ -162,6 +164,10 @@ class PenteScreen(Screen):
         self.refresh_all()
         self.game.prompt_for_action(self)
 
+    def load_moves(self, dt):
+        # TODO Move implementation to game?
+        self.game.go_to_move(self.game.resume_move_number)
+
     def on_enter(self):
         self.refresh_all()
 
@@ -201,7 +207,10 @@ class PenteScreen(Screen):
 
     def after_set_occ(self, game, pos, colour):
         self.make_move_on_the_gui_board(pos, colour)
+
+        # TODO: Move this to an "up to date" callback
         self.refresh_all()
+        self.gm.save(game)
 
     def after_game_won(self, game, colour):
         # TODO: play win or loss sound
