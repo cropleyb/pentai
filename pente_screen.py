@@ -167,6 +167,9 @@ class PenteScreen(Screen):
     def load_moves(self, dt):
         # TODO Move implementation to game?
         self.game.go_to_move(self.game.resume_move_number)
+        self.game_filename = None
+        self.refresh_all()
+        self.game.prompt_for_action(self)
 
     def on_enter(self):
         self.refresh_all()
