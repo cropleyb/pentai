@@ -60,7 +60,7 @@ class SetupScreen(Screen):
         self.ids.black_name_id.text = g.get_player_name(BLACK)
         self.ids.white_name_id.text = g.get_player_name(WHITE)
         self.ids.bs_id.set_active(g.rules.size)
-        self.ids.rules_id.set_active(g.rules.type_str)
+        self.ids.rules_id.set_active(g.rules.get_type_name())
         # TODO: Player type, AI Parameters?
 
     def set_GUI_from_file(self, filename):
