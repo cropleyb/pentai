@@ -7,6 +7,8 @@ from kivy.uix.listview import ListItemButton, ListItemLabel, \
         CompositeListItem, ListView
 from kivy.uix.gridlayout import GridLayout
 
+import popup as p_m
+
 from defines import *
 
 class GamesScreen(Screen):
@@ -18,19 +20,24 @@ class GamesScreen(Screen):
     def set_selected_gid(self, gid):
         self.selected_gid = gid
 
-    def delete_game(self, gid):
-        # TODO: Confirmation?
-        self.gm.delete_game(gid)
+    def delete_game(self):
+        msg_str = "Delete this game?"
+        p_m.ConfirmPopup.create_and_open(message=msg_str,
+            action=self.delete_confirmed,
+            size_hint=(.8, .2))
 
+    def delete_confirmed(self):
+        st()
+        self.gm.delete_game(self.selected_gid)
         # TODO: flush games view??
 
-    def edit_game(self, gid):
+    def edit_game(self):
         print "Edit HI"
         # TODO: Perhaps this should be per field by double clicking?
         pass # TODO
     
-    def load_game(self, gid):
-        game = self.gm.get_game(gid)
+    def load_game(self):
+        game = self.gm.get_game(self.selected_gid)
         self.app.start_game(game, self.size)
 
 def game_data(game):
@@ -47,11 +54,6 @@ def game_data(game):
 
 
 class GamesView(GridLayout):
-    '''Uses :class:`CompositeListItem` for list item views comprised by two
-    :class:`ListItemButton`s and one :class:`ListItemLabel`. Illustrates how
-    to construct the fairly involved args_converter used with
-    :class:`CompositeListItem`.
-    '''
 
     def __init__(self, **kwargs):
         kwargs['cols'] = 2
@@ -59,30 +61,25 @@ class GamesView(GridLayout):
 
         Clock.schedule_once(self.fill_er_up, 1) # HACK HACK HACK
 
-        # This is quite an involved args_converter, so we should go through the
-        # details. A CompositeListItem instance is made with the args
-        # returned by this converter. The first three, text, size_hint_y,
-        # height are arguments for CompositeListItem. The cls_dicts list contains
-        # argument sets for each of the member widgets for this composite:
-        # ListItemButton and ListItemLabel.
-
-        # 
         '''
-We have a collection of unfinished games, and another of all games
-We want to display them in several orders:
-Black Player Name (A or Z first)
-White Player Name (A or Z first)
-Date (latest as default, or earliest)
-Board size
-Rules type
-        integers_dict = \
-                        { str(i): {'text': str(i), 'is_selected': False} for i in xrange(100)}
+        TODO:
+        We have a collection of unfinished games, and another of all games
+        We want to display them in several orders:
+        Black Player Name (A or Z first)
+        White Player Name (A or Z first)
+        Date (latest as default, or earliest)
+        Board size
+        Rules type
         '''
 
-    def changed(self, da, *args, **kwargs): # dict adaptor
+    def changed_selection(self, da, *args, **kwargs): # da == dict adaptor
         gid_str = self.item_strings[da.selection[0].index]
         print "Selected: GID %s" % (gid_str)
+        # TODO: parent.parent. ?!
         self.parent.parent.set_selected_gid(int(gid_str))
+
+    def flush(self):
+        self.fill_er_up(None)
 
     def fill_er_up(self, unused):
         args_converter = \
@@ -103,6 +100,7 @@ Rules type
                            'kwargs': {'text': rec['rules']}},
                        ]}
 
+        # Another hack - parent.parent.
         gm = self.parent.parent.gm
         games = gm.get_all_unfinished()
 
@@ -119,7 +117,7 @@ Rules type
                                    cls=CompositeListItem)
 
         dict_adapter.bind(
-            on_selection_change=self.changed)
+            on_selection_change=self.changed_selection)
 
         # Use the adapter in our ListView:
         list_view = ListView(adapter=dict_adapter)
