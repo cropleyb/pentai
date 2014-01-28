@@ -2,14 +2,18 @@ from pente_exceptions import *
 from defines import *
 
 class Rules():
-    def __init__(self, size, type_str):
-        self.type_str = type_str.lower()
+    def __init__(self, *args, **kwargs):
+        self.set_all(*args, **kwargs)
+
+    def set_all(self, size, type_str):
+        self.type_char = type_str.lower()[0]
         if size < 5:
             raise BoardTooSmallException()
         if size > 19:
             raise BoardTooBigException()
         self.size = size
-        tc = self.type_str[0]
+        #tc = self.type_str[0]
+        tc = self.type_char
         if tc == 's': # "standard"
             # TODO: constrain second black move attr.
             self.center_first = True
@@ -57,7 +61,7 @@ class Rules():
             raise UnknownRuleType
 
     def key(self):
-        return (self.size, self.type_str[0])
+        return (self.size, self.type_char)
 
     def __hash__(self):
         return hash(self.key())
@@ -66,12 +70,12 @@ class Rules():
              't': "Tournament",
              'k': "Keryo-Pente",
              'f': "Freestyle",
-             '5': "Five-In-A-Row",
+             '5': "5-In-A-Row",
              'n': "No Capture"
              }
 
     def get_type_name(self):
-        return self.types[self.type_str[0]]
+        return self.types[self.type_char]
 
 '''
     Standard rules

@@ -178,10 +178,10 @@ class Game(object):
         self.players[2].name = players[1]
 
         side_length, ignored = size_line.split('x', 1)
-        self.rules.size = int(side_length)
 
         rules_type, ignored = rules_line.split(" rules", 1)
-        self.rules.type_str = rules_type
+        size = int(side_length)
+        self.rules.set_all(size, type_str=rules_type)
 
         return the_rest
 
@@ -189,7 +189,7 @@ class Game(object):
         player_line = "%s versus %s" % \
                 (self.get_player_name(1), self.get_player_name(2))
         size_line = "%sx%s"% (self.size(), self.size())
-        rules_line = "%s rules\n" % self.rules.type_str
+        rules_line = "%s rules\n" % self.rules.get_type_name()
         return "\n".join([player_line, size_line, rules_line])
 
     def load_game(self, game_str):

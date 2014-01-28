@@ -20,25 +20,25 @@ class GameTest(unittest.TestCase):
         rules = Rules(9, "standard")
         game = Game(rules, Player("Freddo"), Player("Sam"))
         self.assertEquals(game.game_header(),
-                "Freddo versus Sam\n9x9\nstandard rules\n")
+                "Freddo versus Sam\n9x9\nStandard rules\n")
 
     def test_make_game_header2(self):
         rules = Rules(13, "tournament")
         game = Game(rules, Player("Hansel"), Player("Gretel"))
         self.assertEquals(game.game_header(),
-                "Hansel versus Gretel\n13x13\ntournament rules\n")
+                "Hansel versus Gretel\n13x13\nTournament rules\n")
 
     def test_override_game_from_header(self):
-        rules = Rules(13, "tournament")
+        rules = Rules(13, "Tournament")
         g = Game(rules, Player("Hansel"), Player("Gretel"))
-        s = "Freddo versus Sam\n9x9\nstandard rules\nMore Stuff\n"
+        s = "Freddo versus Sam\n9x9\nStandard rules\nMore Stuff\n"
 
         the_rest = g.configure_from_str(s)
 
         self.assertEquals(g.size(), 9)
         self.assertEquals(g.get_player_name(1), "Freddo")
         self.assertEquals(g.get_player_name(2), "Sam")
-        self.assertEquals(g.rules.type_str, "standard")
+        self.assertEquals(g.rules.get_type_name(), "Standard")
         self.assertEquals(the_rest, "More Stuff\n")
 
     def test_go_to_move_back(self):
