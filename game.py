@@ -210,7 +210,7 @@ class Game(object):
                 move_pos_str = move_pos_tuple[1:-1]
                 coords = move_pos_str.split(',')
                 move = int(coords[0]), int(coords[1])
-                self.make_move(move)
+                self.make_move(move) # TODO Maybe skip this?
         #except:
         #    raise IncompatibleFileException("Could not read line: %s" % line)
 
