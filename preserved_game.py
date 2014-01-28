@@ -30,6 +30,9 @@ class PreservedGame():
             won_by = self.winner
         orig_game.set_won_by(won_by)
         orig_game.move_history = self.moves[:]
-        orig_game.resume_move_number = self.resume_move_number
+        try:
+            orig_game.resume_move_number = self.resume_move_number
+        except AttributeError:
+            orig_game.resume_move_number = None
 
         return orig_game
