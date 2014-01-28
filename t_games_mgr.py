@@ -166,6 +166,30 @@ class GamesMgrTest(unittest.TestCase):
         self.assertEquals(g1_restored.get_player(1), p1_orig)
         self.assertEquals(g1_restored.get_player(2), p2_orig)
 
+    def test_delete_game(self):
+        rules = Rules(9, "Standard")
+        aif = aif_m.AIFactory()
+
+        genome1 = aig_m.AIGenome("Bad")
+        genome1.max_depth = 3
+        p1_orig = aif.create_player(genome1)
+
+        genome2 = aig_m.AIGenome("Worse")
+        genome2.max_depth = 2
+        genome2.mmpdl = 1
+        genome2.narrowing = 1
+        p2_orig = aif.create_player(genome2)
+
+        g1 = self.gm.create_game(rules, p1_orig, p2_orig)
+        self.gm.save(g1)
+        self.gm.delete_game(g1.game_id)
+
+        gm2 = GamesMgr("test_")
+
+        g1_restored = self.gm.get_game(g1.get_game_id())
+        self.assertEquals(g1_restored, None)
+
+
 if __name__ == "__main__":
     unittest.main()
 
