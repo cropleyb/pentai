@@ -511,3 +511,20 @@ Resuming game from setup screen
 
 game class currently stores a temp_move_number for resuming after option
 changes. - does it really belong there? Should it be saved in the DB? Yeah.
+
+----------------------
+ListView for Game selection
+We have a collection of unfinished games, and another of all games
+We want to display them in several orders:
+Date (latest or earliest)
+Black Player Name (A or Z first)
+White Player Name (A or Z first)
+Board size
+Rules type
+
+In all cases, we want the game id to be the hidden data that is selected.
+
+CompositeListItem for displaying columns?
+/Users/cropleyb/examples/widgets/lists/list_composite.py
+
+ListAdapter required for selection
