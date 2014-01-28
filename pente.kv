@@ -45,19 +45,21 @@
 <GamesScreen>:
     GridLayout:
         rows: 2
+
         GamesView:
+
         GridLayout:
             rows: 1
             size_hint: (1, .07)
             Button:
                 text: "Delete"
-                on_release: root.delete_game(root.selected_gid)
+                on_release: root.delete_game()
             Button:
                 text: "Edit"
-                on_release: root.edit_game(root.selected_gid)
+                on_release: root.edit_game()
             Button:
                 text: "Load"
-                on_release: root.load_game(root.selected_gid)
+                on_release: root.load_game()
 #    GridLayout:
 #    GridLayout:
 #        cols: 2
