@@ -9,7 +9,7 @@ from kivy.uix.gridlayout import GridLayout
 
 from defines import *
 
-class GamesScreen(Screen): # TODO: Rename to GamesScreen?!
+class GamesScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(GamesScreen, self).__init__(*args, **kwargs)
 
@@ -18,16 +18,18 @@ class GamesScreen(Screen): # TODO: Rename to GamesScreen?!
     def set_selected_gid(self, gid):
         self.selected_gid = gid
 
-    def delete_game(self):
-        print "Del HI"
-        pass # TODO
+    def delete_game(self, gid):
+        # TODO: Confirmation?
+        self.gm.delete_game(gid)
 
-    def edit_game(self):
+        # TODO: flush games view??
+
+    def edit_game(self, gid):
         print "Edit HI"
+        # TODO: Perhaps this should be per field by double clicking?
         pass # TODO
     
     def load_game(self, gid):
-        st()
         game = self.gm.get_game(gid)
         self.app.start_game(game, self.size)
 
@@ -104,7 +106,8 @@ Rules type
         gm = self.parent.parent.gm
         games = gm.get_all_unfinished()
 
-        games_dict = { str(g.game_id): game_data(g) for g in games}
+        # TODO: The 'if' is a hack
+        games_dict = { str(g.game_id): game_data(g) for g in games if g }
 
         self.item_strings = ["{0}".format(g_id) for g_id in games_dict.iterkeys() ]
 
