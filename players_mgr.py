@@ -3,6 +3,8 @@ import ai_genome
 import persistent_dict
 import os
 
+from defines import *
+
 class PlayersMgr():
     # TODO: Borg pattern?
     def __init__(self, prefix=None, *args, **kwargs):
@@ -35,6 +37,9 @@ class PlayersMgr():
             pass
 
         self.players[key] = player
+        self.players.sync()
+
+    def sync(self):
         self.players.sync()
 
     def find_by_name(self, name):
