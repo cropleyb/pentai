@@ -15,13 +15,17 @@ class GamesScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(GamesScreen, self).__init__(*args, **kwargs)
 
-        self.selected_gid = None
+        self.clear_selected()
 
     def games_view(self):
         return self.ids.games_view
 
     def on_pre_enter(self):
         self.games_view().refresh()
+        self.clear_selected()
+
+    def clear_selected(self):
+        self.set_selected_gid(None)
 
     def set_selected_gid(self, gid):
         self.selected_gid = gid
@@ -31,24 +35,34 @@ class GamesScreen(Screen):
             # Ignore
             return
         game = self.gm.get_game(self.selected_gid)
+        self.clear_selected()
         self.app.start_game(game, self.size)
 
     def edit_game(self):
+        if not self.selected_gid:
+            # Ignore
+            return
+
+        self.clear_selected()
+
         print "Edit HI"
         # TODO: show setup screen for this game, return to here?
         # TODO: Perhaps this should be per field by double clicking?
-        pass # TODO
 
     def delete_game(self):
+        if not self.selected_gid:
+            # Ignore
+            return
+
         msg_str = "Delete this game?"
         p_m.ConfirmPopup.create_and_open(message=msg_str,
             action=self.delete_confirmed,
             size_hint=(.8, .2))
-        self.delete_confirmed()
 
     def delete_confirmed(self):
         self.gm.delete_game(self.selected_gid)
         self.games_view().refresh()
+        self.clear_selected()
 
 
 def game_data(game):
