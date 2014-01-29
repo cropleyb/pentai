@@ -107,29 +107,39 @@ class PenteApp(App):
 
         self.show_pente_screen()
 
+    def prompt_quit(self):
+        msg_str = "Are you sure you want to quit?"
+        ConfirmPopup.create_and_open(message=msg_str,
+                    action=self.close_confirmed,
+                    size_hint=(.8, .2))
+
     def close_confirmed(self):
-        # TODO Send to the current screen?
+        # TODO Send to the current screen for cleanup?
         self.stop()
 
     def hook_keyboard(self, window, key, *ignored_args):               
         # This keyboard control is just for my convenience, not on app.
         print "KEY PRESSED: %s" % key
-        if key in (27, 113):
-            # (i.e. Escape or 'q')
-            # do something to prevent close eg. Popup
-            
+        if key == 27:
+            # Escape
             if BasePopup.my_active:
+                # Cancel any popup
                 BasePopup.clear()
             else:
-                msg_str = "Are you sure you want to quit?"
-                ConfirmPopup.create_and_open(message=msg_str,
-                            action=self.close_confirmed,
-                            size_hint=(.8, .2))
+                self.prompt_quit()
             return True
+
+        if key == 113:
+            # 'q'
+            if self.root.current != "Setup":
+                self.prompt_quit()
+            return True
+
         elif key == 13:
             # Enter
             ConfirmPopup.confirm()
             return True
+
         elif key == 32:
             # Space
             # Ignore spaces on other pages, could be entering names
