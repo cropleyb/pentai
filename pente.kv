@@ -23,25 +23,6 @@
                 font_size: '20sp'
                 on_release: root.ok_confirm()
 
-#<LoadScreen>:
-#    BoxLayout:
-#        size: root.size
-#        pos: root.pos
-#        orientation: "vertical"
-#        FileChooserListView:
-#            id: filechooser
-#            on_submit: root.app.load_game_file_cb(self.path, self.selection)
-#            rootpath: "games"
-#    BoxLayout:
-#        size_hint_y: None
-#        height: 30
-#        Button:
-#            text: "New Game"
-#            on_release: root.app.show_new_game_screen()
-#        Button:
-#            text: "Load"
-#            on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)
-
 <GamesScreen>:
     GridLayout:
         rows: 2
@@ -61,38 +42,6 @@
             Button:
                 text: "Load"
                 on_release: root.load_game()
-#    GridLayout:
-#    GridLayout:
-#        cols: 2
-#        height:120
-#
-#        GridLayout:
-#            cols:2
-#            height:20
-#            MyLabel:
-#                text: 'Player'
-#            Spinner:
-#                values: root.players
-#            TextInput
-#                text: ''
-#                id: black_name_id
-#            CheckBoxList:
-#                group: 'player_type'
-#                text: ''
-#                values: ('Human', 'Computer')
-#                id: type_id
-#
-#        CheckBoxList:
-#            group: 'max_depth'
-#            text: 'Max Depth'
-#            values: ('0', '2', '4', '6', '7', '8', '10', '12')
-#            id: max_depth_id
-#
-#        Button:
-#            size_hint: (.2, .2)
-#            text: 'Return'
-#            on_press: root.start_game() # TODO
-#            id: start_button
 
 <MenuScreen>:
     GridLayout:
@@ -106,8 +55,6 @@
         Button:
             text: "Load Game"
             on_release: root.app.show_games_screen()
-            # TODO
-            # on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)
 
         Button:
             text: "Edit Players"
@@ -169,6 +116,8 @@
 			values: ["None", "Off Board", "On Piece"]
 			on_val: root.set_confirm_mode(self.val)
 
+        # TODO: Popup confirmation option
+		#
         # TODO: Music and Sound Effects
 
         Button:
