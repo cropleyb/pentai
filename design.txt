@@ -528,3 +528,13 @@ CompositeListItem for displaying columns?
 /Users/cropleyb/examples/widgets/lists/list_composite.py
 
 ListAdapter required for selection
+
+Adjusting games via GUI
+-----------------------
+Setup screen / New Game screen
+Should production version allow in game switching of opponents?
+   - probably not.
+But for me yes.
+Problem: New game ids every time games settings screen is used on an existing game. Create the game then allow this screen to set it up?
+ugly? change Game.__init__ to call a public setup method. Not too bad.
+
