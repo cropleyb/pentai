@@ -25,7 +25,6 @@ class AIPlayerSubsystemTest(unittest.TestCase):
         r = rules.Rules(13, "standard")
         self.game = game.Game(r, self.p1, self.p2)
 
-    '''
     # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_find_one_move
     def test_find_one_move(self):
         self.p2.set_max_depth(2)
@@ -397,7 +396,6 @@ standard rules
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
         self.assertNotEquals(m, (4,6))
-    '''
 
     def test_bother(self):
         self.p1.set_max_depth(8)
