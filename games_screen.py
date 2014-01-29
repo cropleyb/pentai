@@ -27,6 +27,9 @@ class GamesScreen(Screen):
         self.selected_gid = gid
 
     def load_game(self):
+        if not self.selected_gid:
+            # Ignore
+            return
         game = self.gm.get_game(self.selected_gid)
         self.app.start_game(game, self.size)
 
