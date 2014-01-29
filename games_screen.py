@@ -17,28 +17,36 @@ class GamesScreen(Screen):
 
         self.selected_gid = None
 
+    def games_view(self):
+        return self.ids.games_view
+
+    def on_pre_enter(self):
+        self.games_view().refresh()
+
     def set_selected_gid(self, gid):
         self.selected_gid = gid
+
+    def load_game(self):
+        game = self.gm.get_game(self.selected_gid)
+        self.app.start_game(game, self.size)
+
+    def edit_game(self):
+        print "Edit HI"
+        # TODO: show setup screen for this game, return to here?
+        # TODO: Perhaps this should be per field by double clicking?
+        pass # TODO
 
     def delete_game(self):
         msg_str = "Delete this game?"
         p_m.ConfirmPopup.create_and_open(message=msg_str,
             action=self.delete_confirmed,
             size_hint=(.8, .2))
+        self.delete_confirmed()
 
     def delete_confirmed(self):
-        st()
         self.gm.delete_game(self.selected_gid)
-        # TODO: flush games view??
+        self.games_view().refresh()
 
-    def edit_game(self):
-        print "Edit HI"
-        # TODO: Perhaps this should be per field by double clicking?
-        pass # TODO
-    
-    def load_game(self):
-        game = self.gm.get_game(self.selected_gid)
-        self.app.start_game(game, self.size)
 
 def game_data(game):
     data = {}
@@ -72,16 +80,24 @@ class GamesView(GridLayout):
         Rules type
         '''
 
+    def refresh(self):
+        try:
+            w = self.view
+            self.remove_widget(w)
+        except:
+            pass
+        self.fill_er_up()
+
     def changed_selection(self, da, *args, **kwargs): # da == dict adaptor
-        gid_str = self.item_strings[da.selection[0].index]
-        print "Selected: GID %s" % (gid_str)
-        # TODO: parent.parent. ?!
-        self.parent.parent.set_selected_gid(int(gid_str))
+        try:
+            gid_str = self.item_strings[da.selection[0].index]
+            print "Selected: GID %s" % (gid_str)
+            # TODO: parent.parent. ?!
+            self.parent.parent.set_selected_gid(int(gid_str))
+        except IndexError:
+            print "Removed"
 
-    def flush(self):
-        self.fill_er_up(None)
-
-    def fill_er_up(self, unused):
+    def fill_er_up(self, unused=None):
         args_converter = \
             lambda row_index, rec: \
                 {'game_id': rec['id'],
@@ -113,14 +129,17 @@ class GamesView(GridLayout):
                                    data=games_dict,
                                    args_converter=args_converter,
                                    selection_mode='single',
-                                   allow_empty_selection=False,
+                                   allow_empty_selection=False, # Not working?
                                    cls=CompositeListItem)
 
         dict_adapter.bind(
             on_selection_change=self.changed_selection)
 
+        self.adapter = dict_adapter
+
         # Use the adapter in our ListView:
         list_view = ListView(adapter=dict_adapter)
 
         self.add_widget(list_view)
+        self.view = list_view
 
