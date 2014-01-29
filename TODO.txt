@@ -1,9 +1,13 @@
+Option for no confirm popups
+Persistent options
+Options screen from menu
+No Game Selected error.
+Double click on game to load
 Detect Human vs. Human draws
 Display draws via kivy
+Space -> Game selection page
+Update Game View after deletion - is there kivy support for this?
 scale the capture diff score back with the move number?
-Search until there are no 4 attacks and our move.
-Conversion utility to read in every game and write it back.
-Try another calculation mode: diff / sum ; scale to avoid "strange" result.
 Subscribe the games_mgr to restored games?
 GUI - Play a new game with same opponent (auto set loser to first player)
 Interrupt search thread faster?
