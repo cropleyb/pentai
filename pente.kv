@@ -23,30 +23,31 @@
                 font_size: '20sp'
                 on_release: root.ok_confirm()
 
-<LoadScreen>:
-    BoxLayout:
-        size: root.size
-        pos: root.pos
-        orientation: "vertical"
-        FileChooserListView:
-            id: filechooser
-            on_submit: root.app.load_game_file_cb(self.path, self.selection)
-            rootpath: "games"
-    BoxLayout:
-        size_hint_y: None
-        height: 30
-        Button:
-            text: "New Game"
-            on_release: root.app.show_new_game_screen()
-        Button:
-            text: "Load"
-            on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)
+#<LoadScreen>:
+#    BoxLayout:
+#        size: root.size
+#        pos: root.pos
+#        orientation: "vertical"
+#        FileChooserListView:
+#            id: filechooser
+#            on_submit: root.app.load_game_file_cb(self.path, self.selection)
+#            rootpath: "games"
+#    BoxLayout:
+#        size_hint_y: None
+#        height: 30
+#        Button:
+#            text: "New Game"
+#            on_release: root.app.show_new_game_screen()
+#        Button:
+#            text: "Load"
+#            on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)
 
 <GamesScreen>:
     GridLayout:
         rows: 2
 
         GamesView:
+            id: games_view
 
         GridLayout:
             rows: 1
@@ -100,10 +101,11 @@
 
         Button:
             text: "New Game"
-            on_release: root.app.new_gameX_cb()
+            on_release: root.app.show_new_game_screen()
 
         Button:
             text: "Load Game"
+            on_release: root.app.show_games_screen()
             # TODO
             # on_release: root.app.load_game_file_cb(filechooser.path, filechooser.selection)
 

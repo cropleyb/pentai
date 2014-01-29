@@ -6,12 +6,12 @@ from kivy.base import *
 
 from kivy.uix.screenmanager import *
 
-from new_game_screen import *
 from setup_screen import *
 from options_screen import *
 from pente_screen import *
 from menu_screen import *
 from games_screen import *
+
 from popup import *
 from games_mgr import *
 
@@ -35,24 +35,6 @@ class PenteApp(App):
         self.popup.open()
         print message
 
-    def show_load(self, ignored=None):
-        self.root.current = "Load"
-        try:
-            if self.game != None:
-                self.game.set_interrupted()
-                self.game = None
-            pente_screen = self.root.get_screen("Pente")
-            self.root.remove_widget(pente_screen)
-        except ScreenManagerException:
-            pass
-
-    '''
-    # TODO. I'm getting sidetracked.
-    def resume(self):
-        self.root.current = self.resume_screen
-        self.resume_screen = None
-    '''
-
     def show_options(self):
         self.resume_screen = self.root.current
         self.root.current = "Options"
@@ -60,14 +42,18 @@ class PenteApp(App):
     def show_pente_screen(self):
         self.root.current = "Pente"
 
-    def show_games_screen(self):
+    def show_games_screen(self, ignored=None):
         self.root.current = "Games"
+
+    def show_menu_screen(self, ignored=None):
+        self.root.current = "Menu"
 
     def show_new_game_screen(self):
         self.game_filename = ""
-        self.setup_screen.load_file(None)
+        self.setup_screen.create_game()
         self.root.current = "Setup"
 
+    '''
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
         try:
@@ -76,7 +62,14 @@ class PenteApp(App):
             self.display_error("Please select a game first")
             return
         self.load_game_file(full_path)
+    '''
     
+    def edit_game(self):
+        self.setup_screen.alter_game(self.game)
+        self.root.current = "Setup"
+
+    '''
+    # TODO: Remove
     def load_game_file(self, full_path=None):
         if full_path != None:
             self.game_filename = full_path
@@ -86,6 +79,7 @@ class PenteApp(App):
         self.setup_screen.load_file(self.game_filename)
         # TODO production app should start game here.
         self.root.current = "Setup"
+    '''
 
     def start_game(self, game, screen_size):
         # TODO: Move this?
@@ -141,12 +135,12 @@ class PenteApp(App):
             # Ignore spaces on other pages, could be entering names
             if self.root.current == "Pente":
                 if self.game.finished():
-                    self.show_load()
+                    self.show_menu_screen()
                 else:
                     # Game in progress, prompt
                     msg_str = "Leave this game?"
                     ConfirmPopup.create_and_open(message=msg_str,
-                        action=self.show_load,
+                        action=self.show_menu_screen,
                         size_hint=(.6, .2))
                 return True
         elif key == 111:
@@ -164,8 +158,9 @@ class PenteApp(App):
             if self.root.current == "Pente" and \
                     key == 115:
                 # 's' for options TODO: o
-                # Go to options page
-                self.load_game_file()
+                # Go to settings page
+                # Probably not for production?
+                self.edit_game()
                 return True
         return False
 
@@ -192,9 +187,8 @@ class PenteApp(App):
         self.games_mgr = GamesMgr(player_db_filename, \
                 game_manager_filename)
 
-        screens = [(LoadScreen, "Load"), (OptionsScreen, "Options"),
-                   (MenuScreen, "Menu"), (SetupScreen, "Setup"),
-                   (NewGameScreen, "New"), (GamesScreen, "Games")]
+        screens = [(MenuScreen, "Menu"), (OptionsScreen, "Options"),
+                   (SetupScreen, "Setup"), (GamesScreen, "Games")]
 
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
@@ -203,7 +197,7 @@ class PenteApp(App):
         self.pente_screen = None
 
         # TEMP for testing
-        self.root.current = "Games"
+        #self.root.current = "Games"
 
         # Confirm Quit
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  

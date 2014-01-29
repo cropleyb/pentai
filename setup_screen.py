@@ -17,6 +17,7 @@ import checkbox_list as cb_l
 from defines import *
 
 def create_player(player_type_widget, player_name, max_depth):
+    # TODO: find_or_create_player
     if player_type_widget.val == 'Computer':
         # TODO: This doesn't really belong here.
         genome = ai_genome.AIGenome(player_name)
@@ -30,19 +31,21 @@ def create_player(player_type_widget, player_name, max_depth):
     return p
 
 class SetupScreen(Screen):
-
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
-        
-    def load_file(self, filename):
-        if filename:
-            self.set_GUI_from_file(filename)
-        else:
-            self.ids.start_button.text = "Start Game"
-
+    
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
         self.app.start_game(g, self.size)
+
+    def create_game(self):
+        self.game = self.app.games_mgr.create_game()
+        self.ids.start_button.text = "Start Game"
+
+    def alter_game(self, game):
+        self.game = game
+        self.set_GUI_from_game(self.game)
+        self.ids.start_button.text = "Resume Game"
 
     def set_up_game_from_GUI(self):
         bs = int(self.ids.bs_id.val)
@@ -50,11 +53,13 @@ class SetupScreen(Screen):
         r = rules.Rules(bs, rstr)
 
         max_depth = int(self.ids.max_depth_id.val)
+
+        # TODO: Reuse existing players?!
         player1 = create_player(self.ids.black_type_id, self.ids.black_name_id.text, max_depth)
         player2 = create_player(self.ids.white_type_id, self.ids.white_name_id.text, max_depth)
 
-        g = self.app.games_mgr.create_game(r, player1, player2)
-        return g
+        self.game.setup(r, player1, player2)
+        return self.game
 
     def set_GUI_from_game(self, g):
         self.ids.black_name_id.text = g.get_player_name(BLACK)
@@ -63,11 +68,3 @@ class SetupScreen(Screen):
         self.ids.rules_id.set_active(g.rules.get_type_name())
         # TODO: Player type, AI Parameters?
 
-    def set_GUI_from_file(self, filename):
-        f = open(filename)
-        # TODO
-        #g = self.app.games_mgr.create_game(r, player1, player2)
-        g = game.Game(None, None, None) # Hmmm. TODO
-        g.configure_from_str(f.read())
-        self.ids.start_button.text = "Resume"
-        self.set_GUI_from_game(g)
