@@ -8,8 +8,14 @@ import datetime
 
 class Game(object):
 
-    def __init__(self, rules=None, player1=None, player2=None):
+    def __init__(self, *args, **kwargs):
         self.game_id = None
+        self.move_history = []
+        self.resume_move_number = None
+        self.date = datetime.date.today() # TODO
+        self.setup(*args, **kwargs)
+
+    def setup(self, rules=None, player1=None, player2=None):
         self.rules = rules
         if rules != None:
             self.current_state = game_state.GameState(self)
@@ -19,10 +25,7 @@ class Game(object):
             player1.attach_to_game(self)
         if player2 != None:
             player2.attach_to_game(self)
-        self.move_history = []
-        self.resume_move_number = None
         self.autosave_filename = None
-        self.date = datetime.date.today() # TODO
 
     def __eq__(self, other):
         if not other.__class__ is Game:
