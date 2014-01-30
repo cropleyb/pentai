@@ -107,17 +107,22 @@
             id: rc_widget
             on_press: root.set_mark_captures(rc_widget.state)
 
+        CheckBoxList:
+            #text: "Confirm style"
+            group: "confirm_options"
+            values: ["None", "Off Board", "On Piece"]
+            on_val: root.set_confirm_mode(self.val)
         MyLabel:
             text: "Confirm moves?"
 
         CheckBoxList:
-            text: "Confirm style"
-			group: "confirm_options"
-			values: ["None", "Off Board", "On Piece"]
-			on_val: root.set_confirm_mode(self.val)
-
-        # TODO: Popup confirmation option
-		#
+            #text: "Popups"
+            group: "popups"
+            values: ["No", "Yes"]
+            on_val: root.set_confirm_popups(self.val)
+        MyLabel:
+            text: "Show popups?"
+        #
         # TODO: Music and Sound Effects
 
         Button:
