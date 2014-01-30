@@ -66,7 +66,7 @@
 
         Button:
             text: "Options"
-            # TODO
+            on_release: root.app.show_options()
 
         Button:
             text: "Show Demo"
@@ -126,8 +126,9 @@
         # TODO: Music and Sound Effects
 
         Button:
-            text: "Resume"
+            text: "Return"
             on_release: root.app.show_pente_screen()
+            #on_release: root.app.return() TODO
 
 # Player selection: Spinner
 <NewGameScreen>:
@@ -342,6 +343,16 @@
                 MyLabel:
                     text: root.player_name[2]
                 MyLabel:
+
+    RelativeLayout:
+        pos: (0,0)
+        canvas:
+            Color:
+                rgba: root.confirm_rect_color
+                #1, 0, 0, .5
+                id: 'confirm_rect'
+            Rectangle:
+                size: (root.size[0], self.parent.board_offset[1])
 
 <Piece>:
     Image:

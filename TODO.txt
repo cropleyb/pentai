@@ -1,11 +1,12 @@
+Options screen from menu
+Review mode
+Load human games for review from DB
+Delete button on games screen
 Double click games to load.
 Persistent options
-Options screen from menu
-No Game Selected error.
 Double click on game to load
 Detect Human vs. Human draws
 Display draws via kivy
-Space -> Game selection page
 Update Game View after deletion - is there kivy support for this?
 scale the capture diff score back with the move number?
 Subscribe the games_mgr to restored games?

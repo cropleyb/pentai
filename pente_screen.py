@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
+
 #from kivy.core.audio import SoundLoader # TODO
 from evaluator import *
 from utility_calculator import *
@@ -44,6 +45,7 @@ class PenteScreen(Screen):
     border_colour = ListProperty([20,0,0,1])
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
+    confirm_rect_color = ListProperty([0, 0, 0, 0])
 
     def __init__(self, screen_size, filename, *args, **kwargs):
         self.marker = None
@@ -433,6 +435,7 @@ class PenteScreen(Screen):
             widget, board_pos = self.confirmation_in_progress
             self.remove_widget(widget)
             self.confirmation_in_progress = None
+            self.confirm_rect_color = [0, 0, 0, 0]
 
     def adjust_confirmation(self, board_pos):
         if self.confirmation_in_progress:
@@ -455,6 +458,13 @@ class PenteScreen(Screen):
             widget.pos = self.board_to_screen(board_pos)
             self.add_widget(widget)
             self.confirmation_in_progress = widget, board_pos
+            if self.confirm_mode == "Off Board":
+                # Green to confirm off board
+                col = [0, 1, 0, .5]
+            elif self.confirm_mode == "On Piece":
+                # Red to confirm off board
+                col = [1, 0, 0, .5]
+            self.confirm_rect_color = col
 
     def confirm_move(self):
         if self.confirmation_in_progress != None:
@@ -494,17 +504,16 @@ class PenteScreen(Screen):
 
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
-            # Controls below the board recognized the touch
-            super(PenteScreen, self).on_touch_down(touch)
-
-            # Assuming all controls are to the left of this
-            if touch.pos[0] > self.size[0] * .25:
-                # No controls clicked below the board-> confirm or cancel
+            if self.confirmation_in_progress:
                 if self.confirm_mode == "Off Board":
                     self.confirm_move()
                 elif self.confirm_mode == "On Piece":
                     self.cancel_confirmation()
-            return True
+                return True
+
+            # Controls below the board recognized the touch
+            return super(PenteScreen, self).on_touch_down(touch)
+
 
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
