@@ -145,12 +145,12 @@ class PenteApp(App):
             # Ignore spaces on other pages, could be entering names
             if self.root.current == "Pente":
                 if self.game.finished():
-                    self.show_menu_screen()
+                    self.show_games_screen()
                 else:
                     # Game in progress, prompt
                     msg_str = "Leave this game?"
                     ConfirmPopup.create_and_open(message=msg_str,
-                        action=self.show_menu_screen,
+                        action=self.show_games_screen,
                         size_hint=(.6, .2))
                 return True
         elif key == 111:
