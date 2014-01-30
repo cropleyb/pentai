@@ -54,7 +54,7 @@ class GamesScreen(Screen):
             # Ignore
             return
 
-        msg_str = "Delete this game?"
+        msg_str = "Delete game %s?" % self.selected_gid
         p_m.ConfirmPopup.create_and_open(message=msg_str,
             action=self.delete_confirmed,
             size_hint=(.8, .2))
@@ -67,7 +67,7 @@ class GamesScreen(Screen):
 
 def game_data(game):
     data = {}
-    data['id'] = game.game_id
+    data['id'] = str(game.game_id)
     data['black'] = game.get_player_name(BLACK)
     data['white'] = game.get_player_name(WHITE)
     data['date'] = str(game.get_date())
@@ -107,9 +107,9 @@ class GamesView(GridLayout):
 
     def changed_selection(self, da, *args, **kwargs): # da == dict adaptor
         try:
-            gid_str = self.item_strings[da.selection[0].index]
+            # TODO: Fix this incredibly ugly hack
+            gid_str = da.selection[0].parent.children[-1].text
             print "Selected: GID %s" % (gid_str)
-            # TODO: parent.parent. ?!
             self.parent.parent.set_selected_gid(int(gid_str))
         except IndexError:
             print "Removed"
@@ -117,10 +117,11 @@ class GamesView(GridLayout):
     def fill_er_up(self, unused=None):
         args_converter = \
             lambda row_index, rec: \
-                {'game_id': rec['id'],
-                 'size_hint_y': None,
+                {'size_hint_y': None,
                  'height': 25,
                  'cls_dicts': [
+                       {'cls': ListItemButton,
+                           'kwargs': {'text': rec['id'], 'size_hint': (.4,1)}},
                        {'cls': ListItemButton,
                            'kwargs': {'text': rec['black']}},
                        {'cls': ListItemButton,
@@ -138,11 +139,11 @@ class GamesView(GridLayout):
         games = gm.get_all_unfinished()
 
         # TODO: The 'if' is a hack
-        games_dict = { str(g.game_id): game_data(g) for g in games if g }
+        games_dict = { g.game_id: game_data(g) for g in games if g }
 
         self.item_strings = ["{0}".format(g_id) for g_id in games_dict.iterkeys() ]
 
-        dict_adapter = DictAdapter(sorted_keys=self.item_strings,
+        dict_adapter = DictAdapter(# sorted_keys=self.item_strings,
                                    data=games_dict,
                                    args_converter=args_converter,
                                    selection_mode='single',
