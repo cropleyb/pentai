@@ -1,6 +1,9 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import *
 
+import popup as p_m
+from defines import *
+
 '''
 Start/settings screen
 Player selection, with default of last selected.
@@ -50,4 +53,7 @@ class OptionsScreen(Screen):
         if state == "None":
             state = None
         self.get_pente_screen().set_confirm_mode(state)
+
+    def set_confirm_popups(self, val):
+        p_m.ConfirmPopup.bypass = (val == "No")
 

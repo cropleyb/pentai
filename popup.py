@@ -57,8 +57,13 @@ class ConfirmPopup(BasePopup):
         self.action = action
         super(ConfirmPopup, self).__init__(*args, **kwargs)
 
+    bypass = True
+
     @staticmethod
     def create_and_open(message, action, *args, **kwargs):
+        if ConfirmPopup.bypass:
+            action()
+            return
         if BasePopup.my_active == None:
             # TODO: Do we dismiss any existing popup?
             BasePopup.my_active = \
