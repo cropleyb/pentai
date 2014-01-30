@@ -1,4 +1,4 @@
-Option for no confirm popups
+Double click games to load.
 Persistent options
 Options screen from menu
 No Game Selected error.
