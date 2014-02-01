@@ -38,10 +38,8 @@ if __name__ == "__main__":
     for g_id in gm.id_lookup.iterkeys():
         check_id(g_id, to_remove)
 
-    st()
     for g_id in gm.unfinished_db.iterkeys():
         check_id(g_id, to_remove)
-    st()
 
     for g_id in to_remove:
         dot()
