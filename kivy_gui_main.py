@@ -4,6 +4,9 @@ from kivy.clock import *
 from kivy.base import *
 #from kivy.core.window import Window # Hmmmm... TODO?
 
+from kivy.config import ConfigParser
+from kivy.uix.settings import Settings
+
 from kivy.uix.screenmanager import *
 
 from setup_screen import *
@@ -35,8 +38,13 @@ class PenteApp(App):
         self.popup.open()
         print message
 
+    def return_screen(self, ignored=None):
+        if self.pente_screen:
+            self.show_pente_screen()
+        else:
+            self.show_menu_screen()
+
     def show_options(self):
-        self.resume_screen = self.root.current
         self.root.current = "Options"
 
     def show_pente_screen(self):
@@ -53,7 +61,6 @@ class PenteApp(App):
         self.setup_screen.create_game()
         self.root.current = "Setup"
 
-    '''
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
         try:
@@ -62,14 +69,11 @@ class PenteApp(App):
             self.display_error("Please select a game first")
             return
         self.load_game_file(full_path)
-    '''
-    
+
     def edit_game(self):
         self.setup_screen.alter_game(self.game)
         self.root.current = "Setup"
 
-    '''
-    # TODO: Remove
     def load_game_file(self, full_path=None):
         if full_path != None:
             self.game_filename = full_path
@@ -79,7 +83,6 @@ class PenteApp(App):
         self.setup_screen.load_file(self.game_filename)
         # TODO production app should start game here.
         self.root.current = "Setup"
-    '''
 
     def start_game(self, game, screen_size):
         # TODO: Move this?
@@ -126,7 +129,10 @@ class PenteApp(App):
                 # Cancel any popup
                 BasePopup.clear()
             else:
-                self.prompt_quit()
+                if self.root.current == "Options":
+                    self.return_screen()
+                else:
+                    self.prompt_quit()
             return True
 
         if key == 113:
@@ -177,6 +183,7 @@ class PenteApp(App):
     def add_screen(self, scr_cls, scr_name, **kwargs):
         scr = scr_cls(name=scr_name, **kwargs)
         scr.app = self
+        scr.config = self.config
         scr.gm = self.games_mgr
         self.root.add_widget(scr)
 
@@ -200,20 +207,30 @@ class PenteApp(App):
         screens = [(MenuScreen, "Menu"), (OptionsScreen, "Options"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games")]
 
+        # Assign to self.config so all screens can get at it.
+        self.config = ConfigParser()
+        self.config.read('pente.ini')
+
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
 
         self.setup_screen = root.get_screen("Setup")
+        self.options_screen = root.get_screen("Options")
         self.pente_screen = None
-
-        # TEMP for testing
-        #self.root.current = "Games"
 
         # Confirm Quit
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         self.popup = None
 
+        # Pass the config to the options screen to use it for the
+        # Kivy Settings editor.
+        self.options_screen.set_config(self.config)
+
         return root
+    
+    def set_confirmation_popups(self):
+        p_m.ConfirmPopup.bypass = \
+            not self.config.getint("pente", "confirm_popups")
 
     def on_pause(self):
         return True
@@ -227,9 +244,6 @@ if __name__ == '__main__':
 
     Config.set('graphics', 'width', '457')
     Config.set('graphics', 'height', '720')
-    #Config.set('graphics', 'width', '320')
-    #Config.set('graphics', 'height', '504')
-
 
     PenteApp().run()
 

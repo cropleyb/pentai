@@ -52,11 +52,8 @@ class PenteScreen(Screen):
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
         self.moved_marker = [None, None, None]
-        self.mark_moves = True
         self.ghosts = []
         self.ghost_colour = None
-        self.show_ghosts = True
-        self.confirm_mode = None
         self.confirmation_in_progress = None
         self.game = None
         self.game_filename = filename
@@ -122,7 +119,7 @@ class PenteScreen(Screen):
         start_func = self.make_first_move
         if len(self.game_filename) > 0:
             start_func = self.load_file
-        elif self.game.resume_move_number:
+        elif not self.game.resume_move_number is None:
             start_func = self.load_moves
 
         Clock.schedule_once(start_func, transition_time)
@@ -167,8 +164,7 @@ class PenteScreen(Screen):
         self.game.prompt_for_action(self)
 
     def load_moves(self, dt):
-        # TODO Move implementation to game?
-        self.game.go_to_move(self.game.resume_move_number+1)
+        self.game.resume()
         self.game_filename = None
         self.refresh_all()
         self.game.prompt_for_action(self)
@@ -426,7 +422,7 @@ class PenteScreen(Screen):
                 if not w.parent is None:
                     self.remove_widget(w)
                 # Then put them back ON TOP OF THE PIECES
-                if self.mark_moves:
+                if self.mark_moves() == 1:
                     if w.parent is None:
                         self.add_widget(w)
 
@@ -442,9 +438,10 @@ class PenteScreen(Screen):
             widget, old_board_pos = self.confirmation_in_progress
             if board_pos == old_board_pos:
                 # Click on the confirm piece
-                if self.confirm_mode == "Off Board":
+                cm = self.confirm_mode()
+                if cm == "Off Board":
                     self.cancel_confirmation()
-                elif self.confirm_mode == "On Piece":
+                elif cm == "On Piece":
                     self.confirm_move()
             else:
                 # Adjust the confirmation
@@ -458,12 +455,13 @@ class PenteScreen(Screen):
             widget.pos = self.board_to_screen(board_pos)
             self.add_widget(widget)
             self.confirmation_in_progress = widget, board_pos
-            if self.confirm_mode == "Off Board":
+            if self.confirm_mode() == "Off Board":
                 # Green to confirm off board
                 col = [0, 1, 0, .5]
-            elif self.confirm_mode == "On Piece":
+            elif self.confirm_mode() == "On Piece":
                 # Red to confirm off board
                 col = [1, 0, 0, .5]
+
             self.confirm_rect_color = col
 
     def confirm_move(self):
@@ -472,15 +470,17 @@ class PenteScreen(Screen):
             self.enqueue_action(board_pos)
             self.cancel_confirmation()
 
-    def set_confirm_mode(self, req):
-        self.confirm_mode = req
-        self.cancel_confirmation()
+    def confirm_mode(self):
+        cm = self.config.get("pente", "move_confirmation")
+        if cm == "None Required":
+            cm = None
+        return cm
 
-    def set_mark_moves(self, mm):
-        self.mark_moves = mm
+    def mark_moves(self):
+        return self.config.getint("pente", "mark_moves")
 
-    def set_mark_captures(self, mc):
-        self.show_ghosts = mc
+    def show_ghosts(self):
+        return self.config.getint("pente", "mark_captures")
 
     def go_to_the_beginning(self):
         self.game.go_to_the_beginning()
@@ -505,9 +505,9 @@ class PenteScreen(Screen):
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
             if self.confirmation_in_progress:
-                if self.confirm_mode == "Off Board":
+                if self.confirm_mode() == "Off Board":
                     self.confirm_move()
-                elif self.confirm_mode == "On Piece":
+                elif self.confirm_mode() == "On Piece":
                     self.cancel_confirmation()
                 return True
 
@@ -547,7 +547,7 @@ class PenteScreen(Screen):
                 except OffBoardException:
                     return
 
-                if self.confirm_mode:
+                if self.confirm_mode():
                     self.adjust_confirmation(board_pos)
                 else:
                     # Queue the move, this will place the
@@ -556,7 +556,7 @@ class PenteScreen(Screen):
 
     def refresh_ghosts(self):
         for g in self.ghosts:
-            if self.show_ghosts:
+            if self.show_ghosts():
                 if g.parent is None:
                     self.add_widget(g)
             elif not g.parent is None:

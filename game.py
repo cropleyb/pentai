@@ -32,6 +32,12 @@ class Game(object):
             return False
         return self.game_id == other.game_id
 
+    def resume(self):
+        """ Call this once all the observers are set up """
+        if not self.resume_move_number is None:
+            rmn = self.resume_move_number
+            self.go_to_move(rmn)
+
     def get_date(self):
         return self.date
 
@@ -93,9 +99,9 @@ class Game(object):
         # Record this, then save to a file if required
         if len(self.move_history) > 0:
             self.move_history = self.move_history[:self.get_move_number()-1]
-        self.current_state.make_move(move)
         self.move_history.append(move)
-        self.resume_move_number = len(self.move_history) + 1
+        self.resume_move_number = len(self.move_history)
+        self.current_state.make_move(move)
         if self.autosave_filename != None:
             self.save_history()
 
@@ -137,6 +143,8 @@ class Game(object):
     def go_to_move(self, move_number):
         # TODO: All these +1 and -1 shifts look a bit dodgy.
         current_move = self.get_move_number()
+        self.resume_move_number = move_number
+
         if move_number < current_move:
             # Have to go back to the start, and replay all the moves,
             # otherwise the GUI and AI would need to support undo. TODO?
@@ -151,6 +159,10 @@ class Game(object):
                     return
                 gs = self.current_state
                 gs.make_move(self.move_history[i])
+        # If we go back to the beginning of the game,
+        # there won't have been any save calls(), so we won't
+        # be able to resume from the beginning of the game.
+        # Not much point for this anyway.
 
     def history_to_str(self):
         game_str = self.game_header()
@@ -197,10 +209,10 @@ class Game(object):
         return "\n".join([player_line, size_line, rules_line])
 
     def load_game(self, game_str):
+        """ Keep this for test code """
         remainder = self.configure_from_str(game_str)
         self.load_moves(remainder)
-        if self.resume_move_number:
-            self.go_to_move(self.resume_move_number)
+        self.resume()
 
     def load_moves(self, game_str):
         # e.g. "1. (4,4)\n2. (3,3)\n"

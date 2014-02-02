@@ -1,13 +1,14 @@
-Options screen from menu
+
+When there is a forced loss, don't give up?!
+ e.g. turn down "infinity" and add the win as a component of the score
+Load AI vs Human game replaying last move
+Games Screen 2 stories for each game line, show win etc.
 Review mode
 Load human games for review from DB
-Delete button on games screen
-Double click games to load.
-Persistent options
+Select multiple games to delete
 Double click on game to load
 Detect Human vs. Human draws
-Display draws via kivy
-Update Game View after deletion - is there kivy support for this?
+Display draws via kivy on pente screen
 scale the capture diff score back with the move number?
 Subscribe the games_mgr to restored games?
 GUI - Play a new game with same opponent (auto set loser to first player)

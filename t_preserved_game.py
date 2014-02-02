@@ -48,7 +48,7 @@ class PreservedGameTest(unittest.TestCase):
         today = datetime.date.today()
         self.assertEquals(pg.date, today)
 
-        self.assertEquals(pg.resume_move_number, 2)
+        self.assertEquals(pg.resume_move_number, 1)
 
         self.assertEquals(len(pg.moves), 1)
         self.assertEquals(pg.moves[0], (7,3))

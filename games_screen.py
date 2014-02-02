@@ -32,7 +32,7 @@ class GamesScreen(Screen):
 
     def load_game(self):
         if not self.selected_gid:
-            # Ignore
+            # Ignore it
             return
         game = self.gm.get_game(self.selected_gid)
         self.clear_selected()
@@ -40,18 +40,17 @@ class GamesScreen(Screen):
 
     def edit_game(self):
         if not self.selected_gid:
-            # Ignore
+            # Ignore it
             return
 
         self.clear_selected()
 
-        print "Edit HI"
         # TODO: show setup screen for this game, return to here?
         # TODO: Perhaps this should be per field by double clicking?
 
     def delete_game(self):
         if not self.selected_gid:
-            # Ignore
+            # Ignore it
             return
 
         msg_str = "Delete game %s?" % self.selected_gid
@@ -105,7 +104,7 @@ class GamesView(GridLayout):
             pass
         self.fill_er_up()
 
-    def changed_selection(self, da, *args, **kwargs): # da == dict adaptor
+    def changed_selection(self, da, *args, **kwargs):
         try:
             # TODO: Fix this incredibly ugly hack
             gid_str = da.selection[0].parent.children[-1].text
@@ -134,7 +133,7 @@ class GamesView(GridLayout):
                            'kwargs': {'text': rec['rules']}},
                        ]}
 
-        # Another hack - parent.parent.
+        # TODO: Another hack - parent.parent
         gm = self.parent.parent.gm
         games = gm.get_all_unfinished()
 
@@ -143,8 +142,7 @@ class GamesView(GridLayout):
 
         self.item_strings = ["{0}".format(g_id) for g_id in games_dict.iterkeys() ]
 
-        dict_adapter = DictAdapter(# sorted_keys=self.item_strings,
-                                   data=games_dict,
+        dict_adapter = DictAdapter(data=games_dict,
                                    args_converter=args_converter,
                                    selection_mode='single',
                                    allow_empty_selection=False, # Not working?

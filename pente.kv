@@ -2,6 +2,9 @@
 #:import kivy kivy
 #:import win kivy.core.window
 
+<Label>:
+    font_size: dp(25)
+
 <CheckBoxList>:
     cols: 2
 
@@ -78,57 +81,6 @@
 #Sound effects volume
 #Music volume
 #Start/Resume
-<OptionsScreen>:
-    GridLayout:
-        cols: 2
-        size_hint: 1, 1
-
-        Button:
-            text: "Instructions"
-            on_release: root.app.show_instructions()
-
-        Button:
-            text: "Rules"
-            on_release: root.app.show_rules()
-
-        MyLabel:
-            text: "Mark last 2 moves?"
-        ToggleButton:
-            font_size: '20sp'
-            state: 'down'
-            id: mm_widget
-            on_press: root.set_mark_moves(mm_widget.state)
-
-        MyLabel:
-            text: "Mark recent captures?"
-        ToggleButton:
-            font_size: '20sp'
-            state: 'down'
-            id: rc_widget
-            on_press: root.set_mark_captures(rc_widget.state)
-
-        CheckBoxList:
-            #text: "Confirm style"
-            group: "confirm_options"
-            values: ["None", "Off Board", "On Piece"]
-            on_val: root.set_confirm_mode(self.val)
-        MyLabel:
-            text: "Confirm moves?"
-
-        CheckBoxList:
-            #text: "Popups"
-            group: "popups"
-            values: ["No", "Yes"]
-            on_val: root.set_confirm_popups(self.val)
-        MyLabel:
-            text: "Show popups?"
-        #
-        # TODO: Music and Sound Effects
-
-        Button:
-            text: "Return"
-            on_release: root.app.show_pente_screen()
-            #on_release: root.app.return() TODO
 
 # Player selection: Spinner
 <NewGameScreen>:

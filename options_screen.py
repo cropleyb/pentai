@@ -1,7 +1,10 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import *
 
-import popup as p_m
+from kivy.uix.settings import SettingsWithNoMenu
+from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+
 from defines import *
 
 '''
@@ -38,22 +41,24 @@ class OptionsScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(OptionsScreen, self).__init__(*args, **kwargs)
 
-    def get_pente_screen(self):
-        if self.app.pente_screen:
-            return self.app.pente_screen
-        return mock.Mock() # Hacky Null object pattern
+    def build(self):
+        gl = GridLayout(cols=1)
+        self.add_widget(gl)
 
-    def set_mark_moves(self, state):
-        self.get_pente_screen().set_mark_moves(s2b(state))
+        gl.add_widget(self.settings)
 
-    def set_mark_captures(self, state):
-        self.get_pente_screen().set_mark_captures(s2b(state))
+        bw = Button(text="Return",size_hint=(1,.1))
+        gl.add_widget(bw)
+        bw.bind(on_press=self.app.return_screen)
 
-    def set_confirm_mode(self, state):
-        if state == "None":
-            state = None
-        self.get_pente_screen().set_confirm_mode(state)
+    def set_config(self, config):
+        self.settings = SettingsWithNoMenu(text_size="30")
+        self.settings.add_json_panel('Pente', config, 'pente.json')
 
-    def set_confirm_popups(self, val):
-        p_m.ConfirmPopup.bypass = (val == "No")
+    def on_enter(self):
+        if self.settings.parent is None:
+            self.build()
+
+    def on_leave(self, ignored=None):
+        self.app.set_confirmation_popups()
 

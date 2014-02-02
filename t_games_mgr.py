@@ -189,6 +189,32 @@ class GamesMgrTest(unittest.TestCase):
         g1_restored = self.gm.get_game(g1.get_game_id())
         self.assertEquals(g1_restored, None)
 
+    ############################
+
+    def test_resume_move_number(self):
+        rules = Rules(9, "Standard")
+        p1_orig = HumanPlayer("Walt")
+        p2_orig = HumanPlayer("Disney")
+
+        g1 = self.gm.create_game(rules, p1_orig, p2_orig)
+        g1.make_move((1,1))
+        g1.make_move((2,2))
+        g1.make_move((3,3))
+        g1.make_move((4,4))
+        g1.make_move((5,5))
+        g1.go_to_the_beginning()
+        self.gm.save(g1)
+
+        gm2 = GamesMgr("test_")
+        g1_restored = self.gm.get_game(g1.get_game_id())
+        g1_restored.resume()
+        self.assertEquals(g1_restored.get_move_number(), 1)
+
+        g1.go_to_the_end()
+        self.gm.save(g1)
+        g1_restored = self.gm.get_game(g1.get_game_id())
+        g1_restored.resume()
+        self.assertEquals(g1_restored.get_move_number(), 6)
 
 if __name__ == "__main__":
     unittest.main()
