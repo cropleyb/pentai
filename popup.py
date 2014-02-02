@@ -20,6 +20,10 @@ class BasePopup(Popup):
         return True
 
     @staticmethod
+    def is_active():
+        return not BasePopup.my_active is None
+
+    @staticmethod
     def clear():
         a = BasePopup.my_active
         BasePopup.my_active = None

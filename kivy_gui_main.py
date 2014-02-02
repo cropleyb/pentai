@@ -143,7 +143,10 @@ class PenteApp(App):
 
         elif key == 13:
             # Enter
-            ConfirmPopup.confirm()
+            if ConfirmPopup.is_active():
+                ConfirmPopup.confirm()
+            elif self.root.current == "Pente":
+                self.show_menu_screen()
             return True
 
         elif key == 32:
