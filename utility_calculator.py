@@ -32,14 +32,12 @@ class UtilityCalculator():
         return contrib
 
     def utility(self, state, utility_stats):
-        '''
-        '''
+        """ This is the entry point into the position evaluation function """
         # us_copy = us_m.UtilityStats(utility_stats)
         # return self.utility_inner(state, utility_stats), us_copy
         return self.utility_inner(state, utility_stats), 0
 
     def utility_inner(self, state, utility_stats):
-        """ This is the entry point into the position evaluation function """
         # The search_colour is the colour of the
         # AI player doing the search.
         # The turn_colour is the colour of the player to 
