@@ -1,0 +1,53 @@
+[
+    {
+        "type": "title",
+        "title": "Mark last 2 moves"
+    },
+    {
+        "type": "bool",
+        "title": "Mark them",
+        "desc": "Mark the last two moves with a dot in the centre",
+        "section": "pente",
+        "key": "mark_moves",
+        "true": "auto"
+    },
+    {
+        "type": "title",
+        "title": "Mark captures"
+    },
+    {
+        "type": "bool",
+        "title": "Show captures",
+        "desc": "Show pieces that were captured last move as transparent ghost pieces",
+        "section": "pente",
+        "key": "mark_captures",
+        "true": "auto"
+    },
+    {
+        "type": "title",
+        "title": "Confirm style"
+    },
+    {
+        "type": "options",
+        "title": "Move confirmation",
+        "desc": "",
+        "options": ["None Required",
+                    "Off Board",
+                    "On Piece"],
+        "section": "pente",
+        "key": "move_confirmation",
+        "true": "auto"
+    },
+    {
+        "type": "title",
+        "title": "Popup confirmation"
+    },
+    {
+        "type": "bool",
+        "title": "Show Confirmation Popups",
+        "desc": "For major actions such as exiting",
+        "section": "pente",
+        "key": "confirm_popups",
+        "false": "auto"
+    }
+]
