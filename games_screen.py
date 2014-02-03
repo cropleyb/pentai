@@ -104,12 +104,20 @@ class GamesView(GridLayout):
             pass
         self.fill_er_up()
 
+    def on_touch_down(self, touch):
+        self.is_double_touch = touch.is_double_tap
+        return super(GamesView,self).on_touch_down(touch)
+
     def changed_selection(self, da, *args, **kwargs):
         try:
             # TODO: Fix this incredibly ugly hack
-            gid_str = da.selection[0].parent.children[-1].text
-            print "Selected: GID %s" % (gid_str)
-            self.parent.parent.set_selected_gid(int(gid_str))
+            try:
+                gid_str = da.selection[0].parent.children[-1].text
+                print "Selected: GID %s" % (gid_str)
+                self.parent.parent.set_selected_gid(int(gid_str))
+            except AttributeError, e:
+                if self.is_double_touch:
+                    self.parent.parent.load_game()
         except IndexError:
             print "Removed"
 
