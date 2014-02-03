@@ -6,7 +6,6 @@ Games Screen 2 stories for each game line, show win etc.
 Review mode
 Load human games for review from DB
 Select multiple games to delete
-Double click on game to load
 Detect Human vs. Human draws
 Display draws via kivy on pente screen
 scale the capture diff score back with the move number?
