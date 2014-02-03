@@ -100,7 +100,6 @@ class GamesMgr(object):
         return g
 
     def save(self, g, game_db=None):
-        #st()
         for p in g.get_all_players()[1:]:
             self.players_mgr.ensure_has_key(p)
 
@@ -148,7 +147,6 @@ class GamesMgr(object):
         return [self.get_game(g_id) for g_id in self.unfinished_db.iterkeys() ]
 
     def get_game(self, g_id, game_db=None):
-        #st()
         if g_id is None:
             return None
 
