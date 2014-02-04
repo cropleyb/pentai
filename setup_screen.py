@@ -47,7 +47,7 @@ class SetupScreen(Screen):
         self.set_GUI_from_game(self.game)
         self.ids.start_button.text = "Resume Game"
 
-    def set_up_game_from_GUI(self):
+    def set_up_game_from_GUI(self): # TODO: Rename to set_game_from_GUI
         bs = int(self.ids.bs_id.val)
         rstr = self.ids.rules_id.val
         r = rules.Rules(bs, rstr)
