@@ -538,3 +538,15 @@ But for me yes.
 Problem: New game ids every time games settings screen is used on an existing game. Create the game then allow this screen to set it up?
 ugly? change Game.__init__ to call a public setup method. Not too bad.
 
+AI Player GUI
+-------------
+Spinner list should include "Create New Player" at the top or the bottom
+(special player id?)
+Name (spinner to select which one, double click to edit name)
+Speed (1 -> 10 inverted depth?) slider?
+Vision (60 - 100% in 5% increments) slider?
+Use Openings Book
+Advanced settings: (show advanced AI settings toggle to show)
+Width (mmpdl)
+Capture preference (Low, Medium, High => capture_score_base 200, 300, 400)
+

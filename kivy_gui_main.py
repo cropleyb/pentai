@@ -9,6 +9,7 @@ from kivy.uix.settings import Settings
 
 from kivy.uix.screenmanager import *
 
+from ai_player_screen import *
 from setup_screen import *
 from options_screen import *
 from pente_screen import *
@@ -56,6 +57,10 @@ class PenteApp(App):
     def show_games_screen(self, ignored=None):
         self.random_transition()
         self.root.current = "Games"
+
+    def show_ai_screen(self, ignored=None):
+        self.random_transition()
+        self.root.current = "AI"
 
     def show_menu_screen(self, ignored=None):
         self.random_transition()
@@ -194,6 +199,7 @@ class PenteApp(App):
         scr.app = self
         scr.config = self.config
         scr.gm = self.games_mgr
+        scr.pm = self.games_mgr.players_mgr
         self.root.add_widget(scr)
 
     def random_transition(self):
@@ -228,7 +234,9 @@ class PenteApp(App):
                 game_manager_filename)
 
         screens = [(MenuScreen, "Menu"), (OptionsScreen, "Options"),
-                   (SetupScreen, "Setup"), (GamesScreen, "Games")]
+                   (SetupScreen, "Setup"), (GamesScreen, "Games"),
+                   (AIPlayerScreen, "AI"),
+                   ]
 
         # Assign to self.config so all screens can get at it.
         self.config = ConfigParser()

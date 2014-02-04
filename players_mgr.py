@@ -22,6 +22,15 @@ class PlayersMgr():
 
         return player.key
 
+    def get_player_names(self):
+        l = [ g.name for k,g in self.players.iteritems()
+                if (k != "max_id") and
+                   (g.__class__ == ai_genome.AIGenome) ]
+        return l
+
+    def remove(self, pid):
+        del self.players[pid]
+
     def save(self, player):
         if player.__class__ is type(0):
             player = self.find(player)
@@ -46,7 +55,14 @@ class PlayersMgr():
         for key, genome in self.players.iteritems():
             if genome.name == name:
                 return self.find(key)
-        return None
+
+    def find_genome_by_name(self, name):
+        for key, genome in self.players.iteritems():
+            if genome.__class__ != ai_genome.AIGenome:
+                continue
+            if genome.name == name:
+                return genome
+
 
     def find(self, key):
         try:

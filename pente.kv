@@ -60,8 +60,8 @@
             on_release: root.app.show_games_screen()
 
         Button:
-            text: "Edit Players"
-            on_release: root.app.show_players_screen()
+            text: "Edit AI Players"
+            on_release: root.app.show_ai_screen()
 
         Button:
             text: "Review Game"
@@ -217,8 +217,109 @@
                 id: start_button
 
 
+# Globally set all Labels
 <MyLabel@Label>:
     font_size: '25sp'
+
+<AIPlayerScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            text: "Computer Player Editor"
+
+		Label:
+			text: 'Player'
+
+		Spinner:
+			#TODO: double click to edit name
+			text: root.current_name
+			values: root.player_names
+			size_hint: (1, None)
+			id: player_spinner_id
+
+		Label:
+			text: 'Search'
+
+		BoxLayout:
+			size_hint_y: None
+			height: '48dp'
+
+			Label:
+				text: 'Depth'
+
+			Slider:
+				id: depth
+				min: 2
+				max: 10
+                # TODO: Test odd levels play ok
+				step: 1
+				value: root.max_depth
+
+		BoxLayout:
+			size_hint_y: None
+			height: '48dp'
+
+			Label:
+				text: 'Vision'
+
+			Slider:
+				id: vision
+				min: 60
+				max: 100
+				step: 1
+				value: 100 - root.blindness
+
+		BoxLayout:
+			size_hint_y: None
+			height: '48dp'
+
+			Label:
+				text: 'Width'
+
+			Slider:
+				id: width
+				min: 6
+				max: 12
+				step: 1
+				value: root.mmpdl
+
+		BoxLayout:
+			size_hint_y: None
+			height: '48dp'
+
+			Label:
+				text: 'Openings Book'
+
+			CheckBox:
+				# TODO: The tick image is a bit small
+				id: openings
+				active: root.use_openings_book
+
+		BoxLayout:
+			size_hint_y: None
+			height: '48dp'
+
+			Label:
+				text: 'Lines / Captures'
+
+			Slider:
+				id: capture_pref
+				min: 200
+				max: 400
+				step: 1
+				value: root.capture_score_base
+
+		GridLayout:
+			cols: 2
+
+			Button:
+				text: "Cancel"
+                on_release: root.cancel()
+
+			Button:
+				text: "Save"
+                on_release: root.save()
+
 
 <PenteScreen>:
     RelativeLayout:

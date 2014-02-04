@@ -16,9 +16,23 @@ def dot():
 if __name__ == "__main__":
     print "Upgrading Players"
     pm = pm_m.PlayersMgr()
+
+    # Map from player id to unique player id for that id (with unique name)
+    dup_ids_map = {}
+
+    # The id that will be used as the unique player id for a name
+    seen_name_map = {}
+
     for p_id, genome in pm.players.iteritems():
         if p_id == "max_id":
             continue
+
+        gn = genome.name
+        if gn in seen_name_map:
+            dup_ids_map[p_id] = seen_name_map[gn]
+        else:
+            seen_name_map[gn] = p_id
+
         sys.stdout.write('.')
         dot()
         pm.save(genome)
@@ -38,14 +52,30 @@ if __name__ == "__main__":
             to_remove.append(g_id)
             continue
         for colour in (BLACK,WHITE):
-            if game.players[colour] is None:
-                game.players[colour] = unknown
+            pid = game.players[colour]
+            if pid is None:
+                pid = unknown
+            else:
+                try:
+                    pid = dup_ids_map[pid]
+                except:
+                    # Already using the right one
+                    pass
+            game.players[colour] = pid
         gm.save(game)
         dot()
 
+    print "Removing games"
     for g_id in to_remove:
         dot()
         gm.remove_id(g_id)
+
+    print "Removing duplicate players"
+    for dup, orig in dup_ids_map.items():
+        pm.remove(dup)
+    gm.sync_all()
+
+    #sys.exit()
 
     # TODO upgrade openings
 
