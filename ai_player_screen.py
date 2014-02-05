@@ -15,24 +15,43 @@ import ai_factory
 
 import checkbox_list as cb_l
 
+from kivy.event import EventDispatcher
+
 from defines import *
 
+# TODO: Make a reusable class for this.
+class GenomeProperties(EventDispatcher):
+    inst = ai_genome.AIGenome("Whatever")
+
+    def populate(self, g):
+        for k,v in g.__dict__.iteritems():
+            setattr(self, k, v)
+
+    def save(self, unused=None):
+        for k,v in self.inst.__dict__.iteritems():
+            setattr(self.inst, k, getattr(self, k))
+        return self.inst
+
+# TODO: Move this into the class somehow
+for attr_name, val in GenomeProperties.inst.__dict__.iteritems():
+    setattr(GenomeProperties, attr_name, Property(val))
 
 class AIPlayerScreen(Screen):
     current_name = StringProperty("Choose one")
     player_names = ListProperty([])
+    genome = GenomeProperties()
 
     def __init__(self, *args, **kwargs):
         super(AIPlayerScreen, self).__init__(*args, **kwargs)
 
-        self.ids.player_spinner_id.bind(text=self.selected_player)
+        self.ids.player_spinner_id.bind(text=self.select_player)
 
-    '''
+    # TODO: Does this work?
     def on_genome(self, *args):
         print "Genome was updated %s, %s" % args
-    '''
 
-    def selected_player(self, spinner, val):
+    def select_player(self, spinner, val):
+        st()
         if val == "Create player":
             return
         self.edit_player(val)
@@ -41,10 +60,9 @@ class AIPlayerScreen(Screen):
         self.player_names = sorted(self.pm.get_player_names())
 
     def save(self, unused=None):
-        for k,v in working_genome.__dict__.iteritems():
-            setattr(working_genome, k, getattr(self, k))
         st()
-        #self.pm.save(working_genome)
+        self.genome.save()
+        self.pm.save(self.genome.inst)
         self.app.return_screen()
 
     def cancel(self, unused=None):
@@ -55,15 +73,7 @@ class AIPlayerScreen(Screen):
         pass
 
     def edit_player(self, name):
+        st()
         g = self.pm.find_genome_by_name(name)
+        self.genome.populate(g)
 
-        for k,v in g.__dict__.iteritems():
-            setattr(self, k, v)
-
-
-# Set up many properties at once.
-# TODO: Make a reusable class for this.
-working_genome = ai_genome.AIGenome("Whatever")
-
-for attr_name, val in working_genome.__dict__.iteritems():
-    setattr(AIPlayerScreen, attr_name, Property(val))

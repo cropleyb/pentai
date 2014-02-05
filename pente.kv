@@ -253,7 +253,7 @@
 				max: 10
                 # TODO: Test odd levels play ok
 				step: 1
-				value: root.max_depth
+				value: root.genome.max_depth
 
 		BoxLayout:
 			size_hint_y: None
@@ -267,7 +267,7 @@
 				min: 60
 				max: 100
 				step: 1
-				value: 100 - root.blindness
+				value: 100 - root.genome.blindness
 
 		BoxLayout:
 			size_hint_y: None
@@ -281,7 +281,7 @@
 				min: 6
 				max: 12
 				step: 1
-				value: root.mmpdl
+				value: root.genome.mmpdl
 
 		BoxLayout:
 			size_hint_y: None
@@ -293,7 +293,7 @@
 			CheckBox:
 				# TODO: The tick image is a bit small
 				id: openings
-				active: root.use_openings_book
+				active: root.genome.use_openings_book
 
 		BoxLayout:
 			size_hint_y: None
@@ -307,7 +307,7 @@
 				min: 200
 				max: 400
 				step: 1
-				value: root.capture_score_base
+				value: root.genome.capture_score_base
 
 		GridLayout:
 			cols: 2
