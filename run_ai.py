@@ -8,7 +8,7 @@ import time
 from ai_player import *
 from priority_filter import *
 from priority_filter_2 import *
-from blindness_filter import * # TODO: Rename file and class
+from vision_filter import * # TODO: Rename file and class
 from evaluator import *
 from ai_factory import *
 from openings_book import *

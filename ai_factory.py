@@ -3,7 +3,7 @@
 import ai_player
 from priority_filter import *
 from priority_filter_2 import *
-from blindness_filter import *
+from vision_filter import *
 
 import openings_book as ob_m
 import games_mgr
@@ -24,8 +24,8 @@ class AIFactory: # TODO: These are just functions
         except AttributeError:
             vision = 100
         if vision < 100:
-            bf = BlindnessFilter(sf)
-            bf.set_blindness(100 - vision)
+            bf = VisionFilter(sf)
+            bf.set_vision(vision)
             sf = bf
         try:
             p_name = genome.p_name

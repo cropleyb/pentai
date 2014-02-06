@@ -415,7 +415,7 @@ standard rules
 10. (6, 5)"""
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
-        print m
+        #print m
         self.assertNotIn(m, ((7,8),(5,8)))
 
 if __name__ == "__main__":
