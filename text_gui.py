@@ -51,7 +51,7 @@ class TextGui(Gui):
         ret = ""
         if self.game.to_move_colour() == player_num:
             ret = "* "
-        ret = ret + self.game.get_player(player_num).name
+        ret = ret + self.game.get_player(player_num).p_name
         num_captured = self.game.get_captured(player_num)
         if not self.game.rules.can_capture_threes:
             num_captured /= 2

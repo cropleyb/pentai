@@ -68,7 +68,13 @@ def game_data(game):
     data = {}
     data['id'] = str(game.game_id)
     data['black'] = game.get_player_name(BLACK)
-    data['white'] = game.get_player_name(WHITE)
+
+    # TODO: This is a hack.
+    try:
+        data['white'] = game.get_player_name(WHITE)
+    except:
+        data['white'] = "Corrupted"
+
     data['date'] = str(game.get_date())
     data['size'] = str(game.size())
     data['rules'] = str(game.rules.get_type_name())

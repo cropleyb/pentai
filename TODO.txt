@@ -1,4 +1,6 @@
-
+Tick image in AI Player screen is too small
+Fix White player name hack in games_screen.py
+Blindness -> Vision
 When there is a forced loss, don't give up?!
  e.g. turn down "infinity" and add the win as a component of the score
 Load AI vs Human game replaying last move

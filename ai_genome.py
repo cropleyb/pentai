@@ -1,3 +1,4 @@
+import copy as c_m
 
 class AIGenomeException(Exception):
     pass
@@ -6,8 +7,8 @@ class AIGenome(object):
     def __init__(self, name):
         defaults = {
             "override": False,
-            "name": name,
-            "key": None,
+            "p_name": name,
+            "p_key": None,
             "use_openings_book": True,
             # Search params
             "max_depth": 6,
@@ -26,7 +27,7 @@ class AIGenome(object):
             "length_scale": [1, 1, 1, 1, 1, 1],
             "length_factor": 35,
             "move_factor": 45,
-            "blindness": 0,
+            "vision": 100,
             "scale_pob": False,
             "force_depth": 0,
         }
@@ -35,9 +36,24 @@ class AIGenome(object):
     def set_override(self, val):
         self.override = val
 
+    def get_name(self):
+        try:
+            name = self.p_name
+        except AttributeError:
+            name = self.name
+            self.set_override(True)
+            self.p_name = name
+            del self.name
+            self.set_override(False)
+        return name
+
     def __setattr__(self, attr_name, val):
         if hasattr(self, "override") and not self.override:
             if not hasattr(self, attr_name):
                 raise AIGenomeException("Cannot set attribute %s" % attr_name)
         super(AIGenome, self).__setattr__(attr_name, val)
+
+    def clone(self):
+        c = c_m.copy(self)
+        return c
 

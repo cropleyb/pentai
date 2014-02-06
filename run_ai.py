@@ -8,7 +8,7 @@ import time
 from ai_player import *
 from priority_filter import *
 from priority_filter_2 import *
-from blindness_filter import *
+from blindness_filter import * # TODO: Rename file and class
 from evaluator import *
 from ai_factory import *
 from openings_book import *
@@ -110,8 +110,8 @@ class Match():
         #self.genome2.take_score_base = 70
         #self.genome2.capture_score_base = 350 # Try this again for high depth
         #self.genome2.threat_score_base = 25 # Wins more for shallower depth
-        #self.genome1.blindness = 0.02
-        #self.genome2.blindness = 0.02
+        #self.genome1.vision = 0.98
+        #self.genome2.vision = 0.98
 
         #self.genome2.filter2 = True
         #self.genome2.narrowing = 3

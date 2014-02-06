@@ -6,17 +6,23 @@
 # TODO: Resign
 
 class Player():
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, p_name):
+        self.p_name = p_name
 
     def __repr__(self):
-        return self.name
+        return self.p_name
 
     def get_key(self):
-        return self.key
+        return self.p_key
 
     def get_name(self):
-        return self.name
+        try:
+            name = self.p_name
+        except AttributeError:
+            name = self.name
+            self.p_name = name
+            del self.name
+        return name
 
     def prompt_for_action(self, game, gui):
         pass

@@ -19,13 +19,25 @@ class AIFactory: # TODO: These are just functions
             sf = PriorityFilter()
         sf.set_max_moves_per_depth_level(mmpdl=genome.mmpdl, narrowing=genome.narrowing,
                 chokes=genome.chokes)
-        if genome.blindness > 0:
+        try:
+            vision = genome.vision
+        except AttributeError:
+            vision = 100
+        if vision < 100:
             bf = BlindnessFilter(sf)
-            bf.set_blindness(genome.blindness)
+            bf.set_blindness(100 - vision)
             sf = bf
-        p = ai_player.AIPlayer(sf, name=genome.name)
+        try:
+            p_name = genome.p_name
+        except AttributeError:
+            p_name = genome.name
+        p = ai_player.AIPlayer(sf, p_name=p_name)
 
-        p.key = genome.key
+        try:
+            p_key = genome.p_key
+        except AttributeError:
+            p_key = genome.key
+        p.p_key = p_key
         
         if genome.use_openings_book:
             ob = ob_m.instance

@@ -27,8 +27,25 @@ class AIFactoryTest(unittest.TestCase):
         rp = db.find_by_name("Samuel")
 
         self.assertEquals(rp.__class__, AIPlayer)
-        self.assertEquals(rp.name, "Samuel")
+        self.assertEquals(rp.get_name(), "Samuel")
         self.assertEquals(rp.max_depth, 3)
+
+    def test_ai_restore_player(self):
+        genome = AIGenome("Hagrid")
+        genome.max_depth = 3
+        aif = AIFactory()
+        orig_player = aif.create_player(genome)
+
+        db = PlayersMgr(prefix="test_")
+        gp = db.find_genome_by_name("Hagrid")
+        self.assertIsNone(gp)
+        db.save(orig_player)
+
+        gp = db.find_genome_by_name("Hagrid")
+
+        self.assertEquals(gp.__class__, AIGenome)
+        self.assertEquals(gp.get_name(), "Hagrid")
+        self.assertEquals(gp.max_depth, 3)
 
 class HumanDBTest(unittest.TestCase):
     def setUp(self):
@@ -44,7 +61,7 @@ class HumanDBTest(unittest.TestCase):
 
         fp = db.find_by_name("Sandra")
         self.assertEquals(fp.__class__, HumanPlayer)
-        self.assertEquals(fp.name, "Sandra")
+        self.assertEquals(fp.get_name(), "Sandra")
 
 if __name__ == "__main__":
     unittest.main()

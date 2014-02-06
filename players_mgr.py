@@ -16,14 +16,14 @@ class PlayersMgr():
 
     def ensure_has_key(self, player):
         assert not player is None
-        if not hasattr(player, "key") or player.key is None:
-            key = self.next_id()
-            player.key = key
+        if not hasattr(player, "p_key") or player.p_key is None:
+            p_key = self.next_id()
+            player.p_key = p_key
 
-        return player.key
+        return player.p_key
 
     def get_player_names(self):
-        l = [ g.name for k,g in self.players.iteritems()
+        l = [ g.get_name() for k,g in self.players.iteritems()
                 if (k != "max_id") and
                    (g.__class__ == ai_genome.AIGenome) ]
         return l
@@ -35,38 +35,39 @@ class PlayersMgr():
         if player.__class__ is type(0):
             player = self.find(player)
 
-        key = self.ensure_has_key(player)
+        p_key = self.ensure_has_key(player)
 
         try:
             player = player.genome
             # update the genome as well
-            player.key = key
+            player.set_override(True)
+            player.p_key = p_key
+            player.set_override(False)
         except AttributeError:
             # We're already dealing with a genome
             pass
 
-        self.players[key] = player
+        self.players[p_key] = player
         self.players.sync()
 
     def sync(self):
         self.players.sync()
 
     def find_by_name(self, name):
-        for key, genome in self.players.iteritems():
-            if genome.name == name:
-                return self.find(key)
+        for p_key, genome in self.players.iteritems():
+            if genome.p_name == name:
+                return self.find(p_key)
 
     def find_genome_by_name(self, name):
-        for key, genome in self.players.iteritems():
+        for p_key, genome in self.players.iteritems():
             if genome.__class__ != ai_genome.AIGenome:
                 continue
-            if genome.name == name:
+            if genome.p_name == name:
                 return genome
 
-
-    def find(self, key):
+    def find(self, p_key):
         try:
-            p = self.players[key]
+            p = self.players[p_key]
         except KeyError:
             return None
         if p.__class__ is ai_genome.AIGenome:

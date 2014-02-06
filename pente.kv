@@ -227,97 +227,106 @@
         Label:
             text: "Computer Player Editor"
 
-		Label:
-			text: 'Player'
+        Label:
+            text: 'Player'
 
-		Spinner:
-			#TODO: double click to edit name
-			text: root.current_name
-			values: root.player_names
-			size_hint: (1, None)
-			id: player_spinner_id
+        Spinner:
+            #TODO: double click to edit name
+            text: root.current_name
+            values: root.player_names
+            size_hint: (1, None)
+            id: player_spinner_id
 
-		Label:
-			text: 'Search'
+        Label:
+            text: 'Search'
 
-		BoxLayout:
-			size_hint_y: None
-			height: '48dp'
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
 
-			Label:
-				text: 'Depth'
+            Label:
+                text: 'Depth'
 
-			Slider:
-				id: depth
-				min: 2
-				max: 10
+            Slider:
+                id: depth
+                min: 2
+                max: 10
                 # TODO: Test odd levels play ok
-				step: 1
-				value: root.genome.max_depth
+                step: 1
+                value: root.genome.max_depth
+                on_value: root.genome.max_depth = self.value
 
-		BoxLayout:
-			size_hint_y: None
-			height: '48dp'
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
 
-			Label:
-				text: 'Vision'
+            Label:
+                text: 'Vision'
 
-			Slider:
-				id: vision
-				min: 60
-				max: 100
-				step: 1
-				value: 100 - root.genome.blindness
+            Slider:
+                id: vision
+                min: 60
+                max: 100
+                step: 1
+                value: root.genome.vision
+                on_value: root.genome.vision = self.value
 
-		BoxLayout:
-			size_hint_y: None
-			height: '48dp'
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
 
-			Label:
-				text: 'Width'
+            Label:
+                text: 'Width'
 
-			Slider:
-				id: width
-				min: 6
-				max: 12
-				step: 1
-				value: root.genome.mmpdl
+            Slider:
+                id: width
+                min: 6
+                max: 12
+                step: 1
+                value: root.genome.mmpdl
+                on_value: root.genome.mmpdl = self.value
 
-		BoxLayout:
-			size_hint_y: None
-			height: '48dp'
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
 
-			Label:
-				text: 'Openings Book'
+            Label:
+                text: 'Openings Book'
 
-			CheckBox:
-				# TODO: The tick image is a bit small
-				id: openings
-				active: root.genome.use_openings_book
+            CheckBox:
+                # TODO: The tick image is a bit small
+                id: openings
+                active: root.genome.use_openings_book
+                on_active: root.genome.use_openings_book = self.active
 
-		BoxLayout:
-			size_hint_y: None
-			height: '48dp'
+        BoxLayout:
+            size_hint_y: None
+            height: '48dp'
 
-			Label:
-				text: 'Lines / Captures'
+            Label:
+                text: 'Lines / Captures'
 
-			Slider:
-				id: capture_pref
-				min: 200
-				max: 400
-				step: 1
-				value: root.genome.capture_score_base
+            Slider:
+                id: capture_pref
+                min: 200
+                max: 400
+                step: 1
+                value: root.genome.capture_score_base
+                on_value: root.genome.capture_score_base = self.value
 
-		GridLayout:
-			cols: 2
+        GridLayout:
+            rows: 1 
 
-			Button:
-				text: "Cancel"
+            Button:
+                text: "Menu"
+                on_release: root.menu()
+
+            Button:
+                text: "Cancel"
                 on_release: root.cancel()
 
-			Button:
-				text: "Save"
+            Button:
+                text: "Save"
                 on_release: root.save()
 
 

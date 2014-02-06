@@ -22,8 +22,8 @@ class PreservedGameTest(unittest.TestCase):
 
     def create_player(self, genome):
         p = self.aif.create_player(genome)
-        p.key = random.randint(0, 1000)
-        genome.key = p.key
+        p.p_key = random.randint(0, 1000)
+        genome.p_key = p.p_key
         return p
 
     def test_preserve_game(self):
@@ -41,9 +41,9 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(pg.rules, (13, 's'))
 
         black_player = pg.players[BLACK]
-        self.assertEquals(black_player, genome1.key)
+        self.assertEquals(black_player, genome1.p_key)
         white_player = pg.players[WHITE]
-        self.assertEquals(white_player, genome2.key)
+        self.assertEquals(white_player, genome2.p_key)
 
         today = datetime.date.today()
         self.assertEquals(pg.date, today)
@@ -67,7 +67,7 @@ class PreservedGameTest(unittest.TestCase):
         ai_db.save(p2)
 
         pg = PreservedGame()
-        pg.players = [None, genome1.key, genome2.key]
+        pg.players = [None, genome1.p_key, genome2.p_key]
 
         pg.rules = (9, 'f')
         pg.game_id = ((9, 'f'), 1)

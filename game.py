@@ -190,8 +190,8 @@ class Game(object):
             self.rules = rules.Rules(5,"standard")
 
         players = player_line.split(" versus ", 1)
-        self.players[1].name = players[0]
-        self.players[2].name = players[1]
+        self.players[1].p_name = players[0]
+        self.players[2].p_name = players[1]
 
         side_length, ignored = size_line.split('x', 1)
 
