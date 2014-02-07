@@ -116,6 +116,7 @@
                     text: 'Black\nPlayer\nName'
                 TextInput
                     text: 'Black'
+                    multiline: False
                     id: black_name_id
                 CheckBoxList:
                     group: 'black_type'
@@ -130,6 +131,7 @@
                     text: 'White\nPlayer\nName'
                 TextInput
                     text: 'White'
+                    multiline: False
                     id: white_name_id
                 CheckBoxList:
                     group: 'white_type'
@@ -299,23 +301,23 @@
                 active: root.genome.use_openings_book
                 on_active: root.genome.use_openings_book = self.active
 
-				canvas:
-					Clear:
-					Color:
-						#rgba: 0, 0, 1, .5
-						# Grey background
-						rgba: .6, .6, .6, .5
-					Rectangle:
-						size: 40, 40
-						pos: int(self.center_x - 20), int(self.center_y - 20)
-					Color:
-						rgba: .443, 0.848, 0.926, 1
-						#114, 217, 237
-					Rectangle:
-						# TODO: Local file!
-						source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
-						size: 60, 60
-						pos: int(self.center_x - 30), int(self.center_y - 30)
+                canvas:
+                    Clear:
+                    Color:
+                        #rgba: 0, 0, 1, .5
+                        # Grey background
+                        rgba: .6, .6, .6, .5
+                    Rectangle:
+                        size: 40, 40
+                        pos: int(self.center_x - 20), int(self.center_y - 20)
+                    Color:
+                        rgba: .443, 0.848, 0.926, 1
+                        #114, 217, 237
+                    Rectangle:
+                        # TODO: Local file!
+                        source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
+                        size: 60, 60
+                        pos: int(self.center_x - 30), int(self.center_y - 30)
 
         BoxLayout:
             size_hint_y: None
