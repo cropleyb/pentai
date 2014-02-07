@@ -157,10 +157,12 @@ class PenteScreen(Screen):
         self.game.prompt_for_action(self)
 
     def load_moves(self, dt):
+        self.get_audio().mute()
         self.game.resume()
         self.game_filename = None
         self.refresh_all()
         self.game.prompt_for_action(self)
+        self.get_audio().unmute()
 
     def on_enter(self):
         self.refresh_all()
@@ -255,6 +257,10 @@ class PenteScreen(Screen):
                         self.add_widget(new_piece)
                     except Exception, e:
                         print e
+            if captured > 0:
+                audio = self.get_audio()
+                if not audio.muted:
+                    Clock.schedule_once(audio.capture , 0.2)
 
     def refresh_all(self):
         self.display_names()
@@ -486,13 +492,17 @@ class PenteScreen(Screen):
         print self.evaluator.utility()
 
     def go_backwards_one(self):
+        self.get_audio().mute()
         self.game.go_backwards_one()
         self.refresh_all()
+        self.get_audio().unmute()
         print self.evaluator.utility()
 
     def go_to_the_end(self):
+        self.get_audio().mute()
         self.game.go_to_the_end()
         self.refresh_all()
+        self.get_audio().unmute()
         print self.evaluator.utility()
 
     def on_touch_down(self, touch):

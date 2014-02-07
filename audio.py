@@ -13,8 +13,17 @@ class Audio():
         self.config = config
         self.sound_cache = {}
         self.filenames_cache = {}
+        self.muted = False
+
+    def mute(self):
+        self.muted = True
+
+    def unmute(self):
+        self.muted = False
 
     def play_sound(self, file_paths):
+        if self.muted:
+            return
         
         fn_in_subdir = join("media", *file_paths)
         # Avoid doing the glob every time
@@ -42,8 +51,8 @@ class Audio():
     def place(self):
         self.play_sound(["stones", "place"])
     
-    def capture(self):
-        pass
+    def capture(self, ignored=None):
+        self.play_sound(["stones", "capture"])
 
     def tick(self):
         pass

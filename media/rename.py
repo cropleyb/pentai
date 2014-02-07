@@ -6,5 +6,5 @@ i = 0
 
 for fn in files:
     i += 1
-    next_fn = "place%s.wav" % i
+    next_fn = "capture%s.wav" % i
     os.rename(fn, next_fn)
