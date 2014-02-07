@@ -101,7 +101,13 @@ class Game(object):
             self.move_history = self.move_history[:self.get_move_number()-1]
         self.move_history.append(move)
         self.resume_move_number = len(self.move_history) + 1
-        self.current_state.make_move(move)
+
+        try:
+            self.current_state.make_move(move)
+        except:
+            # Wipe that one off.
+            self.move_history = self.move_history[:-1]
+
         if self.autosave_filename != None:
             self.save_history()
 
