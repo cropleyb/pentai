@@ -1,11 +1,9 @@
 
-Delete key on games page (and AI player screen?)
-Sound effects off when fast forwarding?
-Sound effects: capture, tick, win, loss, music
+Multiline input into name boxes should be prevented
+Sounds: tick, music, draw, AI vs AI
 Fix White player name hack in games_screen.py
 When there is a forced loss, don't give up?!
  e.g. turn down "infinity" and add the win as a component of the score
-Load AI vs Human game replaying last move
 Games Screen 2 stories for each game line, show win etc.
 Review mode
 Load human games for review from DB
@@ -20,50 +18,36 @@ IOS build: simulation blocked by: https://github.com/kivy/kivy-ios/issues/9 - wa
 Hold down forward/backward buttons for fast traversal (after delay)
 Starting a new game should set the settings page back to defaults
 Web page processor for pente.org and pente.net
-New bug in AI?
-Minimum depth level for opening move selection = our depth
+Minimum depth level for opening move selection = our depth?
 Should there be a lookup for players and games that gives the same object
   so they are shared across the process?
 Trim the openings positions to a fixed depth?
 Trim the transposition table?
 Utility for converting all the games into openings
+Save GUI games to openings DB
 manual openings lib testing
 script to import historical human games
-Save GUI AI games to openings db
+AUTO Save GUI AI games to openings db
 Loop GUI AI games?
 Thinking in opponent's time - swap search colour then reuse position cache
-icons for everything for internationalization
-GameManager in App class? Share attribute with all screens?
+icons for everything for internationalization?
 Split up pente_screen?
 Killer Heuristic? History Heuristic?
 Restart AI button?
 video or recorded moves explaining the rules of pente
-Openings DB:
-  Start generating games in the new format
-  Read and write OpeningsDB class(es) - separate files for rule type/size
-  OpeningsFilter as described in design.txt
-Fix: Toggle buttons can all be turned off - commit to Kivi
 Name for the app. Pentacular, Pentacle, Pentapp, PentAI, PenteAI
 Icon for the app.
 Grid option
-Move markers bug - can't reproduce?
 Tool for processing a game - which moves were not searched
-GUI thread is lagging at start of game
-Change UI for computer selection
-Load Player Type from file (Computer/Human)
-Add rules explanation
-Try some more profiling?
-DB story tests comma command? If it is slow...
+Add rules demo
 Add save prompt
-VCR control graphics
+VCR control graphics for reviewing games
 More Cython?
-Set names according to computer level?
-AI levels + scrollbar? Computer player names?
+Recently used AI players list
 pente.net interface. html scraping might not be too hard.
 Prettify GUI: Colours, layout, background, fonts
 GP interface (?)
 Chess Clock, mode on/off
-Music
 load on iPhone 
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
 iPad: "Rich Guano" I am running IOS7 on iPad mini.
