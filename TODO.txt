@@ -1,4 +1,5 @@
 
+Delete key on games page (and AI player screen?)
 Sound effects off when fast forwarding?
 Sound effects: capture, tick, win, loss, music
 Fix White player name hack in games_screen.py

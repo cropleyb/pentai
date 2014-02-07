@@ -58,10 +58,13 @@ class Audio():
         pass
 
     def win(self):
-        pass
+        self.play_sound(["win", "win"])
 
     def lose(self):
-        pass
+        self.play_sound(["lose", "lose"])
+
+    def beep(self):
+        self.play_sound(["beep", "beep"])
 
     def music(self):
         pass

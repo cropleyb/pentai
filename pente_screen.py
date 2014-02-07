@@ -137,6 +137,7 @@ class PenteScreen(Screen):
             self.player_name[level] = self.game.get_player_name(colour)
 
     def display_error(self, message):
+        self.get_audio().beep()
         self.app.display_error(message)
 
     def request_move(self, name):
@@ -209,8 +210,12 @@ class PenteScreen(Screen):
         self.gm.save(game)
 
     def after_game_won(self, game, colour):
-        # TODO: play win or loss sound
-        pass
+        # Play win or loss sound
+        if game.get_player(colour).get_type() == "human":
+            self.get_audio().win()
+        else:
+            self.get_audio().lose()
+        # TODO: draw, and AI vs. AI
 
     def get_audio(self):
         try:
