@@ -49,5 +49,17 @@
         "section": "pente",
         "key": "confirm_popups",
         "false": "auto"
+    },
+    {
+        "type": "title",
+        "title": "Sound volume"
+    },
+    {
+        "type": "numeric",
+        "title": "Volume",
+        "desc": "How loud are the sound effects",
+        "section": "pente",
+        "key": "effects_volume",
+        ".5": "auto"
     }
 ]

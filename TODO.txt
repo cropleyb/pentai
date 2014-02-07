@@ -1,4 +1,6 @@
-Tick image in AI Player screen is too small
+
+Sound effects off when fast forwarding?
+Sound effects: capture, tick, win, loss, music
 Fix White player name hack in games_screen.py
 When there is a forced loss, don't give up?!
  e.g. turn down "infinity" and add the win as a component of the score
@@ -54,7 +56,6 @@ DB story tests comma command? If it is slow...
 Add save prompt
 VCR control graphics
 More Cython?
-Sound effects: place, capture, tick, win, loss, music
 Set names according to computer level?
 AI levels + scrollbar? Computer player names?
 pente.net interface. html scraping might not be too hard.

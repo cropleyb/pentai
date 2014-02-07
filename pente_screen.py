@@ -1,24 +1,18 @@
 from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
-from kivy.uix.widget import Widget
-from kivy.uix.popup import Popup
-from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
 
-#from kivy.core.audio import SoundLoader # TODO
 from evaluator import *
-from utility_calculator import *
 
+import audio as a_m
 from defines import *
 from gui import *
 
 import Queue
-import datetime
-
-import pdb
+import datetime # TODO: Remove when old file format is gone
 
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
@@ -32,7 +26,6 @@ computer_filename = "./media/DT.png"
 x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
-stone_sound = "./media/click.mp3"
 
 class PenteScreen(Screen):
     source = StringProperty(None)
@@ -217,12 +210,12 @@ class PenteScreen(Screen):
         # TODO: play win or loss sound
         pass
 
-    def play_sound(self):
-        self.sound = SoundLoader.load(stone_sound)
-        if self.sound:
-            print("Sound found at %s" % self.sound.source)
-            print("Sound is %.3f seconds" % self.sound.length)
-        self.sound.play()
+    def get_audio(self):
+        try:
+            return self.audio
+        except AttributeError:
+            self.audio = a_m.Audio(self.config)
+            return self.audio
 
     def update_captures(self, colour, captured, flip):
         """ Update the display of captured stones below the board """
@@ -608,7 +601,7 @@ class PenteScreen(Screen):
                 self.update_moved_marker(new_piece.pos, colour)
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
-            #self.play_sound() TODO
+            self.get_audio().place()
 
     def on_touch_move(self, touch):
         if touch.pos[1] < self.board_offset[1]:
