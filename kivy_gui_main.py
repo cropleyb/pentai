@@ -146,7 +146,7 @@ class PenteApp(App):
                     self.prompt_quit()
             return True
 
-        if key == 113:
+        elif key == 113:
             # 'q'
             if self.root.current != "Setup":
                 self.prompt_quit()
@@ -173,25 +173,34 @@ class PenteApp(App):
                         action=self.show_games_screen,
                         size_hint=(.6, .2))
                 return True
+
         elif key == 111:
             if self.root.current in ("Load", "Pente"):
                 # or any other screen with text input
                 self.show_options()
                 return True
+
         elif key == 100: # 'd'
             # Debug
             ab_m.debug = not ab_m.debug
             aip_m.set_skip_openings_book(ab_m.debug)
             print "Debug set to %s" % ab_m.debug
             return True
+
+        elif key == 8: # 'delete'
+            if self.root.current == "Games":
+                self.games_screen.delete_game()
+            return True
+
         else:
-            if self.root.current == "Pente" and \
-                    key == 115:
+            if key == 115:
                 # 's' for options TODO: o
-                # Go to settings page
-                # Probably not for production?
-                self.edit_game()
-                return True
+                if self.root.current == "Pente":
+                    # Go to settings page
+                    # Probably not for production?
+                    self.edit_game()
+                    return True
+
         return False
 
     def add_screen(self, scr_cls, scr_name, **kwargs):
@@ -247,6 +256,7 @@ class PenteApp(App):
 
         self.setup_screen = root.get_screen("Setup")
         self.options_screen = root.get_screen("Options")
+        self.games_screen = root.get_screen("Games")
         self.pente_screen = None
 
         # Confirm Quit
