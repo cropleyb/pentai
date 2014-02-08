@@ -223,6 +223,10 @@
 <MyLabel@Label>:
     font_size: '25sp'
 
+<MyBigLabel@Label>:
+    font_size: '30sp'
+    bold: True
+
 <AIPlayerScreen>:
     GridLayout:
         cols: 1
@@ -375,7 +379,7 @@
         height: root.board_offset[1]
         canvas.before:
             Color:
-                rgba: 0, 0, .5, 1
+                rgba: .2, .5, .8, 1
             Rectangle:
                 # self here refers to the widget i.e GridLayout
                 pos: self.pos
@@ -409,22 +413,25 @@
             GridLayout:
                 rows: 2
                 # TODO: duplication
-                MyLabel:
+                MyBigLabel:
                     # TODO: times
-                    # TODO: BLACK/WHITE
                     text: root.player_time[1]
-                MyLabel:
-                MyLabel:
+                    color: (0,0,0,1)
+                MyBigLabel:
+                MyBigLabel:
                     text: root.player_name[1]
-                MyLabel:
-    
-                MyLabel:
+                    color: (0,0,0,1)
+                MyBigLabel:
+
+                MyBigLabel:
                     # TODO: times
                     text: root.player_time[2]
-                MyLabel:
-                MyLabel:
+                    color: (1,1,1,1)
+                MyBigLabel:
+                MyBigLabel:
                     text: root.player_name[2]
-                MyLabel:
+                    color: (1,1,1,1)
+                MyBigLabel:
 
     RelativeLayout:
         pos: (0,0)
