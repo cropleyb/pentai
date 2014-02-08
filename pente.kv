@@ -91,57 +91,42 @@
             size_hint: 1, None
             height: 200
 
-			Spinner:
-				#TODO: double click to edit name
-				text: 'Rules'
-				values: ['Standard', 'Tournament', '5-In-A-Row']
-#, 'Keryo', 'Freestyle', 'No Captures']
-				size_hint: (1, None)
-				id: rules_id
+            Spinner:
+                #TODO: double click to edit player
+                text: 'Standard'
+                values: ['Standard', 'Tournament', '5-In-A-Row']
+                      #, 'Keryo', 'Freestyle', 'No Captures']
+                size_hint: (1, None)
+                id: rules_id
 
             Spinner:
-                text: 'Board Size'
+                text: '13'
                 values: ['9', '13', '19']
-				size_hint: (1, None)
+                size_hint: (1, None)
                 id: bs_id
             
         GridLayout:
             cols: 2
-            height:120
-
-            GridLayout:
-                cols:2
-                height:120
-                MyLabel:
-                    text: 'Black\nPlayer\nName'
-                TextInput
-                    text: 'Black'
-                    id: black_name_id
-                CheckBoxList:
-                    group: 'black_type'
-                    text: ''
-                    values: ('Human', 'Computer')
-                    id: black_type_id
-
-            GridLayout:
-                cols:2
-                height:50
-                MyLabel:
-                    text: 'White\nPlayer\nName'
-                TextInput
-                    text: 'White'
-                    id: white_name_id
-                CheckBoxList:
-                    group: 'white_type'
-                    text: ''
-                    values: ('Human', 'Computer')
-                    id: white_type_id
 
             CheckBoxList:
-                group: 'max_depth'
-                text: 'Max Depth'
-                values: ('0', '2', '4', '6', '7', '8', '10', '12')
-                id: max_depth_id
+                group: 'black_type'
+                values: ('Human', 'Computer')
+                id: black_type_id
+            CheckBoxList:
+                group: 'white_type'
+                values: ('Human', 'Computer')
+                id: white_type_id
+
+            Spinner:
+                text: 'Choose Black Player'
+                values: root.player_names[1]
+                size_hint: (1, None)
+                id: bpl_id
+            Spinner:
+                text: 'Choose White Player'
+                values: root.player_names[2]
+                size_hint: (1, None)
+                id: wpl_id
 
             Button:
                 size_hint: (.2, .2)

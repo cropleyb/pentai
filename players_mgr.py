@@ -13,6 +13,10 @@ class PlayersMgr():
             prefix = os.path.join("db","")
         filename = "%splayers.pkl" % prefix
         self.players = persistent_dict.PersistentDict(filename)
+        '''
+        filename = "%srecent_players.pkl" % prefix
+        self.recent_players = persistent_list.PersistentList(filename)
+        '''
 
     def ensure_has_key(self, player):
         assert not player is None
@@ -21,6 +25,16 @@ class PlayersMgr():
             player.p_key = p_key
 
         return player.p_key
+
+    def get_recent_player_names(self, player_type):
+        rps = self.get_recent_players(player_type)
+        rpns = [rp.get_name() for rp in rps]
+        return rpns
+
+    def get_recent_players(self, player_type):
+        rpids = misc.recent_player_ids
+        rps = [self.convert_to_player(rp) for rp in rpids]
+        return rps
 
     def get_player_names(self):
         l = [ g.get_name() for k,g in self.players.iteritems()
@@ -53,14 +67,16 @@ class PlayersMgr():
     def sync(self):
         self.players.sync()
 
-    def find_by_name(self, name):
-        for p_key, genome in self.players.iteritems():
-            if genome.p_name == name:
-                return self.find(p_key)
+    def find_by_name(self, name, player_type=None):
+        genome = self.find_genome_by_name(name, player_type)
+        if genome:
+            return self.convert_to_player(genome)
 
-    def find_genome_by_name(self, name):
+    def find_genome_by_name(self, name, player_type=None):
         for p_key, genome in self.players.iteritems():
-            if genome.__class__ != ai_genome.AIGenome:
+            if type(genome) == type(0):
+                continue
+            if player_type and genome.player_type != player_type:
                 continue
             if genome.p_name == name:
                 return genome
@@ -70,12 +86,15 @@ class PlayersMgr():
             p = self.players[p_key]
         except KeyError:
             return None
-        if p.__class__ is ai_genome.AIGenome:
-            p = self.factory.create_player(p)
+        return self.convert_to_player(p)
+
+    def convert_to_player(self, genome):
+        if genome.__class__ is ai_genome.AIGenome:
+            genome = self.factory.create_player(genome)
         else:
             # HumanPlayers are stored directly
             pass
-        return p
+        return genome
 
     def next_id(self):
         try:

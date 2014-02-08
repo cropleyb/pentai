@@ -1,8 +1,3 @@
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-
 from kivy.properties import *
 from kivy.uix.screenmanager import Screen
 
@@ -12,29 +7,32 @@ import human_player
 import ai_genome
 import ai_factory
 
-import checkbox_list as cb_l
-
 from defines import *
 from pente_exceptions import *
 
-def create_player(player_type_widget, player_name, max_depth):
-    # TODO: find_or_create_player
-    if player_type_widget.val == 'Computer':
-        # TODO: This doesn't really belong here.
-        genome = ai_genome.AIGenome(player_name)
-        genome.max_depth = max_depth
-        # TODO: configure openings book usage
-
-        aif = ai_factory.AIFactory()
-        p = aif.create_player(genome)
-    else:
-        p = human_player.HumanPlayer(player_name)
-    return p
-
 class SetupScreen(Screen):
+    player_names = ListProperty([[], [], []])
+
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
-    
+
+        self.ids.black_type_id.bind(val=self.populate_black_players)
+        self.ids.white_type_id.bind(val=self.populate_white_players)
+
+    def populate_black_players(self, *args):
+        ptw = self.ids.black_type_id
+        self.populate_players(ptw, BLACK)
+
+    def populate_white_players(self, *args):
+        ptw = self.ids.white_type_id
+        self.populate_players(ptw, WHITE)
+
+    def populate_players(self, ptw, colour):
+        if ptw.val == 'Computer':
+            self.player_names[colour] = ["DT", "Killer"]
+        else:
+            self.player_names[colour] = ["Fredo", "BC"]
+
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
         if g:
@@ -55,26 +53,24 @@ class SetupScreen(Screen):
         except ValueError:
             self.app.display_error("Select a board size")
             return
+        
         rstr = self.ids.rules_id.text
-
         try:
             r = rules.Rules(bs, rstr)
         except UnknownRuleType, e:
             self.app.display_error("Select the rules type")
             return
 
-        max_depth = int(self.ids.max_depth_id.val)
-
-        # TODO: Reuse existing players?!
-        player1 = create_player(self.ids.black_type_id, self.ids.black_name_id.text, max_depth)
-        player2 = create_player(self.ids.white_type_id, self.ids.white_name_id.text, max_depth)
+        # TODO: pass in player type
+        player1 = self.pm.find_by_name(self.ids.bpl_id.text)
+        player2 = self.pm.find_by_name(self.ids.wpl_id.text)
 
         self.game.setup(r, player1, player2)
         return self.game
 
     def set_GUI_from_game(self, g):
-        self.ids.black_name_id.text = g.get_player_name(BLACK)
-        self.ids.white_name_id.text = g.get_player_name(WHITE)
+        self.ids.bpl_id.text = g.get_player_name(BLACK)
+        self.ids.wpl_id.text = g.get_player_name(WHITE)
         self.ids.bs_id.text = str(g.rules.size)
         self.ids.rules_id.text = g.rules.get_type_name()
         # TODO: Player type, AI Parameters?
