@@ -16,3 +16,5 @@ class NoMovesException(Exception):
 class IncompatibleFileException(Exception):
     pass
 
+class UnknownRuleType(Exception):
+    pass

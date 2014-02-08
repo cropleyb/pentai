@@ -48,8 +48,9 @@ class SetupScreen(Screen):
         self.ids.start_button.text = "Resume Game"
 
     def set_up_game_from_GUI(self): # TODO: Rename to set_game_from_GUI
-        bs = int(self.ids.bs_id.val)
-        rstr = self.ids.rules_id.val
+        bs = int(self.ids.bs_id.text)
+        rstr = self.ids.rules_id.text
+        
         r = rules.Rules(bs, rstr)
 
         max_depth = int(self.ids.max_depth_id.val)
@@ -64,7 +65,7 @@ class SetupScreen(Screen):
     def set_GUI_from_game(self, g):
         self.ids.black_name_id.text = g.get_player_name(BLACK)
         self.ids.white_name_id.text = g.get_player_name(WHITE)
-        self.ids.bs_id.set_active(g.rules.size)
-        self.ids.rules_id.set_active(g.rules.get_type_name())
+        self.ids.bs_id.text = str(g.rules.size)
+        self.ids.rules_id.text = g.rules.get_type_name()
         # TODO: Player type, AI Parameters?
 

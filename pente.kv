@@ -78,78 +78,10 @@
         # TODO: Edit openings?
 
 #Help
-#Sound effects volume
 #Music volume
 #Start/Resume
 
 # Player selection: Spinner
-<NewGameScreen>:
-    GridLayout:
-        cols: 1
-        GridLayout:
-            cols: 2
-            size_hint: 1, None
-            height: 200
-
-            CheckBoxList:
-                text: 'Rules'
-                group: 'rules'
-                # TODO: Get these from the rules class
-                values: ['Standard', 'Tournament', 'Keryo', 'Freestyle', '5-In-A-Row', 'No Captures']
-                id: rules_id
-
-            CheckBoxList:
-                text: 'Board Size'
-                group: 'board_size'
-                values: ['9', '13', '19']
-                id: bs_id
-
-            
-        GridLayout:
-            cols: 2
-            height:120
-
-            GridLayout:
-                cols:2
-                height:120
-                MyLabel:
-                    text: 'Black\nPlayer\nName'
-                TextInput
-                    text: 'Black'
-                    multiline: False
-                    id: black_name_id
-                CheckBoxList:
-                    group: 'black_type'
-                    text: ''
-                    values: ('Human', 'Computer')
-                    id: black_type_id
-
-            GridLayout:
-                cols:2
-                height:50
-                MyLabel:
-                    text: 'White\nPlayer\nName'
-                TextInput
-                    text: 'White'
-                    multiline: False
-                    id: white_name_id
-                CheckBoxList:
-                    group: 'white_type'
-                    text: ''
-                    values: ('Human', 'Computer')
-                    id: white_type_id
-
-            CheckBoxList:
-                group: 'max_depth'
-                text: 'Max Depth'
-                values: ('0', '2', '4', '6', '7', '8', '10', '12')
-                id: max_depth_id
-
-            Button:
-                size_hint: (.2, .2)
-                text: 'Start Game'
-                on_press: root.start_game()
-                id: start_button
 
 <SetupScreen>:
     GridLayout:
@@ -159,20 +91,19 @@
             size_hint: 1, None
             height: 200
 
+			Spinner:
+				#TODO: double click to edit name
+				text: 'Rules'
+				values: ['Standard', 'Tournament', '5-In-A-Row']
+#, 'Keryo', 'Freestyle', 'No Captures']
+				size_hint: (1, None)
+				id: rules_id
 
-            CheckBoxList:
-                text: 'Rules'
-                group: 'rules'
-                # TODO: Get these from the rules class
-                values: ['Standard', 'Tournament', 'Keryo', 'Freestyle', '5-In-A-Row', 'No Captures']
-                id: rules_id
-
-            CheckBoxList:
+            Spinner:
                 text: 'Board Size'
-                group: 'board_size'
                 values: ['9', '13', '19']
+				size_hint: (1, None)
                 id: bs_id
-
             
         GridLayout:
             cols: 2

@@ -58,7 +58,7 @@ class Rules():
             self.exactly_five = False
             self.border_colour = (0.90,0.81,0.11,1)
         else:
-            raise UnknownRuleType
+            raise UnknownRuleType("%s, %s" % (size, type_str))
 
     def key(self):
         return (self.size, self.type_char)
