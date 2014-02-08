@@ -47,6 +47,9 @@ class AIGenome(object):
             self.set_override(False)
         return name
 
+    def get_type(self):
+        return "Computer"
+
     def __setattr__(self, attr_name, val):
         if hasattr(self, "override") and not self.override:
             if not hasattr(self, attr_name):
