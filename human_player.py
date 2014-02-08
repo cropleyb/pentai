@@ -8,7 +8,7 @@ class HumanPlayer(Player):
         return gui.get_action()
 
     def get_type(self):
-        return "human"
+        return "Human"
 
     def set_interrupted(self):
         pass
