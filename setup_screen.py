@@ -15,6 +15,7 @@ import ai_factory
 import checkbox_list as cb_l
 
 from defines import *
+from pente_exceptions import *
 
 def create_player(player_type_widget, player_name, max_depth):
     # TODO: find_or_create_player
@@ -36,7 +37,8 @@ class SetupScreen(Screen):
     
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
-        self.app.start_game(g, self.size)
+        if g:
+            self.app.start_game(g, self.size)
 
     def create_game(self):
         self.game = self.app.games_mgr.create_game()
@@ -47,11 +49,19 @@ class SetupScreen(Screen):
         self.set_GUI_from_game(self.game)
         self.ids.start_button.text = "Resume Game"
 
-    def set_up_game_from_GUI(self): # TODO: Rename to set_game_from_GUI
-        bs = int(self.ids.bs_id.text)
+    def set_up_game_from_GUI(self):
+        try:
+            bs = int(self.ids.bs_id.text)
+        except ValueError:
+            self.app.display_error("Select a board size")
+            return
         rstr = self.ids.rules_id.text
-        
-        r = rules.Rules(bs, rstr)
+
+        try:
+            r = rules.Rules(bs, rstr)
+        except UnknownRuleType, e:
+            self.app.display_error("Select the rules type")
+            return
 
         max_depth = int(self.ids.max_depth_id.val)
 
