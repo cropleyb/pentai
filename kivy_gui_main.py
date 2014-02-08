@@ -142,6 +142,9 @@ class PenteApp(App):
             else:
                 if self.root.current == "Options":
                     self.return_screen()
+                elif self.root.current == "Pente" and \
+                     self.pente_screen.confirmation_in_progress:
+                    self.pente_screen.cancel_confirmation()
                 else:
                     self.prompt_quit()
             return True
