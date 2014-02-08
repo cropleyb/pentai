@@ -27,7 +27,7 @@ class CheckBoxList(GridLayout):
 
         first = True
         for v in self.values:
-            l = Label(text=v)
+            l = Label(text=v, halign="left", padding_x=20)
             vals_gl.add_widget(l)
 
             cb = CheckBox(group=self.group, active=first)
