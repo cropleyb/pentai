@@ -29,6 +29,7 @@ import t_ai_factory
 import t_players_mgr
 import t_games_mgr
 import t_openings_mover
+import t_misc_db
 
 def add_module(m, all_tests):
     suite = unittest.defaultTestLoader.loadTestsFromModule(m)
@@ -63,6 +64,7 @@ def suite():
     add_module(t_players_mgr, all_tests)
     add_module(t_games_mgr, all_tests)
     add_module(t_openings_mover, all_tests)
+    add_module(t_misc_db, all_tests)
 
     return all_tests
 
