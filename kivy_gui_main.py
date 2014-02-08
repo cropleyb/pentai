@@ -81,7 +81,9 @@ class PenteApp(App):
             return
         self.load_game_file(full_path)
 
-    def edit_game(self):
+    def edit_game(self, game=None):
+        if not game is None:
+            self.game = game
         self.setup_screen.alter_game(self.game)
         self.root.current = "Setup"
 

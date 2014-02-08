@@ -43,9 +43,9 @@ class GamesScreen(Screen):
             # Ignore it
             return
 
+        game = self.gm.get_game(self.selected_gid)
         self.clear_selected()
-
-        # TODO: show setup screen for this game, return to here?
+        self.app.edit_game(game)
 
     def delete_game(self):
         if not self.selected_gid:
