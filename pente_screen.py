@@ -76,7 +76,7 @@ class PenteScreen(Screen):
         for colour in [BLACK, WHITE]:
             player = self.game.get_player(colour)
 
-            if player.get_type() == "human":
+            if player.get_type() == "Human":
                 filename = turn_filename
             else:
                 filename = computer_filename
@@ -208,7 +208,7 @@ class PenteScreen(Screen):
 
     def after_game_won(self, game, colour):
         # Play win or loss sound
-        if game.get_player(colour).get_type() == "human":
+        if game.get_player(colour).get_type() == "Human":
             self.get_audio().win()
         else:
             self.get_audio().lose()
@@ -507,7 +507,7 @@ class PenteScreen(Screen):
 
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
-        if current_player.get_type() == "human":
+        if current_player.get_type() == "Human":
             # Place a marker at the (snapped) cursor position.
             if self.marker == None:
                 try:
