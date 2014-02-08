@@ -129,11 +129,8 @@ class PenteScreen(Screen):
         self.game.prompt_for_action(self)
 
     def display_names(self):
-        flip = self.calc_flip()
         for colour in (BLACK, WHITE):
             level = colour
-            if flip:
-                level = opposite_colour(level)
             self.player_name[level] = self.game.get_player_name(colour)
 
     def display_error(self, message):
@@ -224,7 +221,7 @@ class PenteScreen(Screen):
             self.audio = a_m.Audio(self.config)
             return self.audio
 
-    def update_captures(self, colour, captured, flip):
+    def update_captures(self, colour, captured):
         """ Update the display of captured stones below the board """
         if self.game.rules.stones_for_capture_win <= 0:
             # Don't display them if the rules prevent capture wins
@@ -243,8 +240,6 @@ class PenteScreen(Screen):
             base_x = .9 * size_x
 
             level = colour
-            if flip:
-                level = opposite_colour(level)
 
             base_y = self.board_offset[1] * .5 * (2.2-level)
             centre = [2, 1, 3, 0, 4]
@@ -278,24 +273,13 @@ class PenteScreen(Screen):
             self.setup_turn_markers()
         return self.turn_markers[colour]
 
-    def calc_flip(self):
-        white_player = self.game.get_player(WHITE)
-        black_player = self.game.get_player(BLACK)
-
-        if white_player.get_type() == "human" and \
-           black_player.get_type() != "human":
-            return True
-        return False
 
     def refresh_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
         # TODO: Only call this when the game is up to date
-        flip = self.calc_flip()
         for colour in (BLACK, WHITE):
             level = colour
-            if flip:
-                level = opposite_colour(level)
-            self.update_captures(colour, self.game.get_captured(colour), flip)
+            self.update_captures(colour, self.game.get_captured(colour))
 
         # TODO: Show draws somehow
         if self.game.get_won_by() == BLACK + WHITE:
@@ -321,8 +305,6 @@ class PenteScreen(Screen):
         size_x, size_y = self.size
 
         level = colour
-        if flip:
-            level = opposite_colour(level)
 
         base_y = self.board_offset[1] * .5 * (2.5-level)
 
