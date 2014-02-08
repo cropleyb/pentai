@@ -25,7 +25,7 @@ class GamesScreen(Screen):
         self.clear_selected()
 
     def clear_selected(self):
-        self.set_selected_gid(None)
+        self.selected_gid = None
 
     def set_selected_gid(self, gid):
         self.selected_gid = gid
@@ -46,7 +46,6 @@ class GamesScreen(Screen):
         self.clear_selected()
 
         # TODO: show setup screen for this game, return to here?
-        # TODO: Perhaps this should be per field by double clicking?
 
     def delete_game(self):
         if not self.selected_gid:
@@ -110,10 +109,6 @@ class GamesView(GridLayout):
             pass
         self.fill_er_up()
 
-    def on_touch_down(self, touch):
-        self.is_double_touch = touch.is_double_tap
-        return super(GamesView,self).on_touch_down(touch)
-
     def changed_selection(self, da, *args, **kwargs):
         try:
             # TODO: Fix this incredibly ugly hack
@@ -121,9 +116,9 @@ class GamesView(GridLayout):
                 gid_str = da.selection[0].parent.children[-1].text
                 print "Selected: GID %s" % (gid_str)
                 self.parent.parent.set_selected_gid(int(gid_str))
+                # TODO: If it is selected already, load the game.
             except AttributeError, e:
-                if self.is_double_touch:
-                    self.parent.parent.load_game()
+                self.parent.parent.load_game()
         except IndexError:
             print "Removed"
 
