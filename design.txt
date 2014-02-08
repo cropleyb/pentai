@@ -550,3 +550,10 @@ Advanced settings: (show advanced AI settings toggle to show)
 Width (mmpdl)
 Capture preference (Low, Medium, High => capture_score_base 200, 300, 400)
 
+Chess Clock
+-----------
+Current Times: Game or GameState or Player?
+Historical Move Times - in move history?
+Tick callback?
+Game time controls - Game? Player?
+

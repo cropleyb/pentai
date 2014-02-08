@@ -1,3 +1,4 @@
+Chess Clock, mode on/off
 Multiline input into name boxes should be prevented
 Sounds: tick, music, draw, AI vs AI
 Fix White player name hack in games_screen.py
@@ -46,7 +47,6 @@ Recently used AI players list
 pente.net interface. html scraping might not be too hard.
 Prettify GUI: Colours, layout, background, fonts
 GP interface (?)
-Chess Clock, mode on/off
 load on iPhone 
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
 iPad: "Rich Guano" I am running IOS7 on iPad mini.
