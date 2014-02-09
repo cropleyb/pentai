@@ -61,7 +61,7 @@ class AIPlayer(p_m.Player):
         return "%s is thinking" % self.get_name()
 
     def get_type(self):
-        return "computer"
+        return "Computer"
 
     def search_thread(self, gui):
         action = self.do_the_search()
