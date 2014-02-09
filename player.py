@@ -12,6 +12,9 @@ class Player():
     def __repr__(self):
         return self.p_name
 
+    def get_type(self):
+        return "BasePlayer"
+
     def get_key(self):
         return self.p_key
 
