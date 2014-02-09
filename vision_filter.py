@@ -28,5 +28,8 @@ class VisionFilter():
             if rand_val < self.vision:
                 yield m
                 passed += 1
+
         if passed == 0:
+            st()
+            i = self.wrapped_filter.get_iter(*args, **kwargs)
             yield m
