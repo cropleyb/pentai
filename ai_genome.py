@@ -50,6 +50,9 @@ class AIGenome(object):
     def get_type(self):
         return "Computer"
 
+    def get_key(self):
+        return self.p_key
+
     def __setattr__(self, attr_name, val):
         if hasattr(self, "override") and not self.override:
             if not hasattr(self, attr_name):
