@@ -1,3 +1,9 @@
+Games are not being removed from the recent view when finished?
+Human Players appearing more than once in setup_screen - 2 keys per name?
+Prevent naming players the same
+Eliminate duplicate player names (fix upgrade script)
+Tony isn't getting any moves
+Weak AI players are still too strong
 Chess Clock, mode on/off
 Multiline input into name boxes should be prevented
 Sounds: tick, music, draw, AI vs AI
