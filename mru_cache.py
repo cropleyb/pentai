@@ -5,14 +5,17 @@ class MRUCache():
         self.size = size
 
     def add(self, val):
-        try:
-            self.cache.remove(val)
-        except ValueError:
-            pass
+        self.delete(val)
         self.cache.append(val)
         
         if len(self.cache) > self.size:
             self.cache = self.cache[-self.size:]
+
+    def delete(self, val):
+        try:
+            self.cache.remove(val)
+        except ValueError:
+            pass
 
     def top(self, num):
         ret = self.cache[-num:]

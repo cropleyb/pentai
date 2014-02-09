@@ -45,8 +45,14 @@ class MiscDBTest(unittest.TestCase):
     def test_request_more_than_cache_size(self):
         for i in range(1, 21):
             self.mruc.add(i)
+        top_20 = self.mruc.top(20)
+        self.assertEquals(top_20, [20,19,18,17,16,15,14,13,12,11])
+
+    def test_remove_only_item(self):
+        self.mruc.add(3)
+        self.mruc.delete(3)
         top_5 = self.mruc.top(20)
-        self.assertEquals(top_5, [20,19,18,17,16,15,14,13,12,11])
+        self.assertEquals(top_5, [])
 
 if __name__ == "__main__":
     unittest.main()
