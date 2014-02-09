@@ -148,9 +148,11 @@
         cols: 1
         Label:
             text: "Computer Player Editor"
+        #Line:
+            # TODO
 
         Label:
-            text: 'Player'
+            text: 'Choose Player'
 
         Spinner:
             #TODO: double click to edit name
@@ -159,8 +161,13 @@
             size_hint: (1, None)
             id: player_spinner_id
 
+        TextInput:
+            id: rename_id
+            text: root.rename_text
+            font_size: '25sp'
+
         Label:
-            text: 'Search'
+            text: 'Search Parameters'
 
         BoxLayout:
             size_hint_y: None
@@ -216,7 +223,6 @@
                 text: 'Openings Book'
 
             CheckBox:
-                # TODO: The tick image is a bit small
                 id: openings
                 active: root.genome.use_openings_book
                 on_active: root.genome.use_openings_book = self.active
@@ -224,7 +230,6 @@
                 canvas:
                     Clear:
                     Color:
-                        #rgba: 0, 0, 1, .5
                         # Grey background
                         rgba: .6, .6, .6, .5
                     Rectangle:
@@ -232,12 +237,14 @@
                         pos: int(self.center_x - 20), int(self.center_y - 20)
                     Color:
                         rgba: .443, 0.848, 0.926, 1
-                        #114, 217, 237
                     Rectangle:
-                        # TODO: Local file!
+                        # TODO: Is this a local file?
                         source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
                         size: 60, 60
                         pos: int(self.center_x - 30), int(self.center_y - 30)
+
+        Label:
+            text: 'Position Evaluation'
 
         BoxLayout:
             size_hint_y: None
