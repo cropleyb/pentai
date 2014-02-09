@@ -78,7 +78,7 @@ class PlayersMgr():
                 continue
             if player_type and genome.player_type != player_type:
                 continue
-            if genome.p_name == name:
+            if genome.get_name() == name:
                 return genome
 
     def find(self, p_key):
