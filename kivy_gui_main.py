@@ -240,12 +240,8 @@ class PenteApp(App):
         self.random_transition()
 
         self.game = None
-        player_db_filename = os.path.join("db", "players.pkl")
-        game_manager_filename = os.path.join("db", "games.pkl")
 
-        # TODO: Fix the parameters?!
-        self.games_mgr = GamesMgr(player_db_filename, \
-                game_manager_filename)
+        self.games_mgr = GamesMgr()
 
         screens = [(MenuScreen, "Menu"), (OptionsScreen, "Options"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
