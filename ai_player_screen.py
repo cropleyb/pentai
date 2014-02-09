@@ -85,7 +85,8 @@ class AIPlayerScreen(Screen):
 
     def refresh_names(self):
         self.player_names = [self.create_text]
-        self.player_names.extend(sorted(self.pm.get_player_names()))
+        pns = self.pm.get_ai_player_names()
+        self.player_names.extend(sorted(pns))
 
     def menu(self, unused=None):
         self.app.return_screen()

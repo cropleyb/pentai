@@ -2,8 +2,12 @@ import ai_factory
 import ai_genome
 import persistent_dict
 import os
+import misc_db as m_m
+import mru_cache as mru_m
 
 from defines import *
+
+misc = m_m.get_instance()
 
 class PlayersMgr():
     # TODO: Borg pattern?
@@ -13,10 +17,6 @@ class PlayersMgr():
             prefix = os.path.join("db","")
         filename = "%splayers.pkl" % prefix
         self.players = persistent_dict.PersistentDict(filename)
-        '''
-        filename = "%srecent_players.pkl" % prefix
-        self.recent_players = persistent_list.PersistentList(filename)
-        '''
 
     def ensure_has_key(self, player):
         assert not player is None
@@ -31,12 +31,32 @@ class PlayersMgr():
         rpns = [rp.get_name() for rp in rps]
         return rpns
 
-    def get_recent_players(self, player_type):
-        rpids = misc.recent_player_ids
-        rps = [self.convert_to_player(rp) for rp in rpids]
+    def get_rpks(self, player_type):
+        if player_type == "Computer":
+            key = "recent_ai_player_ids"
+        else:
+            key = "recent_human_ids"
+        rpks = misc.setdefault(key, mru_m.MRUCache(30))
+        return rpks
+
+    def mark_recent_player(self, player):
+        try:
+            p_key = player.get_key()
+        except AttributeError:
+            p_key = player
+
+        player = self.convert_to_player(p_key)
+        p_type = player.get_type()
+        rpks = self.get_rpks(p_type)
+        rpks.add(p_key)
+        misc.sync()
+
+    def get_recent_players(self, player_type, number):
+        rpks = self.get_rpks(player_type).top(number)
+        rps = [self.convert_to_player(rp) for rp in rpks]
         return rps
 
-    def get_player_names(self):
+    def get_ai_player_names(self):
         l = [ g.get_name() for k,g in self.players.iteritems()
                 if (k != "max_id") and
                    (g.__class__ == ai_genome.AIGenome) ]
@@ -62,6 +82,7 @@ class PlayersMgr():
             pass
 
         self.players[p_key] = player
+        self.mark_recent_player(p_key)
         self.players.sync()
 
     def sync(self):
@@ -76,9 +97,10 @@ class PlayersMgr():
         for p_key, genome in self.players.iteritems():
             if type(genome) == type(0):
                 continue
-            if player_type and genome.player_type != player_type:
+            if player_type and genome.get_type() != player_type:
                 continue
             if genome.get_name() == name:
+                self.mark_recent_player(p_key)
                 return genome
 
     def find(self, p_key):
@@ -86,15 +108,22 @@ class PlayersMgr():
             p = self.players[p_key]
         except KeyError:
             return None
+        self.mark_recent_player(p_key)
         return self.convert_to_player(p)
 
-    def convert_to_player(self, genome):
-        if genome.__class__ is ai_genome.AIGenome:
-            genome = self.factory.create_player(genome)
-        else:
-            # HumanPlayers are stored directly
-            pass
-        return genome
+    def convert_to_player(self, player):
+        try:
+            if type(player) == type(0):
+                player = self.players[player]
+
+            if player.__class__ is ai_genome.AIGenome:
+                player = self.factory.create_player(player)
+            else:
+                # HumanPlayers are stored directly
+                pass
+        except:
+            st()
+        return player
 
     def next_id(self):
         try:

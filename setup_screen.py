@@ -21,17 +21,15 @@ class SetupScreen(Screen):
 
     def populate_black_players(self, *args):
         ptw = self.ids.black_type_id
-        self.populate_players(ptw, BLACK)
+        self.populate_players(ptw.val, BLACK)
 
     def populate_white_players(self, *args):
         ptw = self.ids.white_type_id
-        self.populate_players(ptw, WHITE)
+        self.populate_players(ptw.val, WHITE)
 
-    def populate_players(self, ptw, colour):
-        if ptw.val == 'Computer':
-            self.player_names[colour] = ["DT", "Killer"]
-        else:
-            self.player_names[colour] = ["Fredo", "BC"]
+    def populate_players(self, pt, colour):
+        rpl = self.pm.get_recent_players(pt, 30)
+        self.player_names[colour] = [rp.get_name() for rp in rpl]
 
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
@@ -62,8 +60,17 @@ class SetupScreen(Screen):
             return
 
         # TODO: pass in player type
-        player1 = self.pm.find_by_name(self.ids.bpl_id.text)
-        player2 = self.pm.find_by_name(self.ids.wpl_id.text)
+        p1_t = self.ids.black_type_id.val
+        player1 = self.pm.find_by_name(self.ids.bpl_id.text, p1_t)
+        if not player1:
+            self.app.display_error("Select a player for Black")
+            return
+
+        p2_t = self.ids.white_type_id.val
+        player2 = self.pm.find_by_name(self.ids.wpl_id.text, p2_t)
+        if not player2:
+            self.app.display_error("Select a player for White")
+            return
 
         self.game.setup(r, player1, player2)
         return self.game
