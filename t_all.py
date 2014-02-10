@@ -1,8 +1,9 @@
 #!/usr/bin/python
 
 import unittest
-
 import importlib
+
+import misc_db as m_m
 
 def iam(m_str):
     """ import and add a module """
@@ -34,7 +35,6 @@ def suite():
     iam("t_threat_counter")
     iam("t_game")
     iam("t_bit_reverse")
-    iam("t_vision_filter")
     iam("t_openings_book")
     iam("t_standardise")
     iam("t_preserved_game")
@@ -49,4 +49,7 @@ def suite():
     return all_tests
 
 if __name__ == "__main__":
+    m_m.get_instance("test_")
+
     unittest.TextTestRunner().run(suite())
+    

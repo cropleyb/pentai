@@ -1,5 +1,7 @@
 from defines import *
 
+import random as r_m
+
 def max_moves_sample_func(depth):
     return 9
 
@@ -9,8 +11,12 @@ class PriorityFilter():
         self.max_moves_func = max_moves_sample_func
         if orig != None:
             self.max_moves_func = orig.max_moves_func
+        self.vision = 100
 
         self.reset(orig, min_priority)
+
+    def set_vision(self, val):
+        self.vision = val
 
     def set_max_moves_per_depth_level(self, mmpdl, narrowing, chokes=[]):
         if narrowing != 0:
@@ -68,6 +74,10 @@ class PriorityFilter():
                 for count, pos in sorted_slot:
                     if count > 0:
                         if not pos in tried:
+                            if self.vision < 100:
+                                if r_m.random() * 100 > self.vision:
+                                    # Can't see that sorry ;)
+                                    continue
                             tried.add(pos)
                             yield pos
                             if len(tried) >= self.max_moves_func(depth):

@@ -30,6 +30,9 @@ class PriorityFilter2():
     def copy(self):
         return PriorityFilter2(orig=self)
 
+    def set_vision(self, val):
+        self.vision = val
+
     def set_max_moves_func(self, mmf):
         self.max_moves_func = mmf
 
