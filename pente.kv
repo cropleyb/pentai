@@ -181,7 +181,6 @@
                 text: 'Depth'
 
             Slider:
-                id: depth
                 min: 1
                 max: 10
                 # TODO: Test odd levels play ok
@@ -197,7 +196,6 @@
                 text: 'Vision'
 
             Slider:
-                id: vision
                 min: 10
                 max: 100
                 step: 1
@@ -212,7 +210,7 @@
                 text: 'Openings Book'
 
             CheckBox:
-                id: openings
+                id: openings_id
                 active: root.genome.use_openings_book
                 on_active: root.genome.use_openings_book = self.active
 
@@ -243,7 +241,6 @@
                 text: 'Lines / Captures'
 
             Slider:
-                id: capture_pref
                 min: 200
                 max: 400
                 step: 1
@@ -258,7 +255,6 @@
                 text: 'Misjudgement'
 
             Slider:
-                id: misjudgement
                 min: 0
                 max: 50
                 value: root.genome.misjudgement
