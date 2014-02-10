@@ -16,8 +16,8 @@ class MiscDB(pd_m.PersistentDict):
 
 the_instance = None
 
-def get_instance():
+def get_instance(prefix=None):
     if not the_instance:
-        MiscDB()
+        MiscDB(prefix)
     return the_instance
 
