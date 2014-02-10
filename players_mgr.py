@@ -58,8 +58,7 @@ class PlayersMgr():
 
     def get_ai_player_names(self):
         l = [ g.get_name() for k,g in self.players.iteritems()
-                if (k != "max_id") and
-                   (g.__class__ == ai_genome.AIGenome) ]
+                if (g.__class__ == ai_genome.AIGenome) ]
         return l
 
     def remove(self, pid):
@@ -123,11 +122,11 @@ class PlayersMgr():
         return player
 
     def get_max_id(self):
-        return self.players.setdefault("max_id", 0)
+        return misc.setdefault("max_id", 0)
 
     def next_id(self):
         curr_id = self.get_max_id() + 1
-        self.players["max_id"] = curr_id
-        self.players.sync()
+        misc["max_id"] = curr_id
+        misc.sync()
         return curr_id
 

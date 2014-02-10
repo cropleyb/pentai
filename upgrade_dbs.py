@@ -24,9 +24,6 @@ if __name__ == "__main__":
     seen_name_map = {}
 
     for p_id, genome in pm.players.iteritems():
-        if p_id == "max_id":
-            continue
-
         gn = genome.name
         if gn in seen_name_map:
             dup_ids_map[p_id] = seen_name_map[gn]
