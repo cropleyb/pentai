@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import random as r_m
 from defines import *
 
 import utility_stats as us_m # For debugging
@@ -35,7 +36,10 @@ class UtilityCalculator():
         """ This is the entry point into the position evaluation function """
         # us_copy = us_m.UtilityStats(utility_stats)
         # return self.utility_inner(state, utility_stats), us_copy
-        return self.utility_inner(state, utility_stats), 0
+        val = self.utility_inner(state, utility_stats)
+        if self.misjudgement > 0:
+            val = 2 ** (r_m.random() * self.misjudgement) * val
+        return val, 0
 
     def utility_inner(self, state, utility_stats):
         # The search_colour is the colour of the

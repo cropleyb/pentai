@@ -73,6 +73,10 @@ class AIFactory: # TODO: These are just functions
         uc.calc_mode = genome.calc_mode
 
         genome.set_override(True)
+        try:
+            uc.misjudgement = genome.misjudgement
+        except:
+            uc.misjudgement = genome.misjudgement = 0
         '''
         # Example of how to handle new fields:
         try:

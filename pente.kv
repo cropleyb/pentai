@@ -205,21 +205,6 @@
             height: '48sp'
 
             Label:
-                text: 'Width'
-
-            Slider:
-                id: width
-                min: 6
-                max: 12
-                step: 1
-                value: root.genome.mmpdl
-                on_value: root.genome.mmpdl = self.value
-
-        BoxLayout:
-            size_hint_y: None
-            height: '48sp'
-
-            Label:
                 text: 'Openings Book'
 
             CheckBox:
@@ -260,6 +245,20 @@
                 step: 1
                 value: root.genome.capture_score_base
                 on_value: root.genome.capture_score_base = self.value
+
+        BoxLayout:
+            size_hint_y: None
+            height: '48sp'
+
+            Label:
+                text: 'Misjudgement'
+
+            Slider:
+                id: misjudgement
+                min: 0
+                max: 50
+                value: root.genome.misjudgement
+                on_value: root.genome.misjudgement = self.value
 
         GridLayout:
             rows: 1 

@@ -112,17 +112,14 @@ class PlayersMgr():
         return self.convert_to_player(p)
 
     def convert_to_player(self, player):
-        try:
-            if type(player) == type(0):
-                player = self.players[player]
+        if type(player) == type(0):
+            player = self.players[player]
 
-            if player.__class__ is ai_genome.AIGenome:
-                player = self.factory.create_player(player)
-            else:
-                # HumanPlayers are stored directly
-                pass
-        except:
-            st()
+        if player.__class__ is ai_genome.AIGenome:
+            player = self.factory.create_player(player)
+        else:
+            # HumanPlayers are stored directly
+            pass
         return player
 
     def next_id(self):

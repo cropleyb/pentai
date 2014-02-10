@@ -89,7 +89,7 @@ class Match():
 
         self.openings_book.add_game(self.game)
         
-        if p1.name == "Contender":
+        if p1.get_name() == "Contender":
             ratio = tt.totals[0] / tt.totals[1]
         else:
             ratio = tt.totals[1] / tt.totals[0]
@@ -97,13 +97,13 @@ class Match():
         print "Game was won by: %s %s" % (["?", "B", "W"][winner], winner_name)
         print tt
  
-        return "%s vs. %s: %s (%sx%s %s) %s" % (p1.name, p2.name, winner_name,
+        return "%s vs. %s: %s (%sx%s %s) %s" % (p1.get_name(), p2.get_name(), winner_name,
                 board_size, board_size, p1.max_depth, tt), winner, winner_name, ratio
 
     def play_some_games(self):
 
-        #self.genome1.use_openings_book = False
-        #self.genome2.use_openings_book = False
+        self.genome1.use_openings_book = False
+        self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
@@ -137,6 +137,7 @@ class Match():
         #self.genome2.move_factor = 45
         #self.genome2.move_factor = 5
         #self.genome2.force_depth = 4 FAIL ;)
+        self.genome2.misjudgement = 8
 
         results = MatchResults()
         for game_length in range(2,4):

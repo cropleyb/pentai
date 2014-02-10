@@ -17,6 +17,7 @@ class AIGenome(object):
             "narrowing": 0,
             "chokes": [(4,5)],
             "filter2": False,
+            "vision": 100,
             # Utility function
             "calc_mode": 1,
             "capture_score_base": 300,
@@ -27,9 +28,9 @@ class AIGenome(object):
             "length_scale": [1, 1, 1, 1, 1, 1],
             "length_factor": 35,
             "move_factor": 45,
-            "vision": 100,
             "scale_pob": False,
             "force_depth": 0,
+            "misjudgement": 0,
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 
