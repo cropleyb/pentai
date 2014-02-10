@@ -53,7 +53,11 @@ class PlayersMgr():
 
     def get_recent_players(self, player_type, number):
         rpks = self.get_rpks(player_type).top(number)
-        rps = [self.convert_to_player(rp) for rp in rpks]
+        rps = []
+        for rp in rpks:
+            p = self.convert_to_player(rp)
+            if p:
+                rps.append(p)
         return rps
 
     def get_ai_player_names(self):
@@ -81,8 +85,8 @@ class PlayersMgr():
             pass
 
         self.players[p_key] = player
-        self.mark_recent_player(p_key)
         self.players.sync()
+        self.mark_recent_player(p_key)
 
     def sync(self):
         self.players.sync()
@@ -112,7 +116,10 @@ class PlayersMgr():
 
     def convert_to_player(self, player):
         if type(player) == type(0):
-            player = self.players[player]
+            try:
+                player = self.players[player]
+            except KeyError:
+                return None
 
         if player.__class__ is ai_genome.AIGenome:
             player = self.factory.create_player(player)
