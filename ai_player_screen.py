@@ -95,6 +95,10 @@ class AIPlayerScreen(Screen):
         self.genome.genome2screen()
 
     def save(self, unused=None):
+        if self.ids.rename_id.text in [self.rename_req, ""]:
+            # Attempt to save with no name set.
+            self.app.display_error("Please choose a name first")
+            return
         self.current_name = self.genome.p_name = self.ids.rename_id.text
         self.genome.screen2genome()
         self.pm.save(self.genome.inst.clone())
