@@ -137,7 +137,7 @@ class Match():
         #self.genome2.move_factor = 45
         #self.genome2.move_factor = 5
         #self.genome2.force_depth = 4 FAIL ;)
-        self.genome2.misjudgement = 8
+        #self.genome2.misjudgement = 8
 
         results = MatchResults()
         for game_length in range(2,4):
