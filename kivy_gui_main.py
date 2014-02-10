@@ -46,7 +46,7 @@ class PenteApp(App):
         else:
             self.show_menu_screen()
 
-    def show_options(self):
+    def show_options_screen(self):
         self.random_transition()
         self.root.current = "Options"
 
@@ -153,7 +153,7 @@ class PenteApp(App):
 
         elif key == 113:
             # 'q'
-            if self.root.current != "Setup":
+            if not self.root.current in ["Setup", "AI"]:
                 self.prompt_quit()
             return True
 
@@ -182,7 +182,7 @@ class PenteApp(App):
         elif key == 111:
             if self.root.current in ("Load", "Pente"):
                 # or any other screen with text input
-                self.show_options()
+                self.show_options_screen()
                 return True
 
         elif key == 100: # 'd'

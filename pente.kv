@@ -41,6 +41,9 @@
             rows: 1
             size_hint: (1, .07)
             Button:
+                text: "Return"
+                on_release: root.app.return_screen()
+            Button:
                 text: "Delete"
                 on_release: root.delete_game()
             Button:
@@ -73,7 +76,7 @@
 
         Button:
             text: "Options"
-            on_release: root.app.show_options()
+            on_release: root.app.show_options_screen()
 
         Button:
             text: "Show Demo"
@@ -122,19 +125,24 @@
                 id: white_type_id
 
             Spinner:
-                text: 'Choose Black Player'
+                text: "Choose Black Player"
                 values: root.player_names[1]
                 size_hint: (1, None)
                 id: bpl_id
             Spinner:
-                text: 'Choose White Player'
+                text: "Choose White Player"
                 values: root.player_names[2]
                 size_hint: (1, None)
                 id: wpl_id
 
             Button:
                 size_hint: (.2, .2)
-                text: 'Start Game'
+                text: "Return"
+                on_press: root.app.return_screen()
+
+            Button:
+                size_hint: (.2, .2)
+                text: "Start Game"
                 on_press: root.start_game()
                 id: start_button
 
@@ -264,8 +272,8 @@
             rows: 1 
 
             Button:
-                text: "Menu"
-                on_release: root.menu()
+                text: "Return"
+                on_release: root.app.return_screen()
 
             Button:
                 text: "Cancel"
@@ -314,10 +322,6 @@
                 cols: 1
                 Button:
                     font_size: '20sp'
-                    text: "Options"
-                    on_release: root.app.show_options()
-                Button:
-                    font_size: '20sp'
                     text: "Beginning"
                     on_release: root.go_to_the_beginning()
                 Button:
@@ -332,6 +336,10 @@
                     font_size: '20sp'
                     text: "End"
                     on_release: root.go_to_the_end()
+                Button:
+                    font_size: '20sp'
+                    text: "Menu"
+                    on_release: root.app.show_menu_screen()
             GridLayout:
                 rows: 2
                 # TODO: duplication
