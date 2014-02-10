@@ -1,4 +1,3 @@
-Save games that are already finished with new id?
 Create player screen problem - doesn't set fields
 Delete players?
 Loading a saved game is taking a while?
@@ -17,6 +16,7 @@ When there is a forced loss, don't give up?!
 # Games Screen 2 stories for each game line, show win etc. -> IRC
 Review mode
 Load human games for review from DB
+Save games that are already finished with new id?
 Select multiple games to delete
 Detect Human vs. Human draws
 Display draws via kivy on pente screen
