@@ -1,5 +1,6 @@
 Create player screen problem - doesn't set fields
 Delete players?
+Loading a saved game is taking a while?
 Games are not being removed from the recent view when finished?
 Human Players appearing more than once in setup_screen - 2 keys per name?
 Prevent naming players the same
