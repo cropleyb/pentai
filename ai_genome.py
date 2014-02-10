@@ -61,6 +61,6 @@ class AIGenome(object):
         super(AIGenome, self).__setattr__(attr_name, val)
 
     def clone(self):
-        c = c_m.copy(self)
+        c = c_m.deepcopy(self)
         return c
 
