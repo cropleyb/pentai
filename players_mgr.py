@@ -122,12 +122,11 @@ class PlayersMgr():
             pass
         return player
 
+    def get_max_id(self):
+        return self.players.setdefault("max_id", 0)
+
     def next_id(self):
-        try:
-            curr_id = self.players["max_id"]
-        except KeyError:
-            curr_id = 0
-        curr_id += 1
+        curr_id = self.get_max_id() + 1
         self.players["max_id"] = curr_id
         self.players.sync()
         return curr_id
