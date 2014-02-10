@@ -57,7 +57,6 @@ if __name__ == "__main__":
     { "p_name": "Tony", "use_openings_book": False, "max_depth": 1,
         "mmpdl": 6, "vision": 60, "capture_score_base": 400 },
     ]
-    st()
     for p in players:
         genome.__dict__.update(p)
         dot()
