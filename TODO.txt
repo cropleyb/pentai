@@ -14,7 +14,7 @@ Sounds: tick, music, draw, AI vs AI
 Fix White player name hack in games_screen.py
 When there is a forced loss, don't give up?!
  e.g. turn down "infinity" and add the win as a component of the score
-Games Screen 2 stories for each game line, show win etc.
+# Games Screen 2 stories for each game line, show win etc. -> IRC
 Review mode
 Load human games for review from DB
 Select multiple games to delete

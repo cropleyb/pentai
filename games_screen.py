@@ -80,6 +80,8 @@ def game_data(game):
     # TODO: Winner
     return data
 
+class MyCompositeListItem(CompositeListItem):
+    pass
 
 class GamesView(GridLayout):
 
@@ -129,7 +131,7 @@ class GamesView(GridLayout):
                  'height': 25,
                  'cls_dicts': [
                        {'cls': ListItemButton,
-                           'kwargs': {'text': rec['id'], 'size_hint': (.4,1)}},
+                           'kwargs': {'text': rec['id']}},
                        {'cls': ListItemButton,
                            'kwargs': {'text': rec['black']}},
                        {'cls': ListItemButton,
@@ -137,7 +139,7 @@ class GamesView(GridLayout):
                        {'cls': ListItemButton,
                            'kwargs': {'text': rec['date']}},
                        {'cls': ListItemButton,
-                           'kwargs': {'text': rec['size'], 'size_hint': (.2,1)}},
+                           'kwargs': {'text': rec['size']}},
                        {'cls': ListItemButton,
                            'kwargs': {'text': rec['rules']}},
                        ]}
@@ -155,7 +157,7 @@ class GamesView(GridLayout):
                                    args_converter=args_converter,
                                    selection_mode='single',
                                    allow_empty_selection=False, # Not working?
-                                   cls=CompositeListItem)
+                                   cls=MyCompositeListItem)
 
         dict_adapter.bind(
             on_selection_change=self.changed_selection)
