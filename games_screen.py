@@ -1,6 +1,5 @@
 from kivy.uix.screenmanager import Screen
 from kivy.properties import ListProperty
-from kivy.clock import * # FOR HACK
 
 from kivy.adapters.dictadapter import DictAdapter
 from kivy.uix.listview import ListItemButton, ListItemLabel, \
@@ -88,8 +87,6 @@ class GamesView(GridLayout):
         kwargs['cols'] = 2
         super(GamesView, self).__init__(**kwargs)
 
-        Clock.schedule_once(self.fill_er_up, 1) # HACK HACK HACK
-
         '''
         TODO:
         We have a collection of unfinished games, and another of all games
@@ -100,6 +97,9 @@ class GamesView(GridLayout):
         Board size
         Rules type
         '''
+
+    def on_enter(self):
+        self.fill_er_up()
 
     def refresh(self):
         try:
