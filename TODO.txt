@@ -1,3 +1,4 @@
+Save games that are already finished with new id?
 Create player screen problem - doesn't set fields
 Delete players?
 Loading a saved game is taking a while?
