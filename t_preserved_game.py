@@ -22,8 +22,6 @@ class PreservedGameTest(unittest.TestCase):
 
     def create_player(self, genome):
         p = self.aif.create_player(genome)
-        p.p_key = random.randint(0, 1000)
-        genome.p_key = p.p_key
         return p
 
     def test_preserve_game(self):
