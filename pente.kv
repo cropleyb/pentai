@@ -39,7 +39,7 @@
 
         GridLayout:
             rows: 1
-            size_hint: (1, .07)
+            size_hint: (1, .1)
             Button:
                 text: "Return"
                 on_release: root.app.return_screen()
@@ -96,10 +96,15 @@
         GridLayout:
             cols: 2
             size_hint: 1, None
-            height: 200
+            height: 170
+
+            MyLabel:
+                text: "Rules"
+
+            MyLabel:
+                text: "Board Size"
 
             Spinner:
-                #TODO: double click to edit player
                 text: 'Standard'
                 values: ['Standard', 'Tournament', '5-In-A-Row']
                       #, 'Keryo', 'Freestyle', 'No Captures']
@@ -113,7 +118,26 @@
                 id: bs_id
             
         GridLayout:
+            cols: 1
+            size_hint_y: .3
+            Label:
+
+            Label:
+                text: "Players"
+                #size_y: 100
+                #size_hint: (1, .1)
+
+        GridLayout:
             cols: 2
+            size_hint_y: .9
+
+            MyLabel:
+                text: "Black Player Type"
+                height: '48sp'
+
+            MyLabel:
+                text: "White Player Type"
+                height: '48sp'
 
             CheckBoxList:
                 group: 'black_type'
@@ -124,6 +148,7 @@
                 values: ('Human', 'Computer')
                 id: white_type_id
 
+            #TODO: double click to edit player?
             Spinner:
                 text: "Choose Black Player"
                 values: root.player_names[1]
@@ -136,12 +161,12 @@
                 id: wpl_id
 
             Button:
-                size_hint: (.2, .2)
+                size_hint: (.2, .4)
                 text: "Return"
                 on_press: root.app.return_screen()
 
             Button:
-                size_hint: (.2, .2)
+                size_hint: (.2, .4)
                 text: "Start Game"
                 on_press: root.start_game()
                 id: start_button
