@@ -2,8 +2,9 @@ from utility_stats import *
 from null_filter import *
 import ai_factory as aif_m
 import ai_genome as aig_m
+import gs_observer as gso_m
 
-class Evaluator():
+class Evaluator(gso_m.GSObserver):
     """
     This is to help with debugging bad moves.
     """
@@ -38,9 +39,6 @@ class Evaluator():
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, 1)
 
-    def after_game_won(self, game, colour):
-        pass
-    
     def search_player_colour(self):
         """ The AI player who is performing the search.
             For the evaluator, we will always show it from one

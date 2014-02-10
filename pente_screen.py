@@ -6,6 +6,7 @@ from kivy.clock import Clock
 from kivy.graphics import *
 
 from evaluator import *
+import gs_observer as gso_m
 
 import audio as a_m
 from defines import *
@@ -27,7 +28,8 @@ x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
 
-class PenteScreen(Screen):
+
+class PenteScreen(Screen, gso_m.GSObserver):
     source = StringProperty(None)
     # TODO: Get the times hooked up
     player_name = ListProperty([None, "Black", "White"])
@@ -165,6 +167,9 @@ class PenteScreen(Screen):
     def on_enter(self):
         self.refresh_all()
 
+    def on_leave(self):
+        self.gm.save(self.game)
+
     def perform(self, dt):
         if self.action_queue.empty():
             return
@@ -196,15 +201,11 @@ class PenteScreen(Screen):
         """ Callback from game_state """
         self.clean_board()
 
-    def before_set_occ(self, game, pos, colour):
-        pass
-
     def after_set_occ(self, game, pos, colour):
         self.make_move_on_the_gui_board(pos, colour)
 
-        # TODO: Move this to an "up to date" callback
+    def up_to_date(self, game):
         self.refresh_all()
-        self.gm.save(game)
 
     def after_game_won(self, game, colour):
         # Play win or loss sound
@@ -212,7 +213,7 @@ class PenteScreen(Screen):
             self.get_audio().win()
         else:
             self.get_audio().lose()
-        # TODO: draw, and AI vs. AI
+        # TODO: draw, and AI vs. AI sounds
 
     def get_audio(self):
         try:

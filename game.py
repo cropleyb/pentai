@@ -166,9 +166,10 @@ class Game(object):
                 gs = self.current_state
                 gs.make_move(self.move_history[i])
         # If we go back to the beginning of the game,
-        # there won't have been any save calls(), so we won't
+        # there won't have been any save() calls, so we won't
         # be able to resume from the beginning of the game.
         # Not much point for this anyway.
+        self.current_state.send_up_to_date()
 
     def history_to_str(self):
         game_str = self.game_header()

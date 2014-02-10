@@ -3,10 +3,11 @@ import players_mgr
 import preserved_game as pg_m
 import persistent_dict as pd_m
 import os
+import gs_observer as gso_m
 
 from defines import *
 
-class GamesMgr(object):
+class GamesMgr(gso_m.GSObserver):
     # TODO: Borg pattern?
     def __init__(self, prefix=None, *args, **kwargs):
         self.games_dbs = {}
@@ -159,18 +160,14 @@ class GamesMgr(object):
         if pg is None:
             return None
 
-        # TODO: Observe game?
-
         g = pg.restore(self.players_mgr)
+
+        # Observe game
+        g.current_state.add_observer(self)
+
         return g
 
     def reset_state(self, game):
-        pass
-
-    def before_set_occ(self, game, pos, colour):
-        pass
-
-    def after_set_occ(self, game, pos, colour):
         pass
 
     def after_game_won(self, game, colour):

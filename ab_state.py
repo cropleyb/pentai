@@ -4,10 +4,11 @@ import board
 import game_state
 import alpha_beta
 import game
+import gs_observer as gso_m
 
 import utility_stats as us_m
 
-class ABState():
+class ABState(gso_m.GSObserver):
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None, search_filter=None,
             utility_calculator=None):
@@ -105,9 +106,6 @@ class ABState():
     def after_set_occ(self, game, pos, colour):
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, 1)
-
-    def after_game_won(self, game, colour):
-        pass
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

@@ -136,6 +136,10 @@ class GameState():
             for ob in self.observers:
                 ob.after_game_won(self.game, wb)
 
+    def send_up_to_date(self):
+        for ob in self.observers:
+            ob.up_to_date(self.game)
+
     def get_won_by(self):
         return self._won_by
 
