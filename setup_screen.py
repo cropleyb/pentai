@@ -22,14 +22,16 @@ class SetupScreen(Screen):
     def populate_black_players(self, *args):
         ptw = self.ids.black_type_id
         self.populate_players(ptw.val, BLACK)
+        self.ids.bpl_id.text = self.player_names[BLACK][0]
 
     def populate_white_players(self, *args):
         ptw = self.ids.white_type_id
         self.populate_players(ptw.val, WHITE)
+        self.ids.wpl_id.text = self.player_names[WHITE][0]
 
     def populate_players(self, pt, colour):
-        rpl = self.pm.get_recent_players(pt, 30)
-        self.player_names[colour] = [rp.get_name() for rp in rpl]
+        rpl = self.pm.get_recent_player_names(pt, 30)
+        self.player_names[colour] = rpl
 
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
