@@ -18,7 +18,7 @@ if __name__ == "__main__":
     print "Creating Human Players"
     pm = pm_m.PlayersMgr()
 
-    for name in ["BC", "Bruce", "Jespah", "Arwen", "Sascha"]:
+    for name in ["BC", "Bruce", "Mark", "Jespah", "Arwen", "Sascha"]:
         h = h_m.HumanPlayer(name)
         dot()
         pm.save(h)
