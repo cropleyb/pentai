@@ -26,11 +26,6 @@ class PlayersMgr():
 
         return player.p_key
 
-    def get_recent_player_names(self, player_type):
-        rps = self.get_recent_players(player_type)
-        rpns = [rp.get_name() for rp in rps]
-        return rpns
-
     def get_rpks(self, player_type):
         if player_type == "Computer":
             key = "recent_ai_player_ids"
@@ -51,6 +46,20 @@ class PlayersMgr():
         rpks.add(p_key)
         misc.sync()
 
+    def get_recent_player_names(self, player_type, number):
+        rps = self.get_recent_players(player_type, number)
+        rpns = []
+        seen = set()
+        for rp in rps:
+            rpn = rp.get_name()
+            if not rpn in seen:
+                rpns.append(rpn)
+                seen.add(rpn)
+        return rpns
+
+    def get_ai_player_names(self):
+        return self.get_recent_player_names("Computer", 30)
+
     def get_recent_players(self, player_type, number):
         rpks = self.get_rpks(player_type).top(number)
         rps = []
@@ -59,11 +68,6 @@ class PlayersMgr():
             if p:
                 rps.append(p)
         return rps
-
-    def get_ai_player_names(self):
-        l = [ g.get_name() for k,g in self.players.iteritems()
-                if (g.__class__ == ai_genome.AIGenome) ]
-        return l
 
     def remove(self, pid):
         del self.players[pid]
