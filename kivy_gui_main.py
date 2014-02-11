@@ -26,6 +26,7 @@ import os # TODO: Remove?
 import time
 import ai_player as aip_m # hack for debugging
 import random
+import demo
 
 class LoadScreen(Screen):
     load = ObjectProperty(None)
@@ -72,6 +73,9 @@ class PenteApp(App):
         self.setup_screen.create_game()
         self.root.current = "Setup"
 
+    def show_demo(self):
+        demo.play_demo(self, self.setup_screen.size)
+
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
         try:
@@ -97,13 +101,13 @@ class PenteApp(App):
         # TODO production app should start game here.
         self.root.current = "Setup"
 
-    def start_game(self, game, screen_size):
+    def start_game(self, game, screen_size, demo=False):
         # TODO: Move this?
         root = self.root
         try:
-            old_game_screen = root.get_screen("Pente")
-            if old_game_screen != None:
-                root.remove_widget(old_game_screen)
+            prev_game_screen = root.get_screen("Pente")
+            if prev_game_screen != None:
+                root.remove_widget(prev_game_screen)
         except ScreenManagerException:
             pass
 
@@ -112,6 +116,7 @@ class PenteApp(App):
             filename=self.game_filename)
 
         self.pente_screen = root.get_screen("Pente")
+        self.pente_screen.set_live(not demo)
         self.game = game
 
         # load the game screen

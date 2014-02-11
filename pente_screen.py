@@ -58,6 +58,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         self.calc_board_offset(screen_size)
 
+        self.live = True
+
         super(PenteScreen, self).__init__(*args, **kwargs)
 
     def calc_board_offset(self, screen_size):
@@ -119,6 +121,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         Clock.schedule_once(start_func, transition_time)
 
+    def set_live(self, val):
+        if val and not self.live:
+            self.prompt_for_action()
+        self.live = val
+
     def make_first_move(self, dt):
         """
         Some rule variations require that the first black move must
@@ -128,7 +135,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if r.center_first:
             bs = r.size
             self.game.make_move((bs/2, bs/2))
-        self.game.prompt_for_action(self)
+        self.prompt_for_action()
 
     def display_names(self):
         for colour in (BLACK, WHITE):
@@ -154,14 +161,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_grid()
         self.game_filename = None
         self.refresh_all()
-        self.game.prompt_for_action(self)
+        self.prompt_for_action()
 
     def load_moves(self, dt):
         self.get_audio().mute()
         self.game.resume()
         self.game_filename = None
         self.refresh_all()
-        self.game.prompt_for_action(self)
+        self.prompt_for_action()
         self.get_audio().unmute()
 
     def on_enter(self):
@@ -186,9 +193,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 return
             self.display_error(e.message)
 
-    def prompt_for_action(self, ignored):
-        self.game.prompt_for_action(self)
-        print self.evaluator.utility()
+    def prompt_for_action(self, *ignored):
+        if self.live:
+            self.game.prompt_for_action(self)
+            print self.evaluator.utility()
 
     def board_size(self):
         return self.game.size()
