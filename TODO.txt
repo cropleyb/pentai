@@ -1,3 +1,4 @@
+Click on Player name in Game screen to edit
 Create player screen problem - doesn't set fields
 Delete players?
 Games are not being removed from the recent view when finished?
