@@ -26,7 +26,7 @@ import os # TODO: Remove?
 import time
 import ai_player as aip_m # hack for debugging
 import random
-import demo
+import demo as d_m
 
 class LoadScreen(Screen):
     load = ObjectProperty(None)
@@ -74,7 +74,10 @@ class PenteApp(App):
         self.root.current = "Setup"
 
     def show_demo(self):
-        demo.play_demo(self, self.setup_screen.size)
+        #st()
+        d = d_m.Demo(self, self.setup_screen.size)
+        d.play()
+        #demo.play_demo(self, self.setup_screen.size)
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
@@ -260,6 +263,7 @@ class PenteApp(App):
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
 
+        self.menu_screen = root.get_screen("Menu")
         self.setup_screen = root.get_screen("Setup")
         self.options_screen = root.get_screen("Options")
         self.games_screen = root.get_screen("Games")

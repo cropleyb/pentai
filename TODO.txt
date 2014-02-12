@@ -1,4 +1,5 @@
 For Alpha release
+Memory error detection
 Delete players?
 Show all players option
 Show all games option

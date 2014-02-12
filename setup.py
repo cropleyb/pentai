@@ -12,10 +12,13 @@ from Cython.Build import cythonize
 cy_modules = [
             'board_strip.pyx',
             'length_lookup_table.pyx',
+            ]
+if False:
+    cy_modules.extend([
             'priority_filter.py',
             'priority_filter_2.py',
             'utility_stats.py',
-            ]
+    ])
 if False:
     cy_modules.extend([
         'budget_searcher.py',
