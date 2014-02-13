@@ -385,9 +385,12 @@
         GridLayout:
             rows: 1
 
-            ReviewButtons:
-                id: review_buttons_id
-
+            GridLayout:
+                # This is for switching panel buttons
+                rows: 1
+                size_hint: (.35, 1)
+                id: panel_buttons_id
+            
             GridLayout:
                 rows: 2
                 # TODO: duplication

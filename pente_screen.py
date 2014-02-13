@@ -108,7 +108,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.display_names()
         self.setup_grid()
 
-        self.ids.review_buttons_id.ps = self
+        rvbs = ReviewButtons()
+        rvbs.ps = self
+        self.ids.panel_buttons_id.add_widget(rvbs)
 
         # Need some time for kivy to finish setting up, otherwise
         # the pieces are all stacked in the bottom left corner,
