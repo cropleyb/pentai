@@ -108,6 +108,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.display_names()
         self.setup_grid()
 
+        self.ids.review_buttons_id.ps = self
+
         # Need some time for kivy to finish setting up, otherwise
         # the pieces are all stacked in the bottom left corner,
         # or we get lots of GUI lag for the screen transition (AI)
@@ -644,4 +646,9 @@ class Piece(Scatter):
     def __init__(self, board_size, *args, **kwargs):
         self.scale = 7. / board_size
         super(Piece, self).__init__(*args, **kwargs)
+
+from kivy.uix.gridlayout import GridLayout
+
+class ReviewButtons(GridLayout):
+    pass
 
