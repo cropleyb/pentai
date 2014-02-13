@@ -131,7 +131,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         elif not self.game.resume_move_number is None:
             start_func = self.load_moves
 
-        Clock.schedule_once(lambda dt: self.set_review_mode(False), transition_time)
+        Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
         Clock.schedule_once(start_func, transition_time)
 
     def set_live(self, val):
