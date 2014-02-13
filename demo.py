@@ -27,7 +27,10 @@ class Demo():
 
     def play(self, dt=None):
         print "A"
-        now = time.time()
+        '''
+        for i in range(20):
+            now = time.time()
+        '''
 
         try:
             print "B"
@@ -42,6 +45,7 @@ class Demo():
         if sleep_time != None:
             print "F, %s" % sleep_time
             Clock.schedule_once(self.play, sleep_time)
+            print "G"
 
     def finish(self):
         self.app.show_menu_screen()
@@ -69,13 +73,21 @@ class Demo():
         r = r_m.Rules(13, "standard")
         game = g_m.Game(r, p1, p2)
 
-        yield(.5)
+        yield(2)
         # And start it...
+        #st()
         self.app.start_game(game, [457, 720], demo=True) # HACK
         #st()
-        print "1"
-        yield(1.5)
+        print "1a"
+        yield(.5)
+        print "1b"
+        '''
+        yield(.5)
+        print "1c"
+        yield(.5)
+        #yield(1.5)
         print "2"
+        '''
 
 
         def mm(x,y):
