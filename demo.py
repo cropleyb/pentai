@@ -7,6 +7,7 @@ from defines import *
 import ai_genome as aig_m
 import ai_factory as f_m
 import human_player as h_m
+import players_mgr as pm_m
 import rules as r_m
 import game as g_m
 
@@ -16,12 +17,9 @@ class Demo():
         self.size = size
 
         # TODO Save settings
-
-        # TODO Save current game
+        # for settings demo
 
         # TODO Intercept Input
-
-        # Disable prompting of players
 
         self.script = self.rules_script()
 
@@ -63,7 +61,11 @@ class Demo():
         self.app.show_new_game_screen()
         yield(2)
 
-        p1 = h_m.HumanPlayer("Bruce") # TODO: Use most recent human player name
+        pmgr = pm_m.PlayersMgr()
+
+        human = pmgr.get_recent_player_names("Human", 1)[0]
+        p1 = h_m.HumanPlayer(human) # TODO: Use most recent human player name
+
         aif = f_m.AIFactory()
         genome = aig_m.AIGenome("PentAI")
         genome.use_openings_book = False
@@ -76,28 +78,17 @@ class Demo():
         yield(2)
         # And start it...
         #st()
-        self.app.start_game(game, [457, 720], demo=True) # HACK
-        #st()
-        print "1a"
-        yield(.5)
-        print "1b"
-        '''
-        yield(.5)
-        print "1c"
-        yield(.5)
-        #yield(1.5)
-        print "2"
-        '''
 
+        # demo flag: Disable prompting of players
+        self.app.start_game(game, [457, 720], demo=True) # size is a HACK
+        yield(1.2) # Compensating for .7 wait at start?!
 
         def mm(x,y):
             game.make_move((x,y))
             self.app.pente_screen.perform(0)
             self.app.pente_screen.refresh_all()
-        print "3"
 
         mm(3,4)
-        print "4"
         yield(.5)
 
         mm(6,8)
