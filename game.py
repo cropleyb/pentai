@@ -41,6 +41,9 @@ class Game(object):
     def get_date(self):
         return self.date
 
+    def get_rules(self):
+        return self.rules
+
     def get_game_id(self):
         return self.game_id
 
