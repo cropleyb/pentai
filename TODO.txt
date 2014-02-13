@@ -6,13 +6,13 @@ Show all games option
 Eliminate duplicate player names (fix upgrade script)
 Human Players appearing more than once in setup_screen - 2 keys per name?
 Rename app. PentAI
-Icon for the app.
-Add rules demo
-GUI - Play a new game with same opponent (auto set loser to first player)
+Fix rules demo
 load on iPhone 
 
 Beta release
 Fix Tournament rules
+Icon for the app.
+Demos no clicking
 # Games Screen 2 stories for each game line, show win etc. -> IRC
 Submit Pull requests
 video or recorded moves explaining the rules of pente
@@ -27,12 +27,13 @@ Sadistic mode for Rich
 iPad: "Rich Guano" I am running IOS7 on iPad mini.
 
 First public release
-Review mode
+Review mode no clicking on board
 icons for everything for internationalization?
 iTunes
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
 
 Later
+More demos?
 Click on Player name in Game screen to edit
 Chess Clock, mode on/off
 Sounds: tick, music, draw, AI vs AI
