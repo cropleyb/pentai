@@ -88,6 +88,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
             tm = Piece(13, source=filename)
             self.turn_markers.append(tm)
 
+    def rematch(self):
+        self.set_review_mode(False)
+        og = self.game
+        rules = og.get_rules()
+        colours = [WHITE, BLACK]
+        if og.get_won_by() == WHITE:
+            colours = [BLACK, WHITE]
+        p1 = og.get_player(colours[0])
+        p2 = og.get_player(colours[1])
+        g = self.gm.create_game(rules, p1, p2)
+        self.app.start_game(g, self.size)
+
     def set_game(self, game):
         self.clean_board()
         self.game = game
@@ -108,10 +120,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.display_names()
         self.setup_grid()
 
-        rvbs = ReviewButtons()
-        rvbs.ps = self
-        self.ids.panel_buttons_id.add_widget(rvbs)
-
         # Need some time for kivy to finish setting up, otherwise
         # the pieces are all stacked in the bottom left corner,
         # or we get lots of GUI lag for the screen transition (AI)
@@ -123,6 +131,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         elif not self.game.resume_move_number is None:
             start_func = self.load_moves
 
+        Clock.schedule_once(lambda dt: self.set_review_mode(False), transition_time)
         Clock.schedule_once(start_func, transition_time)
 
     def set_live(self, val):
@@ -225,7 +234,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.get_audio().win()
         else:
             self.get_audio().lose()
+
         # TODO: draw, and AI vs. AI sounds
+
+        self.set_review_mode(True)
 
     def get_audio(self):
         try:
@@ -632,6 +644,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def get_gridlines(self):
         return []
 
+    def set_review_mode(self, review):
+        if review:
+            cls = ReviewButtons
+        else:
+            cls = PlayButtons
+            self.go_to_the_end()
+        panel_buttons = cls()
+        panel_buttons.ps = self
+        pb_parent = self.ids.panel_buttons_id
+        pb_parent.clear_widgets()
+        pb_parent.add_widget(panel_buttons)
+
 '''
 class Image(Scatter):
     source = StringProperty(None)
@@ -650,6 +674,9 @@ class Piece(Scatter):
         super(Piece, self).__init__(*args, **kwargs)
 
 from kivy.uix.gridlayout import GridLayout
+
+class PlayButtons(GridLayout):
+    pass
 
 class ReviewButtons(GridLayout):
     pass

@@ -312,6 +312,10 @@
     cols: 1
     Button:
         font_size: '20sp'
+        text: "Rematch"
+        on_release: root.ps.rematch()
+    Button:
+        font_size: '20sp'
         text: "Beginning"
         on_release: root.ps.go_to_the_beginning()
     Button:
@@ -328,8 +332,8 @@
         on_release: root.ps.go_to_the_end()
     Button:
         font_size: '20sp'
-        text: "Menu"
-        on_release: root.ps.app.show_menu_screen()
+        text: "Return"
+        on_release: root.ps.set_review_mode(False)
 
 <PlayButtons>:
     size_hint_x: .3
@@ -337,20 +341,16 @@
 
     Button:
         font_size: '20sp'
-        text: "Setting"
-        on_release: root.app.show_options_screen() # TODO: Rename
-    Button:
-        font_size: '20sp'
-        text: "Rematch"
-        on_release: root.app.rematch() # TODO
-    Button:
-        font_size: '20sp'
         text: "Review"
-        on_release: root.app.show_menu_screen() # TODO
+        on_release: root.ps.set_review_mode(True)
+    Button:
+        font_size: '20sp'
+        text: "Settings"
+        on_release: root.ps.app.show_options_screen() # TODO: Rename
     Button:
         font_size: '20sp'
         text: "Menu"
-        on_release: root.app.show_menu_screen()
+        on_release: root.ps.app.show_menu_screen()
 
 <PenteScreen>:
     RelativeLayout:
