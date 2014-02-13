@@ -74,10 +74,8 @@ class PenteApp(App):
         self.root.current = "Setup"
 
     def show_demo(self):
-        #st()
         d = d_m.Demo(self, self.setup_screen.size)
         d.play()
-        #demo.play_demo(self, self.setup_screen.size)
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
@@ -124,10 +122,6 @@ class PenteApp(App):
 
         # load the game screen
         self.pente_screen.set_game(game)
-
-        # TODO: It would be nice if the board did not display
-        # until the grid was correctly positioned
-        Clock.schedule_once(self.pente_screen.setup_grid, 1)
 
         self.show_pente_screen()
 
