@@ -30,7 +30,7 @@ import ai_player as aip_m # hack for debugging
 import random
 import demo as d_m
 
-class PenteApp(App):
+class PentAIApp(App):
     game_filename = StringProperty("")
 
     def display_error(self, message):
@@ -277,13 +277,6 @@ class PenteApp(App):
     def on_pause(self):
         return True
 
-    '''
-    def on_touch_down(self, *args, **kwargs):
-        print "ON TOUCH DOWN"
-        super(PenteApp, self).on_touch_down(*args, **kwargs)
-    '''
-
-
 if __name__ == '__main__':
     Config.set('kivy', 'log_level', 'info')
     Config.set('kivy', 'log_enable', 1)
@@ -293,5 +286,5 @@ if __name__ == '__main__':
     Config.set('graphics', 'width', '457')
     Config.set('graphics', 'height', '720')
 
-    PenteApp().run()
+    PentAIApp().run()
 
