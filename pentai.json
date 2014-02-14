@@ -7,7 +7,7 @@
         "type": "bool",
         "title": "Mark them",
         "desc": "Mark the last two moves with a dot in the centre",
-        "section": "pente",
+        "section": "PentAI",
         "key": "mark_moves",
         "true": "auto"
     },
@@ -19,7 +19,7 @@
         "type": "bool",
         "title": "Show captures",
         "desc": "Show pieces that were captured last move as transparent ghost pieces",
-        "section": "pente",
+        "section": "PentAI",
         "key": "mark_captures",
         "true": "auto"
     },
@@ -34,7 +34,7 @@
         "options": ["None Required",
                     "Off Board",
                     "On Piece"],
-        "section": "pente",
+        "section": "PentAI",
         "key": "move_confirmation",
         "true": "auto"
     },
@@ -46,7 +46,7 @@
         "type": "bool",
         "title": "Show Confirmation Popups",
         "desc": "For major actions such as exiting",
-        "section": "pente",
+        "section": "PentAI",
         "key": "confirm_popups",
         "false": "auto"
     },
@@ -58,7 +58,7 @@
         "type": "numeric",
         "title": "Volume",
         "desc": "How loud are the sound effects",
-        "section": "pente",
+        "section": "PentAI",
         "key": "effects_volume",
         ".5": "auto"
     }

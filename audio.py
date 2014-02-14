@@ -44,7 +44,7 @@ class Audio():
         # stop the sound if it's currently playing
         if sound.status != 'stop':
             sound.stop()
-        vol = self.config.get("pente", "effects_volume")
+        vol = self.config.get("PentAI", "effects_volume")
         sound.volume = float(vol)
         sound.play()
 

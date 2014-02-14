@@ -485,16 +485,16 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.cancel_confirmation()
 
     def confirm_mode(self):
-        cm = self.config.get("pente", "move_confirmation")
+        cm = self.config.get("PentAI", "move_confirmation")
         if cm == "None Required":
             cm = None
         return cm
 
     def mark_moves(self):
-        return self.config.getint("pente", "mark_moves")
+        return self.config.getint("PentAI", "mark_moves")
 
     def show_ghosts(self):
-        return self.config.getint("pente", "mark_captures")
+        return self.config.getint("PentAI", "mark_captures")
 
     def go_to_the_beginning(self):
         self.game.go_to_the_beginning()

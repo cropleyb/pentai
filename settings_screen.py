@@ -53,7 +53,7 @@ class SettingsScreen(Screen):
 
     def set_config(self, config):
         self.settings = SettingsWithNoMenu(text_size="30")
-        self.settings.add_json_panel('Pente', config, 'pente.json')
+        self.settings.add_json_panel('PentAI', config, 'PentAI.json')
 
     def on_enter(self):
         if self.settings.parent is None:

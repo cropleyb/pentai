@@ -250,7 +250,7 @@ class PenteApp(App):
 
         # Assign to self.config so all screens can get at it.
         self.config = ConfigParser()
-        self.config.read('pente.ini')
+        self.config.read('pentai.ini')
 
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
@@ -272,7 +272,7 @@ class PenteApp(App):
     
     def set_confirmation_popups(self):
         p_m.ConfirmPopup.bypass = \
-            not self.config.getint("pente", "confirm_popups")
+            not self.config.getint("PentAI", "confirm_popups")
 
     def on_pause(self):
         return True

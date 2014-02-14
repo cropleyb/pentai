@@ -47,6 +47,7 @@ class PlayersMgr():
         misc.sync()
 
     def get_recent_player_names(self, player_type, number):
+        # TODO: use "number" for # returned players
         rps = self.get_recent_players(player_type, number)
         rpns = []
         seen = set()
