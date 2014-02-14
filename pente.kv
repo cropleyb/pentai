@@ -76,8 +76,8 @@
             # TODO
 
         Button:
-            text: "Options"
-            on_release: root.app.show_options_screen()
+            text: "Settings"
+            on_release: root.app.show_settings_screen()
 
         Button:
             text: "Show Demo"
@@ -88,8 +88,6 @@
 #Help
 #Music volume
 #Start/Resume
-
-# Player selection: Spinner
 
 <SetupScreen>:
     GridLayout:
@@ -125,8 +123,6 @@
 
             Label:
                 text: "Players"
-                #size_y: 100
-                #size_hint: (1, .1)
 
         GridLayout:
             cols: 2
@@ -149,7 +145,7 @@
                 values: ('Human', 'Computer')
                 id: white_type_id
 
-            #TODO: double click to edit player?
+            # TODO: double click to edit player?
             Spinner:
                 values: root.player_names[1]
                 size_hint: (1, None)
@@ -184,14 +180,14 @@
         cols: 1
         Label:
             text: "Computer Player Editor"
-        #Line:
-            # TODO
+        # Line:
+            # TODO: <hr> equivalent
 
         Label:
             text: 'Choose Player'
 
         Spinner:
-            #TODO: double click to edit name
+            # TODO: double click to edit name
             text: root.current_name
             values: root.player_names
             size_hint: (1, None)
@@ -346,7 +342,7 @@
     Button:
         font_size: '20sp'
         text: "Settings"
-        on_release: root.ps.app.show_options_screen() # TODO: Rename
+        on_release: root.ps.app.show_settings_screen()
     Button:
         font_size: '20sp'
         text: "Menu"
@@ -419,7 +415,6 @@
         canvas:
             Color:
                 rgba: root.confirm_rect_color
-                #1, 0, 0, .5
                 id: 'confirm_rect'
             Rectangle:
                 size: (root.size[0], self.parent.board_offset[1])

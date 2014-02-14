@@ -13,7 +13,7 @@ import p_screen_manager as ps_m
 
 from ai_player_screen import *
 from setup_screen import *
-from options_screen import *
+from settings_screen import *
 from pente_screen import *
 from menu_screen import *
 from games_screen import *
@@ -45,9 +45,9 @@ class PenteApp(App):
         else:
             self.show_menu_screen()
 
-    def show_options_screen(self):
+    def show_settings_screen(self):
         self.random_transition()
-        self.root.current = "Options"
+        self.root.current = "Settings"
 
     def show_pente_screen(self):
         self.random_transition()
@@ -142,7 +142,7 @@ class PenteApp(App):
                 # Cancel any popup
                 BasePopup.clear()
             else:
-                if self.root.current == "Options":
+                if self.root.current == "Settings":
                     self.return_screen()
                 elif self.root.current == "Pente" and \
                      self.pente_screen.confirmation_in_progress:
@@ -182,7 +182,7 @@ class PenteApp(App):
         elif key == 111:
             if self.root.current in ("Load", "Pente"):
                 # or any other screen with text input
-                self.show_options_screen()
+                self.show_settings_screen()
                 return True
 
         elif key == 100: # 'd'
@@ -199,9 +199,9 @@ class PenteApp(App):
 
         else:
             if key == 115:
-                # 's' for options TODO: o
+                # 's' for setup
                 if self.root.current == "Pente":
-                    # Go to settings page
+                    # Go to setup page
                     # Probably not for production?
                     self.edit_game()
                     return True
@@ -243,7 +243,7 @@ class PenteApp(App):
 
         self.games_mgr = GamesMgr()
 
-        screens = [(MenuScreen, "Menu"), (OptionsScreen, "Options"),
+        screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
                    (AIPlayerScreen, "AI"),
                    ]
@@ -257,16 +257,16 @@ class PenteApp(App):
 
         self.menu_screen = root.get_screen("Menu")
         self.setup_screen = root.get_screen("Setup")
-        self.options_screen = root.get_screen("Options")
+        self.settings_screen = root.get_screen("Settings")
         self.games_screen = root.get_screen("Games")
         self.pente_screen = None
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         self.popup = None
 
-        # Pass the config to the options screen to use it for the
+        # Pass the config to the settings screen to use it for the
         # Kivy Settings editor.
-        self.options_screen.set_config(self.config)
+        self.settings_screen.set_config(self.config)
 
         return root
     

@@ -12,7 +12,7 @@ Start/settings screen
 Player selection, with default of last selected.
 Load game button - go to load screen
 
-Options screen:
+Settings screen:
 Help
 Mark recent moves
 Mark recent captures
@@ -33,13 +33,13 @@ def s2b(state):
     """ state string to boolean """
     return state == "down"
 
-class OptionsScreen(Screen):
+class SettingsScreen(Screen):
     # TODO
     sound_effects_vol = NumericProperty(0)
     music_vol = NumericProperty(0)
 
     def __init__(self, *args, **kwargs):
-        super(OptionsScreen, self).__init__(*args, **kwargs)
+        super(SettingsScreen, self).__init__(*args, **kwargs)
 
     def build(self):
         gl = GridLayout(cols=1)
