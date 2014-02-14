@@ -73,7 +73,7 @@ class PenteApp(App):
 
     def show_demo(self):
         d = d_m.Demo(self, self.setup_screen.size)
-        d.play()
+        d.start()
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames

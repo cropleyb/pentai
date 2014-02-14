@@ -25,6 +25,10 @@ class Demo():
 
         self.script = self.rules_script()
 
+    def start(self):
+        self.app.root.set_demo_mode(True)
+        self.play()
+
     def play(self, dt=None):
         try:
             sleep_time = self.script.next()
@@ -38,6 +42,7 @@ class Demo():
 
     def finish(self):
         self.app.show_menu_screen()
+        self.app.root.set_demo_mode(False)
 
     def rules_script(self):
         '''
