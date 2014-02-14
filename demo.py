@@ -24,26 +24,14 @@ class Demo():
         self.script = self.rules_script()
 
     def play(self, dt=None):
-        print "A"
-        '''
-        for i in range(20):
-            now = time.time()
-        '''
-
         try:
-            print "B"
             sleep_time = self.script.next()
-            print "C"
         except StopIteration:
-            print "D"
             self.finish()
             return
 
-        print "E"
         if sleep_time != None:
-            print "F, %s" % sleep_time
             Clock.schedule_once(self.play, sleep_time)
-            print "G"
 
     def finish(self):
         self.app.show_menu_screen()
@@ -250,12 +238,12 @@ class Demo():
         # 3
         mm(4, 2)
         yield(.5)
-        mm(4, 0)
+        mm(4, 3)
         yield(.5)
 
         mm(4, 1)
         yield(.5)
-        mm(4, 3)
+        mm(4, 0)
         yield(.5)
 
         # 4
