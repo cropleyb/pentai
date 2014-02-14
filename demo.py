@@ -4,6 +4,8 @@ import time
 
 from defines import *
 
+import random as rand_m
+
 import ai_genome as aig_m
 import ai_factory as f_m
 import human_player as h_m
@@ -31,6 +33,7 @@ class Demo():
             return
 
         if sleep_time != None:
+            sleep_time = (.8 + .4 * rand_m.random()) * sleep_time
             Clock.schedule_once(self.play, sleep_time)
 
     def finish(self):
