@@ -7,7 +7,9 @@ from kivy.base import *
 from kivy.config import ConfigParser
 from kivy.uix.settings import Settings
 
-from kivy.uix.screenmanager import *
+from kivy.uix.screenmanager import * # TODO: Remove
+
+import p_screen_manager as ps_m
 
 from ai_player_screen import *
 from setup_screen import *
@@ -27,10 +29,6 @@ import time
 import ai_player as aip_m # hack for debugging
 import random
 import demo as d_m
-
-class LoadScreen(Screen):
-    load = ObjectProperty(None)
-    cancel = ObjectProperty(None)
 
 class PenteApp(App):
     game_filename = StringProperty("")
@@ -236,7 +234,7 @@ class PenteApp(App):
         if Window.height < Window.width:
             Window.rotation = 90
         '''
-        root = ScreenManager()
+        root = ps_m.PScreenManager()
         self.root = root
         
         self.random_transition()
@@ -263,7 +261,6 @@ class PenteApp(App):
         self.games_screen = root.get_screen("Games")
         self.pente_screen = None
 
-        # Confirm Quit
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         self.popup = None
 
@@ -279,6 +276,12 @@ class PenteApp(App):
 
     def on_pause(self):
         return True
+
+    '''
+    def on_touch_down(self, *args, **kwargs):
+        print "ON TOUCH DOWN"
+        super(PenteApp, self).on_touch_down(*args, **kwargs)
+    '''
 
 
 if __name__ == '__main__':
