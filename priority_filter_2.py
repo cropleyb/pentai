@@ -102,7 +102,7 @@ class PriorityFilter2():
                 ret.append(self.priority_level(level, colour))
         return ret
 
-    def get_iter(self, our_colour, depth=0):
+    def get_iter(self, our_colour, depth=0, min_priority=0): # min_priority is ignored
         their_colour = opposite_colour(our_colour)
         candidate_slots = self.get_priority_levels(our_colour)
         
@@ -111,7 +111,6 @@ class PriorityFilter2():
             slot_arr = slot.iteritems()
             sorted_slot = [(count, pos) for (pos, count) in slot_arr]
             sorted_slot.sort(reverse=True)
-            #sorted_slot.reverse()
             for count, pos in sorted_slot:
                 if count > 0:
                     if not pos in tried:
