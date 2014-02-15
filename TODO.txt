@@ -1,10 +1,10 @@
 For Alpha release
+action click sound
 Delete players?
 Show all players option
 Show all games option
 Eliminate duplicate player names (fix upgrade script)
 Human Players appearing more than once in setup_screen - 2 keys per name?
-Rename app. to PentAI (ini file etc.)
 No clicking on board in review mode
 load on iPhone 
 
