@@ -88,9 +88,13 @@ class OpeningsBook(object):
                 if y < 0: y += size - 1
 
                 # Convert the game_ids to games
-                games = [self.games_mgr.get_game(gid) for gid in gids]
-
+                games = []
+                for gid in gids:
+                    g = self.games_mgr.get_game(gid)
+                    if g:
+                        games.extend(g)
                 yield (x,y), games
+
         except KeyError:
             return
 
