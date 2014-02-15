@@ -1,4 +1,6 @@
 
+from pente_exceptions import *
+
 import game_state
 import player
 import rules
@@ -107,9 +109,10 @@ class Game(object):
 
         try:
             self.current_state.make_move(move)
-        except:
+        except IllegalMoveException, e:
             # Wipe that one off.
             self.move_history = self.move_history[:-1]
+            raise e
 
         if self.autosave_filename != None:
             self.save_history()
