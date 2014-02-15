@@ -151,6 +151,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if r.center_first:
             bs = r.size
             self.game.make_move((bs/2, bs/2))
+            self.refresh_all()
         self.prompt_for_action()
 
     def display_names(self):
