@@ -34,6 +34,14 @@ class GamesMgr(gso_m.GSObserver):
         fn = "%s%s_%s.pkl" % (self.prefix, rk[1], rk[0])
         return fn
 
+    def ensure_has_id(self, game):
+        assert not game is None
+        if not hasattr(game, "game_id") or game.game_id is None:
+            game_id = self.next_id()
+            game.game_id = game_id
+
+        return game.game_id
+
     def remove_id(self, key):
         if key is None:
             return None
@@ -98,6 +106,8 @@ class GamesMgr(gso_m.GSObserver):
             # And save it to the DB when the game is finished
             if not self.prefix: # TODO: Make this a boolean self.test
                 g.current_state.add_observer(self)
+
+            # TODO: Save the game to game_db now?
         return g
 
     def save(self, g, game_db=None):
@@ -107,6 +117,7 @@ class GamesMgr(gso_m.GSObserver):
         if game_db is None:
             game_db = self.get_db(g)
         
+        self.ensure_has_id(g)
         pg = pg_m.PreservedGame(g)
         game_db[pg.key()] = pg
         game_db.sync()
