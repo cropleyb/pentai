@@ -123,6 +123,7 @@ class Game(object):
         self.players[WHITE].set_interrupted()
 
     def was_interrupted(self):
+        # TODO: Also using this combo for draws
         return self.current_state.get_won_by() == BLACK + WHITE
 
     def finished(self):
@@ -175,6 +176,7 @@ class Game(object):
         self.current_state.send_up_to_date()
 
     def history_to_str(self):
+        """ Keep this for test code and debugging """
         game_str = self.game_header()
         for i in range(len(self.move_history)):
             move = self.move_history[i]
@@ -183,6 +185,7 @@ class Game(object):
         return game_str
 
     def save_history(self):
+        """ Keep this for test code and debugging """
         game_str = self.history_to_str()
         filename = self.autosave_filename
         game_file = open(filename, "w")
@@ -191,6 +194,7 @@ class Game(object):
         game_file.close()
 
     def configure_from_str(self, s):
+        """ Keep this for test code """
         player_line, size_line, rules_line, the_rest = s.split('\n', 3)
 
         # TODO: This is ugly - these values will be replaced shortly
@@ -212,6 +216,7 @@ class Game(object):
         return the_rest
 
     def game_header(self):
+        """ Keep this for test code """
         player_line = "%s versus %s" % \
                 (self.get_player_name(1), self.get_player_name(2))
         size_line = "%sx%s"% (self.size(), self.size())
@@ -225,18 +230,16 @@ class Game(object):
         self.resume()
 
     def load_moves(self, game_str):
+        """ Keep this for test code """
         # e.g. "1. (4,4)\n2. (3,3)\n"
-        #try:
-            gs = game_str.strip()
+        gs = game_str.strip()
 
-            for line in gs.split('\n'):
-                fields = line.split(' ', 1)
-                move_number = int(fields[0][:-1])
-                move_pos_tuple = fields[1]
-                move_pos_str = move_pos_tuple[1:-1]
-                coords = move_pos_str.split(',')
-                move = int(coords[0]), int(coords[1])
-                self.make_move(move) # TODO Maybe skip this?
-        #except:
-        #    raise IncompatibleFileException("Could not read line: %s" % line)
+        for line in gs.split('\n'):
+            fields = line.split(' ', 1)
+            move_number = int(fields[0][:-1])
+            move_pos_tuple = fields[1]
+            move_pos_str = move_pos_tuple[1:-1]
+            coords = move_pos_str.split(',')
+            move = int(coords[0]), int(coords[1])
+            self.make_move(move) # TODO Maybe skip this?
 
