@@ -18,11 +18,17 @@ if __name__ == "__main__":
     print "Creating Human Players"
     pm = pm_m.PlayersMgr()
 
-    for name in ["BC", "Bruce", "Mark", "Jespah", "Arwen", "Sascha"]:
-        h = h_m.HumanPlayer(name)
+    player_names = ["BC", "Bruce", "Mark", "Jespah", "Arwen", "Sascha"]
+    player_names.reverse()
+    for name in player_names:
+        h = pm.find_by_name(name, "Human")
+        if not h:
+            h = h_m.HumanPlayer(name)
         dot()
         pm.save(h)
 
+    #sys.exit()
+    print "Creating Computer Players"
     genome = aig_m.AIGenome("")
     
     players = [
