@@ -115,11 +115,13 @@ class GamesView(GridLayout):
         try:
             # TODO: Fix this incredibly ugly hack
             try:
+                # For some reason this is not opening a selected game if it
+                # was selected through the other row for the same game
                 gid_str = da.selection[0].parent.children[-1].text
                 print "Selected: GID %s" % (gid_str)
                 self.parent.parent.set_selected_gid(int(gid_str))
-                # TODO: If it is selected already, load the game.
             except AttributeError, e:
+                # It is selected already, load the game.
                 self.parent.parent.load_game()
         except IndexError:
             print "Removed"
