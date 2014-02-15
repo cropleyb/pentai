@@ -19,6 +19,10 @@ class SetupScreen(Screen):
         self.ids.black_type_id.bind(val=self.populate_black_players)
         self.ids.white_type_id.bind(val=self.populate_white_players)
 
+    def on_enter(self):
+        self.populate_black_players()
+        self.populate_white_players()
+
     def populate_black_players(self, *args):
         ptw = self.ids.black_type_id
         self.populate_players(ptw.val, BLACK)
