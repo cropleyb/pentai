@@ -269,7 +269,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             filename = ["", black_filename, white_filename] \
                     [opposite_colour(colour)]
             size_x, size_y = self.size
-            base_x = .9 * size_x
+            base_x = .95 * size_x
 
             level = colour
 
