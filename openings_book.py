@@ -92,7 +92,7 @@ class OpeningsBook(object):
                 for gid in gids:
                     g = self.games_mgr.get_game(gid)
                     if g:
-                        games.extend(g)
+                        games.add(g)
                 yield (x,y), games
 
         except KeyError:
