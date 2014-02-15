@@ -17,9 +17,9 @@ class PreservedGame():
     def key(self):
         return self.game_id
 
-    def restore(self, ai_db):
-        p1 = ai_db.find(self.players[1])
-        p2 = ai_db.find(self.players[2])
+    def restore(self, pm, update_cache=True):
+        p1 = pm.find(self.players[1], update_cache)
+        p2 = pm.find(self.players[2], update_cache)
         orig_game = Game(rules.Rules(*self.rules), p1, p2)
         orig_game.game_id = self.game_id
         orig_game.date = self.date

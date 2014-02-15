@@ -158,7 +158,7 @@ class GamesMgr(gso_m.GSObserver):
             g = self.get_game(g_id)
         return [self.get_game(g_id) for g_id in self.unfinished_db.iterkeys() ]
 
-    def get_game(self, g_id, game_db=None):
+    def get_game(self, g_id, game_db=None, update_cache=True):
         if g_id is None:
             return None
 
@@ -171,7 +171,7 @@ class GamesMgr(gso_m.GSObserver):
         if pg is None:
             return None
 
-        g = pg.restore(self.players_mgr)
+        g = pg.restore(self.players_mgr, update_cache)
 
         # Observe game
         g.current_state.add_observer(self)

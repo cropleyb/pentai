@@ -90,7 +90,7 @@ class OpeningsBook(object):
                 # Convert the game_ids to games
                 games = []
                 for gid in gids:
-                    g = self.games_mgr.get_game(gid)
+                    g = self.games_mgr.get_game(gid, update_cache=False)
                     if g:
                         games.append(g)
                 yield (x,y), games

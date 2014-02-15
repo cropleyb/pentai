@@ -111,12 +111,13 @@ class PlayersMgr():
                 self.mark_recent_player(p_key)
                 return genome
 
-    def find(self, p_key):
+    def find(self, p_key, update_cache=True):
         try:
             p = self.players[p_key]
         except KeyError:
             return None
-        self.mark_recent_player(p_key)
+        if update_cache:
+            self.mark_recent_player(p_key)
         return self.convert_to_player(p)
 
     def convert_to_player(self, player):
