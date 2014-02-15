@@ -12,6 +12,9 @@
     height: 60
     rows: 2
 
+<Button>:
+	font_size: '25sp'
+
 <ConfirmPopup>:
     content:
     GridLayout:
@@ -307,27 +310,21 @@
     size_hint_x: .3
     cols: 1
     Button:
-        font_size: '20sp'
         text: "Rematch"
         on_release: root.ps.rematch()
     Button:
-        font_size: '20sp'
         text: "Beginning"
         on_release: root.ps.go_to_the_beginning()
     Button:
-        font_size: '20sp'
         text: "Back"
         on_release: root.ps.go_backwards_one()
     Button:
-        font_size: '20sp'
         text: "Forward"
         on_release: root.ps.go_forwards_one()
     Button:
-        font_size: '20sp'
         text: "End"
         on_release: root.ps.go_to_the_end()
     Button:
-        font_size: '20sp'
         text: "Return"
         on_release: root.ps.set_review_mode(False)
 
@@ -336,15 +333,12 @@
     cols: 1
 
     Button:
-        font_size: '20sp'
         text: "Review"
         on_release: root.ps.set_review_mode(True)
     Button:
-        font_size: '20sp'
         text: "Settings"
         on_release: root.ps.app.show_settings_screen()
     Button:
-        font_size: '20sp'
         text: "Menu"
         on_release: root.ps.app.show_menu_screen()
 
