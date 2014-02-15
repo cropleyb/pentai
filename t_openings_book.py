@@ -25,7 +25,7 @@ class ATOTest(unittest.TestCase):
 
     def tearDown(self):
         for fn in (["test_s_9_openings.pkl", "test_id_map.pkl",
-                    "test_unfinished.pkl"]):
+                    "test_unfinished.pkl", "test_s_9.pkl"]):
             try:
                 os.unlink(fn)
             except:
@@ -41,6 +41,7 @@ class ATOTest(unittest.TestCase):
     def test_add_initial_position(self):
         load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
         self.o_mgr.add_position(self.game, 1)
+        self.games_mgr.save(self.game)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
 
@@ -106,7 +107,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(move_games), 2)
         move_games.sort()
         self.assertEquals(move_games,
-                [((2,2), [sg.game_id]),
+                [((2,2), [sg]),
                  ((3,3), [self.game])])
 
     def test_find_a_symmetrical_starting_move(self):
