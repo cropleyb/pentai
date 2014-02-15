@@ -204,13 +204,16 @@ class PenteScreen(Screen, gso_m.GSObserver):
         try:
             self.game.make_move(action)
             self.refresh_all()
-            Clock.schedule_once(self.prompt_for_action, 0.01)
+            self.prompt_for_action()
         except Exception, e:
             if self.game.was_interrupted():
                 return
             self.display_error(e.message)
 
     def prompt_for_action(self, *ignored):
+        Clock.schedule_once(self.prompt_for_action_inner, 0.01)
+
+    def prompt_for_action_inner(self, *ignored):
         if self.live:
             self.game.prompt_for_action(self)
             print self.evaluator.utility()
