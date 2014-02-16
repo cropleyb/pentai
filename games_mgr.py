@@ -154,9 +154,11 @@ class GamesMgr(gso_m.GSObserver):
         return self.get_game(g_id)
 
     def get_all_unfinished(self):
+        ret = []
         for g_id in self.unfinished_db.iterkeys():
-            g = self.get_game(g_id)
-        return [self.get_game(g_id) for g_id in self.unfinished_db.iterkeys() ]
+            g = self.get_game(g_id, update_cache=False)
+            ret.append(g)
+        return ret
 
     def get_game(self, g_id, game_db=None, update_cache=True):
         if g_id is None:
