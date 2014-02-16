@@ -19,6 +19,7 @@ from menu_screen import *
 from games_screen import *
 
 from popup import *
+import my_button
 from games_mgr import *
 
 from kivy.properties import ObjectProperty
@@ -251,6 +252,8 @@ class PentAIApp(App):
         # Assign to self.config so all screens can get at it.
         self.config = ConfigParser()
         self.config.read('pentai.ini')
+
+        self.audio = a_m.Audio(self.config)
 
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)

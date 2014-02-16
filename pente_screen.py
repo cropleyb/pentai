@@ -247,11 +247,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.set_review_mode(True)
 
     def get_audio(self):
-        try:
-            return self.audio
-        except AttributeError:
-            self.audio = a_m.Audio(self.config)
-            return self.audio
+        return a_m.instance
 
     def update_captures(self, colour, captured):
         """ Update the display of captured stones below the board """

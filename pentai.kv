@@ -12,7 +12,7 @@
     height: 60
     rows: 2
 
-<Button>:
+<MyButton>:
 	font_size: '25sp'
 
 <ConfirmPopup>:
@@ -24,11 +24,11 @@
             font_size: '20sp'
         GridLayout:
             cols: 2
-            Button:
+            MyButton:
                 text: "Cancel"
                 font_size: '20sp'
                 on_release: root.clear()
-            Button:
+            MyButton:
                 text: "OK"
                 font_size: '20sp'
                 on_release: root.ok_confirm()
@@ -43,16 +43,16 @@
         GridLayout:
             rows: 1
             size_hint: (1, .1)
-            Button:
+            MyButton:
                 text: "Return"
                 on_release: root.app.return_screen()
-            Button:
+            MyButton:
                 text: "Delete"
                 on_release: root.delete_game()
-            Button:
+            MyButton:
                 text: "Edit"
                 on_release: root.edit_game()
-            Button:
+            MyButton:
                 text: "Load"
                 on_release: root.load_game()
 
@@ -61,28 +61,28 @@
         cols: 1
         size_hint: 1, .5
 
-        Button:
+        MyButton:
             id: new_game
             text: "New Game"
             on_release: root.app.show_new_game_screen()
 
-        Button:
+        MyButton:
             text: "Saved Games"
             on_release: root.app.show_games_screen()
 
-        Button:
+        MyButton:
             text: "Edit AI Players"
             on_release: root.app.show_ai_screen()
 
-        Button:
+        MyButton:
             text: "Review Game"
             # TODO
 
-        Button:
+        MyButton:
             text: "Settings"
             on_release: root.app.show_settings_screen()
 
-        Button:
+        MyButton:
             text: "Show Demo"
             on_release: root.app.show_demo()
 
@@ -158,12 +158,12 @@
                 size_hint: (1, None)
                 id: wpl_id
 
-            Button:
+            MyButton:
                 size_hint: (.2, .4)
                 text: "Return"
                 on_press: root.app.return_screen()
 
-            Button:
+            MyButton:
                 size_hint: (.2, .4)
                 text: "Start Game"
                 on_press: root.start_game()
@@ -294,37 +294,37 @@
         GridLayout:
             rows: 1 
 
-            Button:
+            MyButton:
                 text: "Return"
                 on_release: root.app.return_screen()
 
-            Button:
+            MyButton:
                 text: "Cancel"
                 on_release: root.cancel()
 
-            Button:
+            MyButton:
                 text: "Save"
                 on_release: root.save()
 
 <ReviewButtons@GridLayout>:
     size_hint_x: .3
     cols: 1
-    Button:
+    MyButton:
         text: "Rematch"
         on_release: root.ps.rematch()
-    Button:
+    MyButton:
         text: "Beginning"
         on_release: root.ps.go_to_the_beginning()
-    Button:
+    MyButton:
         text: "Back"
         on_release: root.ps.go_backwards_one()
-    Button:
+    MyButton:
         text: "Forward"
         on_release: root.ps.go_forwards_one()
-    Button:
+    MyButton:
         text: "End"
         on_release: root.ps.go_to_the_end()
-    Button:
+    MyButton:
         text: "Return"
         on_release: root.ps.set_review_mode(False)
 
@@ -332,13 +332,13 @@
     size_hint_x: .3
     cols: 1
 
-    Button:
+    MyButton:
         text: "Review"
         on_release: root.ps.set_review_mode(True)
-    Button:
+    MyButton:
         text: "Settings"
         on_release: root.ps.app.show_settings_screen()
-    Button:
+    MyButton:
         text: "Menu"
         on_release: root.ps.app.show_menu_screen()
 

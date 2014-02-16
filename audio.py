@@ -7,6 +7,8 @@ from os.path import dirname, join, basename
 import random as r_m
 from defines import *
 
+instance = None
+
 class Audio():
 # Sound effects: place, capture, tick, win, loss, music
     def __init__(self, config):
@@ -14,6 +16,9 @@ class Audio():
         self.sound_cache = {}
         self.filenames_cache = {}
         self.muted = False
+
+        global instance
+        instance = self
 
     def mute(self):
         self.muted = True
@@ -66,60 +71,9 @@ class Audio():
     def beep(self):
         self.play_sound(["beep", "beep"])
 
+    def click(self):
+        self.play_sound(["click", "click"])
+
     def music(self):
         pass
 
-'''
-def make_noise():
-    sound = SoundLoader.load("12919_sweet_trip_mm_kwik_mod_04.wav")
-    # stop the sound if it's currently playing
-    if sound.status != 'stop':
-        sound.stop()
-    sound.play()
-
-class AudioButton(Button):
-
-    filename = StringProperty(None)
-    sound = ObjectProperty(None, allownone=True)
-
-    def on_press(self):
-        if self.sound is None:
-            self.sound = SoundLoader.load(self.filename)
-        # stop the sound if it's currently playing
-        if self.sound.status != 'stop':
-            self.sound.stop()
-        self.sound.play()
-
-    def release_audio(self):
-        if self.sound:
-            self.sound.stop()
-            self.sound.unload()
-            self.sound = None
-
-
-class AudioBackground(BoxLayout):
-    pass
-
-
-class AudioApp(App):
-
-    def build(self):
-
-        root = AudioBackground(spacing=5)
-        for fn in glob(join(dirname(__file__), '*.wav')):
-        #for fn in glob(join(dirname(__file__), '*.mp3')):
-            btn = AudioButton(
-                text=basename(fn[:-4]).replace('_', ' '), filename=fn,
-                size_hint=(None, None), halign='center',
-                size=(128, 128), text_size=(118, None))
-            root.ids.sl.add_widget(btn)
-
-        return root
-
-    def release_audio(self):
-        for audiobutton in self.root.ids.sl.children:
-            audiobutton.release_audio()
-
-if __name__ == '__main__':
-    AudioApp().run()
-'''
