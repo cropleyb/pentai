@@ -13,7 +13,7 @@
     rows: 2
 
 <MyButton>:
-	font_size: '25sp'
+    font_size: '25sp'
 
 <ConfirmPopup>:
     content:
@@ -209,9 +209,11 @@
             height: '48sp'
 
             Label:
+                size_hint_x: .3
                 text: 'Depth'
 
             Slider:
+                id: depth_id
                 min: 1
                 max: 10
                 # TODO: Test odd levels play ok
@@ -219,25 +221,36 @@
                 value: root.genome.max_depth
                 on_value: root.genome.max_depth = self.value
 
+            Label:
+                size_hint_x: .2
+                text: '{}'.format(int(depth_id.value))
+
         BoxLayout:
             size_hint_y: None
             height: '48sp'
 
             Label:
+                size_hint_x: .3
                 text: 'Vision'
 
             Slider:
+                id: vision_id
                 min: 10
                 max: 100
                 step: 1
                 value: root.genome.vision
                 on_value: root.genome.vision = self.value
 
+            Label:
+                size_hint_x: .2
+                text: '{}'.format(int(vision_id.value))
+
         BoxLayout:
             size_hint_y: None
             height: '48sp'
 
             Label:
+                size_hint_x: .75
                 text: 'Openings Book'
 
             CheckBox:
@@ -272,11 +285,16 @@
                 text: 'Lines / Captures'
 
             Slider:
+                id: captures_id
                 min: 200
                 max: 400
                 step: 1
                 value: root.genome.capture_score_base
                 on_value: root.genome.capture_score_base = self.value
+
+            Label:
+                size_hint_x: .3
+                text: '{}'.format(int(captures_id.value))
 
         BoxLayout:
             size_hint_y: None
@@ -284,12 +302,18 @@
 
             Label:
                 text: 'Misjudgement'
+                halign: 'left'
 
             Slider:
+                id: mj_id
                 min: 0
                 max: 50
                 value: root.genome.misjudgement
                 on_value: root.genome.misjudgement = self.value
+
+            Label:
+                size_hint_x: .3
+                text: '{}'.format(int(2*mj_id.value))
 
         GridLayout:
             rows: 1 
