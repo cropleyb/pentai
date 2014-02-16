@@ -53,3 +53,4 @@ if __name__ == "__main__":
 
     unittest.TextTestRunner().run(suite())
     
+    m_m.delete("test_")
