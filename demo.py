@@ -120,6 +120,7 @@ class Demo():
         yield(5)
 
         # Diagonal white win
+        app.pente_screen.set_review_mode(False)
         game.go_to_the_beginning()
         yield(2)
 
@@ -149,6 +150,7 @@ class Demo():
         yield(5)
 
         # Captures
+        app.pente_screen.set_review_mode(False)
         game.go_to_the_beginning()
         yield(2)
 
