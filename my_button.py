@@ -7,3 +7,11 @@ class MyButton(Button):
         a_m.instance.click()
         super(MyButton, self).on_touch_up(*args, **kwargs)
 
+    def sim_press(self):
+        self.state = "down"
+
+    def sim_release(self):
+        self.state = "normal"
+        a_m.instance.click()
+
+

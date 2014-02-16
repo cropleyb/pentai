@@ -44,12 +44,12 @@ class SetupScreen(Screen):
 
     def create_game(self):
         self.game = self.app.games_mgr.create_game()
-        self.ids.start_button.text = "Start Game"
+        self.ids.start_game_id.text = "Start Game"
 
     def alter_game(self, game):
         self.game = game
         self.set_GUI_from_game(self.game)
-        self.ids.start_button.text = "Resume Game"
+        self.ids.start_game_id.text = "Resume Game"
 
     def set_up_game_from_GUI(self):
         try:

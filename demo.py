@@ -41,26 +41,40 @@ class Demo():
             Clock.schedule_once(self.play, sleep_time)
 
     def finish(self):
+        self.app.pente_screen = None
         self.app.show_menu_screen()
         self.app.root.set_demo_mode(False)
 
     def rules_script(self):
-        '''
-        self.app.show_menu_screen()
-        yield(2)
-        '''
-        #self.app.menu_screen.ids.new_game.state = "down"
-        #yield(1)
-        #self.app.menu_screen.ids.new_game.state = "normal"
-        #yield(1)
+        # We're already on the menu screen
+        app = self.app
+        ms = app.menu_screen
 
-        self.app.show_new_game_screen()
-        yield(2)
+        yield(1)
+        ms.ids.new_game_id.sim_press()
+        yield(.2)
+        ms.ids.new_game_id.sim_release()
 
+        app.show_new_game_screen()
+        yield(.1)
+
+        ss = app.setup_screen
+        # TODO: Select white player type
+        #ss.ids.white_type_id = "Computer"
+        # TODO: Select computer player somehow?
+        #ss.ids.wpl_id.text = "PentAI"
+
+        yield(1)
+
+        yield(1)
+        ss.ids.start_game_id.sim_press()
+        yield(.2)
+        ss.ids.start_game_id.sim_release()
+
+        # Use most recent human player name
         pmgr = pm_m.PlayersMgr()
-
         human = pmgr.get_recent_player_names("Human", 1)[0]
-        p1 = h_m.HumanPlayer(human) # TODO: Use most recent human player name
+        p1 = h_m.HumanPlayer(human)
 
         aif = f_m.AIFactory()
         genome = aig_m.AIGenome("PentAI")
@@ -71,7 +85,7 @@ class Demo():
         r = r_m.Rules(13, "standard")
         game = g_m.Game(r, p1, p2)
 
-        yield(2)
+        #yield(2)
         # And start it...
         #st()
 

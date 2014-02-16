@@ -62,7 +62,7 @@
         size_hint: 1, .5
 
         MyButton:
-            id: new_game
+            id: new_game_id
             text: "New Game"
             on_release: root.app.show_new_game_screen()
 
@@ -167,7 +167,7 @@
                 size_hint: (.2, .4)
                 text: "Start Game"
                 on_press: root.start_game()
-                id: start_button
+                id: start_game_id
 
 
 # Globally set all Labels
@@ -325,7 +325,7 @@
         text: "End"
         on_release: root.ps.go_to_the_end()
     MyButton:
-        text: "Return"
+        text: "Play"
         on_release: root.ps.set_review_mode(False)
 
 <PlayButtons>:
