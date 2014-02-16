@@ -20,7 +20,7 @@ def get_filename(prefix):
 the_instance = None
 
 def get_instance(prefix=None):
-    if not the_instance:
+    if the_instance is None:
         MiscDB(prefix)
     return the_instance
 
