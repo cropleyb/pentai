@@ -1,5 +1,4 @@
 For Alpha release
-action click sound
 Delete players?
 Show all players option
 Show all games option
