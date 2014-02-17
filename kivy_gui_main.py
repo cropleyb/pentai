@@ -132,6 +132,7 @@ class PentAIApp(App):
 
     def close_confirmed(self):
         # TODO Send to the current screen for cleanup?
+        self.root.leave()
         self.stop()
 
     def hook_keyboard(self, window, key, *ignored_args):               

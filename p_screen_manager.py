@@ -25,4 +25,7 @@ class PScreenManager(ScreenManager):
             print "ON TOUCH UP IGNORED"
         else:
             return super(PScreenManager, self).on_touch_up(*args, **kwargs)
+
+    def leave(self):
+        self.current_screen.on_leave()
     
