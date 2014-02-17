@@ -15,6 +15,7 @@ class Audio():
         self.config = config
         self.sound_cache = {}
         self.filenames_cache = {}
+        self.last_played = {}
         self.muted = False
 
         global instance
@@ -33,12 +34,16 @@ class Audio():
         fn_in_subdir = join("media", *file_paths)
         # Avoid doing the glob every time
         try:
-            filenames = self.filenames_cache[fn_in_subdir]
+            filenames = self.filenames_cache[fn_in_subdir][:]
+            last_played = self.last_played[fn_in_subdir]
+            if len(filenames) > 1:
+                filenames.remove(last_played)
         except KeyError:
             self.filenames_cache[fn_in_subdir] = filenames \
                 = g_m.glob("%s*.wav" % fn_in_subdir)
 
         filename = r_m.choice(filenames)
+        self.last_played[fn_in_subdir] = filename
 
         # Avoid loading the sound every time
         try:
