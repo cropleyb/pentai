@@ -334,8 +334,8 @@
     size_hint_x: .3
     cols: 1
     MyButton:
-        text: "Rematch"
-        on_release: root.ps.rematch()
+        text: "Play"
+        on_release: root.ps.set_review_mode(False)
     MyButton:
         text: "Beginning"
         on_release: root.ps.go_to_the_beginning()
@@ -349,8 +349,8 @@
         text: "End"
         on_release: root.ps.go_to_the_end()
     MyButton:
-        text: "Play"
-        on_release: root.ps.set_review_mode(False)
+        text: "Rematch"
+        on_release: root.ps.rematch()
 
 <PlayButtons>:
     size_hint_x: .3
