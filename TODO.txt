@@ -1,13 +1,18 @@
 For Alpha release
+Click to end demo
+Watching demo changes most recent AI player
+No clicking on board in review mode
+(cheat mode option?)
+run_ai generates lots of players with the same name
 Delete players?
 Show all players option
 Show all games option
 Eliminate duplicate player names (fix upgrade script)
-Human Players appearing more than once in setup_screen - 2 keys per name?
-No clicking on board in review mode
-load on iPhone 
+Demo halting occasionally
+load on iPhone
 
 Beta release
+About section, Hasbro/Winning Moves, me etc. Scroll upper section of menu screen
 Button presses in Demos
 Sounds for delete, confirm
 Memory error detection
@@ -34,6 +39,7 @@ iTunes
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
 
 Later
+Zoom for 19x19?
 More demos?
 Click on Player name in Game screen to edit
 Chess Clock, mode on/off
