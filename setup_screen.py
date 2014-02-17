@@ -24,17 +24,23 @@ class SetupScreen(Screen):
         self.populate_white_players()
 
     def populate_black_players(self, *args):
-        ptw = self.ids.black_type_id
-        self.populate_players(ptw.val, BLACK)
+        ptb = self.ids.black_type_id
+        white_player = self.ids.wpl_id.text
+        self.populate_players(ptb.val, BLACK, exclude=white_player)
         self.ids.bpl_id.text = self.player_names[BLACK][0]
 
     def populate_white_players(self, *args):
         ptw = self.ids.white_type_id
-        self.populate_players(ptw.val, WHITE)
+        black_player = self.ids.bpl_id.text
+        self.populate_players(ptw.val, WHITE, exclude=black_player)
         self.ids.wpl_id.text = self.player_names[WHITE][0]
 
-    def populate_players(self, pt, colour):
+    def populate_players(self, pt, colour, exclude):
         rpl = self.pm.get_recent_player_names(pt, 30)
+        try:
+            rpl.remove(exclude)
+        except:
+            pass
         self.player_names[colour] = rpl
 
     def start_game(self, unused=None):
