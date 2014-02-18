@@ -1,9 +1,5 @@
 For Alpha release
-Allow moves after take back
-Watching demo changes most recent AI player
-Watching demo changes saves demo game
-Demo of review mode
-(cheat mode option?)
+Allow moves after take back. Working?
 run_ai generates lots of players with the same name
 Delete players?
 Show all players option

@@ -191,7 +191,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def on_enter(self):
         self.refresh_all()
 
-    def on_leave(self):
+    def on_pre_leave(self):
         if not self.game.finished():
             self.gm.save(self.game)
 

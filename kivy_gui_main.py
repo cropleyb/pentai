@@ -91,11 +91,12 @@ class PentAIApp(App):
         d.start()
 
     def finish_demo(self):
-        self.pente_screen = None
         self.show_menu_screen()
+        self.pente_screen = None
         self.root.set_demo(None)
+        Clock.schedule_once(self.restore_from_demo, .1)
 
-        # st()
+    def restore_from_demo(self, *ignored):
         for db_inst in [self.games_mgr, misc_db.get_instance()]:
             # Restore each to backup
             db_inst.__dict__ = db_inst._backup
