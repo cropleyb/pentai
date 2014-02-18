@@ -27,7 +27,6 @@ class Demo():
         self.script = self.rules_script()
 
     def start(self):
-        self.app.root.set_demo(self)
         self.play()
 
     def play(self, dt=None):
@@ -49,9 +48,7 @@ class Demo():
         self.interrupted = True
 
     def finish(self):
-        self.app.pente_screen = None
-        self.app.show_menu_screen()
-        self.app.root.set_demo(None)
+        self.app.finish_demo()
 
     def rules_script(self):
         # We're already on the menu screen
@@ -100,6 +97,8 @@ class Demo():
         # demo flag: Disable prompting of players
         self.app.start_game(game, [457, 720], demo=True) # size is a HACK
         yield(1.2) # Compensating for .7 wait at start?!
+
+        ps = self.app.pente_screen
 
         def mm(x,y):
             game.make_move((x,y))
@@ -241,7 +240,7 @@ class Demo():
         mm(6, 4)
         yield(5)
 
-        # 5 Pairs wins
+        # 5 Pairs win the game
         game.go_to_the_beginning()
         yield(2)
 
@@ -300,3 +299,34 @@ class Demo():
         mm(3, 9)
         yield(4)
 
+        # Demonstrate review mode
+
+        # Click go to beginning
+        beginning_button = ps.panel_buttons.ids.beginning_id
+        beginning_button.sim_press()
+        yield(.3)
+
+        beginning_button.sim_release()
+        game.go_to_the_beginning()
+        yield(.7)
+
+        # Click forward a few times
+        forward_button = ps.panel_buttons.ids.forward_id
+        for i in range(5):
+            forward_button.sim_press()
+            yield(.2)
+
+            forward_button.sim_release()
+            game.go_forwards_one()
+            yield(.5)
+
+        # Click go to end
+        end_button = ps.panel_buttons.ids.end_id
+        end_button.sim_press()
+        yield(.4)
+
+        end_button.sim_release()
+        ps.go_to_the_end()
+        yield(5)
+
+        ########

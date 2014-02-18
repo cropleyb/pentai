@@ -29,7 +29,10 @@ import os # TODO: Remove?
 import time
 import ai_player as aip_m # hack for debugging
 import random
+
+import copy as c_m
 import demo as d_m
+import misc_db
 
 class PentAIApp(App):
     game_filename = StringProperty("")
@@ -74,7 +77,28 @@ class PentAIApp(App):
 
     def show_demo(self):
         d = d_m.Demo(self, self.setup_screen.size)
+
+        # Intercept all touch events
+        self.root.set_demo(d)
+
+        for db_inst in [self.games_mgr, misc_db.get_instance()]:
+            # Deep copy and save.
+            # (Players are in games_mgr)
+            orig = db_inst.__dict__
+            db_inst.__dict__ = c_m.deepcopy(db_inst.__dict__)
+            db_inst._backup = orig
+
         d.start()
+
+    def finish_demo(self):
+        self.pente_screen = None
+        self.show_menu_screen()
+        self.root.set_demo(None)
+
+        # st()
+        for db_inst in [self.games_mgr, misc_db.get_instance()]:
+            # Restore each to backup
+            db_inst.__dict__ = db_inst._backup
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
