@@ -532,7 +532,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
             # Controls below the board recognized the touch
             return super(PenteScreen, self).on_touch_down(touch)
-
+        
+        # i.e. else
+        if self.are_reviewing():
+            return True
 
         # Check that it is a human's turn.
         current_player = self.game.get_current_player()
@@ -555,6 +558,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         # are only using touch down.
 
         if touch.pos[1] > self.board_offset[1]:
+            if self.are_reviewing():
+                return True
+            
             # Upper section of the screen
             # If there is an active marker,
             # replace the marker with a piece of the appropriate colour
@@ -634,6 +640,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
             # This is assuming that controls below the board
             # are only using touch down.
             return True
+        if self.are_reviewing():
+            return True
         if self.marker != None:
             # Move the marker position
             try:
@@ -648,8 +656,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def get_gridlines(self):
         return []
 
-    def set_review_mode(self, review):
-        if review:
+    def set_review_mode(self, val):
+        self.reviewing = val
+
+        if val:
             cls = ReviewButtons
         else:
             cls = PlayButtons
@@ -659,6 +669,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         pb_parent = self.ids.panel_buttons_id
         pb_parent.clear_widgets()
         pb_parent.add_widget(panel_buttons)
+
+    def are_reviewing(self):
+        return self.reviewing
 
 '''
 class Image(Scatter):
