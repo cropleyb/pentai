@@ -360,6 +360,12 @@
         text: "Review"
         on_release: root.ps.set_review_mode(True)
     MyButton:
+        text: "Take Back"
+        on_release: root.ps.go_backwards_one()
+    MyButton:
+        text: "Rematch"
+        on_release: root.ps.rematch()
+    MyButton:
         text: "Settings"
         on_release: root.ps.app.show_settings_screen()
     MyButton:
