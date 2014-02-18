@@ -44,10 +44,11 @@ class OpeningsBook(object):
         # TODO: Fix this time order dependency
         self.games_mgr.save(g)
 
-        for mn in range(1, 1+len(g.move_history)):
-            # Only needs to be looked up the first time
-            db = self.add_position(g, mn, db)
-        db.sync()
+        if g.finished():
+            for mn in range(1, 1+len(g.move_history)):
+                # Only needs to be looked up the first time
+                db = self.add_position(g, mn, db)
+            db.sync()
 
     def add_position(self, game, move_number, db=None, sync=False):
         game.go_to_move(move_number)
@@ -64,6 +65,7 @@ class OpeningsBook(object):
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
         arr = pos_slot.setdefault(standardised_move, [])
+        # TODO: Should only be in there once per id
         arr.append(game.game_id)
 
         if sync:

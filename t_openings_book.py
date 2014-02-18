@@ -10,9 +10,6 @@ from games_mgr import *
 from player import *
 
 
-def load_moves_and_set_win(game, moves, winner):
-    game.load_moves(moves)
-    game.current_state.set_won_by(winner)
 
 class ATOTest(unittest.TestCase):
     def setUp(self):
@@ -31,6 +28,10 @@ class ATOTest(unittest.TestCase):
             except:
                 pass
 
+    def load_moves_and_set_win(self, moves, winner=BLACK):
+        self.game.load_moves(moves)
+        self.game.current_state.set_won_by(winner)
+
     def test_no_suggestions(self):
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
 
@@ -39,7 +40,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(moves), 0)
 
     def test_add_initial_position(self):
-        load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_position(self.game, 1)
         self.games_mgr.save(self.game)
 
@@ -52,7 +53,7 @@ class ATOTest(unittest.TestCase):
 
     def test_add_first_white_move(self):
         # Force assymetry
-        load_moves_and_set_win(self.game, "1. (2,3)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win("1. (2,3)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_game(self.game)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
@@ -64,8 +65,8 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((3,3), [self.game]))
 
     def test_suggest_second_black_move(self):
-        load_moves_and_set_win(self.game,
-                "1. (1,4)\n2. (2,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win(
+                "1. (1,4)\n2. (2,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_game(self.game)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
@@ -77,7 +78,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((3,4), [self.game]))
 
     def test_add_second_white_move(self):
-        load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_game(self.game)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
@@ -89,13 +90,13 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((5,4), [self.game]))
 
     def test_find_two_alternatives(self):
-        load_moves_and_set_win(self.game, "1. (1,3)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win("1. (1,3)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_game(self.game)
         
         # Add a second historical game
         sg = Game(self.rules, Player("Shazam"), Player("Floff"))
         sg.load_moves("1. (1,3)\n2. (2,2)\n3. (6,4)") # etc.
-        self.game.current_state.set_won_by(WHITE)
+        sg.current_state.set_won_by(WHITE)
         self.o_mgr.add_game(sg)
         
         load_game = Game(self.rules, Player("Now1"), Player("Now2"))
@@ -111,7 +112,7 @@ class ATOTest(unittest.TestCase):
                  ((3,3), [self.game])])
 
     def test_find_a_symmetrical_starting_move(self):
-        self.game.load_moves("1. (3,4)")
+        self.load_moves_and_set_win("1. (3,4)")
 
         self.o_mgr.add_game(self.game)
         lg = Game(self.rules, Player("Now1"), Player("Now2"))
@@ -123,7 +124,8 @@ class ATOTest(unittest.TestCase):
 
     # !./t_openings_db.py ATOTest.test_find_move_from_symmetrical_game
     def test_find_move_from_symmetrical_game(self):
-        self.game.load_moves("1. (1,2)\n2. (2,3)\n3. (1,4)\n4. (5,4)")
+        self.load_moves_and_set_win(
+                "1. (1,2)\n2. (2,3)\n3. (1,4)\n4. (5,4)")
         self.o_mgr.add_game(self.game)
 
         lg = Game(self.rules, Player("Now1"), Player("Now2"))
@@ -137,6 +139,7 @@ class ATOTest(unittest.TestCase):
     def run_and_check_moves(self, moves_str, last_move_pos):
         self.game.load_moves(moves_str)
         self.game.make_move(last_move_pos)
+        self.game.current_state.set_won_by(BLACK)
         self.o_mgr.add_game(self.game)
 
         lg = Game(self.rules, Player("Now1"), Player("Now2"))
@@ -178,7 +181,7 @@ class ATOTest(unittest.TestCase):
 
     # ! ./t_openings_book.py ATOTest.test_persist_position
     def test_persist_position(self):
-        load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_position(self.game, 1, sync=True)
 
         games_mgr = GamesMgr(prefix="test_")
@@ -190,7 +193,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((4,4), [self.game]))
 
     def test_persist_position_lookup_different_size(self):
-        load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_position(self.game, 1, sync=True)
 
         games_mgr = GamesMgr(prefix="test_")
@@ -202,7 +205,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(moves), 0)
 
     def test_persist_position_lookup_different_rules_type(self):
-        load_moves_and_set_win(self.game, "1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", BLACK)
+        self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.o_mgr.add_position(self.game, 1, sync=True)
 
         games_mgr = GamesMgr(prefix="test_")
@@ -210,6 +213,17 @@ class ATOTest(unittest.TestCase):
 
         rules2 = Rules(9, "5 in a row")
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))
+        moves = list(o_mgr2.get_move_games(g2))
+        self.assertEquals(len(moves), 0)
+
+    def test_only_save_finished_games(self):
+        self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", EMPTY)
+        self.o_mgr.add_game(self.game)
+
+        games_mgr = GamesMgr(prefix="test_")
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
+
+        g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))
         self.assertEquals(len(moves), 0)
 
