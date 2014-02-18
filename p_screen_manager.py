@@ -3,26 +3,30 @@ from kivy.uix.screenmanager import *
 class PScreenManager(ScreenManager):
     def __init__(self, *args, **kwargs):
         self.demo_mode = False
+        self.demo = None
         super(PScreenManager, self).__init__(*args, **kwargs)
 
-    def set_demo_mode(self, val):
-        self.demo_mode = val
+    def set_demo(self, d):
+        self.demo = d 
+
+    def in_demo_mode(self):
+        return self.demo != None
 
     def on_touch_down(self, *args, **kwargs):
-        if self.demo_mode:
-            print "ON TOUCH DOWN IGNORED"
+        if self.in_demo_mode():
+            self.demo.interrupt()
         else:
             return super(PScreenManager, self).on_touch_down(*args, **kwargs)
     
     def on_touch_move(self, *args, **kwargs):
-        if self.demo_mode:
-            print "ON TOUCH MOVE IGNORED"
+        if self.in_demo_mode():
+            pass
         else:
             return super(PScreenManager, self).on_touch_move(*args, **kwargs)
     
     def on_touch_up(self, *args, **kwargs):
-        if self.demo_mode:
-            print "ON TOUCH UP IGNORED"
+        if self.in_demo_mode():
+            pass
         else:
             return super(PScreenManager, self).on_touch_up(*args, **kwargs)
 

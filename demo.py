@@ -17,6 +17,7 @@ class Demo():
     def __init__(self, app, size):
         self.app = app
         self.size = size
+        self.interrupted = False
 
         # TODO Save settings
         # for settings demo
@@ -26,7 +27,7 @@ class Demo():
         self.script = self.rules_script()
 
     def start(self):
-        self.app.root.set_demo_mode(True)
+        self.app.root.set_demo(self)
         self.play()
 
     def play(self, dt=None):
@@ -36,14 +37,21 @@ class Demo():
             self.finish()
             return
 
+        if self.interrupted:
+            self.finish()
+            return
+
         if sleep_time != None:
             sleep_time = (.8 + .4 * rand_m.random()) * sleep_time
             Clock.schedule_once(self.play, sleep_time)
 
+    def interrupt(self):
+        self.interrupted = True
+
     def finish(self):
         self.app.pente_screen = None
         self.app.show_menu_screen()
-        self.app.root.set_demo_mode(False)
+        self.app.root.set_demo(None)
 
     def rules_script(self):
         # We're already on the menu screen
