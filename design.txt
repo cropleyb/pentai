@@ -557,3 +557,8 @@ Historical Move Times - in move history?
 Tick callback?
 Game time controls - Game? Player?
 
+Demo impact
+-----------
+How to prevent demo from affecting DBs and other state?
+- Set a demo mode for each? Ugly and ineffective.
+- Deep Copy all DB classes before, restore them after?
