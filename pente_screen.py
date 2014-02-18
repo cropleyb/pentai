@@ -665,6 +665,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             cls = PlayButtons
             self.go_to_the_end()
         panel_buttons = cls()
+        self.panel_buttons = panel_buttons
         panel_buttons.ps = self
         pb_parent = self.ids.panel_buttons_id
         pb_parent.clear_widgets()
