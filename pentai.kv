@@ -338,15 +338,19 @@
         on_release: root.ps.set_review_mode(False)
     MyButton:
         text: "Beginning"
+        id: beginning_id
         on_release: root.ps.go_to_the_beginning()
     MyButton:
         text: "Back"
         on_release: root.ps.go_backwards_one()
-    Button:
+    MyButton:
         text: "Forward"
+        silent: True
+        id: forward_id
         on_release: root.ps.go_forwards_one()
     MyButton:
         text: "End"
+        id: end_id
         on_release: root.ps.go_to_the_end()
     MyButton:
         text: "Rematch"
@@ -358,6 +362,7 @@
 
     MyButton:
         text: "Review"
+        id: review_id
         on_release: root.ps.set_review_mode(True)
     MyButton:
         text: "Take Back"
