@@ -1,7 +1,8 @@
 For Alpha release
-Click to end demo
+Allow moves after take back
 Watching demo changes most recent AI player
-No clicking on board in review mode
+Watching demo changes saves demo game
+Demo of review mode
 (cheat mode option?)
 run_ai generates lots of players with the same name
 Delete players?
