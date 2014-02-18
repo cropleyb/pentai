@@ -4,7 +4,8 @@ import audio as a_m
 
 class MyButton(Button):
     def on_touch_up(self, *args, **kwargs):
-        a_m.instance.click()
+        if not hasattr(self, "silent"):
+            a_m.instance.click()
         super(MyButton, self).on_touch_up(*args, **kwargs)
 
     def sim_press(self):
@@ -12,6 +13,7 @@ class MyButton(Button):
 
     def sim_release(self):
         self.state = "normal"
-        a_m.instance.click()
+        if not hasattr(self, "silent"):
+            a_m.instance.click()
 
 
