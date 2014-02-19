@@ -18,6 +18,7 @@ class Demo():
         self.app = app
         self.size = size
         self.interrupted = False
+        self.speed_factor = 1.0
 
         # TODO Save settings
         # for settings demo
@@ -31,7 +32,8 @@ class Demo():
 
     def play(self, dt=None):
         try:
-            sleep_time = self.script.next()
+            sleep_time = self.script.next() / self.speed_factor
+
         except StopIteration:
             self.finish()
             return
@@ -90,9 +92,7 @@ class Demo():
         r = r_m.Rules(13, "standard")
         game = g_m.Game(r, p1, p2)
 
-        #yield(2)
         # And start it...
-        #st()
 
         # demo flag: Disable prompting of players
         self.app.start_game(game, [457, 720], demo=True) # size is a HACK
@@ -319,6 +319,8 @@ class Demo():
             forward_button.sim_release()
             game.go_forwards_one()
             yield(.5)
+
+        yield(2)
 
         # Click go to end
         end_button = ps.panel_buttons.ids.end_id
