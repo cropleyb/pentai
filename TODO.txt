@@ -6,7 +6,6 @@ Show all players option
 Show all games option
 Eliminate duplicate player names (fix upgrade script)
 Demo halting occasionally
-Demo size hack
 load on iPhone. Start from scratch
 Enter Human Player during login
 Prettify "About" text
