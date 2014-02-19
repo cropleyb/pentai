@@ -192,8 +192,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.refresh_all()
 
     def on_pre_leave(self):
-        if not self.game.finished():
-            self.gm.save(self.game)
+        try:
+            self.ob.add_game(self.game)
+        except OpeningsBookDuplicateException:
+            pass
 
     def perform(self, dt):
         if self.action_queue.empty():

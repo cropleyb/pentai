@@ -21,6 +21,7 @@ from games_screen import *
 from popup import *
 import my_button
 from games_mgr import *
+import openings_book as ob_m
 
 from kivy.properties import ObjectProperty
 
@@ -81,7 +82,7 @@ class PentAIApp(App):
         # Intercept all touch events
         self.root.set_demo(d)
 
-        for db_inst in [self.games_mgr, misc_db.get_instance()]:
+        for db_inst in [self.games_mgr, self.openings_book, misc_db.get_instance()]:
             # Deep copy and save.
             # (Players are in games_mgr)
             orig = db_inst.__dict__
@@ -97,7 +98,7 @@ class PentAIApp(App):
         Clock.schedule_once(self.restore_from_demo, .1)
 
     def restore_from_demo(self, *ignored):
-        for db_inst in [self.games_mgr, misc_db.get_instance()]:
+        for db_inst in [self.games_mgr, self.openings_book, misc_db.get_instance()]:
             # Restore each to backup
             db_inst.__dict__ = db_inst._backup
 
@@ -241,6 +242,7 @@ class PentAIApp(App):
         scr.app = self
         scr.config = self.config
         scr.gm = self.games_mgr
+        scr.ob = self.openings_book
         scr.pm = self.games_mgr.players_mgr
         self.root.add_widget(scr)
 
@@ -270,6 +272,7 @@ class PentAIApp(App):
         self.game = None
 
         self.games_mgr = GamesMgr()
+        self.openings_book = ob_m.OpeningsBook(self.games_mgr)
 
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
