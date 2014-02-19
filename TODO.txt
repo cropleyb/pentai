@@ -1,6 +1,5 @@
 For Alpha release
 Allow moves after take back. Working?
-"Saved games" -> "Current Games"?
 run_ai generates lots of players with the same name
 Delete players?
 Show all players option
@@ -8,7 +7,10 @@ Show all games option
 Eliminate duplicate player names (fix upgrade script)
 Demo halting occasionally
 Demo size hack
-load on iPhone
+load on iPhone. Start from scratch
+Enter Human Player during login
+Prettify "About" text
+Include a pente section on my website.
 
 Beta release
 About section, Hasbro/Winning Moves, me etc. Scroll upper section of menu screen
