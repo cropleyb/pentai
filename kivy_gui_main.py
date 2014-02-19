@@ -217,6 +217,7 @@ class PentAIApp(App):
             ab_m.debug = not ab_m.debug
             aip_m.set_skip_openings_book(ab_m.debug)
             print "Debug set to %s" % ab_m.debug
+            st() # Could help sometimes?
             return True
 
         elif key == 8: # 'delete'
