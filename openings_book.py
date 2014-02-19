@@ -4,6 +4,8 @@ import standardise
 import persistent_dict as pd_m
 import os
 from defines import *
+import preserved_game as pg_m
+from pente_exceptions import *
 
 instance = None
 
@@ -41,14 +43,24 @@ class OpeningsBook(object):
 
     def add_game(self, g, db=None):
         # Save the game first, before it is manipulated
-        # TODO: Fix this time order dependency
         self.games_mgr.save(g)
 
-        if g.finished():
-            for mn in range(1, 1+len(g.move_history)):
-                # Only needs to be looked up the first time
-                db = self.add_position(g, mn, db)
-            db.sync()
+        # Copy the game instance as this process munges the game.
+        pm = self.games_mgr.players_mgr
+        g = pg_m.PreservedGame(g).restore(pm)
+
+        if not g.finished():
+            # Only add finished games to the openings book
+            return
+
+        # Set the game as unfinished to game_state from raising exceptions
+        # when we try to replay the game?! (TODO: Why is this special?)
+        g.current_state._won_by = EMPTY
+
+        for mn in range(1, 1+len(g.move_history)):
+            # Only needs to be looked up the first time
+            db = self.add_position(g, mn, db)
+        db.sync()
 
     def add_position(self, game, move_number, db=None, sync=False):
         game.go_to_move(move_number)
@@ -65,7 +77,10 @@ class OpeningsBook(object):
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
         arr = pos_slot.setdefault(standardised_move, [])
-        # TODO: Should only be in there once per id
+        if move_number == 1:
+            # Should only be in there once per id
+            if game.game_id in arr:
+                raise OpeningsBookDuplicateException()
         arr.append(game.game_id)
 
         if sync:

@@ -18,3 +18,6 @@ class IncompatibleFileException(Exception):
 
 class UnknownRuleType(Exception):
     pass
+
+class OpeningsBookDuplicateException(Exception):
+    pass

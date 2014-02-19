@@ -227,6 +227,16 @@ class ATOTest(unittest.TestCase):
         moves = list(o_mgr2.get_move_games(g2))
         self.assertEquals(len(moves), 0)
 
+    def test_only_save_games_once(self):
+        self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
+
+        self.o_mgr.add_game(self.game)
+        try:
+            self.o_mgr.add_game(self.game)
+        except OpeningsBookDuplicateException:
+            return
+        self.fail()
+
     # TODO: rules types delegation tests
 
 if __name__ == "__main__":
