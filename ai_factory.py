@@ -71,9 +71,11 @@ class AIFactory: # TODO: These are just functions
 
         genome.set_override(True)
         try:
-            uc.misjudgement = genome.misjudgement
+            uc.judgement = genome.judgement
         except:
-            uc.misjudgement = genome.misjudgement = 0
+            uc.judgement = 100 - genome.misjudgement
+            genome.judgement = uc.judgement
+            # TODO? del genome.misjudgement
         '''
         # Example of how to handle new fields:
         try:

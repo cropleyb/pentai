@@ -8,6 +8,7 @@ import utility_stats as us_m # For debugging
 class UtilityCalculator():
     def __init__(self):
         pass
+        #self.misjudgement = 100 - self.judgement
 
     def set_rules(self, rules):
         self.rules = rules
@@ -37,8 +38,12 @@ class UtilityCalculator():
         # us_copy = us_m.UtilityStats(utility_stats)
         # return self.utility_inner(state, utility_stats), us_copy
         val = self.utility_inner(state, utility_stats)
-        if self.misjudgement > 0:
-            val = 2 ** (r_m.random() * self.misjudgement) * val
+        try:
+            mj = self.misjudgement
+        except AttributeError:
+            mj = self.misjudgement = 100 - self.judgement
+        if mj > 0:
+            val = 4 ** (r_m.random() * mj) * val
         return val, 0
 
     def utility_inner(self, state, utility_stats):

@@ -30,7 +30,7 @@ class AIGenome(object):
             "move_factor": 45,
             "scale_pob": False,
             "force_depth": 0,
-            "misjudgement": 0,
+            "judgement": 100,
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 
