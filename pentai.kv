@@ -56,7 +56,17 @@
                 text: "Load"
                 on_release: root.load_game()
 
+<ScrollableLabel>:
+    Label:
+		size_hint_y: None
+		height: self.texture_size[1]
+		text_size: self.width - 20, None
+		text: root.text
+
 <MenuScreen>:
+    ScrollableLabel:
+		text: root.about_text
+
     GridLayout:
         cols: 1
         size_hint: 1, .5
@@ -67,7 +77,7 @@
             on_release: root.app.show_new_game_screen()
 
         MyButton:
-            text: "Saved Games"
+            text: "In Progress"
             on_release: root.app.show_games_screen()
 
         MyButton:
@@ -301,19 +311,19 @@
             height: '48sp'
 
             Label:
-                text: 'Misjudgement'
+                text: 'Judgement'
                 halign: 'left'
 
             Slider:
-                id: mj_id
+                id: j_id
                 min: 0
-                max: 50
-                value: root.genome.misjudgement
-                on_value: root.genome.misjudgement = self.value
+                max: 100
+                value: root.genome.judgement
+                on_value: root.genome.judgement = self.value
 
             Label:
                 size_hint_x: .3
-                text: '{}'.format(int(2*mj_id.value))
+                text: '{}'.format(int(j_id.value))
 
         GridLayout:
             rows: 1 
