@@ -1,6 +1,8 @@
 from kivy.uix.popup import *
 from kivy.properties import StringProperty
 
+from defines import *
+
 class BasePopup(Popup):
     """ There should only be one active popup at a time. """
 
@@ -41,13 +43,17 @@ class MessagePopup(BasePopup):
         super(MessagePopup, self).__init__(*args, **kwargs)
     
     def on_touch_down(self, touch):
-        self.going = True
-        return True
+        if not touch.is_mouse_scrolling:
+            self.going = True
+            return True
+        return super(BasePopup, self).on_touch_down(touch)
 
     def on_touch_up(self, touch):
-        if self.going:
-            self.ok_confirm()
-        self.going = not self.going
+        if not touch.is_mouse_scrolling:
+            if self.going:
+                self.ok_confirm()
+            self.going = not self.going
+            return True
         return super(BasePopup, self).on_touch_up(touch)
 
 class ConfirmPopup(BasePopup):
