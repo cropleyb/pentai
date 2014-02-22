@@ -550,23 +550,15 @@ Advanced settings: (show advanced AI settings toggle to show)
 Width (mmpdl)
 Capture preference (Low, Medium, High => capture_score_base 200, 300, 400)
 
+Chess Clock
+-----------
+Current Times: Game or GameState or Player?
+Historical Move Times - in move history?
+Tick callback?
+Game time controls - Game? Player?
+
 Demo impact
 -----------
 How to prevent demo from affecting DBs and other state?
 - Set a demo mode for each? Ugly and ineffective.
-- Deep Copy all DB classes before, restore them after? Done, works nicely
-
-Chess Clock
------------
-Current Times: Player
-Historical Move Times - in or parallel to move history in Game
-Game time controls - Game
-Tick callback set up pente_screen.
-
-GUI Player
-----------
-Split out of pente_screen - TODO
-prompt_for_action() -> start timer, delegate to player
-double speed timer when time is nearly up? later
-calls Player.tick(time_interval)
-
+- Deep Copy all DB classes before, restore them after?
