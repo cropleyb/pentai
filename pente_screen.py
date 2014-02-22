@@ -131,7 +131,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         # Need some time for kivy to finish setting up, otherwise
         # the pieces are all stacked in the bottom left corner,
         # or we get lots of GUI lag for the screen transition (AI)
-        transition_time = 0.7
+        transition_time = 1.0
 
         start_func = self.make_first_move
         if len(self.game_filename) > 0:
