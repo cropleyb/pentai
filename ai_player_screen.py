@@ -7,6 +7,8 @@ from kivy.uix.label import Label
 from kivy.properties import *
 from kivy.uix.screenmanager import Screen
 
+from scrollable_label import *
+
 import rules
 import game
 import human_player
@@ -14,6 +16,8 @@ import ai_genome
 import ai_factory
 
 import checkbox_list as cb_l
+
+from popup import *
 
 from kivy.event import EventDispatcher
 
@@ -105,3 +109,18 @@ class AIPlayerScreen(Screen):
         self.current_name = self.genome.p_name
         self.refresh_names()
 
+    def show_help(self):
+        help_text = """You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below.
+There are several settings that can be adjusted for a given AI player profile:
+    Depth: Controls how many moves the AI looks ahead each move.
+    Vision: How often does the AI miss a move possibility entirely?
+    Openings book: Should the AI be able to refer to previous games?
+    Lines/Captures: How much value should the AI place on lines versus captures?
+    Judgement: How well should the AI judge the value of positions?
+
+Several profiles are included, have a look at and experiment with their configurations, or create your own.
+
+"""
+        st = ScrollableLabel(text=help_text)
+        MessagePopup(title='Help', content=st).open()
+		
