@@ -30,11 +30,12 @@ moved_marker_filename_b = "./media/moved_marker_b.png"
 
 
 class PenteScreen(Screen, gso_m.GSObserver):
-    source = StringProperty(None)
+    # GuiPlayer
     # TODO: Get the times hooked up
     player_name = ListProperty([None, "Black", "White"])
     player_time = ListProperty([None, "0:00", "0:00"])
     captured_widgets = ListProperty([None, [], []])
+
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
     border_colour = ListProperty([20,0,0,1])
@@ -43,10 +44,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
     confirm_rect_color = ListProperty([0, 0, 0, 0])
 
     def __init__(self, screen_size, filename, *args, **kwargs):
+        # GuiPlayer?
+        self.moved_marker = [None, None, None]
+
         self.marker = None
         self.stones_by_board_pos = {}
         self.action_queue = Queue.Queue()
-        self.moved_marker = [None, None, None]
         self.ghosts = []
         self.ghost_colour = None
         self.confirmation_in_progress = None
@@ -75,6 +78,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.remove_ghosts()
         self.cancel_confirmation()
 
+    # GuiPlayer
     def setup_turn_markers(self):
         self.turn_markers = [None]
         for colour in [BLACK, WHITE]:
@@ -92,6 +96,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.set_review_mode(False)
         og = self.game
         rules = og.get_rules()
+        # Loser goes first
         colours = [WHITE, BLACK]
         if og.get_won_by() == WHITE:
             colours = [BLACK, WHITE]
@@ -142,6 +147,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.prompt_for_action()
         self.live = val
 
+    # GuiPlayer?
     def make_first_move(self, dt):
         """
         Some rule variations require that the first black move must
@@ -154,6 +160,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.refresh_all()
         self.prompt_for_action()
 
+    # GuiPlayer
     def display_names(self):
         for colour in (BLACK, WHITE):
             level = colour
@@ -189,7 +196,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.get_audio().unmute()
 
     def on_enter(self):
+        Clock.schedule_interval(self.tick, 0.5)
         self.refresh_all()
+
+    def tick(self, *ignored):
+        self.get_audio().tick()
 
     def on_pre_leave(self):
         try:
@@ -252,6 +263,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def get_audio(self):
         return a_m.instance
 
+    # KivyPlayer
     def update_captures(self, colour, captured):
         """ Update the display of captured stones below the board """
         if self.game.rules.stones_for_capture_win <= 0:
@@ -294,17 +306,19 @@ class PenteScreen(Screen, gso_m.GSObserver):
                     Clock.schedule_once(audio.capture , 0.2)
 
     def refresh_all(self):
+        # KivyPlayer
         self.display_names()
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
 
+    # KivyPlayer
     def get_turn_marker(self, colour):
         if self.turn_markers is None:
             self.setup_turn_markers()
         return self.turn_markers[colour]
 
-
+    # KivyPlayer
     def refresh_captures_and_winner(self):
         """ Update fields in the panel from changes to the game state """
         # TODO: Only call this when the game is up to date
@@ -498,6 +512,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def show_ghosts(self):
         return self.config.getint("PentAI", "mark_captures")
+
+    def take_back_move(self):
+        self.reviewing = False
+        self.get_audio().mute()
+        self.game.go_backwards_one()
+        self.refresh_all()
+        self.get_audio().unmute()
 
     def go_to_the_beginning(self):
         self.game.go_to_the_beginning()

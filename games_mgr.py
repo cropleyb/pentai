@@ -160,6 +160,10 @@ class GamesMgr(gso_m.GSObserver):
             ret.append(g)
         return ret
 
+    '''
+    def get_recently_finished(self):
+    '''
+
     def get_game(self, g_id, game_db=None, update_cache=True):
         if g_id is None:
             return None

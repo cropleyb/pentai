@@ -135,6 +135,11 @@ class Game(object):
     def get_won_by(self):
         return self.current_state.get_won_by()
 
+    def status(self):
+        won_by = self.current_state.get_won_by()
+        ret = ["Unf.", "B", "W", "D"][won_by]
+        return ret
+
     def winner_name(self):
         return self.players[self.current_state.get_won_by()]
 

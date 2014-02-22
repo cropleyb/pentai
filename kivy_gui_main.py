@@ -38,6 +38,10 @@ import misc_db
 class PentAIApp(App):
     game_filename = StringProperty("")
 
+    def __init__(self, *args, **kwargs):
+        self.debug = False
+        super(PentAIApp, self).__init__(*args, **kwargs)
+
     def display_error(self, message):
         self.popup = MessagePopup(title='Error', content=Label(text=message, font_size='20sp'), \
                 size_hint=(.8, .2))
@@ -216,6 +220,7 @@ class PentAIApp(App):
         elif key == 100: # 'd'
             # Debug
             ab_m.debug = not ab_m.debug
+            self.debug = ab_m.debug
             aip_m.set_skip_openings_book(ab_m.debug)
             print "Debug set to %s" % ab_m.debug
             st() # Could help sometimes?

@@ -1,28 +1,24 @@
 For Alpha release
-Allow moves after take back. Working?
-run_ai generates lots of players with the same name
-Delete players?
-Show all players option
-Show all games option
+Take back when there are 2 AI players: Stop them playing?
+Allow moves after take back. Working? Not always
+Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
-Demo halting occasionally
 load on iPhone. Start from scratch
 Enter Human Player during login
 Prettify "About" text
+Winning Ways link: import webbrowser; webbrowser.open(url)
 Include a pente section on my website.
 
 Beta release
-About section, Hasbro/Winning Moves, me etc. Scroll upper section of menu screen
-Button presses in Demos
+Prevent naming players the same
+Show all games option?  Games Screen show win / underway?
+run_ai generates lots of players with the same name
 Sounds for delete, confirm
 Memory error detection
 Fix Tournament rules
 Fix rules demo - click to skip sections, double click to end, swipe for forwards/backwards, up/down for speed
 Icon for the app.
-# Games Screen 2 stories for each game line, show win etc. -> IRC
 Submit Pull requests
-video or recorded moves explaining the rules of pente
-Prevent naming players the same
 Tony isn't getting any moves
 Multiline input into name boxes should be prevented
 IOS build: simulation blocked by: https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
@@ -38,6 +34,7 @@ iTunes
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
 
 Later
+Click on player type to select - partly working already...
 Zoom for 19x19?
 More demos?
 Click on Player name in Game screen to edit

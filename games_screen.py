@@ -74,6 +74,12 @@ def game_data(game):
         data['white'] = "Corrupted"
 
     data['date'] = str(game.get_date())
+    #data['status_colour'] = [0,0,0,.5] #game.get_won_by()
+    wb = game.get_won_by()
+    if wb == BLACK:
+        data['deselected_color'] = [0,0,0,.5] #game.get_won_by()
+        data['selected_color'] = [0,0,0,.5] #game.get_won_by()
+    data['height'] = 50
     data['size'] = str(game.size())
     data['rules'] = str(game.rules.get_type_name())
     data['is_selected'] = False
@@ -127,13 +133,17 @@ class GamesView(GridLayout):
             print "Removed"
 
     def fill_er_up(self, unused=None):
+        dc = 'deselected_color'
+        sc = 'selected_color'
         args_converter = \
             lambda row_index, rec: \
                 {'size_hint_y': None,
                  'height': 25,
+                 #'height': rec['height'],
+                 #'background_color': rec['status_colour'],
                  'cls_dicts': [
                        {'cls': ListItemButton,
-                           'kwargs': {'text': rec['id']}},
+                           'kwargs': {'text': rec['id']}}, #, dc: rec[dc]}},
                        {'cls': ListItemButton,
                            'kwargs': {'text': rec['black']}},
                        {'cls': ListItemButton,
@@ -172,3 +182,13 @@ class GamesView(GridLayout):
         self.add_widget(list_view)
         self.view = list_view
 
+'''
+class DoubleListItemButton(GridLayout, ListItemButton):
+    def __init__(self, text1, text2, *args, **kwargs):
+        self.rows = 1
+        super(DoubleListItemButton, self).__init__(*args, **kwargs)
+        w1 = ListItemButton(text=text1)
+        self.add_widget(w1)
+        w2 = ListItemButton(text=text2)
+        self.add_widget(w2)
+'''

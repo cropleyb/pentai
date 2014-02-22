@@ -65,7 +65,10 @@ class Audio():
         self.play_sound(["stones", "capture"])
 
     def tick(self):
+        # TODO
         pass
+        #self.play_sound(["tick", "tick"])
+        #self.play_sound(["click", "click"])
 
     def win(self):
         self.play_sound(["win", "win"])
