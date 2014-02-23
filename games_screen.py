@@ -7,6 +7,7 @@ from kivy.uix.listview import ListItemButton, ListItemLabel, \
 from kivy.uix.gridlayout import GridLayout
 
 import popup as p_m
+import audio as a_m
 
 from defines import *
 
@@ -142,17 +143,17 @@ class GamesView(GridLayout):
                  #'height': rec['height'],
                  #'background_color': rec['status_colour'],
                  'cls_dicts': [
-                       {'cls': ListItemButton,
+                       {'cls': MyListItemButton,
                            'kwargs': {'text': rec['id']}}, #, dc: rec[dc]}},
-                       {'cls': ListItemButton,
+                       {'cls': MyListItemButton,
                            'kwargs': {'text': rec['black']}},
-                       {'cls': ListItemButton,
+                       {'cls': MyListItemButton,
                            'kwargs': {'text': rec['white']}},
-                       {'cls': ListItemButton,
+                       {'cls': MyListItemButton,
                            'kwargs': {'text': rec['date']}},
-                       {'cls': ListItemButton,
+                       {'cls': MyListItemButton,
                            'kwargs': {'text': rec['size']}},
-                       {'cls': ListItemButton,
+                       {'cls': MyListItemButton,
                            'kwargs': {'text': rec['rules']}},
                        ]}
 
@@ -182,13 +183,10 @@ class GamesView(GridLayout):
         self.add_widget(list_view)
         self.view = list_view
 
-'''
-class DoubleListItemButton(GridLayout, ListItemButton):
-    def __init__(self, text1, text2, *args, **kwargs):
-        self.rows = 1
-        super(DoubleListItemButton, self).__init__(*args, **kwargs)
-        w1 = ListItemButton(text=text1)
-        self.add_widget(w1)
-        w2 = ListItemButton(text=text2)
-        self.add_widget(w2)
-'''
+class MyListItemButton(ListItemButton):
+    """ Add click sound """
+    def on_touch_down(self, touch):
+        # TODO: Check Scroll
+        a_m.instance.click()
+        super(MyListItemButton, self).on_touch_down(touch)
+
