@@ -1,6 +1,8 @@
 from kivy.uix.popup import *
 from kivy.properties import StringProperty
 
+import audio as a_m
+
 from defines import *
 
 class BasePopup(Popup):
@@ -17,6 +19,7 @@ class BasePopup(Popup):
             BasePopup.my_active.ok_confirm()
 
     def ok_confirm(self):
+        a_m.instance.click()
         BasePopup.my_active = None
         self.dismiss()
         return True
