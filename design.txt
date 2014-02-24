@@ -561,12 +561,14 @@ Chess Clock
 Current Times: Player
 Historical Move Times - in or parallel to move history in Game
 Game time controls - Game
-Tick callback set up pente_screen.
+Tick callback set up pente_screen, or GuiPlayer
+Time intervals: from 1/s to 4/s. Smooth accel.
+(.5 * (1 + remaining time/original time)) ** 2 (s)
 
 GUI Player
 ----------
 Split out of pente_screen - TODO
 prompt_for_action() -> start timer, delegate to player
-double speed timer when time is nearly up? later
+Linear speed up -> quadratic curve
 calls Player.tick(time_interval)
 
