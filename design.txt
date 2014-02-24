@@ -558,7 +558,7 @@ How to prevent demo from affecting DBs and other state?
 
 Chess Clock
 -----------
-Current Times: Player
+Current Times: Player. Hmmm - these are not about a particular game
 Historical Move Times - in or parallel to move history in Game
 Game time controls - Game
 Tick callback set up pente_screen, or GuiPlayer

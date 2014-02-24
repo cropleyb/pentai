@@ -8,7 +8,7 @@ class GuiPlayer(object):
     def __init__(self, player, widget):
         self.player = player
         self.widget = widget
-        total_time = player.get_remaining_time()
+        total_time = player.get_total_time()
         self.total_time = total_time
         self.audio_remaining_time = total_time
         self.video_remaining_time = total_time
@@ -19,7 +19,6 @@ class GuiPlayer(object):
         if self.audio_queued_tick == None:
             self.tick_audio(0)
             self.tick_video(0)
-            print "IN PROMPT"
 
     def make_move(self):
         # Stop both timers
