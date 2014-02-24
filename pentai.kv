@@ -434,8 +434,11 @@
                 rows: 2
                 # TODO: duplication
                 MyBigLabel:
-                    # TODO: times
-                    text: root.player_time[1]
+                    id: black_time_id
+                    #text: root.player_time[1]
+                    #text: root.players[1].video_remaining_time
+                    #text: root.get_remaining_time(1) # TODO: kivy import syntax for BLACK
+                    text: ""
                     color: (0,0,0,1)
                 MyBigLabel:
                 MyBigLabel:
@@ -444,8 +447,9 @@
                 MyBigLabel:
 
                 MyBigLabel:
-                    # TODO: times
-                    text: root.player_time[2]
+                    id: white_time_id
+                    text: ""
+                    #text: root.player_time[2]
                     color: (1,1,1,1)
                 MyBigLabel:
                 MyBigLabel:

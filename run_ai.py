@@ -102,8 +102,8 @@ class Match():
 
     def play_some_games(self):
 
-        self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = False
+        #self.genome1.use_openings_book = False
+        #self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
@@ -140,11 +140,12 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        for game_length in range(2,4):
-        #for game_length in range(5,6):
+        #for game_length in range(2,4):
+        #for game_length in range(2,3):
+        for game_length in range(5,6):
         #for game_length in range(5,8):
-            #for board_size in [13]:
-            for board_size in [9, 13, 19]:
+            for board_size in [13]:
+            #for board_size in [9, 13, 19]:
                 for first_player in [0, 1]:
                     self.set_up(game_length)
                     players = [self.p1, self.p2]
@@ -164,6 +165,7 @@ import pstats, cProfile
 if __name__ == "__main__":
     random.seed()
     #while True:
+    '''
     m = Match()
     m.play_some_games()
     '''
@@ -173,4 +175,3 @@ if __name__ == "__main__":
     s = pstats.Stats("Profile.prof")
     #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
     s.strip_dirs().sort_stats("time").print_stats(20)
-    '''

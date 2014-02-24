@@ -77,6 +77,7 @@ class Game(object):
     def to_move_colour(self):
         return self.current_state.to_move_colour()
 
+    # TODO: Move this out of game, it seems to be gui stuff
     def prompt_for_action(self, gui):
         if self.was_interrupted():
             return

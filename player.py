@@ -27,6 +27,9 @@ class Player():
             del self.name
         return name
 
+    def get_remaining_time(self):
+        return 100 # TODO
+
     def prompt_for_action(self, game, gui):
         pass
 

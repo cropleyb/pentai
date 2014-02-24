@@ -21,7 +21,6 @@ if False:
     ])
 if False:
     cy_modules.extend([
-        'budget_searcher.py',
         'utility_calculator.py',
         'direction_strips.py',
         'alpha_beta.py',

@@ -5,12 +5,12 @@ from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
 
-from evaluator import *
 import gs_observer as gso_m
 
 import audio as a_m
 from defines import *
 from gui import *
+import gui_player as gp_m
 
 import Queue
 import datetime # TODO: Remove when old file format is gone
@@ -34,6 +34,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     # TODO: Get the times hooked up
     player_name = ListProperty([None, "Black", "White"])
     player_time = ListProperty([None, "0:00", "0:00"])
+    players = ListProperty([None])
     captured_widgets = ListProperty([None, [], []])
 
     gridlines = ListProperty([])
@@ -105,6 +106,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
         g = self.gm.create_game(rules, p1, p2)
         self.app.start_game(g, self.size)
 
+    def get_remaining_time(self, colour):
+        if self.game == None:
+            return ""
+        return self.players[colour].video_remaining_time
+
     def set_game(self, game):
         self.clean_board()
         self.game = game
@@ -119,11 +125,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
         cs = game.get_current_state()
         cs.add_observer(self)
 
-        self.evaluator = Evaluator(cs)
-
         self.trig = Clock.create_trigger(self.perform)
         self.display_names()
         self.setup_grid()
+
+        # TODO: Ugly
+        for colour, time_id in [
+                (BLACK, self.ids.black_time_id),
+                (WHITE, self.ids.white_time_id)]:
+            self.players.append(gp_m.GuiPlayer(game.get_player(colour), time_id))
 
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
@@ -166,6 +176,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
             level = colour
             self.player_name[level] = self.game.get_player_name(colour)
 
+    '''
+    def add_players(self):
+        self.players.append(GuiPlayer(30))
+        self.players.append(GuiPlayer(30))
+    '''
+
     def display_error(self, message):
         self.get_audio().beep()
         self.app.display_error(message)
@@ -196,11 +212,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.get_audio().unmute()
 
     def on_enter(self):
-        Clock.schedule_interval(self.tick, 0.5)
+        '''
+        # Temp.
+        self.gp = gp_m.GuiPlayer(30)
+        self.gp.prompt_for_move()
+        '''
         self.refresh_all()
-
-    def tick(self, *ignored):
-        self.get_audio().tick()
 
     def on_pre_leave(self):
         try:
@@ -230,7 +247,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def prompt_for_action_inner(self, *ignored):
         if self.live:
             self.game.prompt_for_action(self)
-            print self.evaluator.utility()
+            colour = self.game.to_move_colour()
+            # TODO: current_player attribute?
+            self.players[colour].prompt_for_move()
 
     def board_size(self):
         return self.game.size()
@@ -245,9 +264,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def after_set_occ(self, game, pos, colour):
         self.make_move_on_the_gui_board(pos, colour)
+        if colour:
+            self.players[colour].make_move() # TODO: "made_move"
 
+    '''
+    # NOT HOOKED UP
     def up_to_date(self, game):
+        colour = self.game.to_move_colour()
+        # TODO: current_player attribute?
+        st()
+        self.players[opposite_colour(colour)].make_move()
         self.refresh_all()
+    '''
 
     def after_game_won(self, game, colour):
         # Play win or loss sound
@@ -523,26 +551,22 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def go_to_the_beginning(self):
         self.game.go_to_the_beginning()
         self.refresh_all()
-        print self.evaluator.utility()
 
     def go_forwards_one(self):
         self.game.go_forwards_one()
         self.refresh_all()
-        print self.evaluator.utility()
 
     def go_backwards_one(self):
         self.get_audio().mute()
         self.game.go_backwards_one()
         self.refresh_all()
         self.get_audio().unmute()
-        print self.evaluator.utility()
 
     def go_to_the_end(self):
         self.get_audio().mute()
         self.game.go_to_the_end()
         self.refresh_all()
         self.get_audio().unmute()
-        print self.evaluator.utility()
 
     def on_touch_down(self, touch):
         if touch.pos[1] < self.board_offset[1]:
