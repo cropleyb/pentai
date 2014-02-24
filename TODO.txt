@@ -1,6 +1,6 @@
 For Alpha release
 Take back when there are 2 AI players: Stop them playing?
-Allow moves after take back. Working? Not always
+Allow moves after take back. Working? Not always?
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
 load on iPhone. Start from scratch
@@ -32,6 +32,7 @@ Review mode no clicking on board
 icons for everything for internationalization?
 iTunes
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
+Reimplement Settings Screen
 
 Later
 Click on player type to select - partly working already...
