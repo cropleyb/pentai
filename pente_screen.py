@@ -178,12 +178,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             level = colour
             self.player_name[level] = self.game.get_player_name(colour)
 
-    '''
-    def add_players(self):
-        self.players.append(GuiPlayer(30))
-        self.players.append(GuiPlayer(30))
-    '''
-
     def display_error(self, message):
         self.get_audio().beep()
         self.app.display_error(message)
@@ -243,10 +237,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def prompt_for_action_inner(self, *ignored):
         if self.live:
-            self.game.prompt_for_action(self)
-            colour = self.game.to_move_colour()
-            # TODO: add current_player attribute?
-            self.players[colour].prompt_for_move()
+            game = self.game
+            game.prompt_for_action(self)
+
+            if not game.finished():
+                # TODO: game.prompt_for_action in here too?!
+                # TODO: add current_player attribute?
+                colour = game.to_move_colour()
+                self.players[colour].prompt_for_move()
 
     def board_size(self):
         return self.game.size()
