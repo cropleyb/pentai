@@ -168,6 +168,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
             bs = r.size
             self.game.make_move((bs/2, bs/2))
             self.refresh_all()
+            self.players[BLACK].prompt_for_move()
+            self.players[BLACK].make_move()
         self.prompt_for_action()
 
     # GuiPlayer
@@ -212,11 +214,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.get_audio().unmute()
 
     def on_enter(self):
-        '''
-        # Temp.
-        self.gp = gp_m.GuiPlayer(30)
-        self.gp.prompt_for_move()
-        '''
         self.refresh_all()
 
     def on_pre_leave(self):
@@ -248,7 +245,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if self.live:
             self.game.prompt_for_action(self)
             colour = self.game.to_move_colour()
-            # TODO: current_player attribute?
+            # TODO: add current_player attribute?
             self.players[colour].prompt_for_move()
 
     def board_size(self):
