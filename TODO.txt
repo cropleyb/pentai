@@ -1,4 +1,5 @@
 For Alpha release
+Show both clocks on entering
 Take back when there are 2 AI players: Stop them playing?
 Allow moves after take back. Working? Not always?
 Demo halting occasionally?

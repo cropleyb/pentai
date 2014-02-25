@@ -31,7 +31,6 @@ moved_marker_filename_b = "./media/moved_marker_b.png"
 
 class PenteScreen(Screen, gso_m.GSObserver):
     # GuiPlayer
-    # TODO: Get the times hooked up
     player_name = ListProperty([None, "Black", "White"])
     player_time = ListProperty([None, "0:00", "0:00"])
     players = ListProperty([None])
@@ -209,12 +208,23 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def on_enter(self):
         self.refresh_all()
+        self.start_ticking()
 
     def on_pre_leave(self):
+        self.stop_ticking()
         try:
             self.ob.add_game(self.game)
         except OpeningsBookDuplicateException:
             pass
+
+    def start_ticking(self):
+        if not self.game.finished():
+            colour = self.game.to_move_colour()
+            self.players[colour].prompt_for_move()
+
+    def stop_ticking(self):
+        colour = self.game.to_move_colour()
+        self.players[colour].make_move() # TODO: "made_move"
 
     def perform(self, dt):
         if self.action_queue.empty():
@@ -240,11 +250,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
             game = self.game
             game.prompt_for_action(self)
 
-            if not game.finished():
-                # TODO: game.prompt_for_action in here too?!
-                # TODO: add current_player attribute?
-                colour = game.to_move_colour()
-                self.players[colour].prompt_for_move()
+            # TODO: game.prompt_for_action if not finished?
+            self.start_ticking()
 
     def board_size(self):
         return self.game.size()
@@ -261,16 +268,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.make_move_on_the_gui_board(pos, colour)
         if colour:
             self.players[colour].make_move() # TODO: "made_move"
-
-    '''
-    # NOT HOOKED UP
-    def up_to_date(self, game):
-        colour = self.game.to_move_colour()
-        # TODO: current_player attribute?
-        st()
-        self.players[opposite_colour(colour)].make_move()
-        self.refresh_all()
-    '''
 
     def after_game_won(self, game, colour):
         # Play win or loss sound
@@ -703,9 +700,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         if val:
             cls = ReviewButtons
+            # Stop ticking
+            self.stop_ticking()
         else:
             cls = PlayButtons
             self.go_to_the_end()
+            # Start ticking
+            self.start_ticking()
         panel_buttons = cls()
         self.panel_buttons = panel_buttons
         panel_buttons.ps = self
