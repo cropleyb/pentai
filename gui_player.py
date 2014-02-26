@@ -45,7 +45,7 @@ class GuiPlayer(object):
 
         rem = self.video_remaining_time
 
-        self.widget.text = "%s:%s" % (rem/60, rem%60)
+        self.widget.text = "%s:%02d" % (rem/60, rem%60)
 
         if rem > 0:
             self.video_queued_tick = Clock.schedule_once(self.tick_video, 1)
