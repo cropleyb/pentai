@@ -33,8 +33,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
     # GuiPlayer
     player_name = ListProperty([None, "Black", "White"])
     player_time = ListProperty([None, "0:00", "0:00"])
-    players = ListProperty([None])
     captured_widgets = ListProperty([None, [], []])
+    players = ListProperty([None])
 
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
