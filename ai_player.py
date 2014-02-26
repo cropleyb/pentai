@@ -31,7 +31,7 @@ class AIPlayer(p_m.Player):
         return self.genome == other.genome
 
     def use_openings_book(self):
-        return not self.openings_book is None and not skip_openings_book
+        return not (self.openings_book is None) and not skip_openings_book
 
     def set_use_openings_book(self, openings_book):
         self.openings_book = openings_book
@@ -47,6 +47,7 @@ class AIPlayer(p_m.Player):
 
     def attach_to_game(self, base_game):
         self.ab_game = ab_game.ABGame(self, base_game)
+        self.openings_mover = None
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:
@@ -82,11 +83,6 @@ class AIPlayer(p_m.Player):
             move = om.get_a_good_move()
             if move:
                 return move
-            else:
-                # min depth for turning off openings book
-                turn = base_game.get_move_number()
-                if turn > 15: # This is a complete guess
-                    self.openings_book = None
 
     def do_the_search(self):
         try:
@@ -95,11 +91,14 @@ class AIPlayer(p_m.Player):
             self.ab_game.base_game.set_won_by(BLACK+WHITE)
 
     def do_the_search_inner(self):
+        ab_game = self.ab_game
+
         move = self.make_opening_move()
         if move:
-            return move
-
-        ab_game = self.ab_game
+            if ab_game.base_game.get_board().get_occ(move) == EMPTY:
+                return move
+            else:
+                print "Corrupt opening suggestion ignored"
 
         # TODO: Don't reset if it is our move, we have "thinking
         # in opponents time" turned on, and our opponent is not a computer
@@ -107,8 +106,6 @@ class AIPlayer(p_m.Player):
         print "size of transposition table: %s" % len(ab_game.transposition_table)
         '''
         ab_game.reset_transposition_table()
-
-        #print ab_game.current_state
 
         move, value = ab_m.alphabeta_search(ab_game.current_state, ab_game)
         if self.ab_game.interrupted:
