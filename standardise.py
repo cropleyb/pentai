@@ -99,23 +99,48 @@ def fwd7(x, y):
 def rev7(x, y):
     return (x, -y)
 
-operations = [(diagonal_flip, fwd1, rev1),
-              (calendar_flip, fwd2, rev2),
-              (diagonal_flip, fwd3, rev3),
-              (calendar_flip, fwd4, rev4),
-              (diagonal_flip, fwd5, rev5),
-              (calendar_flip, fwd6, rev6),
-              (diagonal_flip, fwd7, rev7)]
+operations = None
+last_size = 0
+
+def get_operation(ind, size):
+    global operations, last_size
+
+    if operations == None or last_size != size:
+        def wrap(func):
+            def w(x, y):
+                xx, yy = func(x, y)
+                if xx < 0:
+                    xx += (size-1)
+                if yy < 0:
+                    yy += (size-1)
+                return xx, yy
+            return w
+        operations = [(diagonal_flip, wrap(fwd1), wrap(rev1)),
+                      (calendar_flip, wrap(fwd2), wrap(rev2)),
+                      (diagonal_flip, wrap(fwd3), wrap(rev3)),
+                      (calendar_flip, wrap(fwd4), wrap(rev4)),
+                      (diagonal_flip, wrap(fwd5), wrap(rev5)),
+                      (calendar_flip, wrap(fwd6), wrap(rev6)),
+                      (diagonal_flip, wrap(fwd7), wrap(rev7))]
+        last_size = size
+    try:
+        return operations[ind]
+    except IndexError:
+        pass
 
 def standardise(orig_state):
     state = GameState(orig_state.game, parent=orig_state)
     possibilities = [(state, fwd0, rev0)]
 
-    for operation, fwd, rev in operations:
+    size = state.game.size()
+
+    for ind in range(7):
+        operation, fwd, rev = get_operation(ind, size)
         state = GameState(state.game, parent=state)
         operation(state)
         possibilities.append((state, fwd, rev))
 
+    #st()
     pb = [(p[0].board.strips[0].strips, p) for p in possibilities]
 
     s = min(pb)[1]
