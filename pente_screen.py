@@ -167,7 +167,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             bs = r.size
             self.game.make_move((bs/2, bs/2))
             self.refresh_all()
-            self.players[BLACK].prompt_for_move()
             self.players[BLACK].make_move()
         self.prompt_for_action()
 
@@ -220,7 +219,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def start_ticking(self):
         if not self.game.finished():
             colour = self.game.to_move_colour()
-            self.players[colour].prompt_for_move()
+            self.players[colour].prompt_for_move(colour)
 
     def stop_ticking(self):
         colour = self.game.to_move_colour()

@@ -61,5 +61,17 @@
         "section": "PentAI",
         "key": "effects_volume",
         ".5": "auto"
+    },
+    {
+        "type": "title",
+        "title": "Tick"
+    },
+    {
+        "type": "bool",
+        "title": "Tick",
+        "desc": "Should the clock make a ticking sound?",
+        "section": "PentAI",
+        "key": "tick",
+        "true": "auto"
     }
 ]

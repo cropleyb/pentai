@@ -64,11 +64,10 @@ class Audio():
     def capture(self, ignored=None):
         self.play_sound(["stones", "capture"])
 
-    def tick(self):
-        # TODO
-        pass
-        #self.play_sound(["tick", "tick"])
-        #self.play_sound(["click", "click"])
+    def tick(self, colour):
+        if self.config.getint("PentAI", "tick"):
+            fn = "tick%s" % "nBW"[colour]
+            self.play_sound(["tick", fn])
 
     def win(self):
         self.play_sound(["win", "win"])
