@@ -1,6 +1,5 @@
 import random
 import pdb
-import time # TEMP
 
 from defines import *
 
@@ -10,9 +9,6 @@ class OpeningsMover(object):
         self.game = game
 
     def get_a_good_move(self):
-        print "Searching openings book"
-        start = time.time()
-
         wins = 0
         losses = 0
         totals = []
@@ -55,13 +51,9 @@ class OpeningsMover(object):
 
         for move, score in move_scores:
             if score > rand_val:
-                end = time.time()
-                diff = end - start
-                print "Move found in %s" % diff
                 return move
             rand_val -= score
 
-        print "No move found"
         # Fall through to inner filter
         return None
 
