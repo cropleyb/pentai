@@ -68,7 +68,7 @@ class Audio():
         # TODO
         pass
         #self.play_sound(["tick", "tick"])
-        self.play_sound(["click", "click"])
+        #self.play_sound(["click", "click"])
 
     def win(self):
         self.play_sound(["win", "win"])
