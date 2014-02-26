@@ -76,6 +76,8 @@ class OpeningsBook(object):
         pos_slot = db.setdefault(position_key, {})
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
+        assert(standardised_move[0] >= 0)
+        assert(standardised_move[1] >= 0)
         arr = pos_slot.setdefault(standardised_move, [])
         if move_number == 1:
             # Should only be in there once per id
@@ -96,6 +98,8 @@ class OpeningsBook(object):
                               game.get_captured(WHITE))
 
         db = self.get_db(game)
+
+        options = {}
         try:
             pos_slot = db[position_key]
             size = game.size()
@@ -105,18 +109,17 @@ class OpeningsBook(object):
                 if y < 0: y += size - 1
 
                 # Convert the game_ids to games
-                games = []
                 for gid in gids:
                     g = self.games_mgr.get_game(gid, update_cache=False)
                     if g:
-                        games.append(g)
-                yield (x,y), games
-
+                        options.setdefault((x,y),[]).append(g)
         except KeyError:
             return
+        for move, games in options.iteritems():
+            yield move, games
 
     def after_game_won(self, game, colour):
-        # TODO: Add the game to the openings library if req.
+        # Add the game to the openings library if req.
         # (i.e. we're subscribed)
         self.add_game(game)
 
