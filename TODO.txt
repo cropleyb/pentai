@@ -1,6 +1,6 @@
 For Alpha release
 Show both clocks on entering
-Take back when there are 2 AI players: Stop them playing?
+Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
 Allow moves after take back. Working? Not always?
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
@@ -20,7 +20,7 @@ Fix Tournament rules
 Fix rules demo - click to skip sections, double click to end, swipe for forwards/backwards, up/down for speed
 Icon for the app.
 Submit Pull requests
-Tony isn't getting any moves
+# Tony isn't getting any moves - haven't seen this since
 Multiline input into name boxes should be prevented
 IOS build: simulation blocked by: https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
 or just use real iPhone
