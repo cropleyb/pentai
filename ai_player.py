@@ -8,6 +8,7 @@ import utility_calculator as uc_m
 from defines import *
 
 import threading
+import cython
 
 skip_openings_book = False
 def set_skip_openings_book(val):
@@ -53,12 +54,13 @@ class AIPlayer(p_m.Player):
         if test:
             return self.do_the_search()
         else:
-            t = threading.Thread(target=self.search_thread, args=(gui,))
+            with cython.nogil:
+                t = threading.Thread(target=self.search_thread, args=(gui,))
 
-            # Allow the program to be exited quickly
-            t.daemon = True
+                # Allow the program to be exited quickly
+                t.daemon = True
 
-            t.start()
+                t.start()
         return "%s is thinking" % self.get_name()
 
     def get_type(self):
