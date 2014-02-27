@@ -12,6 +12,7 @@ class GuiPlayer(object):
         self.total_time = total_time
         self.audio_remaining_time = total_time
         self.video_remaining_time = total_time
+        self.show_remaining()
         self.ticking = False
 
     def prompt_for_move(self, colour):
@@ -44,10 +45,11 @@ class GuiPlayer(object):
     def tick_video(self, dt):
         self.video_remaining_time -= 1
 
-        rem = self.video_remaining_time
+        self.show_remaining()
 
-        self.widget.text = "%s:%02d" % (rem/60, rem%60)
-
-        if rem > 0:
+        if self.video_remaining_time > 0:
             Clock.schedule_once(self.tick_video, 1)
 
+    def show_remaining(self):
+        rem = self.video_remaining_time
+        self.widget.text = "%s:%02d" % (rem/60, rem%60)
