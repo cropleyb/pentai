@@ -12,22 +12,19 @@ class GuiPlayer(object):
         self.total_time = total_time
         self.audio_remaining_time = total_time
         self.video_remaining_time = total_time
-        self.audio_queued_tick = None
+        self.ticking = False
 
     def prompt_for_move(self, colour):
-        # Start visual and audio timers
-        if self.audio_queued_tick == None:
+        if not self.ticking:
             self.tick_audio(0, colour)
             self.tick_video(0)
+            self.ticking = True
 
     def make_move(self):
         # Stop both timers
-        if self.audio_queued_tick:
-            # TODO: subtract fraction of a second already spent
-            self.audio_queued_tick.cancel()
-            self.video_queued_tick.cancel()
-
-        self.audio_queued_tick = None
+        Clock.unschedule(self.tick_audio)
+        Clock.unschedule(self.tick_video)
+        self.ticking = False
 
     def tick_audio(self, dt, colour=None):
         if colour is None:
@@ -42,8 +39,7 @@ class GuiPlayer(object):
 
         if rem > 0:
             interval = (.5 * (1 + (rem / tt))) ** 2
-            self.audio_queued_tick = \
-                Clock.schedule_once(self.tick_audio, interval)
+            Clock.schedule_once(self.tick_audio, interval)
 
     def tick_video(self, dt):
         self.video_remaining_time -= 1
@@ -53,5 +49,5 @@ class GuiPlayer(object):
         self.widget.text = "%s:%02d" % (rem/60, rem%60)
 
         if rem > 0:
-            self.video_queued_tick = Clock.schedule_once(self.tick_video, 1)
+            Clock.schedule_once(self.tick_video, 1)
 
