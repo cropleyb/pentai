@@ -304,7 +304,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             level = colour
 
             base_y = self.board_offset[1] * .5 * (2.2-level)
-            centre = [2, 1, 3, 0, 4]
+            centre = [2, 1, 3, 0, 4, -1, 5] # Could capture more than one pair for win
 
             for i in range(captured / 2):
                 i_centred = centre[i]
