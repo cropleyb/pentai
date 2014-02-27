@@ -9,6 +9,8 @@ from defines import *
 
 import threading
 import cython
+from games_mgr import *
+from search_process import *
 
 skip_openings_book = False
 def set_skip_openings_book(val):
@@ -54,6 +56,8 @@ class AIPlayer(p_m.Player):
         if test:
             return self.do_the_search()
         else:
+            self.search_process(gui)
+            '''
             with cython.nogil:
                 t = threading.Thread(target=self.search_thread, args=(gui,))
 
@@ -61,10 +65,19 @@ class AIPlayer(p_m.Player):
                 t.daemon = True
 
                 t.start()
+            '''
         return "%s is thinking" % self.get_name()
 
     def get_type(self):
         return "Computer"
+
+    def search_process(self, gui):
+        game = self.ab_game.base_game
+        gm = GamesMgr() # TEMP
+        gm.save(game)
+        gid = game.get_game_id()
+        sp = SearchProcess()
+        sp.create_process(gid, gui)
 
     def search_thread(self, gui):
         action = self.do_the_search()

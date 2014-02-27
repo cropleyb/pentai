@@ -572,3 +572,14 @@ prompt_for_action() -> start timer, delegate to player
 Linear speed up -> quadratic curve
 calls Player.tick(time_interval)
 
+Multiprocessing
+---------------
+Kivy & AI search in separate processes.
+Use multiprocessing module to send and receive objects.
+Protocol: GUI sends a single message to request the search, with:
+- preserved game or id
+Search process sends back:
+- a single move, or
+- an error message
+If the user wants to interrupt the search, the process can be killed.
+The search process should treat the databases as read-only.
