@@ -1,5 +1,5 @@
 For Alpha release
-Enter Human Player during login
+Win with double take error
 Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
 Allow moves after take back. Working? Not always?
 Demo halting occasionally?
