@@ -61,6 +61,9 @@ class PlayersMgr():
     def get_ai_player_names(self):
         return self.get_recent_player_names("Computer", 30)
 
+    def get_human_player_names(self):
+        return self.get_recent_player_names("Human", 30)
+
     def get_recent_players(self, player_type, number):
         rpks = self.get_rpks(player_type).top(number)
         rps = []
