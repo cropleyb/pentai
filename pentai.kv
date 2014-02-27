@@ -81,6 +81,10 @@
             on_release: root.app.show_games_screen()
 
         MyButton:
+            text: "Edit Human Players"
+            on_release: root.app.show_human_screen()
+
+        MyButton:
             text: "Edit AI Players"
             on_release: root.app.show_ai_screen()
 
@@ -324,6 +328,48 @@
             Label:
                 size_hint_x: .3
                 text: '{}'.format(int(j_id.value))
+
+        GridLayout:
+            rows: 1 
+
+            MyButton:
+                text: "Return"
+                on_release: root.app.return_screen()
+
+            MyButton:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            MyButton:
+                text: "Save"
+                on_release: root.save()
+
+            MyButton:
+                text: "Help"
+                on_release: root.show_help()
+
+<HumanPlayerScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            text: "Human Player Editor"
+        # Line:
+            # TODO: <hr> equivalent
+
+        Label:
+            text: 'Choose Player'
+
+        Spinner:
+            # TODO: double click to edit name
+            text: root.current_name
+            values: root.player_names
+            size_hint: (1, None)
+            id: player_spinner_id
+
+        TextInput:
+            id: rename_id
+            text: root.rename_text
+            font_size: '25sp'
 
         GridLayout:
             rows: 1 
