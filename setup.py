@@ -13,13 +13,13 @@ cy_modules = [
             'board_strip.pyx',
             'length_lookup_table.pyx',
             ]
-if False:
+if True:
     cy_modules.extend([
             'priority_filter.py',
             'priority_filter_2.py',
             'utility_stats.py',
     ])
-if False:
+if True:
     cy_modules.extend([
         'utility_calculator.py',
         'direction_strips.py',
@@ -27,7 +27,6 @@ if False:
         'ab_state.py',
         'game_state.py',
         'board.py',
-        'ai_player.py',
     ])
 
 setup(
