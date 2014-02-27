@@ -1,11 +1,10 @@
 For Alpha release
-Show both clocks on entering
+Enter Human Player during login
 Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
 Allow moves after take back. Working? Not always?
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
 load on iPhone. Start from scratch
-Enter Human Player during login
 Prettify "About" text
 Winning Ways link: import webbrowser; webbrowser.open(url)
 Include a pente section on my website.
