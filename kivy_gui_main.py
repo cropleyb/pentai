@@ -12,6 +12,7 @@ from kivy.uix.screenmanager import * # TODO: Remove
 import p_screen_manager as ps_m
 
 from ai_player_screen import *
+from human_player_screen import *
 from setup_screen import *
 from settings_screen import *
 from pente_screen import *
@@ -69,6 +70,10 @@ class PentAIApp(App):
     def show_ai_screen(self, ignored=None):
         self.random_transition()
         self.root.current = "AI"
+
+    def show_human_screen(self, ignored=None):
+        self.random_transition()
+        self.root.current = "Human"
 
     def show_menu_screen(self, ignored=None):
         self.random_transition()
@@ -168,6 +173,7 @@ class PentAIApp(App):
     def hook_keyboard(self, window, key, *ignored_args):               
         # This keyboard control is just for my convenience, not on app.
         print "KEY PRESSED: %s" % key
+        typing_screens = ["Setup", "AI", "Human"]
         if key == 27:
             # Escape
             if BasePopup.my_active:
@@ -185,7 +191,7 @@ class PentAIApp(App):
 
         elif key == 113:
             # 'q'
-            if not self.root.current in ["Setup", "AI"]:
+            if not self.root.current in typing_screens:
                 self.prompt_quit()
             return True
 
@@ -219,12 +225,13 @@ class PentAIApp(App):
 
         elif key == 100: # 'd'
             # Debug
-            ab_m.debug = not ab_m.debug
-            self.debug = ab_m.debug
-            aip_m.set_skip_openings_book(ab_m.debug)
-            print "Debug set to %s" % ab_m.debug
-            st() # Could help sometimes?
-            return True
+            if not self.root.current in typing_screens:
+                ab_m.debug = not ab_m.debug
+                self.debug = ab_m.debug
+                aip_m.set_skip_openings_book(ab_m.debug)
+                print "Debug set to %s" % ab_m.debug
+                st() # Could help sometimes?
+                return True
 
         elif key == 8: # 'delete'
             if self.root.current == "Games":
@@ -281,7 +288,7 @@ class PentAIApp(App):
 
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
-                   (AIPlayerScreen, "AI"),
+                   (AIPlayerScreen, "AI"), (HumanPlayerScreen, "Human"),
                    ]
 
         # Assign to self.config so all screens can get at it.
