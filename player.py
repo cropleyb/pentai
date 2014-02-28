@@ -5,10 +5,13 @@
 # TODO: Undo support?
 # TODO: Resign?
 
+# super requires inheriting from object, which clashes with pickle?!
+#class Player(object):
 class Player():
     def __init__(self, p_name):
         self.p_name = p_name
         self.remaining_time = 0
+        self.total_time = 0
 
     def __repr__(self):
         return self.p_name

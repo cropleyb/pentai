@@ -270,10 +270,11 @@ class Game(object):
             move = int(coords[0]), int(coords[1])
             self.make_move(move) # TODO Maybe skip this?
 
+    def get_total_time(self):
+        return self.rules.time_control
+
     def tick(self, colour, seconds):
-        #current_move = self.get_move_number()
         remaining = self.get_player(colour).tick(seconds)
-        # TODO: end game if 0 left.
         return remaining
 
     def remaining_time(self, colour):

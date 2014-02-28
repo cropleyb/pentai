@@ -19,7 +19,6 @@ class AIPlayer(p_m.Player):
     """ Yes there is a circular dependancy between AIPlayer and Game """
 
     def __init__(self, search_filter, *args, **vargs):
-        p_m.Player.__init__(self, *args, **vargs)
 
         self.max_depth = 1
         self.search_filter = search_filter
@@ -30,6 +29,9 @@ class AIPlayer(p_m.Player):
         self.utility_calculator = uc_m.UtilityCalculator()
 
         self.search_process = None
+        # Super requires inheriting from object, which clashes with pickle?!
+        #return super(AIPlayer, self).__init__(*args, **vargs)
+        return p_m.Player.__init__(self, *args, **vargs)
 
     def __eq__(self, other):
         return self.genome == other.genome
@@ -50,6 +52,9 @@ class AIPlayer(p_m.Player):
         return self.search_filter
 
     def attach_to_game(self, base_game):
+        # Super requires inheriting from object, which clashes with pickle?!
+        #super(AIPlayer, self).attach_to_game(base_game)
+        p_m.Player.attach_to_game(self, base_game)
         self.ab_game = ab_game.ABGame(self, base_game)
         self.openings_mover = None
 

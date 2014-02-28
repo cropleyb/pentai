@@ -105,11 +105,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         g = self.gm.create_game(rules, p1, p2)
         self.app.start_game(g, self.size)
 
-    def get_remaining_time(self, colour):
-        if self.game == None:
-            return ""
-        return self.players[colour].video_remaining_time
-
     def set_game(self, game):
         self.clean_board()
         self.game = game
@@ -132,7 +127,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         for colour, time_id in [
                 (BLACK, self.ids.black_time_id),
                 (WHITE, self.ids.white_time_id)]:
-            self.players.append(gp_m.GuiPlayer(game.get_player(colour), time_id))
+            gp = gp_m.GuiPlayer(game.get_player(colour), time_id, self.game))
+            self.players.append(gp)
 
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
@@ -276,6 +272,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.get_audio().lose()
 
         # TODO: draw, and AI vs. AI sounds
+        self.refresh_all()
 
         self.set_review_mode(True)
 

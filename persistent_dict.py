@@ -72,8 +72,7 @@ class PersistentDict(dict):
                 return self.update(loader(fileobj))
             except Exception:
                 pass
-        raise ValueError('File not in a supported format')
-
+        raise ValueError('File %s not in a supported format' % fileobj)
 
 
 if __name__ == '__main__':
