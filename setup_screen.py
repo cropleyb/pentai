@@ -12,6 +12,7 @@ from pente_exceptions import *
 
 class SetupScreen(Screen):
     player_names = ListProperty([[], [], []])
+    time_control = NumericProperty(3)
 
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
@@ -42,6 +43,11 @@ class SetupScreen(Screen):
         except:
             pass
         self.player_names[colour] = rpl
+
+    def time_control_text(self, tc):
+        if tc == 0:
+            return "No Limit"
+        return '{}'.format(int(tc))
 
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()

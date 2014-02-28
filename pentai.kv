@@ -58,14 +58,14 @@
 
 <ScrollableLabel>:
     Label:
-		size_hint_y: None
-		height: self.texture_size[1]
-		text_size: self.width - 20, None
-		text: root.text
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width - 20, None
+        text: root.text
 
 <MenuScreen>:
     ScrollableLabel:
-		text: root.about_text
+        text: root.about_text
 
     GridLayout:
         cols: 1
@@ -137,6 +137,21 @@
             cols: 1
             size_hint_y: .3
             Label:
+                text: "Game Time (minutes each)"
+
+            GridLayout:
+                rows: 1
+                Slider:
+                    id: time_control_id
+                    min: 0
+                    max: 10
+                    step: 1
+                    value: root.time_control
+                    on_value: root.time_control = self.value
+
+                Label:
+                    size_hint_x: .28
+                    text: root.time_control_text(time_control_id.value)
 
             Label:
                 text: "Players"
@@ -146,11 +161,11 @@
             size_hint_y: .9
 
             MyLabel:
-                text: "Black Player Type"
+                text: "Black Player"
                 height: '48sp'
 
             MyLabel:
-                text: "White Player Type"
+                text: "White Player"
                 height: '48sp'
 
             CheckBoxList:
