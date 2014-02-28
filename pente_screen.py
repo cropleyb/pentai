@@ -12,6 +12,7 @@ from defines import *
 from gui import *
 import gui_player as gp_m
 
+import mock
 import Queue
 import datetime # TODO: Remove when old file format is gone
 
@@ -124,11 +125,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_grid()
 
         # TODO: Ugly
-        for colour, time_id in [
-                (BLACK, self.ids.black_time_id),
-                (WHITE, self.ids.white_time_id)]:
-            gp = gp_m.GuiPlayer(game.get_player(colour), time_id, self.game)
-            self.players.append(gp)
+        if game.get_total_time() > 0:
+            for colour, time_id in [
+                    (BLACK, self.ids.black_time_id),
+                    (WHITE, self.ids.white_time_id)]:
+                gp = gp_m.GuiPlayer(game.get_player(colour), time_id, self.game)
+                self.players.append(gp)
+        else:
+            self.players.append(mock.Mock())
+            self.players.append(mock.Mock())
 
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
