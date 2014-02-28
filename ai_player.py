@@ -29,6 +29,8 @@ class AIPlayer(p_m.Player):
 
         self.utility_calculator = uc_m.UtilityCalculator()
 
+        self.search_process = None
+
     def __eq__(self, other):
         return self.genome == other.genome
 
@@ -55,7 +57,7 @@ class AIPlayer(p_m.Player):
         if test:
             return self.do_the_search()
         else:
-            self.search_process(gui)
+            self.do_search_process(gui)
             '''
             with cython.nogil:
                 t = threading.Thread(target=self.search_thread, args=(gui,))
@@ -70,10 +72,10 @@ class AIPlayer(p_m.Player):
     def get_type(self):
         return "Computer"
 
-    def search_process(self, gui):
+    def do_search_process(self, gui):
         game = self.ab_game.base_game
-        sp = SearchProcess()
-        sp.create_process(game, gui)
+        self.search_process = SearchProcess()
+        self.search_process.create_process(game, gui)
 
     def search_thread(self, gui):
         action = self.do_the_search()
@@ -135,3 +137,5 @@ class AIPlayer(p_m.Player):
 
     def set_interrupted(self):
         self.ab_game.interrupted = True
+        if self.search_process != None:
+            self.search_process.kill()

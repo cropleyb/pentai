@@ -40,3 +40,6 @@ class SearchProcess(object):
         answer = self.parent_conn.recv()
         self.process.join() # TODO: Reuse the process.
         self.gui.enqueue_action(answer)
+
+    def kill(self):
+        self.process.kill()
