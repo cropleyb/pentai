@@ -127,7 +127,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         for colour, time_id in [
                 (BLACK, self.ids.black_time_id),
                 (WHITE, self.ids.white_time_id)]:
-            gp = gp_m.GuiPlayer(game.get_player(colour), time_id, self.game))
+            gp = gp_m.GuiPlayer(game.get_player(colour), time_id, self.game)
             self.players.append(gp)
 
         # This must occur before the start function
