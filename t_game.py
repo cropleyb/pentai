@@ -67,6 +67,47 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.get_move(1), (4,4))
         self.assertEquals(g.get_move(2), (0,0))
 
+    def test_tick_black(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        rem = g.tick(BLACK, 1)
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(rem, 179)
+
+    def test_tick_white(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        rem = g.tick(WHITE, 2)
+        self.assertEquals(g.remaining_time(WHITE), 178)
+        self.assertEquals(rem, 178)
+
+    def test_tick_black_twice(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        rem = g.tick(BLACK, 1)
+        self.assertEquals(g.remaining_time(BLACK), 178)
+        self.assertEquals(rem, 178)
+
+    def test_take_back_1_returns_to_orig_time_control(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        g.make_move((0,0))
+        g.go_backwards_one()
+        self.assertEquals(g.remaining_time(BLACK), 180)
+
+    def test_take_back_1_from_2_returns_first_move(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        g.make_move((0,0))
+        g.tick(WHITE, 2)
+        g.make_move((1,1))
+        g.go_backwards_one()
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 180)
+
 if __name__ == "__main__":
     unittest.main()
 

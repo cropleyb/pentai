@@ -71,8 +71,9 @@ class SetupScreen(Screen):
             return
         
         rstr = self.ids.rules_id.text
+        time_control = self.time_control
         try:
-            r = rules.Rules(bs, rstr)
+            r = rules.Rules(bs, rstr, time_control)
         except UnknownRuleType, e:
             self.app.display_error("Select the rules type")
             return

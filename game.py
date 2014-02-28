@@ -2,7 +2,7 @@
 from pente_exceptions import *
 
 import game_state
-import player
+import player # Shouldn't be necessary?
 import rules
 from defines import *
 
@@ -13,6 +13,7 @@ class Game(object):
     def __init__(self, *args, **kwargs):
         self.game_id = None
         self.move_history = []
+        self.time_history = []
         self.resume_move_number = None
         self.date = datetime.date.today() # TODO
         self.setup(*args, **kwargs)
@@ -21,6 +22,14 @@ class Game(object):
         self.rules = rules
         if rules != None:
             self.current_state = game_state.GameState(self)
+
+        '''
+        total_time = rules.time_control
+        if total_time:
+            # B/W
+            self.time_history.append(total_time)
+            self.time_history.append(total_time)
+        '''
 
         self.players = [None, player1, player2]
         if player1 != None:
@@ -105,7 +114,10 @@ class Game(object):
         # Record this, then save to a file if required
         if len(self.move_history) > 0:
             self.move_history = self.move_history[:self.get_move_number()-1]
+            self.time_history = self.time_history[:self.get_move_number()-1]
         self.move_history.append(move)
+        colour = self.to_move_colour()
+        self.time_history.append(self.remaining_time(colour))
         self.resume_move_number = len(self.move_history) + 1
 
         try:
@@ -163,21 +175,27 @@ class Game(object):
         # TODO: All these +1 and -1 shifts look a bit dodgy.
         current_move = self.get_move_number()
         self.resume_move_number = move_number
+        time_hist = self.time_history[:]
 
         if move_number < current_move:
             # Have to go back to the start, and replay all the moves,
             # otherwise the GUI and AI would need to support undo. TODO?
             gs = self.current_state
             gs.reset(self)
+            self.players[BLACK].set_remaining_time(self.rules.time_control)
+            self.players[WHITE].set_remaining_time(self.rules.time_control)
 
             for i in range(move_number-1):
                 gs.make_move(self.move_history[i])
+                self.get_current_player().set_remaining_time(time_hist[i])
         else:
             for i in range(current_move-1, move_number-1):
                 if i > len(self.move_history) - 1:
                     return
                 gs = self.current_state
                 gs.make_move(self.move_history[i])
+                self.get_current_player().set_remaining_time(time_hist[i])
+        self.time_history = time_hist
         # If we go back to the beginning of the game,
         # there won't have been any save() calls, so we won't
         # be able to resume from the beginning of the game.
@@ -251,4 +269,16 @@ class Game(object):
             coords = move_pos_str.split(',')
             move = int(coords[0]), int(coords[1])
             self.make_move(move) # TODO Maybe skip this?
+
+    def tick(self, colour, seconds):
+        #current_move = self.get_move_number()
+        remaining = self.get_player(colour).tick(seconds)
+        # TODO: end game if 0 left.
+        return remaining
+
+    def remaining_time(self, colour):
+        return self.get_player(colour).remaining_time
+
+    def set_remaining_time(self, colour, t):
+        self.get_player(colour).remaining_time = t
 

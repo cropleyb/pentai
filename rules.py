@@ -5,14 +5,14 @@ class Rules():
     def __init__(self, *args, **kwargs):
         self.set_all(*args, **kwargs)
 
-    def set_all(self, size, type_str):
-        self.type_char = type_str.lower()[0]
+    def set_all(self, size, type_str, time_control=0):
         if size < 5:
             raise BoardTooSmallException()
         if size > 19:
             raise BoardTooBigException()
         self.size = size
-        #tc = self.type_str[0]
+        self.time_control = time_control * 60
+        self.type_char = type_str.lower()[0]
         tc = self.type_char
         if tc == 's': # "standard"
             # TODO: constrain second black move attr.

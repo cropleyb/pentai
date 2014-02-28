@@ -3,11 +3,12 @@
 # human and AI players.
 
 # TODO: Undo support?
-# TODO: Resign
+# TODO: Resign?
 
 class Player():
     def __init__(self, p_name):
         self.p_name = p_name
+        self.remaining_time = 0
 
     def __repr__(self):
         return self.p_name
@@ -28,7 +29,14 @@ class Player():
         return name
 
     def get_total_time(self):
-        return 100 # TODO
+        return self.total_time
+
+    def tick(self, seconds):
+        self.remaining_time -= seconds
+        return self.remaining_time
+
+    def set_remaining_time(self, t):
+        self.remaining_time = t
 
     def prompt_for_action(self, game, gui):
         pass
@@ -40,5 +48,7 @@ class Player():
         return 1
 
     def attach_to_game(self, base_game):
-        pass
+        # TODO: Restore from history
+        self.total_time = base_game.get_rules().time_control
+        self.remaining_time = base_game.get_rules().time_control
 
