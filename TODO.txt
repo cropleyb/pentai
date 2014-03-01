@@ -1,4 +1,9 @@
 For Alpha release
+Fix Rematch
+Stone noise higher pitch?
+Min AI turn delay
+AI: Artificial Insemination?
+Click on player to edit
 Chess Clock losses, setup, save times, subseconds
 Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
 Allow moves after take back. Working? Not always?
@@ -34,6 +39,7 @@ icons for everything for internationalization?
 iTunes
 Android: "Quinn" I have a Nexus 7 (Android 4.3) and a Galaxy S4 (Android 4.2.2).
 Reimplement Settings Screen
+Turn off chess clocks with real NullObject
 
 Later
 Click on player type to select - partly working already...
