@@ -28,13 +28,16 @@ class SearchProcess(object):
         self.process = Process(target=self.search_and_respond,
                 args=(child_conn, pg,))
         self.process.start()
-        Clock.schedule_interval(self.poll, .05)
+        # Wait a bit to check for a move so it doesn't look like
+        # it is instant.
+        Clock.schedule_once(self.poll, .6)
 
     def poll(self, ignored):
         ready = self.parent_conn.poll()
         if ready:
-            Clock.unschedule(self.poll)
             self.receive()
+        else:
+            Clock.schedule_once(self.poll, .05)
 
     def receive(self):
         answer = self.parent_conn.recv()
