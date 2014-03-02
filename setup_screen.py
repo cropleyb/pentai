@@ -12,7 +12,7 @@ from pente_exceptions import *
 
 class SetupScreen(Screen):
     player_names = ListProperty([[], [], []])
-    time_control = NumericProperty(3)
+    time_control = NumericProperty(0)
 
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
