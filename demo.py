@@ -18,7 +18,7 @@ class Demo():
         self.app = app
         self.size = size
         self.interrupted = False
-        self.speed_factor = 1.0
+        self.speed_factor = 0.65
 
         # TODO Save settings
         # for settings demo
