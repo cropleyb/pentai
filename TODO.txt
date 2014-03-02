@@ -3,9 +3,8 @@ Menu from AI vs AI should pause/end game
 Stone noise higher pitch?
 Navigation
 Black ghost pieces too dark
-AI: Artificial Insemination?
 Click on player to edit
-Chess Clock losses, setup, save times, subseconds
+Chess Clock, save times, subseconds
 Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
 Allow moves after take back. Working? Not always?
 Demo halting occasionally?
