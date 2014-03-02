@@ -125,7 +125,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_grid()
 
         # TODO: Ugly
+        self.players = [None]
         if game.get_total_time() > 0:
+            # Time controls active.
             for colour, time_id in [
                     (BLACK, self.ids.black_time_id),
                     (WHITE, self.ids.white_time_id)]:
@@ -144,7 +146,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         transition_time = 1.0
 
         start_func = self.make_first_move
-        if len(self.game_filename) > 0:
+        if self.game_filename:
             start_func = self.load_file
         elif not self.game.resume_move_number is None:
             start_func = self.load_moves
