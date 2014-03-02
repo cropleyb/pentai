@@ -1,7 +1,10 @@
 For Alpha release
+Menu from AI vs AI should pause/end game
 Fix Rematch
 Stone noise higher pitch?
-Min AI turn delay
+Navigation
+Demo too fast
+Black ghost pieces too dark
 AI: Artificial Insemination?
 Click on player to edit
 Chess Clock losses, setup, save times, subseconds
