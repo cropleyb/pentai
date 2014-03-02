@@ -111,14 +111,16 @@ class AIPlayerScreen(Screen):
 
     def show_help(self):
         help_text = """You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below.
-There are several settings that can be adjusted for a given AI player profile:
-    Depth: Controls how many moves the AI looks ahead each move.
-    Vision: How often does the AI miss a move possibility entirely?
+There are several settings that can be adjusted for a given Artificial Intelligence (AI) player profile:
+    Depth: Controls how many turns the AI looks ahead for each move.
+    Vision: How often does the AI see the better move possibilities?
     Openings book: Should the AI be able to refer to previous games?
     Lines/Captures: How much value should the AI place on lines versus captures?
     Judgement: How well should the AI judge the value of positions?
 
 Several profiles are included, have a look at and experiment with their configurations, or create your own.
+
+Note that it is a significant advantage to go first (Black), so the Rematch button (on the main game screen) gives the first move to the loser of the previous game.
 
 """
         st = ScrollableLabel(text=help_text)
