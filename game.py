@@ -181,19 +181,26 @@ class Game(object):
             # otherwise the GUI and AI would need to support undo. TODO?
             gs = self.current_state
             gs.reset(self)
-            self.players[BLACK].set_remaining_time(self.rules.time_control)
-            self.players[WHITE].set_remaining_time(self.rules.time_control)
+
+            total_time = self.rules.time_control
+            self.remaining_times[BLACK] = total_time
+            self.remaining_times[WHITE] = total_time
 
             for i in range(move_number-1):
+                to_move_col = self.to_move_colour()
+                self.remaining_times[to_move_col] = time_hist[i]
+
                 gs.make_move(self.move_history[i])
-                self.get_current_player().set_remaining_time(time_hist[i])
         else:
             for i in range(current_move-1, move_number-1):
                 if i > len(self.move_history) - 1:
                     return
+                to_move_col = self.to_move_colour()
+                self.remaining_times[to_move_col] = time_hist[i]
+
                 gs = self.current_state
                 gs.make_move(self.move_history[i])
-                self.get_current_player().set_remaining_time(time_hist[i])
+
         self.time_history = time_hist
         # If we go back to the beginning of the game,
         # there won't have been any save() calls, so we won't
