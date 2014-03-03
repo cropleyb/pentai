@@ -1,10 +1,7 @@
 For Alpha release
-Clean up Player time stuff.
-Chess Clock, save times, subseconds
 Menu from AI vs AI should pause/end game
 Stone noise higher pitch?
 Navigation
-Black ghost pieces too dark
 Click on player to edit
 Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
 Allow moves after take back. Working? Not always?
