@@ -131,7 +131,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             for colour, time_id in [
                     (BLACK, self.ids.black_time_id),
                     (WHITE, self.ids.white_time_id)]:
-                gp = gp_m.GuiPlayer(game.get_player(colour), time_id, self.game)
+                gp = gp_m.GuiPlayer(colour, time_id, self.game)
                 self.players.append(gp)
         else:
             self.players.append(mock.Mock())
@@ -271,6 +271,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if colour:
             self.players[colour].make_move() # TODO: "made_move"
 
+    def up_to_date(self, game):
+        self.refresh_all()
+
     def after_game_won(self, game, colour):
         # Play win or loss sound
         if game.get_player(colour).get_type() == "Human":
@@ -334,6 +337,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
+        self.players[BLACK].refresh()
+        self.players[WHITE].refresh()
 
     # KivyPlayer
     def get_turn_marker(self, colour):
@@ -540,27 +545,22 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.reviewing = False
         self.get_audio().mute()
         self.game.go_backwards_one()
-        self.refresh_all()
         self.get_audio().unmute()
 
     def go_to_the_beginning(self):
         self.game.go_to_the_beginning()
-        self.refresh_all()
 
     def go_forwards_one(self):
         self.game.go_forwards_one()
-        self.refresh_all()
 
     def go_backwards_one(self):
         self.get_audio().mute()
         self.game.go_backwards_one()
-        self.refresh_all()
         self.get_audio().unmute()
 
     def go_to_the_end(self):
         self.get_audio().mute()
         self.game.go_to_the_end()
-        self.refresh_all()
         self.get_audio().unmute()
 
     def on_touch_down(self, touch):
