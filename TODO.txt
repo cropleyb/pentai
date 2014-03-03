@@ -1,18 +1,19 @@
 For Alpha release
+Clean up Player time stuff.
+Chess Clock, save times, subseconds
 Menu from AI vs AI should pause/end game
 Stone noise higher pitch?
 Navigation
 Black ghost pieces too dark
 Click on player to edit
-Chess Clock, save times, subseconds
 Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
 Allow moves after take back. Working? Not always?
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
 load on iPhone. Start from scratch
 Prettify "About" text
-Winning Ways link: import webbrowser; webbrowser.open(url)
-Include a pente section on my website.
+# Check "Winning Ways" link
+Include a pente section on my website...
 
 Beta release
 Prevent naming players the same
