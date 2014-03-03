@@ -14,6 +14,7 @@ class Game(object):
         self.game_id = None
         self.move_history = []
         self.time_history = []
+        self.remaining_times = [None, 0, 0]
         self.resume_move_number = None
         self.date = datetime.date.today() # TODO
         self.setup(*args, **kwargs)
@@ -23,13 +24,11 @@ class Game(object):
         if rules != None:
             self.current_state = game_state.GameState(self)
 
-        '''
-        total_time = rules.time_control
-        if total_time:
-            # B/W
-            self.time_history.append(total_time)
-            self.time_history.append(total_time)
-        '''
+            total_time = rules.time_control
+            if total_time:
+                # B/W
+                self.remaining_times[BLACK] = total_time
+                self.remaining_times[WHITE] = total_time
 
         self.players = [None, player1, player2]
         if player1 != None:
@@ -274,12 +273,16 @@ class Game(object):
         return self.rules.time_control
 
     def tick(self, colour, seconds):
-        remaining = self.get_player(colour).tick(seconds)
+        self.remaining_times[colour] -= seconds
+        remaining = self.remaining_times[colour]
+
+        if remaining <= 0:
+            self.set_won_by(opposite_colour(colour))
         return remaining
 
-    def remaining_time(self, colour):
-        return self.get_player(colour).remaining_time
+    def remaining_time(self, colour): # TODO: get_
+        return self.remaining_times[colour]
 
     def set_remaining_time(self, colour, t):
-        self.get_player(colour).remaining_time = t
+        self.remaining_times[colour] = t
 
