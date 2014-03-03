@@ -9,7 +9,6 @@ from defines import *
 
 import threading
 import cython
-from search_process import *
 
 skip_openings_book = False
 def set_skip_openings_book(val):
@@ -78,6 +77,7 @@ class AIPlayer(p_m.Player):
         return "Computer"
 
     def do_search_process(self, gui):
+        from search_process import SearchProcess
         game = self.ab_game.base_game
         self.search_process = SearchProcess()
         self.search_process.create_process(game, gui)
