@@ -62,10 +62,13 @@
         height: self.texture_size[1]
         text_size: self.width - 20, None
         text: root.text
+        markup: True
+        id: label_id
 
 <MenuScreen>:
     ScrollableLabel:
         text: root.about_text
+        id: about_id
 
     GridLayout:
         cols: 1
@@ -145,7 +148,7 @@
                     id: time_control_id
                     min: 0
                     max: 10
-                    step: 1
+                    step: .1
                     #step: .1 # TEMP
                     value: root.time_control
                     on_value: root.time_control = self.value
