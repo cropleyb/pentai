@@ -1,4 +1,5 @@
 For Alpha release
+Not autosaving?
 Clean up Player time stuff.
 Chess Clock, save times, subseconds
 Menu from AI vs AI should pause/end game
