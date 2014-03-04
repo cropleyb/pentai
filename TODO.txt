@@ -1,5 +1,6 @@
 For Alpha release
-Error message at end of long AI vs. AI game
+Review AI vs AI game not pausing
+Error message at end of long AI vs. AI game (fixed?)
 Buy an iPad
 Menu from AI vs AI should pause/end game
 Stone noise higher pitch?

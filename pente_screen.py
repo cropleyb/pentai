@@ -139,6 +139,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
+        # TODO: This looks wrong, should be just self.set_review_mode, False, .2
 
         # Need some time for kivy to finish setting up, otherwise
         # the pieces are all stacked in the bottom left corner,
@@ -154,9 +155,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
         Clock.schedule_once(start_func, transition_time)
 
     def set_live(self, val):
-        if val and not self.live:
-            # Transitioning to live, so get things going
-            self.prompt_for_action()
+        if val:
+            if not self.live:
+                # Transitioning to live, so get things going
+                self.prompt_for_action()
+        else:
+            self.stop_ticking()
         self.live = val
 
     # GuiPlayer?
@@ -213,7 +217,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.start_ticking()
 
     def on_pre_leave(self):
-        self.stop_ticking()
+        self.set_live(False)
         try:
             self.ob.add_game(self.game)
         except OpeningsBookDuplicateException:
@@ -699,6 +703,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def set_review_mode(self, val):
         self.reviewing = val
+
+        self.set_live(not val)
 
         if val:
             cls = ReviewButtons
