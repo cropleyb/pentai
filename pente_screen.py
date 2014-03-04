@@ -249,11 +249,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def prompt_for_action_inner(self, *ignored):
         if self.live:
-            game = self.game
-            game.prompt_for_action(self)
-
             # TODO: game.prompt_for_action if not finished?
             self.start_ticking()
+            game = self.game
+            game.prompt_for_action(self)
 
     def board_size(self):
         return self.game.size()
