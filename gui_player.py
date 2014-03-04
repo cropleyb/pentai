@@ -1,6 +1,7 @@
 
 from kivy.clock import Clock
 
+import time
 import audio as a_m
 from defines import *
 
@@ -14,6 +15,7 @@ class GuiPlayer(object):
         self.total_time = total_time
         self.show_remaining()
         self.ticking = False
+        self.last_tick_time = time.time()
 
     def prompt_for_move(self, colour):
         if not self.ticking:
@@ -23,6 +25,10 @@ class GuiPlayer(object):
 
     def make_move(self):
         # Stop both timers
+        elapsed = time.time() - self.last_tick_time 
+        # In case of leap seconds, time changes etc.
+        if elapsed > 0:
+            self.game.tick(self.colour, elapsed)
         Clock.unschedule(self.tick_audio)
         Clock.unschedule(self.tick_video)
         self.ticking = False
@@ -45,12 +51,14 @@ class GuiPlayer(object):
 
     def tick_video(self, dt):
         rem = self.game.tick(self.colour, dt)
-        next_tick_time = rem % 1.0
+        next_tick_diff = rem % 1.0
+
+        self.last_tick_time = time.time()
 
         self.show_remaining()
 
         if rem > 0:
-            Clock.schedule_once(self.tick_video, next_tick_time)
+            Clock.schedule_once(self.tick_video, next_tick_diff)
         else:
             other_colour = opposite_colour(self.game.to_move_colour())
 
