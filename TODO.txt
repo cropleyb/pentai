@@ -1,4 +1,7 @@
 For Alpha release
+Error message at end of long AI vs. AI game
+Buy an iPad
+Gretel not using any time?
 Menu from AI vs AI should pause/end game
 Stone noise higher pitch?
 Navigation
@@ -20,7 +23,7 @@ Sounds for delete, confirm
 Memory error detection
 Memory Usage - can it be brought down?
 Fix Tournament rules
-Fix rules demo - click to skip sections, double click to end, swipe for forwards/backwards, up/down for speed
+Improve rules demo - click to skip sections, double click to end, swipe for forwards/backwards, up/down for speed
 Icon for the app.
 Submit Pull requests
 # Tony isn't getting any moves - haven't seen this since
