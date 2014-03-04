@@ -25,12 +25,13 @@ class GuiPlayer(object):
 
     def make_move(self):
         # Stop both timers
+        Clock.unschedule(self.tick_audio)
+        Clock.unschedule(self.tick_video)
+
         elapsed = time.time() - self.last_tick_time 
         # In case of leap seconds, time changes etc.
         if elapsed > 0:
             self.game.tick(self.colour, elapsed)
-        Clock.unschedule(self.tick_audio)
-        Clock.unschedule(self.tick_video)
         self.ticking = False
 
     def tick_audio(self, dt, colour=None):
