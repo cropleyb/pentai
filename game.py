@@ -280,6 +280,8 @@ class Game(object):
         return self.rules.time_control
 
     def tick(self, colour, seconds):
+        if self.get_won_by():
+            return
         self.remaining_times[colour] -= seconds
         remaining = self.remaining_times[colour]
 
