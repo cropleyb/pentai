@@ -434,6 +434,9 @@
     MyButton:
         text: "Rematch"
         on_release: root.ps.rematch()
+    MyButton:
+        text: "Menu"
+        on_release: root.ps.app.show_menu_screen()
 
 <PlayButtons>:
     size_hint_x: .3
@@ -447,11 +450,11 @@
         text: "Take Back"
         on_release: root.ps.take_back_move()
     MyButton:
-        text: "Rematch"
-        on_release: root.ps.rematch()
-    MyButton:
         text: "Settings"
         on_release: root.ps.app.show_settings_screen()
+    MyButton:
+        text: "Rematch"
+        on_release: root.ps.rematch()
     MyButton:
         text: "Menu"
         on_release: root.ps.app.show_menu_screen()
