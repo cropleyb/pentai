@@ -704,7 +704,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def set_review_mode(self, val):
         self.reviewing = val
 
-        self.set_live(not val)
+        self.set_live(not val and not self.game.finished())
 
         if val:
             cls = ReviewButtons
