@@ -43,7 +43,7 @@ class OpeningsMover(object):
 
         move_scores = []
         for move, wins, losses, mrf in totals:
-            score = (mrf * (wins or .2))/(losses or .2)
+            score = (mrf * (wins))/(losses or .2)
             move_scores.append((move, score))
             total_score += score
         
