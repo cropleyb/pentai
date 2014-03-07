@@ -64,16 +64,6 @@ class OpeningsMoverTest(unittest.TestCase):
         self.assertGreater(answers[(4,4)], 600)
         self.assertGreater(answers[None], 100)
 
-    def test_one_unfavourable_game_mostly_falls_through(self):
-        g1 = MockFoundGame(WHITE, 1)
-        move_games = [((4,4), (g1,))]
-        self.set_move_games(move_games)
-
-        answers = self.multiple_tries(1000)
-
-        self.assertGreater(answers[(4,4)], 100)
-        self.assertGreater(answers[None], 600)
-
     def test_one_move_equal_standings(self):
         g1 = MockFoundGame(BLACK, 1)
         g2 = MockFoundGame(WHITE, 1)
