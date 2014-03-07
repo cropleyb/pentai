@@ -139,7 +139,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
-        # TODO: This looks wrong, should be just self.set_review_mode, False, .2
 
         # Need some time for kivy to finish setting up, otherwise
         # the pieces are all stacked in the bottom left corner,
@@ -708,12 +707,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         if val:
             cls = ReviewButtons
-            # Stop ticking
             self.stop_ticking()
         else:
             cls = PlayButtons
             self.go_to_the_end()
-            # Start ticking
             self.start_ticking()
         panel_buttons = cls()
         self.panel_buttons = panel_buttons
