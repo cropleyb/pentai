@@ -19,6 +19,7 @@ class Demo():
         self.size = size
         self.interrupted = False
         self.speed_factor = 0.65
+        #self.speed_factor = 1.5
 
         # TODO Save settings
         # for settings demo
@@ -67,9 +68,9 @@ class Demo():
 
         ss = app.setup_screen
         # TODO: Select white player type
-        #ss.ids.white_type_id = "Computer"
+        ss.ids.white_type_id.val = "Computer"
         # TODO: Select computer player somehow?
-        #ss.ids.wpl_id.text = "PentAI"
+        ss.ids.wpl_id.text = "PentAI"
 
         yield(1)
 
@@ -188,8 +189,6 @@ class Demo():
         yield(2)
 
         # Length 1
-        mm(6, 6)
-        yield(.5)
         mm(0, 0)
         yield(.5)
 
@@ -225,9 +224,9 @@ class Demo():
         mm(4, 3)
         yield(2)
 
-        mm(4, 2) # Black places inside, doesn't get taken
+        mm(4, 2) # Black places a piece inside, doesn't get taken
         yield(4)
-        mm(9, 7)
+        mm(6, 6)
         yield(1)
 
         # Gap
@@ -239,6 +238,22 @@ class Demo():
         mm(6, 1)
         yield(1)
         mm(6, 4)
+        yield(5)
+
+        # Double capture
+        mm(7, 6)
+        yield(.5)
+        mm(5, 6)
+        yield(.5)
+        mm(7, 9)
+        yield(.5)
+        mm(5, 7)
+        yield(.5)
+        mm(0, 12)
+        yield(.5)
+        mm(6, 8)
+        yield(.5)
+        mm(4, 6)
         yield(5)
 
         # 5 Pairs win the game
@@ -321,15 +336,6 @@ class Demo():
             game.go_forwards_one()
             yield(.5)
 
-        yield(2)
-
-        # Click go to end
-        end_button = ps.panel_buttons.ids.end_id
-        end_button.sim_press()
-        yield(.4)
-
-        end_button.sim_release()
-        ps.go_to_the_end()
         yield(5)
 
         ########
