@@ -583,3 +583,23 @@ Search process sends back:
 - an error message
 If the user wants to interrupt the search, the process can be killed.
 The search process should treat the databases as read-only.
+
+Replaying timed games
+---------------------
+Crash:
+     self.game.go_backwards_one()
+   File "/Users/cropleyb/Dropbox/pente/game.py", line 168, in go_backwards_one
+     self.go_to_move(self.get_move_number() - 1)
+   File "/Users/cropleyb/Dropbox/pente/game.py", line 193, in go_to_move
+     gs.make_move(self.move_history[i])
+   File "game_state.py", line 83, in game_state.GameState.make_move (game_state.c:2842)
+     raise IllegalMoveException("The game is already over")
+ pente_exceptions.IllegalMoveException: The game is already over
+
+Something is causing the game to be over before it is completely replayed.
+- must be time expiry related.
+The game state is reset() before being replayed.
+
+How should it work?
+Take back/Back (1 move) should undo the last move, and give that player their
+time as it was when the move taken back started.

@@ -188,18 +188,17 @@ class Game(object):
 
             for i in range(move_number-1):
                 to_move_col = self.to_move_colour()
-                self.remaining_times[to_move_col] = time_hist[i]
-
                 gs.make_move(self.move_history[i])
+
+                self.remaining_times[to_move_col] = time_hist[i]
         else:
+            gs = self.current_state
             for i in range(current_move-1, move_number-1):
                 if i > len(self.move_history) - 1:
                     return
                 to_move_col = self.to_move_colour()
-                self.remaining_times[to_move_col] = time_hist[i]
-
-                gs = self.current_state
                 gs.make_move(self.move_history[i])
+                self.remaining_times[to_move_col] = time_hist[i]
 
         self.time_history = time_hist
         # If we go back to the beginning of the game,
@@ -287,6 +286,7 @@ class Game(object):
 
         if remaining <= 0:
             self.set_won_by(opposite_colour(colour))
+            remaining = 0
         return remaining
 
     def remaining_time(self, colour): # TODO: get_

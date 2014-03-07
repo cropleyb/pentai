@@ -15,7 +15,7 @@ class GuiPlayer(object):
         self.total_time = total_time
         self.show_remaining()
         self.ticking = False
-        self.last_tick_time = time.time()
+        self.last_tick_time = None
 
     def prompt_for_move(self, colour):
         if not self.ticking:
@@ -23,16 +23,20 @@ class GuiPlayer(object):
             self.tick_video(0)
             self.ticking = True
 
-    def make_move(self):
+    def stop_ticking(self):
         # Stop both timers
         Clock.unschedule(self.tick_audio)
         Clock.unschedule(self.tick_video)
-
-        elapsed = time.time() - self.last_tick_time 
-        # In case of leap seconds, time changes etc.
-        if elapsed > 0:
-            self.game.tick(self.colour, elapsed)
         self.ticking = False
+        self.last_tick_time = None
+
+    def make_move(self):
+        if self.last_tick_time:
+            elapsed = time.time() - self.last_tick_time 
+            # In case of leap seconds, time changes etc.
+            if elapsed > 0:
+                self.game.tick(self.colour, elapsed)
+        self.stop_ticking()
 
     def tick_audio(self, dt, colour=None):
         if colour is None:

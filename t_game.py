@@ -101,12 +101,93 @@ class GameTest(unittest.TestCase):
         rules = Rules(9, "standard", time_control=3)
         g = Game(rules, Player("BC"), Player("Whoever"))
         g.tick(BLACK, 1)
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 180)
         g.make_move((0,0))
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 180)
         g.tick(WHITE, 2)
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 178)
         g.make_move((1,1))
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 178)
         g.go_backwards_one()
         self.assertEquals(g.remaining_time(BLACK), 179)
         self.assertEquals(g.remaining_time(WHITE), 180)
+
+    def test_tick_before_first_move(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 180)
+
+    def test_second_tick_before_first_move(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        g.tick(BLACK, 1)
+        self.assertEquals(g.remaining_time(BLACK), 178)
+        self.assertEquals(g.remaining_time(WHITE), 180)
+
+    def test_tick_then_first_move(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        g.make_move((0,0))
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 180)
+
+    def test_tick_then_first_move(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        g.make_move((0,0))
+        g.tick(WHITE, 1)
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 179)
+
+    def test_take_back_first_move(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        g.make_move((0,0))
+        g.tick(WHITE, 1)
+        g.go_backwards_one()
+        self.assertEquals(g.remaining_time(BLACK), 180)
+        self.assertEquals(g.remaining_time(WHITE), 180)
+
+    def test_take_back_first_move_then_redo_it(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.tick(BLACK, 1)
+        g.make_move((0,0))
+        g.tick(WHITE, .5)
+        g.go_backwards_one()
+        g.go_forwards_one()
+
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 180)
+
+    def test_take_back_1_then_forwards_1_should_recall_start_of_current_move(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+
+        g.tick(BLACK, 1)
+        g.make_move((0,0))
+
+        g.tick(WHITE, 1)
+        g.make_move((1,1))
+        g.tick(BLACK, 1)
+
+        g.go_backwards_one()
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 180)
+
+        g.go_forwards_one()
+        self.assertEquals(g.remaining_time(BLACK), 179)
+        self.assertEquals(g.remaining_time(WHITE), 179)
 
 if __name__ == "__main__":
     unittest.main()
