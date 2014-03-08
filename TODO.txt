@@ -1,18 +1,16 @@
 For Alpha release
-Error message at end of long AI vs. AI game (fixed?)
-Buy an iPad
-Menu from AI vs AI should pause/end game
+#Buy an iPad
 Stone noise higher pitch?
 Navigation
 Click on player to edit
 Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
-Allow moves after take back. Working? Not always?
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
 load on iPhone. Start from scratch
 Prettify "About" text
 # Check "Winning Ways" link
 Include a pente section on my website...
+Icon for the app: game screen with PentAI sideways on the left.
 
 Beta release
 Prevent naming players the same
@@ -23,7 +21,6 @@ Memory error detection
 Memory Usage - can it be brought down?
 Fix Tournament rules
 Improve rules demo - click to skip sections, double click to end, swipe for forwards/backwards, up/down for speed
-Icon for the app.
 Submit Pull requests
 # Tony isn't getting any moves - haven't seen this since
 Multiline input into name boxes should be prevented
