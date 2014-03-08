@@ -70,7 +70,7 @@ class Demo():
         # TODO: Select white player type
         ss.ids.white_type_id.val = "Computer"
         # TODO: Select computer player somehow?
-        ss.ids.wpl_id.text = "PentAI"
+        ss.ids.wpl_id.val = "PentAI"
 
         yield(1)
 
