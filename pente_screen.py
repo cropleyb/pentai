@@ -29,6 +29,20 @@ x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
 
+# HACK to play on BrainKing.com
+def reverse_colours():
+    global black_filename
+    global white_filename
+    global black_ghost_filename
+    global white_ghost_filename
+    global black_confirm_filename
+    global white_confirm_filename
+    black_filename = "./media/white_transparent.png"
+    white_filename = "./media/black_transparent.png"
+    black_ghost_filename = "./media/white_ghost.png"
+    white_ghost_filename = "./media/black_ghost.png"
+    black_confirm_filename = "./media/w_confirm.png"
+    white_confirm_filename = "./media/b_confirm.png"
 
 class PenteScreen(Screen, gso_m.GSObserver):
     # GuiPlayer
@@ -228,8 +242,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.players[colour].prompt_for_move(colour)
 
     def stop_ticking(self):
-        colour = self.game.to_move_colour()
-        self.players[colour].make_move() # TODO: "made_move"
+        if self.game:
+            colour = self.game.to_move_colour()
+            self.players[colour].make_move() # TODO: "made_move"
 
     def perform(self, dt):
         if self.action_queue.empty():

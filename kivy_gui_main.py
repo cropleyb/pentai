@@ -15,7 +15,7 @@ from ai_player_screen import *
 from human_player_screen import *
 from setup_screen import *
 from settings_screen import *
-from pente_screen import *
+import pente_screen
 from menu_screen import *
 from games_screen import *
 
@@ -146,7 +146,7 @@ class PentAIApp(App):
         except ScreenManagerException:
             pass
 
-        self.add_screen(PenteScreen,
+        self.add_screen(pente_screen.PenteScreen,
             'Pente', screen_size=screen_size,
             filename=self.game_filename)
 
@@ -196,6 +196,12 @@ class PentAIApp(App):
             # 'q'
             if not self.root.current in typing_screens:
                 self.prompt_quit()
+            return True
+
+        elif key == 114:
+            # 'r'
+            if not self.root.current in typing_screens:
+                pente_screen.reverse_colours()
             return True
 
         elif key == 13:
