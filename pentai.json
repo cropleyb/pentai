@@ -1,19 +1,15 @@
 [
     {
         "type": "title",
-        "title": "Mark last 2 moves"
+        "title": "User Interface"
     },
     {
         "type": "bool",
-        "title": "Mark them",
-        "desc": "Mark the last two moves with a dot in the centre",
+        "title": "Mark moves",
+        "desc": "Mark the last two moves, each with a dot in the centre",
         "section": "PentAI",
         "key": "mark_moves",
         "true": "auto"
-    },
-    {
-        "type": "title",
-        "title": "Mark captures"
     },
     {
         "type": "bool",
@@ -24,13 +20,9 @@
         "true": "auto"
     },
     {
-        "type": "title",
-        "title": "Confirm style"
-    },
-    {
         "type": "options",
         "title": "Move confirmation",
-        "desc": "",
+        "desc": "For small screens or while travelling",
         "options": ["None Required",
                     "Off Board",
                     "On Piece"],
@@ -52,7 +44,7 @@
     },
     {
         "type": "title",
-        "title": "Sound volume"
+        "title": "Sound"
     },
     {
         "type": "numeric",
@@ -61,10 +53,6 @@
         "section": "PentAI",
         "key": "effects_volume",
         ".5": "auto"
-    },
-    {
-        "type": "title",
-        "title": "Tick"
     },
     {
         "type": "bool",
