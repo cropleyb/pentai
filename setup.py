@@ -18,6 +18,7 @@ if True:
             'priority_filter.py',
             'priority_filter_2.py',
             'utility_stats.py',
+            'bit_reverse.py',
     ])
 if True:
     cy_modules.extend([
