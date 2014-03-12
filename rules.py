@@ -61,7 +61,7 @@ class Rules():
             raise UnknownRuleType("%s, %s" % (size, type_str))
 
     def key(self):
-        return (self.size, self.type_char)
+        return (self.size, self.type_char, self.time_control/60)
 
     def __hash__(self):
         return hash(self.key())
