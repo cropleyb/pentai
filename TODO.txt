@@ -1,5 +1,6 @@
 For Alpha release
 #Buy an iPad
+Restore game doesn't restore time controls etc.
 Stone noise higher pitch?
 Navigation
 Click on player to edit
