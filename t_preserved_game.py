@@ -36,7 +36,7 @@ class PreservedGameTest(unittest.TestCase):
         orig_game.make_move((7,3))
 
         pg = PreservedGame(orig_game)
-        self.assertEquals(pg.rules, (13, 's'))
+        self.assertEquals(pg.rules, (13, 's', 0))
 
         black_player = pg.players[BLACK]
         self.assertEquals(black_player, genome1.p_key)
@@ -67,8 +67,8 @@ class PreservedGameTest(unittest.TestCase):
         pg = PreservedGame()
         pg.players = [None, genome1.p_key, genome2.p_key]
 
-        pg.rules = (9, 'f')
-        pg.game_id = ((9, 'f'), 1)
+        pg.rules = (9, 'f', 0)
+        pg.game_id = ((9, 'f', 0), 1)
 
         pg.moves = [(8,1)]
         pg.won_by = BLACK
@@ -79,7 +79,7 @@ class PreservedGameTest(unittest.TestCase):
 
         orig_game = pg.restore(ai_db)
 
-        self.assertEquals(orig_game.rules.key(), (9, 'f'))
+        self.assertEquals(orig_game.rules.key(), (9, 'f', 0))
 
         today = datetime.date.today()
         self.assertEquals(orig_game.date, today)
