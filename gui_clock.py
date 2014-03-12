@@ -5,7 +5,7 @@ import time
 import audio as a_m
 from defines import *
 
-class GuiPlayer(object):
+class GuiClock(object):
     def __init__(self, colour, widget, game):
         self.colour = colour
         self.player = game.get_player(colour)
@@ -17,9 +17,9 @@ class GuiPlayer(object):
         self.ticking = False
         self.last_tick_time = None
 
-    def prompt_for_move(self, colour):
+    def start_ticking(self):
         if not self.ticking:
-            self.tick_audio(0, colour)
+            self.tick_audio(0, self.colour)
             self.tick_video(0)
             self.ticking = True
 
@@ -30,7 +30,7 @@ class GuiPlayer(object):
         self.ticking = False
         self.last_tick_time = None
 
-    def make_move(self):
+    def made_move(self):
         if self.last_tick_time:
             elapsed = time.time() - self.last_tick_time 
             # In case of leap seconds, time changes etc.
