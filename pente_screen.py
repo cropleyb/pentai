@@ -10,7 +10,7 @@ import gs_observer as gso_m
 import audio as a_m
 from defines import *
 from gui import *
-import gui_player as gp_m
+import gui_clock as gc_m
 
 import mock
 import Queue
@@ -49,7 +49,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     player_name = ListProperty([None, "Black", "White"])
     player_time = ListProperty([None, "0:00", "0:00"])
     captured_widgets = ListProperty([None, [], []])
-    players = ListProperty([None])
+    clocks = ListProperty([None])
 
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
@@ -139,17 +139,17 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_grid()
 
         # TODO: Ugly
-        self.players = [None]
+        self.clocks = [None]
         if game.get_total_time() > 0:
             # Time controls active.
             for colour, time_id in [
                     (BLACK, self.ids.black_time_id),
                     (WHITE, self.ids.white_time_id)]:
-                gp = gp_m.GuiPlayer(colour, time_id, self.game)
-                self.players.append(gp)
+                gc = gc_m.GuiClock(colour, time_id, self.game)
+                self.clocks.append(gc)
         else:
-            self.players.append(mock.Mock())
-            self.players.append(mock.Mock())
+            self.clocks.append(mock.Mock())
+            self.clocks.append(mock.Mock())
 
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
@@ -187,7 +187,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             bs = r.size
             self.game.make_move((bs/2, bs/2))
             self.refresh_all()
-            self.players[BLACK].make_move()
+            self.clocks[BLACK].made_move()
         self.prompt_for_action()
 
     # GuiPlayer
@@ -239,12 +239,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def start_ticking(self):
         if not self.game.finished():
             colour = self.game.to_move_colour()
-            self.players[colour].prompt_for_move(colour)
+            self.clocks[colour].start_ticking()
 
     def stop_ticking(self):
         if self.game:
             colour = self.game.to_move_colour()
-            self.players[colour].make_move() # TODO: "made_move"
+            self.clocks[colour].made_move() # TODO: "made_move"
 
     def perform(self, dt):
         if self.action_queue.empty():
@@ -266,7 +266,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         Clock.schedule_once(self.prompt_for_action_inner, 0.01)
 
     def prompt_for_action_inner(self, *ignored):
-        if self.live:
+        if self.live: # and not self.reviewing:
             # TODO: game.prompt_for_action if not finished?
             self.start_ticking()
             game = self.game
@@ -284,9 +284,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.clean_board()
 
     def after_set_occ(self, game, pos, colour):
+        #st()
         self.make_move_on_the_gui_board(pos, colour)
+
         if colour:
-            self.players[colour].make_move() # TODO: "made_move"
+            self.clocks[colour].made_move() # TODO: "made_move"
 
     def up_to_date(self, game):
         self.refresh_all()
@@ -354,8 +356,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
-        self.players[BLACK].refresh()
-        self.players[WHITE].refresh()
+        self.clocks[BLACK].refresh()
+        self.clocks[WHITE].refresh()
 
     # KivyPlayer
     def get_turn_marker(self, colour):
@@ -718,7 +720,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def set_review_mode(self, val):
         self.reviewing = val
 
-        self.set_live(not val and not self.game.finished())
+        # TODO: Demo flag?
+        #self.set_live(not val and not self.game.finished())
 
         if val:
             cls = ReviewButtons
