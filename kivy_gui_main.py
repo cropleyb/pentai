@@ -106,6 +106,9 @@ class PentAIApp(App):
         self.root.set_demo(None)
         Clock.schedule_once(self.restore_from_demo, .1)
 
+    def in_demo_mode(self):
+        return self.root.in_demo_mode()
+
     def restore_from_demo(self, *ignored):
         for db_inst in [self.games_mgr, self.openings_book, misc_db.get_instance()]:
             # Restore each to backup
