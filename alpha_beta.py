@@ -49,6 +49,9 @@ def alphabeta_search(state, game): #, max_depth=4):
             v = max(v, min_value(s, alpha, beta, depth+1))
             if v >= beta:
                 break
+            if v > (INFINITY/100.0, 0):
+                # Game won, can't get better
+                break
             alpha = max(alpha, v)
         game.save_utility(state, depth, v)
         return v
@@ -60,6 +63,9 @@ def alphabeta_search(state, game): #, max_depth=4):
         for (a, s) in game.successors(state, depth):
             v = min(v, max_value(s, alpha, beta, depth+1))
             if v <= alpha:
+                break
+            if v < (-INFINITY/100.0, 0):
+                # Game lost, can't get worse
                 break
             beta = min(beta, v)
         game.save_utility(state, depth, v)
