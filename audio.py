@@ -87,7 +87,7 @@ class Audio():
         pass
 
     def start_demo(self):
-        self.demo_volume = .5
+        self.demo_volume = .3
 
     def finish_demo(self):
         self.demo_volume = 1
