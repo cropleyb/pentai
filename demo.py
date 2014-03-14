@@ -272,6 +272,7 @@ class Demo():
         # Double capture
         mm(7, 6)
         yield(.5)
+
         play_speech("two_pairs")
         mm(5, 6)
         yield(.5)
@@ -370,7 +371,7 @@ class Demo():
             game.go_forwards_one()
             yield(.5)
 
-        yield(5)
+        yield(4)
 
         ########
 
