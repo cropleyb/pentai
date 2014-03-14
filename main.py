@@ -9,5 +9,5 @@ if __name__ == '__main__':
     Config.set('graphics', 'width', '457')
     Config.set('graphics', 'height', '720')
 
-    PenteApp().run()
+    PentAIApp().run()
 
