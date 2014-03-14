@@ -1,4 +1,9 @@
 For Alpha release
+
+Integrate Alan's talking
+Contact Hasbro again
+Fix Clang/gcc issue on OSX
+Get cython building with iOS
 #Buy an iPad
 Restore game doesn't restore time controls etc.
 Stone noise higher pitch?
@@ -79,4 +84,3 @@ Update kivy to remove need for:
    /Applications/Kivy.app/Contents/Resources/kivy/kivy/tools/packaging/pyinstaller_hooks hack
 Patch DB from http://code.activestate.com/recipes/576642/ comments
 Get permission from Hasbro? Asked pente.net webmaster 8 Jan 2014
-# Ask about games/openings library - 20 Jan 2014
