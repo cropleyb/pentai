@@ -2,7 +2,6 @@ from kivy.uix.screenmanager import *
 
 class PScreenManager(ScreenManager):
     def __init__(self, *args, **kwargs):
-        self.demo_mode = False
         self.demo = None
         super(PScreenManager, self).__init__(*args, **kwargs)
 
