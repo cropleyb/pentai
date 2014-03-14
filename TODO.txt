@@ -1,7 +1,9 @@
 For Alpha release
 
-Integrate Alan's talking
-Contact Hasbro again
+Alan:
+   We hope you enjoy playing Pente with PentAI ("Pent Ay Eye")
+Check with people re acknowledgements
+Contact Hasbro again? By registered snail mail?
 Fix Clang/gcc issue on OSX
 Get cython building with iOS
 #Buy an iPad
