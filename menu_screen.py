@@ -19,11 +19,24 @@ The rules of the game are very simple: The first player to get 5 stones in a str
 
 PentAI is a computer program to play Pente. It can be configured to play in a wide range of ability levels, from a complete beginner to a strong amateur player. For more information about how PentAI works, see my [ref=bc][color=00ffff]website[/color][/ref].
 
-If you get a sore brain, you can create a game between a couple of Artificial Intelligence (AI) players and watch what they do. Human versus human games are also possible, though you are much better off playing with a real set.
+If you get a sore brain, you can create a game between a couple of Artificial Intelligence (AI) players and watch what they do. Human versus Human games are also possible, though you are much better off playing with a real set.
 
 Games are automatically saved, and can be resumed if they were left unfinished.
 
 There are a few settings that you might like to change, for things such as move confirmation style, sound volume and so on.
+
+Thanks go to:
+
+- Alan Morris for the wonderful voiceover
+- Mark Cole for playing many games against "Deep Thunk"
+- Thad for his expert Pente insights
+- Annette Campbell for inspiring me to write this in the first place
+- Sascha and Jespah for their comments on "The Sod"
+- Marion and Noel for constant support
+- Lots of other people for their support and feedback
+
+Enjoy,
+Bruce
 
 
 
