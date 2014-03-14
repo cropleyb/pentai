@@ -231,10 +231,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def on_pre_leave(self):
         self.set_live(False)
-        try:
-            self.ob.add_game(self.game)
-        except OpeningsBookDuplicateException:
-            pass
+        if not self.app.in_demo_mode():
+            try:
+                self.ob.add_game(self.game)
+            except OpeningsBookDuplicateException:
+                pass
 
     def start_ticking(self):
         if not self.game.finished():
