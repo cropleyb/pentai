@@ -17,6 +17,7 @@ class Audio():
         self.filenames_cache = {}
         self.last_played = {}
         self.muted = False
+        self.demo_volume = 1.0
 
         global instance
         instance = self
@@ -54,8 +55,9 @@ class Audio():
         # stop the sound if it's currently playing
         if sound.status != 'stop':
             sound.stop()
-        vol = self.config.get("PentAI", "effects_volume")
-        sound.volume = float(vol)
+
+        vol = float(self.config.get("PentAI", "effects_volume"))
+        sound.volume = self.demo_volume * vol
         sound.play()
 
     def place(self):
@@ -83,4 +85,22 @@ class Audio():
 
     def music(self):
         pass
+
+    def start_demo(self):
+        self.demo_volume = .5
+
+    def finish_demo(self):
+        self.demo_volume = 1
+
+    def demo(self, part):
+        if self.muted:
+            return
+        
+        fn_in_subdir = join("media", "demo", "%s.wav" % part)
+
+        sound = SoundLoader.load(fn_in_subdir)
+
+        vol = self.config.get("PentAI", "effects_volume")
+        sound.volume = float(vol)
+        sound.play()
 
