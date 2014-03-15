@@ -12,7 +12,7 @@ class MyButton(Button):
     def sim_press(self):
         self.state = "down"
 
-    def sim_release(self):
+    def sim_release(self, ignored=None):
         self.state = "normal"
         if not hasattr(self, "silent"):
             a_m.instance.click()
