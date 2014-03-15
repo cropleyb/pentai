@@ -90,6 +90,8 @@ class Audio():
         self.demo_volume = .3
 
     def finish_demo(self):
+        self.current_demo_sound.stop()
+        self.current_demo_sound = None
         self.demo_volume = 1
 
     def demo(self, part):
@@ -98,9 +100,9 @@ class Audio():
         
         fn_in_subdir = join("media", "demo", "%s.wav" % part)
 
-        sound = SoundLoader.load(fn_in_subdir)
+        self.current_demo_sound = SoundLoader.load(fn_in_subdir)
 
         vol = self.config.get("PentAI", "effects_volume")
-        sound.volume = float(vol)
-        sound.play()
+        self.current_demo_sound.volume = float(vol)
+        self.current_demo_sound.play()
 
