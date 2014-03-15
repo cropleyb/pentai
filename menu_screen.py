@@ -29,10 +29,10 @@ Thanks go to:
 
 - Alan Morris for the wonderful voiceover
 - Mark Cole for playing many games against "Deep Thunk"
+- Marion and Noel Lodge for their constant support and feedback
 - Thad for his expert Pente insights
 - Annette Campbell for inspiring me to write this in the first place
 - Sascha and Jespah for their comments on "The Sod"
-- Marion and Noel for constant support
 - Lots of other people for their support and feedback
 
 Enjoy,
