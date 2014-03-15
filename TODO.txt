@@ -7,20 +7,19 @@ Contact Hasbro again? By registered snail mail?
 Fix Clang/gcc issue on OSX
 Get cython building with iOS
 #Buy an iPad
-Restore game doesn't restore time controls etc.
-Stone noise higher pitch?
+Restore game doesn't restore time controls etc. check
 Navigation
-Click on player to edit
-Take back when there are 2 AI players: Stop them playing? Ignore/Hide button?
+Take back when there are 2 AI players: Error - It is not your turn
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
 load on iPhone. Start from scratch
 Prettify "About" text
 # Check "Winning Ways" link
-Include a pente section on my website...
 Icon for the app: game screen with PentAI sideways on the left.
 
 Beta release
+Click on player to edit
+Include another pente section on my website for users
 Prevent naming players the same
 Show all games option?  Games Screen show win / underway?
 run_ai generates lots of players with the same name
@@ -39,6 +38,7 @@ Sadistic mode for Rich
 iPad: "Rich Guano" I am running IOS7 on iPad mini.
 
 First public release
+Stone noise higher pitch?
 Review mode no clicking on board
 icons for everything for internationalization?
 iTunes
