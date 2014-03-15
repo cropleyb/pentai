@@ -1,5 +1,7 @@
 from kivy.uix.screenmanager import *
 
+import random
+
 class PScreenManager(ScreenManager):
     def __init__(self, *args, **kwargs):
         self.demo = None
@@ -7,6 +9,23 @@ class PScreenManager(ScreenManager):
 
     def set_demo(self, d):
         self.demo = d 
+
+    def set_current(self, screen_name):
+        self.random_transition()
+        if self.current != screen_name:
+            self.current = screen_name
+
+    def random_transition(self):
+        # The other transition types trigger a crash
+        trans = self.transition = SlideTransition()
+
+        dirs = ['right','up','down','left']
+        try:
+            dirs.remove(self.last_choice)
+        except: pass
+        dc = random.choice(dirs)
+        self.last_choice = dc
+        trans.direction = dc
 
     def in_demo_mode(self):
         return self.demo != None

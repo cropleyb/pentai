@@ -30,7 +30,6 @@ import alpha_beta as ab_m
 import os # TODO: Remove?
 import time
 import ai_player as aip_m # hack for debugging
-import random
 
 import copy as c_m
 import demo as d_m
@@ -56,34 +55,27 @@ class PentAIApp(App):
             self.show_menu_screen()
 
     def show_settings_screen(self):
-        self.random_transition()
-        self.root.current = "Settings"
+        self.root.set_current("Settings")
 
     def show_pente_screen(self):
-        self.random_transition()
-        self.root.current = "Pente"
+        self.root.set_current("Pente")
 
     def show_games_screen(self, ignored=None):
-        self.random_transition()
-        self.root.current = "Games"
+        self.root.set_current("Games")
 
     def show_ai_screen(self, ignored=None):
-        self.random_transition()
-        self.root.current = "AI"
+        self.root.set_current("AI")
 
     def show_human_screen(self, ignored=None):
-        self.random_transition()
-        self.root.current = "Human"
+        self.root.set_current("Human")
 
     def show_menu_screen(self, ignored=None):
-        self.random_transition()
-        self.root.current = "Menu"
+        self.root.set_current("Menu")
 
     def show_new_game_screen(self):
-        self.random_transition()
         self.game_filename = ""
         self.setup_screen.create_game()
-        self.root.current = "Setup"
+        self.root.set_current("Setup")
 
     def show_demo(self):
         d = d_m.Demo(self, self.setup_screen.size)
@@ -270,18 +262,6 @@ class PentAIApp(App):
         scr.pm = self.games_mgr.players_mgr
         self.root.add_widget(scr)
 
-    def random_transition(self):
-        # The other transition types trigger a crash
-        trans = self.root.transition = SlideTransition()
-
-        dirs = ['right','up','down','left']
-        try:
-            dirs.remove(self.last_choice)
-        except: pass
-        dc = random.choice(dirs)
-        self.last_choice = dc
-        trans.direction = dc
-
     def build(self):
         '''
         # This may look OK on an iPad? Not so good on laptop ;)
@@ -291,7 +271,7 @@ class PentAIApp(App):
         root = ps_m.PScreenManager()
         self.root = root
         
-        self.random_transition()
+        self.root.random_transition()
 
         self.game = None
 
