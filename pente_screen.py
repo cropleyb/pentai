@@ -727,7 +727,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.reviewing = val
 
         # TODO: Demo flag?
-        #self.set_live(not val and not self.game.finished())
+        self.set_live(not val and \
+                not self.game.finished() and \
+                not self.app.in_demo_mode())
 
         if val:
             cls = ReviewButtons
