@@ -349,9 +349,9 @@ class Demo():
         mm(1, 11)
         yield(2)
         mm(3, 9)
-        yield(1)
+        yield(0.5)
         play_speech("capt_no_win")
-        yield(4)
+        yield(5)
 
         # Demonstrate review mode
         play_speech("review")
