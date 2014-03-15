@@ -562,6 +562,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return self.config.getint("PentAI", "mark_captures")
 
     def take_back_move(self):
+        current_player = self.game.get_current_player()
+        if current_player.get_type() != "Human":
+            self.display_error("It is not your turn!")
+            return
         self.reviewing = False
         self.get_audio().mute()
         self.game.go_backwards_one()

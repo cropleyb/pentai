@@ -9,7 +9,6 @@ Get cython building with iOS
 #Buy an iPad
 Restore game doesn't restore time controls etc. check
 Navigation
-Take back when there are 2 AI players: Error - It is not your turn
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
 load on iPhone. Start from scratch
