@@ -17,6 +17,10 @@ import audio as a_m
 def play_speech(part_num):
     a_m.instance.demo(part_num)
 
+def sim_press(button):
+    button.sim_press()
+    Clock.schedule_once(button.sim_release, 0.2)
+
 class Demo():
     def __init__(self, app, size):
         self.app = app
@@ -68,9 +72,9 @@ class Demo():
         ms = app.menu_screen
 
         yield(1)
-        ms.ids.new_game_id.sim_press()
+        sim_press(ms.ids.new_game_id)
+
         yield(.2)
-        ms.ids.new_game_id.sim_release()
 
         app.show_new_game_screen()
         yield(.1)
@@ -84,9 +88,9 @@ class Demo():
         yield(1)
 
         yield(1)
-        ss.ids.start_game_id.sim_press()
+        sim_press(ss.ids.start_game_id)
+
         yield(.2)
-        ss.ids.start_game_id.sim_release()
 
         # Use most recent human player name
         pmgr = pm_m.PlayersMgr()
@@ -354,20 +358,19 @@ class Demo():
 
         # Click go to beginning
         beginning_button = ps.panel_buttons.ids.beginning_id
-        beginning_button.sim_press()
+        sim_press(beginning_button)
+
         yield(.3)
 
-        beginning_button.sim_release()
         game.go_to_the_beginning()
         yield(.7)
 
         # Click forward a few times
         forward_button = ps.panel_buttons.ids.forward_id
         for i in range(8):
-            forward_button.sim_press()
+            sim_press(forward_button)
             yield(.2)
 
-            forward_button.sim_release()
             game.go_forwards_one()
             yield(.5)
 
