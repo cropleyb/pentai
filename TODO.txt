@@ -1,5 +1,7 @@
 For Alpha release
 
+Interrupt demo should turn off buttons
+Review AI vs AI during game should pause
 Alan:
    We hope you enjoy playing Pente with PentAI ("Pent Ay Eye")
 Check with people re acknowledgements
