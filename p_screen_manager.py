@@ -6,6 +6,8 @@ class PScreenManager(ScreenManager):
     def __init__(self, *args, **kwargs):
         self.demo = None
         super(PScreenManager, self).__init__(*args, **kwargs)
+        self.transition = SlideTransition()
+        self.random_transition()
 
     def set_demo(self, d):
         self.demo = d 
@@ -16,8 +18,7 @@ class PScreenManager(ScreenManager):
             self.current = screen_name
 
     def random_transition(self):
-        # The other transition types trigger a crash
-        trans = self.transition = SlideTransition()
+        trans = self.transition
 
         dirs = ['right','up','down','left']
         try:
