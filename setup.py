@@ -31,9 +31,8 @@ if True:
     ])
 
 setup(
-        name = "Pentacular",
+        name = "PentAI",
         ext_modules = cythonize(
             cy_modules
-            # extra_compile_args=["-O3"], # Is this doing anything?
         )
     )
