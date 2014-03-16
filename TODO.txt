@@ -1,9 +1,10 @@
 For Alpha release
 
-Review AI vs AI during game should pause
+Timer 30s resolution
+No multiline player names
 Alan:
    We hope you enjoy playing Pente with PentAI ("Pent Ay Eye")
-Check with people re acknowledgements
+Check with people re acknowledgements: ask Thad, Sascha
 Contact Hasbro again? By registered snail mail?
 Fix Clang/gcc issue on OSX
 Get cython building with iOS
