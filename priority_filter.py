@@ -69,8 +69,7 @@ class PriorityFilter():
                 slot = cand_for_priority[colour]
                 slot_arr = slot.iteritems()
                 sorted_slot = [(count, pos) for (pos, count) in slot_arr]
-                sorted_slot.sort()
-                sorted_slot.reverse()
+                sorted_slot.sort(reverse=True)
                 for count, pos in sorted_slot:
                     if count > 0:
                         if not pos in tried:
