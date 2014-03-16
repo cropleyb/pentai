@@ -15,7 +15,8 @@ def argmax(aspi, fn):
         raise NoMovesException()
     only_one = (len(asp_l) == 1)
 
-    vals = []
+    #vals = []
+    best = -INFINITY, None
     for item in asp_l:
         if only_one:
             # Don't bother searching, there is only one move
@@ -25,19 +26,21 @@ def argmax(aspi, fn):
             val = 0
         else:
             val = fn(item)
-        vals.append((val, item))
-    # sort is for debug presentation only. Since this function is only called
-    # once per search, it should not be a problem.
+        #vals.append((val, item))
+        if val > best[0]:
+            best = val, item
+    '''
     if debug:
+        # sort is for debug presentation only. Since this function is only called
+        # once per search, it should not be a problem.
         print "Deep util"
         vals.sort()
         for v in vals:
             print v
-
-    best = max(vals)
+    '''
     return best[1], best[0]
 
-def alphabeta_search(state, game): #, max_depth=4):
+def alphabeta_search(state, game):
     """Search game to determine best action; use alpha-beta pruning.
     This version cuts off search and uses an evaluation function."""
 
