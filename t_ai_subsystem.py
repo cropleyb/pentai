@@ -418,5 +418,23 @@ standard rules
         #print m
         self.assertNotIn(m, ((7,8),(5,8)))
 
+    def test_block_one_end(self):
+        self.p1.set_max_depth(8)
+        game_str = \
+"""Bruce versus DT
+13x13
+Standard rules
+1. (6, 6)
+2. (5, 5)
+3. (7, 6)
+4. (7, 4)
+5. (8, 6)
+6. (9, 3)
+7. (9, 6)"""
+        self.game.load_game(game_str)
+        m = self.p2.do_the_search()
+        self.assertIn(m, ((10,6),(5,6)))
+
+
 if __name__ == "__main__":
     unittest.main()
