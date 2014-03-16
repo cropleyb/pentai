@@ -1,6 +1,6 @@
 For Alpha release
 
-Timer 30s resolution
+Timer 30s resolution for both gui and selection
 No multiline player names
 Alan:
    We hope you enjoy playing Pente with PentAI ("Pent Ay Eye")
@@ -16,7 +16,7 @@ Eliminate duplicate player names (fix upgrade script)
 load on iPhone. Start from scratch
 Prettify "About" text
 # Check "Winning Ways" link
-Icon for the app: game screen with PentAI sideways on the left.
+Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 
 Beta release
 Click on player to edit
