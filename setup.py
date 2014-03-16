@@ -9,18 +9,20 @@ from Cython.Build import cythonize
 #from Cython.Compiler.Options import directive_defaults
 #directive_defaults['profile'] = True
 
+compile_cy_py = False
+
 cy_modules = [
             'board_strip.pyx',
             'length_lookup_table.pyx',
             ]
-if True:
+if compile_cy_py:
     cy_modules.extend([
             'priority_filter.py',
             'priority_filter_2.py',
             'utility_stats.py',
             'bit_reverse.py',
     ])
-if True:
+if compile_cy_py:
     cy_modules.extend([
         'utility_calculator.py',
         'direction_strips.py',
