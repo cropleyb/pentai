@@ -140,10 +140,10 @@
                     id: time_control_id
                     min: 0
                     max: 10
-                    step: .1
+                    step: .5
                     #step: .1 # TEMP
                     value: root.time_control
-                    on_value: root.time_control = self.value
+                    on_value: root.time_control = (int(2*self.value)) / 2.0
 
                 Label:
                     size_hint_x: .28

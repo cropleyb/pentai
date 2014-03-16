@@ -47,7 +47,9 @@ class SetupScreen(Screen):
     def time_control_text(self, tc):
         if tc == 0:
             return "No Limit"
-        return '{}'.format(int(tc))
+        mins = tc / 1
+        secs = int((tc % 1) * 60)
+        return '%d:%02d' % (mins, secs)
 
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
