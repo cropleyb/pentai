@@ -1,24 +1,20 @@
 For Alpha release
 
-Timer 30s resolution for both gui and selection
-No multiline player names
-Alan:
-   We hope you enjoy playing Pente with PentAI ("Pent Ay Eye")
+Get cython building with iOS
+Alan: We hope you enjoy playing Pente with PentAI ("Pent Ay Eye") (requested)
 Check with people re acknowledgements: ask Thad, Sascha
 Contact Hasbro again? By registered snail mail?
-Fix Clang/gcc issue on OSX
-Get cython building with iOS
-#Buy an iPad
 Restore game doesn't restore time controls etc. check
 Navigation
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
-load on iPhone. Start from scratch
-Prettify "About" text
+Players and Games screen optimisation
 # Check "Winning Ways" link
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
+Thinking in opponent's time - swap search colour then reuse position cache
 
 Beta release
+Prettify "About" text
 Click on player to edit
 Include another pente section on my website for users
 Prevent naming players the same
@@ -71,7 +67,6 @@ Trim the transposition table?
 Utility for converting all the games into openings
 Script for reading openings/games from pente.net
 script to import my historical human games
-Thinking in opponent's time - swap search colour then reuse position cache
 Split up pente_screen?
 Killer Heuristic? History Heuristic?
 Grid option
