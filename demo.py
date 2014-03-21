@@ -374,6 +374,9 @@ class Demo():
             game.go_forwards_one()
             yield(.5)
 
+        yield(.2)
+        play_speech("enjoy")
+
         yield(4)
 
         ########
