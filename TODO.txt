@@ -1,19 +1,20 @@
 For Alpha release
 
 Get cython building with iOS
-Alan: We hope you enjoy playing Pente with PentAI ("Pent Ay Eye") (requested)
 Check with people re acknowledgements: ask Thad, Sascha
 Contact Hasbro again? By registered snail mail?
 Restore game doesn't restore time controls etc. check
 Navigation
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
-Players and Games screen optimisation
+Players screen optimisation
 # Check "Winning Ways" link
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
-Thinking in opponent's time - swap search colour then reuse position cache
 
 Beta release
+Demo fwd/bkwd
+Start game default rules to last game played - rules variation, size, timing
+Thinking in opponent's time - swap search colour then reuse position cache
 Prettify "About" text
 Click on player to edit
 Include another pente section on my website for users
