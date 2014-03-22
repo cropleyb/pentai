@@ -1,5 +1,4 @@
 from pente_exceptions import *
-from defines import *
 
 class Rules():
     def __init__(self, *args, **kwargs):
