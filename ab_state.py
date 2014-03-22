@@ -71,6 +71,9 @@ class ABState(gso_m.GSObserver):
     def game(self):
         return self.state.game
 
+    def get_state(self):
+        return self.state
+
     def history_string(self):
         """ For debugging only """
         hist_str = ""
