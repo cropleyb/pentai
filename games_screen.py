@@ -187,6 +187,6 @@ class MyListItemButton(ListItemButton):
     """ Add click sound """
     def on_touch_down(self, touch):
         # TODO: Check Scroll
-        a_m.instance.click()
-        super(MyListItemButton, self).on_touch_down(touch)
+        if super(MyListItemButton, self).on_touch_down(touch):
+            a_m.instance.click()
 
