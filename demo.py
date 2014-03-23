@@ -27,30 +27,36 @@ class Demo():
         self.size = size
         self.interrupted = False
         self.speed_factor = 0.65
-        #self.speed_factor = 1.5
 
         # TODO Save settings
         # for settings demo
 
-        # TODO Intercept Input
-
-        self.script = self.rules_script()
+        self.script_list = [self.rules_script1, self.rules_script2,
+                self.rules_script3, self.rules_script4, self.rules_script5]
+        self.script = None
 
     def start(self):
         a_m.instance.start_demo()
         self.play()
 
     def play(self, dt=None):
+        if self.script is None:
+            if len(self.script_list) == 0:
+                self.finish()
+                return
+            self.script = self.script_list[0]()
+            del self.script_list[0]
         try:
             sleep_time = self.script.next() / self.speed_factor
-
         except StopIteration:
-            self.finish()
-            return
+            self.script = None
+            sleep_time = 0
 
         if self.interrupted:
-            self.finish()
-            return
+            self.script = None
+            self.interrupted = False
+            sleep_time = 0
+            a_m.instance.finish_demo()
 
         if sleep_time != None:
             sleep_time = (.8 + .4 * rand_m.random()) * sleep_time
@@ -64,7 +70,7 @@ class Demo():
         self.app.finish_demo()
 
 
-    def rules_script(self):
+    def rules_script1(self):
         play_speech("intersections")
 
         # We're already on the menu screen
@@ -90,8 +96,12 @@ class Demo():
         yield(1)
         sim_press(ss.ids.start_game_id)
 
-        yield(.2)
+    def mm(self, x,y):
+        self.game.make_move((x,y))
+        self.app.pente_screen.perform(0)
+        self.app.pente_screen.refresh_all()
 
+    def rules_script2(s):
         # Use most recent human player name
         pmgr = pm_m.PlayersMgr()
         human = pmgr.get_recent_player_names("Human", 1)[0]
@@ -104,251 +114,250 @@ class Demo():
 
         # Create a game
         r = r_m.Rules(13, "standard")
-        game = g_m.Game(r, p1, p2)
+        s.game = g_m.Game(r, p1, p2)
 
         # And start it...
 
         # demo flag: Disable prompting of players
-        size = self.app.menu_screen.size
-        self.app.start_game(game, size, demo=True)
+        size = s.app.menu_screen.size
+        s.app.start_game(s.game, size, demo=True)
+        s.ps = s.app.pente_screen
         yield(1.2) # Compensating for .7 wait at start?!
 
-        ps = self.app.pente_screen
 
-        def mm(x,y):
-            game.make_move((x,y))
-            self.app.pente_screen.perform(0)
-            self.app.pente_screen.refresh_all()
 
         play_speech("black_first")
         yield(2)
 
         play_speech("centre_first")
         yield(1.5)
-        mm(3,4)
+        s.mm(3,4)
         yield(1)
 
-        mm(6,8)
+        s.mm(6,8)
         yield(.5)
-        mm(4,4)
+        s.mm(4,4)
         yield(.5)
 
-        mm(6,7)
+        s.mm(6,7)
         yield(.5)
-        mm(5,8)
+        s.mm(5,8)
         yield(.5)
         play_speech("line_5_wins")
 
-        mm(6,9)
+        s.mm(6,9)
         yield(.5)
-        mm(8,3)
+        s.mm(8,3)
         yield(.5)
 
-        mm(6,10)
+        s.mm(6,10)
         yield(4)
 
         # Diagonal white win
-        app.pente_screen.set_review_mode(False)
-        game.go_to_the_beginning()
+        s.app.pente_screen.set_review_mode(False)
+        s.game.go_to_the_beginning()
         yield(2)
 
-        mm(6, 6)
+        s.mm(6, 6)
         yield(.5)
-        mm(5, 5)
+        s.mm(5, 5)
         yield(.5)
 
-        mm(4, 6)
+        s.mm(4, 6)
         yield(.5)
-        mm(7, 3)
+        s.mm(7, 3)
         yield(.5)
 
         play_speech("diagonal_wins")
 
-        mm(7, 5)
+        s.mm(7, 5)
         yield(.5)
-        mm(9, 1)
-        yield(.5)
-
-        mm(5, 6)
-        yield(.5)
-        mm(6, 4)
+        s.mm(9, 1)
         yield(.5)
 
-        mm(8, 6)
+        s.mm(5, 6)
+        yield(.5)
+        s.mm(6, 4)
+        yield(.5)
+
+        s.mm(8, 6)
         yield(.8)
-        mm(8, 2)
+        s.mm(8, 2)
         yield(3.5)
 
+    def rules_script3(s):
         # Captures
-        app.pente_screen.set_review_mode(False)
-        game.go_to_the_beginning()
+        s.app.pente_screen.set_review_mode(False)
+        s.game.go_to_the_beginning()
         yield(1)
 
-        mm(6, 6)
+        s.mm(6, 6)
         yield(.5)
-        mm(6, 7)
+        s.mm(6, 7)
         yield(.5)
 
         play_speech("pair_captures")
 
-        mm(6, 5)
+        s.mm(6, 5)
         yield(1.5)
-        mm(6, 4)
+        s.mm(6, 4)
         yield(2.5)
         
-        mm(5, 3)
+        s.mm(5, 3)
         yield(.5)
-        mm(7, 5)
+        s.mm(7, 5)
         yield(1)
 
         play_speech("diag_capt")
         yield(1.5)
 
-        mm(8, 6)
+        s.mm(8, 6)
         yield(2.5)
-        mm(6, 6)
+        s.mm(6, 6)
         yield(1)
 
+    def rules_script4(s):
         # Non captures
         ##############
-        game.go_to_the_beginning()
+        s.game.go_to_the_beginning()
         play_speech("non_capt")
         yield(2)
 
         # Length 1
-        mm(0, 0)
+        s.mm(0, 0)
         yield(.5)
         play_speech("single_stone")
 
-        mm(0, 1)
+        s.mm(0, 1)
         yield(1)
-        mm(0, 2)
+        s.mm(0, 2)
         yield(1)
 
         # Length 3
-        mm(2, 1)
+        s.mm(2, 1)
         yield(.5)
-        mm(2, 0)
+        s.mm(2, 0)
         yield(.5)
         play_speech("3_or_more")
 
-        mm(2, 3)
+        s.mm(2, 3)
         yield(.5)
-        mm(8, 4)
+        s.mm(8, 4)
         yield(.5)
 
-        mm(2, 2)
+        s.mm(2, 2)
         yield(1)
-        mm(2, 4)
+        s.mm(2, 4)
         yield(2)
 
         # Place inside the border
-        mm(4, 1)
+        s.mm(4, 1)
         yield(.5)
-        mm(4, 0)
+        s.mm(4, 0)
         yield(.5)
 
         play_speech("trigger_capt")
 
-        mm(4, 10)
+        s.mm(4, 10)
         yield(.5)
-        mm(4, 3)
+        s.mm(4, 3)
         yield(2)
 
-        mm(4, 2) # Black places a piece inside, doesn't get taken
+        s.mm(4, 2) # Black places a piece inside, doesn't get taken
         yield(3)
-        mm(6, 6)
+        s.mm(6, 6)
         yield(1)
 
         # Gap
         play_speech("no_gaps")
 
-        mm(6, 3)
+        s.mm(6, 3)
         yield(.5)
-        mm(6, 0)
+        s.mm(6, 0)
         yield(.5)
 
-        mm(6, 1)
+        s.mm(6, 1)
         yield(1)
-        mm(6, 4)
+        s.mm(6, 4)
         yield(3)
 
         # Double capture
-        mm(7, 6)
+        s.mm(7, 6)
         yield(.5)
 
         play_speech("two_pairs")
-        mm(5, 6)
+        s.mm(5, 6)
         yield(.5)
-        mm(7, 9)
+        s.mm(7, 9)
         yield(.5)
-        mm(5, 7)
+        s.mm(5, 7)
         yield(.5)
-        mm(0, 12)
+        s.mm(0, 12)
         yield(.5)
-        mm(6, 8)
+        s.mm(6, 8)
         yield(.5)
-        mm(4, 6)
+        s.mm(4, 6)
         yield(3)
 
+    def rules_script5(s):
         # 5 Pairs win the game
-        game.go_to_the_beginning()
+        s.game.go_to_the_beginning()
         play_speech("capt_win")
         yield(1)
 
         # 1
-        mm(0, 1)
+        s.mm(0, 1)
         yield(.3)
-        mm(0, 0)
+        s.mm(0, 0)
         yield(.3)
 
-        mm(0, 2)
+        s.mm(0, 2)
         yield(.3)
-        mm(0, 3)
+        s.mm(0, 3)
         yield(.3)
 
         # 2
-        mm(2, 1)
+        s.mm(2, 1)
         yield(.3)
-        mm(2, 0)
+        s.mm(2, 0)
         yield(.3)
 
-        mm(2, 2)
+        s.mm(2, 2)
         yield(.3)
-        mm(2, 3)
+        s.mm(2, 3)
         yield(.3)
 
         # 3
-        mm(4, 2)
+        s.mm(4, 2)
         yield(.3)
-        mm(4, 3)
+        s.mm(4, 3)
         yield(.3)
 
-        mm(4, 1)
+        s.mm(4, 1)
         yield(.3)
-        mm(4, 0)
+        s.mm(4, 0)
         yield(.3)
 
         # 4
-        mm(7, 1)
+        s.mm(7, 1)
         yield(.3)
-        mm(6, 0)
+        s.mm(6, 0)
         yield(.3)
 
-        mm(8, 2)
+        s.mm(8, 2)
         yield(.3)
-        mm(9, 3)
+        s.mm(9, 3)
         yield(.3)
 
         # 5
-        mm(2, 10)
+        s.mm(2, 10)
         yield(.3)
-        mm(0, 12)
+        s.mm(0, 12)
         yield(.3)
 
-        mm(1, 11)
+        s.mm(1, 11)
         yield(2)
-        mm(3, 9)
+        s.mm(3, 9)
         yield(0.5)
         play_speech("capt_no_win")
         yield(5)
@@ -357,21 +366,21 @@ class Demo():
         play_speech("review")
 
         # Click go to beginning
-        beginning_button = ps.panel_buttons.ids.beginning_id
+        beginning_button = s.ps.panel_buttons.ids.beginning_id
         sim_press(beginning_button)
 
         yield(.3)
 
-        game.go_to_the_beginning()
+        s.game.go_to_the_beginning()
         yield(.7)
 
         # Click forward a few times
-        forward_button = ps.panel_buttons.ids.forward_id
+        forward_button = s.ps.panel_buttons.ids.forward_id
         for i in range(8):
             sim_press(forward_button)
             yield(.2)
 
-            game.go_forwards_one()
+            s.game.go_forwards_one()
             yield(.5)
 
         yield(.2)
