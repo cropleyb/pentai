@@ -91,7 +91,6 @@ class Audio():
 
     def finish_demo(self):
         self.current_demo_sound.stop()
-        self.current_demo_sound = None
         self.demo_volume = 1
 
     def demo(self, part):
