@@ -89,7 +89,7 @@ class Audio():
     def start_demo(self):
         self.demo_volume = .3
 
-    def finish_demo(self):
+    def cut_demo(self):
         self.current_demo_sound.stop()
         self.demo_volume = 1
 

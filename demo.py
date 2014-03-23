@@ -27,6 +27,7 @@ class Demo():
         self.size = size
         self.interrupted = False
         self.speed_factor = 0.65
+        self.sleep_remaining = 0
 
         # TODO Save settings
         # for settings demo
@@ -40,33 +41,39 @@ class Demo():
         self.play()
 
     def play(self, dt=None):
+        if self.interrupted:
+            self.script = None
+            self.interrupted = False
+            self.sleep_remaining = 0
+            a_m.instance.cut_demo()
+
+        if self.sleep_remaining > 0:
+            self.sleep_remaining -= 0.05
+            Clock.schedule_once(self.play, 0.05)
+            return
+
         if self.script is None:
             if len(self.script_list) == 0:
                 self.finish()
                 return
             self.script = self.script_list[0]()
             del self.script_list[0]
+
         try:
-            sleep_time = self.script.next() / self.speed_factor
+            self.sleep_remaining = self.script.next() / self.speed_factor
+            self.sleep_remaining = (.8 + .4 * rand_m.random()) * self.sleep_remaining
         except StopIteration:
             self.script = None
-            sleep_time = 0
+            self.sleep_remaining = 0
 
-        if self.interrupted:
-            self.script = None
-            self.interrupted = False
-            sleep_time = 0
-            a_m.instance.finish_demo()
+        Clock.schedule_once(self.play, 0)
 
-        if sleep_time != None:
-            sleep_time = (.8 + .4 * rand_m.random()) * sleep_time
-            Clock.schedule_once(self.play, sleep_time)
 
     def interrupt(self):
         self.interrupted = True
 
     def finish(self):
-        a_m.instance.finish_demo()
+        a_m.instance.cut_demo()
         self.app.finish_demo()
 
 
@@ -79,7 +86,6 @@ class Demo():
 
         yield(1)
         sim_press(ms.ids.new_game_id)
-
         yield(.2)
 
         app.show_new_game_screen()
@@ -90,10 +96,8 @@ class Demo():
         ss.ids.white_type_id.val = "Computer"
         # TODO: Select computer player somehow?
         ss.ids.wpl_id.val = "PentAI"
+        yield(2)
 
-        yield(1)
-
-        yield(1)
         sim_press(ss.ids.start_game_id)
 
     def mm(self, x,y):
@@ -123,8 +127,6 @@ class Demo():
         s.app.start_game(s.game, size, demo=True)
         s.ps = s.app.pente_screen
         yield(1.2) # Compensating for .7 wait at start?!
-
-
 
         play_speech("black_first")
         yield(2)
@@ -368,7 +370,6 @@ class Demo():
         # Click go to beginning
         beginning_button = s.ps.panel_buttons.ids.beginning_id
         sim_press(beginning_button)
-
         yield(.3)
 
         s.game.go_to_the_beginning()
