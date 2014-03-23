@@ -28,9 +28,8 @@ There are a few settings that you might like to change, for things such as move 
 Thanks go to:
 
 - Alan Morris for the wonderful voiceover
-- Mark Cole for playing many games against "Deep Thunk"
 - Marion and Noel Lodge for their constant support and feedback
-- Thad for his expert Pente insights
+- Thad Spreg for his expert Pente insights
 - Annette Campbell for inspiring me to write this in the first place
 - Sascha and Jespah for their comments on "The Sod"
 - Lots of other people for their support and feedback
