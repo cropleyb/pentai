@@ -38,9 +38,7 @@ class Game(object):
         self.autosave_filename = None
 
     def __eq__(self, other):
-        if not other.__class__ is Game:
-            return False
-        return self.game_id == other.game_id
+        return self.key() == other.key()
 
     def resume(self):
         """ Call this once all the observers are set up """
@@ -54,7 +52,7 @@ class Game(object):
     def get_rules(self):
         return self.rules
 
-    def get_game_id(self):
+    def key(self):
         return self.game_id
 
     # TODO: get_size for consistency
