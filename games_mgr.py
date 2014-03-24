@@ -125,7 +125,7 @@ class GamesMgr(gso_m.GSObserver):
         self.id_lookup[g.game_id] = g.rules.key()
         self.id_lookup.sync()
 
-        gid = g.get_game_id()
+        gid = g.key()
 
         if g.finished():
             try:
@@ -160,11 +160,18 @@ class GamesMgr(gso_m.GSObserver):
             ret.append(g)
         return ret
 
-    '''
-    def get_recently_finished(self):
-    '''
-
     def get_game(self, g_id, game_db=None, update_cache=True):
+        pg = self.get_preserved_game(g_id, game_db, update_cache)
+
+        if pg is None:
+            return None
+
+        g = pg.restore(self.players_mgr, update_cache)
+
+        return g
+
+    def get_preserved_game(self, g_id, game_db=None, update_cache=True):
+
         if g_id is None:
             return None
 
@@ -174,15 +181,8 @@ class GamesMgr(gso_m.GSObserver):
                 return None
 
         pg = game_db[g_id]
-        if pg is None:
-            return None
 
-        g = pg.restore(self.players_mgr, update_cache)
-
-        # Observe game
-        g.current_state.add_observer(self)
-
-        return g
+        return pg
 
     def reset_state(self, game):
         pass
