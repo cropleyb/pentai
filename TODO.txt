@@ -1,7 +1,6 @@
 For Alpha release
 
 Get cython building with iOS
-Check with people re acknowledgements: ask Thad, Sascha
 Contact Hasbro again? By registered snail mail?
 Restore game doesn't restore time controls etc. check
 Navigation
