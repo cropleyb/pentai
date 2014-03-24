@@ -1,16 +1,15 @@
 from board_strip import *
+import array as a_m
 
 class DirectionStrips():
     """ A list of BoardStrips for those going in a particular direction.
         The directions are E, SE, S, SW.
         For E and S there are the same number of strips as the board size.
-        For SE and SW there (2*board size) - 1
+        For SE and SW there are (2*board size) - 1
     """ 
 
     def __init__(self, board_size, clone=False):
-        self.strips = []
-        if not clone:
-            self.set_up_strips(board_size)
+        self.set_up_strips(board_size)
 
     def get_occ_list(self, move_pos, board_size):
         # TODO: Remove this method as it is time consuming, and may be avoided
@@ -45,15 +44,14 @@ class EDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = EDirectionStrips(board_size=0, clone=True)
-        new_one.strips = self.strips[:]
+        new_one.strips = self.strips.__copy__()
         return new_one
 
     def get_bounds(self, s_num, board_size):
         return 0, board_size-1
 
     def set_up_strips(self, board_size):
-        for i in range(board_size):
-            self.strips.append(0)
+        self.strips = a_m.array('L', [0]*board_size)
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
@@ -92,7 +90,7 @@ class SWDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = SWDirectionStrips(self.board_size, clone=True)
-        new_one.strips = self.strips[:]
+        new_one.strips = self.strips.__copy__()
         new_one.board_size = self.board_size
         return new_one
 
@@ -109,8 +107,7 @@ class SWDirectionStrips(DirectionStrips):
 
     def set_up_strips(self, board_size):
         self.board_size = board_size
-        for i in range(board_size*2):
-            self.strips.append(0)
+        self.strips = a_m.array('L', [0]*(board_size*2))
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
@@ -150,15 +147,14 @@ class SDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = SDirectionStrips(board_size=0, clone=True)
-        new_one.strips = self.strips[:]
+        new_one.strips = self.strips.__copy__()
         return new_one
 
     def get_bounds(self, s_num, board_size):
         return 0, board_size-1
 
     def set_up_strips(self, board_size):
-        for i in range(board_size):
-            self.strips.append(0)
+        self.strips = a_m.array('L', [0]*board_size)
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
@@ -195,7 +191,7 @@ class SEDirectionStrips(DirectionStrips):
     '''
     def clone(self):
         new_one = SEDirectionStrips(board_size=0, clone=True)
-        new_one.strips = self.strips[:]
+        new_one.strips = self.strips.__copy__()
         return new_one
 
     def get_bounds(self, s_num, board_size):
@@ -211,8 +207,7 @@ class SEDirectionStrips(DirectionStrips):
             return s_num-board_size+1, board_size-1
 
     def set_up_strips(self, board_size):
-        for i in range(board_size*2+1):
-            self.strips.append(0)
+        self.strips = a_m.array('L', [0]*(board_size*2))
 
     def get_strip(self, pos):
         """ Get the strip that runs through pos """
