@@ -20,22 +20,21 @@ class OpeningsMover(object):
         
         for mg in move_games:
             move, games = mg
-            for g in games:
-                win_colour = g.get_won_by()
+            for pg in games:
+                win_colour = pg.won_by
 
                 if win_colour == colour:
                     wins += 1
-                else:
-                    assert(win_colour == opposite_colour(colour))
+                elif win_colour == opposite_colour(colour):
                     losses += 1
+                # else ignore draws and unfinished games (latter shouldn't get here)
 
-                # Calc & save the maximum rating of the players
-                # who made this move
-                move_player = g.get_player(colour)
+                move_rating = pg.get_rating(colour)
 
-                if move_player:
-                    max_rating_factor = \
-                        max(max_rating_factor, move_player.rating_factor())
+                # TODO: More smarts here
+                max_rating_factor = \
+                    max(max_rating_factor, move_rating)
+
 
             totals.append((move, wins, losses, max_rating_factor))
 
