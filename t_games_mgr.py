@@ -42,7 +42,7 @@ class GamesMgrTest(unittest.TestCase):
         rules = Rules(19, "5 in a row")
         g = self.gm.create_game(rules, player.Player("Freddo"), player.Player("Sam"))
 
-        fn = self.gm.get_filename(g.get_game_id())
+        fn = self.gm.get_filename(g.key())
         self.assertEquals(fn, "test_5_19.pkl")
 
     def test_save_and_fetch_game(self):
@@ -51,7 +51,7 @@ class GamesMgrTest(unittest.TestCase):
         g.make_move((5,3))
         self.gm.save(g)
 
-        g2 = self.gm.get_game(g.get_game_id())
+        g2 = self.gm.get_game(g.key())
 
         self.assertNotEquals(g2, None)
         self.assertEquals(g2.__class__, game.Game)
@@ -60,7 +60,7 @@ class GamesMgrTest(unittest.TestCase):
     def test_no_such_game(self):
         rules = Rules(9, "Standard")
         g = Game(rules, HumanPlayer("The Thing"), HumanPlayer("Blomp"))
-        g2 = self.gm.get_game(g.get_game_id())
+        g2 = self.gm.get_game(g.key())
 
         self.assertEquals(g2, None)
 
@@ -74,11 +74,11 @@ class GamesMgrTest(unittest.TestCase):
         g2.make_move((8,2))
         self.gm.save(g2)
 
-        fg1 = self.gm.get_game(g1.get_game_id())
+        fg1 = self.gm.get_game(g1.key())
         self.assertNotEquals(fg1, None)
         self.assertEquals(fg1.move_history, [(5,3)])
 
-        fg2 = self.gm.get_game(g2.get_game_id())
+        fg2 = self.gm.get_game(g2.key())
         self.assertNotEquals(fg2, None)
         self.assertEquals(fg2.move_history, [(8,2)])
 
@@ -88,7 +88,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.make_move((5,3))
         self.gm.save(g1)
 
-        fg1 = self.gm.get_unfinished_game(g1.get_game_id())
+        fg1 = self.gm.get_unfinished_game(g1.key())
         self.assertNotEquals(fg1, None)
         self.assertEquals(fg1.move_history, [(5,3)])
 
@@ -99,7 +99,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.set_won_by(BLACK)
         self.gm.save(g1)
 
-        fg1 = self.gm.get_unfinished_game(g1.get_game_id())
+        fg1 = self.gm.get_unfinished_game(g1.key())
         self.assertEquals(fg1, None)
 
     def test_newly_finished_game_is_removed_from_unfinished_list(self):
@@ -111,7 +111,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.set_won_by(BLACK)
         self.gm.save(g1)
 
-        fg1 = self.gm.get_unfinished_game(g1.get_game_id())
+        fg1 = self.gm.get_unfinished_game(g1.key())
         self.assertEquals(fg1, None)
 
     ############################
@@ -123,7 +123,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.make_move((6,3))
         self.gm.save(g1)
 
-        fg = self.gm.get_game(g1.get_game_id())
+        fg = self.gm.get_game(g1.key())
         self.assertEquals(fg, g1)
 
     ############################
@@ -137,7 +137,7 @@ class GamesMgrTest(unittest.TestCase):
         self.gm.save(g1)
 
         gm2 = GamesMgr("test_")
-        g1_restored = self.gm.get_game(g1.get_game_id())
+        g1_restored = self.gm.get_game(g1.key())
         self.assertNotEquals(g1_restored, None)
         self.assertEquals(g1_restored.get_player(1), p1_orig)
         self.assertEquals(g1_restored.get_player(2), p2_orig)
@@ -161,7 +161,7 @@ class GamesMgrTest(unittest.TestCase):
 
         gm2 = GamesMgr("test_")
 
-        g1_restored = self.gm.get_game(g1.get_game_id())
+        g1_restored = self.gm.get_game(g1.key())
         self.assertNotEquals(g1_restored, None)
         self.assertEquals(g1_restored.get_player(1), p1_orig)
         self.assertEquals(g1_restored.get_player(2), p2_orig)
@@ -186,7 +186,7 @@ class GamesMgrTest(unittest.TestCase):
 
         gm2 = GamesMgr("test_")
 
-        g1_restored = self.gm.get_game(g1.get_game_id())
+        g1_restored = self.gm.get_game(g1.key())
         self.assertEquals(g1_restored, None)
 
     ############################
@@ -206,15 +206,29 @@ class GamesMgrTest(unittest.TestCase):
         self.gm.save(g1)
 
         gm2 = GamesMgr("test_")
-        g1_restored = self.gm.get_game(g1.get_game_id())
+        g1_restored = self.gm.get_game(g1.key())
         g1_restored.resume()
         self.assertEquals(g1_restored.get_move_number(), 1)
 
         g1.go_to_the_end()
         self.gm.save(g1)
-        g1_restored = self.gm.get_game(g1.get_game_id())
+        g1_restored = self.gm.get_game(g1.key())
         g1_restored.resume()
         self.assertEquals(g1_restored.get_move_number(), 6)
+
+    def test_get_preserved_game(self):
+        rules = Rules(9, "Standard")
+        g1 = self.gm.create_game(rules, HumanPlayer("Nadia"),
+                                        HumanPlayer("Roberto"))
+        g1.make_move((6,3))
+        self.gm.save(g1)
+
+        fpg = self.gm.get_preserved_game(g1.key())
+        self.assertEquals(fpg.key(), g1.key())
+
+        self.assertEquals(fpg.get_rating(BLACK), 1)
+        self.assertEquals(fpg.get_rating(WHITE), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
