@@ -8,25 +8,18 @@ from board import *
 
 import pdb
 
-class MockPlayer:
-    def __init__(self, rf):
-        self.rf = rf
-
-    def rating_factor(self):
-        return self.rf
-
-class MockFoundGame:
+class MockPreservedGame:
     """ This one is for games that have been found in the opening book
     """
     def __init__(self, wc, rf):
         self.won_by = wc
-        self.mock_player = MockPlayer(rf)
+        self.rf = rf
 
     def get_won_by(self):
         return self.won_by
 
-    def get_player(self, colour):
-        return self.mock_player
+    def get_rating(self, colour):
+        return self.rf
 
 class OpeningsMoverTest(unittest.TestCase):
     def setUp(self):
@@ -55,7 +48,7 @@ class OpeningsMoverTest(unittest.TestCase):
         return answers
 
     def test_one_favourable_game_mostly_doesnt_fall_through(self):
-        g1 = MockFoundGame(BLACK, 1)
+        g1 = MockPreservedGame(BLACK, 1)
         move_games = [((4,4), (g1,))]
         self.set_move_games(move_games)
 
@@ -65,8 +58,8 @@ class OpeningsMoverTest(unittest.TestCase):
         self.assertGreater(answers[None], 100)
 
     def test_one_move_equal_standings(self):
-        g1 = MockFoundGame(BLACK, 1)
-        g2 = MockFoundGame(WHITE, 1)
+        g1 = MockPreservedGame(BLACK, 1)
+        g2 = MockPreservedGame(WHITE, 1)
         move_games = [((4,4), (g1,g2))]
         self.set_move_games(move_games)
         answers = self.multiple_tries(1000)
@@ -75,8 +68,8 @@ class OpeningsMoverTest(unittest.TestCase):
         self.assertGreater(answers[None], 350)
 
     def test_two_moves_one_good_one_bad(self):
-        g1 = MockFoundGame(BLACK, 1)
-        g2 = MockFoundGame(WHITE, 1)
+        g1 = MockPreservedGame(BLACK, 1)
+        g2 = MockPreservedGame(WHITE, 1)
         move_games = [((4,4), (g1,)), ((3,4),(g2,))]
         self.set_move_games(move_games)
         answers = self.multiple_tries(1000)
