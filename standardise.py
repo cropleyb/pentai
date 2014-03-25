@@ -23,8 +23,8 @@ def list_reverse(strips):
 
 def page_flip(state):
     brd = state.get_board()
-    east_occs = brd.strips[0]
-    south_occs = brd.strips[2]
+    east_occs = brd.d_strips[0]
+    south_occs = brd.d_strips[2]
 
     bit_pair_reverse(brd, east_occs.strips)
     list_reverse(south_occs.strips)
@@ -33,8 +33,8 @@ def page_flip(state):
     
 def calendar_flip(state):
     brd = state.get_board()
-    east_occs = brd.strips[0]
-    south_occs = brd.strips[2]
+    east_occs = brd.d_strips[0]
+    south_occs = brd.d_strips[2]
 
     list_reverse(east_occs.strips)
     bit_pair_reverse(brd, south_occs.strips)
@@ -43,10 +43,10 @@ def calendar_flip(state):
 
 def diagonal_flip(state):
     brd = state.get_board()
-    east_occs = brd.strips[0].strips
-    south_occs = brd.strips[2].strips
-    brd.strips[0].strips = south_occs
-    brd.strips[2].strips = east_occs
+    east_occs = brd.d_strips[0].strips
+    south_occs = brd.d_strips[2].strips
+    brd.d_strips[0].strips = south_occs
+    brd.d_strips[2].strips = east_occs
     return state
 
 # Forward and Reverse operations for an x, y pos, when applying
@@ -141,7 +141,7 @@ def standardise(orig_state):
         possibilities.append((state, fwd, rev))
 
     #st()
-    pb = [(p[0].board.strips[0].strips, p) for p in possibilities]
+    pb = [(p[0].board.d_strips[0].strips, p) for p in possibilities]
 
     s = min(pb)[1]
     return s
