@@ -66,7 +66,7 @@ class OpeningsBook(object):
         game.go_to_move(move_number)
 
         std_state, fwd, rev = standardise.standardise(game.current_state)
-        position_key = (tuple(std_state.board.strips[0].strips),
+        position_key = (tuple(std_state.board.d_strips[0].strips), # TODO: Use board key
                 game.get_captured(BLACK),
                 game.get_captured(WHITE))
 
@@ -93,7 +93,7 @@ class OpeningsBook(object):
     def get_move_games(self, game):
         std_state, fwd, rev = standardise.standardise(game.current_state)
 
-        position_key = (tuple(std_state.board.strips[0].strips),
+        position_key = (tuple(std_state.board.d_strips[0].strips), # TODO: Use board.key
                               game.get_captured(BLACK),
                               game.get_captured(WHITE))
 
@@ -110,7 +110,8 @@ class OpeningsBook(object):
 
                 # Convert the game_ids to games
                 for gid in gids:
-                    g = self.games_mgr.get_game(gid, update_cache=False)
+                    # TODO: get_preserved_game
+                    g = self.games_mgr.get_preserved_game(gid, update_cache=False)
                     if g:
                         options.setdefault((x,y),[]).append(g)
         except KeyError:
