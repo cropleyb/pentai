@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+from guppy import hpy
+h = hpy()
+h.setref()
 
 import rules
 import game
@@ -102,8 +105,8 @@ class Match():
 
     def play_some_games(self):
 
-        #self.genome1.use_openings_book = False
-        #self.genome2.use_openings_book = False
+        self.genome1.use_openings_book = False
+        self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
@@ -141,8 +144,8 @@ class Match():
 
         results = MatchResults()
         #for game_length in range(2,4):
-        #for game_length in range(2,3):
-        for game_length in range(5,6):
+        for game_length in range(2,3):
+        #for game_length in range(5,6):
         #for game_length in range(5,8):
             for board_size in [13]:
             #for board_size in [9, 13, 19]:
@@ -159,15 +162,39 @@ class Match():
 
         print results
 
+import sys
+
+def memory_usage_resource():
+    import resource
+    rusage_denom = 1024.
+    if sys.platform == 'darwin':
+        # ... it seems that in OSX the output is different units ...
+        rusage_denom = rusage_denom * rusage_denom
+    mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / rusage_denom
+    return mem
+
 import random
 import pstats, cProfile
 
+import gc
+
 if __name__ == "__main__":
     random.seed()
+     
+    # the code you want to memory-profile
+      
     #while True:
-    '''
     m = Match()
     m.play_some_games()
+    m = None
+    gc.collect()
+
+    mem = memory_usage_resource()
+    print mem
+    heap_data = h.heap()
+    print heap_data
+    print heap_data.more
+    st()
     '''
     m = Match()
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
@@ -175,3 +202,4 @@ if __name__ == "__main__":
     s = pstats.Stats("Profile.prof")
     #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
     s.strip_dirs().sort_stats("time").print_stats(20)
+    '''
