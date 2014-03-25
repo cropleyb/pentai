@@ -435,6 +435,16 @@ Standard rules
         m = self.p2.do_the_search()
         self.assertIn(m, ((10,6),(5,6)))
 
+    def test_think_in_opponents_move(self):
+        #self.p1.set_max_depth(8)
+        game_str = \
+"""Bruce versus DT
+13x13
+Standard rules
+1. (6, 6)"""
+        self.game.load_game(game_str)
+        m = self.p1.do_the_search()
+        self.assertIsNone(m)
 
 if __name__ == "__main__":
     unittest.main()
