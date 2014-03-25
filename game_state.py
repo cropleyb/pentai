@@ -44,6 +44,9 @@ class GameState():
     def add_observer(self, o):
         self.observers.append(o)
 
+    def remove_observer(self, o):
+        self.observers.remove(o)
+
     def get_board(self):
         return self.board
 

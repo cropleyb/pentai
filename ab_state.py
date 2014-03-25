@@ -12,7 +12,6 @@ class ABState(gso_m.GSObserver):
     """ Bridge for state, for use by alpha_beta code """
     def __init__(self, parent=None, search_filter=None,
             utility_calculator=None):
-        self.parent = parent # Save for debugging only
         if parent == None:
             assert search_filter != None
             self.utility_stats = us_m.UtilityStats(search_filter=search_filter)
@@ -23,6 +22,9 @@ class ABState(gso_m.GSObserver):
         else:
             assert parent != None
             self.utility_calculator = parent.utility_calculator
+
+    def clean_up(self):
+        self.state.remove_observer(self)
 
     def get_utility_stats(self):
         return self.utility_stats

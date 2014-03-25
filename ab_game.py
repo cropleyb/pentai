@@ -68,6 +68,7 @@ class ABGame():
             return
         key = state.board().key()
         self.transposition_table[key] = utility_value
+        state.clean_up()
 
     def terminal_test(self, state, depth):
         if self.interrupted:
