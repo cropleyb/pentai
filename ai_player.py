@@ -8,7 +8,6 @@ import utility_calculator as uc_m
 from defines import *
 
 import threading
-import cython
 
 skip_openings_book = False
 def set_skip_openings_book(val):
@@ -62,15 +61,6 @@ class AIPlayer(p_m.Player):
             return self.do_the_search()
         else:
             self.do_search_process(gui)
-            '''
-            with cython.nogil:
-                t = threading.Thread(target=self.search_thread, args=(gui,))
-
-                # Allow the program to be exited quickly
-                t.daemon = True
-
-                t.start()
-            '''
         return "%s is thinking" % self.get_name()
 
     def get_type(self):
@@ -118,27 +108,54 @@ class AIPlayer(p_m.Player):
             else:
                 print "Corrupt opening suggestion ignored"
 
-        # TODO: Don't reset if it is our move, we have "thinking
-        # in opponents time" turned on, and our opponent is not a computer
+        ab_ss = ab_game.current_state
+        thinking_in_opponents_move = (ab_ss.get_state().to_move_player() != self)
+
+        if thinking_in_opponents_move:
+            st()
+            last_move_state = ab_game.current_state.clone()
+            last_move_state.go_backwards_one()
+            ab_ss = ABState(last_move_state)
+            #current_tt = {}
+            #old_tt = current_tt # FIXME
+            ab_game.transposition_table = {}
+            prev_tt = {}
+            # TODO: depth + 1
+        # else don't adjust tt
+        i = 0
+        while i < 2:
+            #move, value = ab_m.alphabeta_search(ab_game.current_state, ab_game)
+            move, value = ab_m.alphabeta_search(ab_ss, ab_game)
+            if self.ab_game.interrupted:
+                if thinking_in_opponents_move:
+                    # Fill it out as well as we can.
+                    ab_game.transposition_table = \
+                            old_tt.update(ab_game.transposition_table)
+                return
+            if not thinking_in_opponents_move:
+                # Just one iteration
+                break
+            # Merge in the latesttable
+            prev_tt = prev_tt.update(ab_game.transposition_table)
+            # Next time, start from scratch
+            ab_game.transposition_table = {}
+            # TODO: Increase the depth level by 2
+
+            i += 1
+
+        action = move[0]
+
         '''
         print "size of transposition table: %s" % len(ab_game.transposition_table)
         '''
-        ab_game.reset_transposition_table()
-
-        move, value = ab_m.alphabeta_search(ab_game.current_state, ab_game)
-        if self.ab_game.interrupted:
-            return
-        action = move[0]
-
-        # TODO: Start thinking in opponents time thread here.
+        if not thinking_in_opponents_move:
+            # Don't reset if we have "thinking in opponents time" turned on
+            ab_game.reset_transposition_table()
 
         # TODO: if we were thinking in the opponent's time, return nothing
 
         #print " => %s" % (action,)
         return action
-
-    def rating_factor(self):
-        return max(self.max_depth-3, 0)
 
     def set_interrupted(self):
         self.ab_game.interrupted = True
