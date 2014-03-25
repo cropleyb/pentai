@@ -1,5 +1,4 @@
 from game import *
-from persistent_dict import *
 
 class PreservedGame():
     def __init__(self, game=None):
@@ -7,9 +6,10 @@ class PreservedGame():
             self.game_id = game.game_id
             self.rules = game.rules.key()
             self.date = game.get_date()
-            self.players = [None,
-                    game.get_player(1).get_key(),
-                    game.get_player(2).get_key()]
+            p1 = game.get_player(1)
+            p2 = game.get_player(2)
+            self.players = [None, p1.get_key(), p2.get_key()]
+            self.ratings = [None, p1.get_rating(), p2.get_rating()]
             self.won_by = game.get_won_by()
             self.moves = game.move_history[:]
             self.times = game.time_history[:]
@@ -17,6 +17,18 @@ class PreservedGame():
 
     def key(self):
         return self.game_id
+
+    def get_rating(self, colour):
+        try:
+            return self.ratings[colour]
+        except AttributeError:
+            return 1
+
+    '''
+    # TODO?
+    def rating_factor(self, colour):
+        return max(self.max_depth-3, 0)
+    '''
 
     def restore(self, pm, update_cache=True):
         p1 = pm.find(self.players[1], update_cache)
