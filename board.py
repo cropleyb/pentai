@@ -10,28 +10,33 @@ class Board():
             self.set_to_empty()
 
     def set_to_empty(self):
-        self.strips = [] # TODO Rename to d_strips
-        self.strips.append(ds_m.EDirectionStrips(self.size))
-        self.strips.append(ds_m.SEDirectionStrips(self.size))
-        self.strips.append(ds_m.SDirectionStrips(self.size))
-        self.strips.append(ds_m.SWDirectionStrips(self.size))
+        self.d_strips = []
+        self.d_strips.append(ds_m.EDirectionStrips(self.size))
+        self.d_strips.append(ds_m.SEDirectionStrips(self.size))
+        self.d_strips.append(ds_m.SDirectionStrips(self.size))
+        self.d_strips.append(ds_m.SWDirectionStrips(self.size))
 
     def key(self):
-        return tuple(self.strips[0].strips)
+        k = 0
+        estrips = self.d_strips[0]
+        for s in estrips.strips:
+            k += s
+            k *= 4 ** self.size
+        return k
 
     def get_direction_strips(self):
-        return self.strips
+        return self.d_strips
     
     def clone(self):
         new_board = Board(self.size, clone_it=True)
-        new_board.strips = [s.clone() for s in self.strips]
+        new_board.d_strips = [s.clone() for s in self.d_strips]
         return new_board
 
     def __repr__(self):
         size = self.size
         rep = '\n'
         for j in range(size-1,-1,-1):
-            line = [ ['.','B','W'][self.strips[0].get_occ((i,j))] for i in range(size) ]
+            line = [ ['.','B','W'][self.d_strips[0].get_occ((i,j))] for i in range(size) ]
             rep = rep + ' '.join(line) + '\n'
         return rep
  
@@ -49,14 +54,14 @@ class Board():
     def get_occ(self, pos):
         if self.off_board(pos):
             raise OffBoardException
-        colour_new = self.strips[0].get_occ(pos)
-        return colour_new
+        colour = self.d_strips[0].get_occ(pos)
+        return colour
 
     def set_occ(self, pos, colour):
         if self.off_board(pos):
             raise OffBoardException
 
-        for s in self.strips:
+        for s in self.d_strips:
             # We maintain the board position in four ways, update them all
             s.set_occ(pos, colour)
 
