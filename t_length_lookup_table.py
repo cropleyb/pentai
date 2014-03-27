@@ -3,8 +3,8 @@
 import unittest
 import mock
 
-from length_lookup_table import *
-from board_strip import *
+from kivy.pentai.length_lookup_table import *
+from kivy.pentai.board_strip import *
 from utility_stats import *
 
 def pattern_string_to_bs(occ_str):

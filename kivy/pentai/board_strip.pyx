@@ -19,6 +19,8 @@ cdef:
 # We separate out numbers representing groups of 4 occupancies
 cdef long FOUR_OCCS_MASK = (4 ** 4 - 1)
 
+cdef long FIVE_OCCS_MASK = (4 ** 5 - 1)
+
 # These patterns are matched against to detect captures
 
 # BWWx
@@ -40,6 +42,13 @@ cdef long WHITE_THREAT_LEFT_PATTERN =       + (4 * BLACK) + (16 * BLACK) # + 64 
 cdef long BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
 # EBBW
 cdef long WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
+
+# BBBBB
+cdef long BLACK_FIVE_PATTERN = BLACK + (4 * BLACK) + (4 * 4 * BLACK) + (4 * 4 * 4 * BLACK) + (4 * 4 * 4 * 4 * BLACK)
+# WWWWW
+cdef long WHITE_FIVE_PATTERN = WHITE + (4 * WHITE) + (4 * 4 * WHITE) + (4 * 4 * 4 * WHITE) + (4 * 4 * 4 * 4 * WHITE)
+# WBBBBW
+#cdef long ENCLOSED_FOUR_RIGHT_PATTERN = TODO
 
 cpdef long get_occ(long bs, int ind):
     ret = bs >> (ind * 2)
@@ -82,6 +91,31 @@ cpdef int match_five_in_a_row(long bs, int move_ind, int my_colour):
         m -= 1
     total_line_length = 1 + (l-1) - (m+1)
     return total_line_length >= 5
+
+cpdef int black_match_five(long bs, int move_ind):
+    return match_five(bs, move_ind, BLACK_FIVE_PATTERN)
+    
+cpdef int white_match_five(long bs, int move_ind):
+    return match_five(bs, move_ind, WHITE_FIVE_PATTERN)
+
+cdef int match_five(long bs, int move_ind, long pattern):
+    cdef int l
+    cdef int to_right
+    cdef long occs
+
+    l = move_ind - 4
+    if l < 0:
+        l = 0
+
+    to_right = bs >> (l << 1)
+    while l <= move_ind:
+        occs = to_right & FIVE_OCCS_MASK
+        if occs == pattern:
+            return True
+        to_right >>= 2
+        l += 1
+    return False
+
 
 cpdef match_capture_left(long bs, int ind, int colour):
     if colour == BLACK:

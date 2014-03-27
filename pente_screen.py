@@ -54,6 +54,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
     border_colour = ListProperty([20,0,0,1])
+    h_grid_text = StringProperty("ABCD")
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
     confirm_rect_color = ListProperty([0, 0, 0, 0])
@@ -446,6 +447,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def setup_grid(self, _dt=None):
         if self.game != None:
             self.gridlines = self.setup_grid_lines()
+            self.h_grid_text = "ABC"
 
     def snap_to_grid(self, screen_pos):
         return self.board_to_screen(self.screen_to_board(screen_pos))

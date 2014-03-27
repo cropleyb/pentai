@@ -64,7 +64,8 @@ class Match():
         self.genome2 = AIGenome("Contender")
         # We're not doing player lookups, so we don't need the players_mgr
         self.games_mgr = GamesMgr()
-        self.openings_book = OpeningsBook(self.games_mgr)
+        self.openings_book = None
+        #self.openings_book = OpeningsBook(self.games_mgr)
 
     def set_up(self, game_length):
         aif = AIFactory()
@@ -90,7 +91,8 @@ class Match():
         winner_name = self.game.winner_name()
         winner = self.game.get_won_by()
 
-        self.openings_book.add_game(self.game)
+        if self.openings_book:
+            self.openings_book.add_game(self.game)
         
         if p1.get_name() == "Contender":
             ratio = tt.totals[0] / tt.totals[1]
@@ -144,8 +146,8 @@ class Match():
 
         results = MatchResults()
         #for game_length in range(2,4):
-        for game_length in range(2,3):
-        #for game_length in range(5,6):
+        #for game_length in range(2,3):
+        for game_length in range(5,6):
         #for game_length in range(5,8):
             for board_size in [13]:
             #for board_size in [9, 13, 19]:

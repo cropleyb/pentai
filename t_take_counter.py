@@ -2,7 +2,7 @@
 
 import unittest
 
-from board_strip import *
+from kivy.pentai.board_strip import *
 from utility_stats import *
 from priority_filter import * # TODO: NullFilter
 

@@ -2,7 +2,7 @@
 
 import unittest
 
-from board_strip import *
+from kivy.pentai.board_strip import *
 
 class BoardStripTest(unittest.TestCase):
     def test_empty_board_strip_is_empty(self):
@@ -47,6 +47,7 @@ class BoardStripCaptureTest(unittest.TestCase):
         bs = set_occ(bs, 3, WHITE)
         bs = set_occ(bs, 7, BLACK) # Not involved in the capture
         self.assertEquals(match_capture_left(bs, 4, BLACK), (3,2))
+        # 3 and 2 are the indices of the captured stones
         
     def test_dont_match_black_capture_left(self):
         bs = set_occ(0, 1, BLACK)
@@ -338,6 +339,73 @@ class BoardStripSetOccsTest(unittest.TestCase):
         bs = set_occ(bs, 4, BLACK)
         self.assertEquals(get_occ_list(bs, 3, 5), [WHITE, BLACK, EMPTY])
 
+
+class BoardStripFiveTest(unittest.TestCase):
+    def test_match_black_five_left_edge(self):
+        bs = set_occ(0, 0, BLACK)
+        bs = set_occ(bs, 1, BLACK)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        self.assertEquals(black_match_five(bs, 0), True)
+        self.assertEquals(black_match_five(bs, 1), True)
+        self.assertEquals(black_match_five(bs, 2), True)
+        self.assertEquals(black_match_five(bs, 3), True)
+        self.assertEquals(black_match_five(bs, 4), True)
+        self.assertEquals(black_match_five(bs, 5), False)
+
+    def test_match_black_five_right_edge(self):
+        bs = set_occ(0, 14, BLACK)
+        bs = set_occ(bs, 15, BLACK)
+        bs = set_occ(bs, 16, BLACK)
+        bs = set_occ(bs, 17, BLACK)
+        bs = set_occ(bs, 18, BLACK)
+        self.assertEquals(black_match_five(bs, 13), False)
+        self.assertEquals(black_match_five(bs, 14), True)
+        self.assertEquals(black_match_five(bs, 15), True)
+        self.assertEquals(black_match_five(bs, 16), True)
+        self.assertEquals(black_match_five(bs, 17), True)
+        self.assertEquals(black_match_five(bs, 18), True)
+        self.assertEquals(black_match_five(bs, 19), False)
+
+    def test_match_white_five_left_edge(self):
+        bs = set_occ(0, 0, WHITE)
+        bs = set_occ(bs, 1, WHITE)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, WHITE)
+        self.assertEquals(white_match_five(bs, 0), True)
+        self.assertEquals(white_match_five(bs, 1), True)
+        self.assertEquals(white_match_five(bs, 2), True)
+        self.assertEquals(white_match_five(bs, 3), True)
+        self.assertEquals(white_match_five(bs, 4), True)
+        self.assertEquals(white_match_five(bs, 5), False)
+
+    def test_match_white_five_right_edge(self):
+        bs = set_occ(0, 14, WHITE)
+        bs = set_occ(bs, 15, WHITE)
+        bs = set_occ(bs, 16, WHITE)
+        bs = set_occ(bs, 17, WHITE)
+        bs = set_occ(bs, 18, WHITE)
+        self.assertEquals(white_match_five(bs, 13), False)
+        self.assertEquals(white_match_five(bs, 14), True)
+        self.assertEquals(white_match_five(bs, 15), True)
+        self.assertEquals(white_match_five(bs, 16), True)
+        self.assertEquals(white_match_five(bs, 17), True)
+        self.assertEquals(white_match_five(bs, 18), True)
+        self.assertEquals(white_match_five(bs, 19), False)
+
+'''
+class BoardStripEnclosedFourTest(unittest.TestCase):
+    def test_get_match_enclosed_four(self):
+        bs = set_occ(0, 0, WHITE)
+        bs = set_occ(bs, 1, BLACK)
+        bs = set_occ(bs, 2, BLACK)
+        bs = set_occ(bs, 3, BLACK)
+        bs = set_occ(bs, 4, BLACK)
+        bs = set_occ(bs, 5, WHITE)
+        self.assertEquals(black_match_enclosed_four(bs, 2), True)
+'''
 
 if __name__ == "__main__":
     unittest.main()

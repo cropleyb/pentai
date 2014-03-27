@@ -1,12 +1,13 @@
 For Alpha release
 
 Get cython building with iOS
+Openings Book is bloated in RAM. DB file per turn? Manually trim early moves?
+ Openings editor?
 Contact Hasbro again? By registered snail mail?
 Restore game doesn't restore time controls etc. check
 Navigation
 Demo halting occasionally?
 Eliminate duplicate player names (fix upgrade script)
-Players screen optimisation
 # Check "Winning Ways" link
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 

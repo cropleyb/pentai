@@ -2,7 +2,7 @@
 
 import unittest
 
-from length_lookup_table import *
+from kivy.pentai.length_lookup_table import *
 from ab_state import *
 from utility_calculator import *
 from priority_filter import * # TODO: NullFilter
