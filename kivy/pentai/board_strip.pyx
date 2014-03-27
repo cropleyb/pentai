@@ -62,43 +62,21 @@ cpdef long set_occ(long bs, int ind, long occ):
     bs |= (occ * shift)
     return bs
 
+# This method is only used for unit testing of the setting functions, AFAIK
 def get_occ_list(bs, min_ind, max_ind):
     ol = [get_occ(bs, i) for i in range(min_ind, 1+max_ind)]
     return ol
 
-# TODO: replace with a more efficient bitmask technique
-cpdef int match_five_in_a_row(long bs, int move_ind, int my_colour):
-    cdef int l
 
-    l = 1
-    while l < 5:
-        test_ind = move_ind + l
-        next_occ = get_occ(bs, test_ind)
-        if next_occ != my_colour:
-            break
-        l += 1
-
-    # Now see how far the line goes in the opposite direction.
-    m = -1
-    while m > -5:
-        test_ind = move_ind + m
-        if test_ind < 0:
-            # Other end of a potential line is off the edge of the board
-            break
-        next_occ = get_occ(bs, test_ind)
-        if next_occ != my_colour:
-            break
-        m -= 1
-    total_line_length = 1 + (l-1) - (m+1)
-    return total_line_length >= 5
-
-cpdef int black_match_five(long bs, int move_ind):
-    return match_five(bs, move_ind, BLACK_FIVE_PATTERN)
+cpdef int match_five_in_a_row(long bs, int move_ind, int colour):
+    if colour == BLACK:
+        pattern = BLACK_FIVE_PATTERN
+    else:
+        pattern = WHITE_FIVE_PATTERN
+    return match_five_inner(bs, move_ind, pattern)
     
-cpdef int white_match_five(long bs, int move_ind):
-    return match_five(bs, move_ind, WHITE_FIVE_PATTERN)
 
-cdef int match_five(long bs, int move_ind, long pattern):
+cdef int match_five_inner(long bs, int move_ind, long pattern):
     cdef int l
     cdef int to_right
     cdef long occs
