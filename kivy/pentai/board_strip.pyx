@@ -21,6 +21,8 @@ cdef long FOUR_OCCS_MASK = (4 ** 4 - 1)
 
 cdef long FIVE_OCCS_MASK = (4 ** 5 - 1)
 
+cdef long SIX_OCCS_MASK = (4 ** 6 - 1)
+
 # These patterns are matched against to detect captures
 
 # BWWx
@@ -35,20 +37,22 @@ cdef long WHITE_CAPTURE_RIGHT_PATTERN = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
 # These patterns are matched against to detect threats
 
 # EWWx
-cdef long BLACK_THREAT_LEFT_PATTERN =         (4 * WHITE) + (16 * WHITE) # + 64 * 0
+cdef long BLACK_THREAT_LEFT_PATTERN =         (4 * WHITE) + ((4**2) * WHITE) # + 4**3 * 0
 # EBBx
-cdef long WHITE_THREAT_LEFT_PATTERN =       + (4 * BLACK) + (16 * BLACK) # + 64 * 0
+cdef long WHITE_THREAT_LEFT_PATTERN =         (4 * BLACK) + ((4**2) * BLACK) # + 4**3 * 0
 # EWWB
 cdef long BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
 # EBBW
 cdef long WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
 
 # BBBBB
-cdef long BLACK_FIVE_PATTERN = BLACK + (4 * BLACK) + (4 * 4 * BLACK) + (4 * 4 * 4 * BLACK) + (4 * 4 * 4 * 4 * BLACK)
+cdef long BLACK_FIVE_PATTERN = BLACK + 4 * BLACK + (4**2) * BLACK + (4**3) * BLACK + (4**4) * BLACK
 # WWWWW
-cdef long WHITE_FIVE_PATTERN = WHITE + (4 * WHITE) + (4 * 4 * WHITE) + (4 * 4 * 4 * WHITE) + (4 * 4 * 4 * 4 * WHITE)
+cdef long WHITE_FIVE_PATTERN = WHITE + 4 * WHITE + (4**2) * WHITE + (4**3) * WHITE + (4**4) * WHITE
 # WBBBBW
-#cdef long ENCLOSED_FOUR_RIGHT_PATTERN = TODO
+cdef long BLACK_ENCLOSED_PATTERN = WHITE + 4 * BLACK + (4**2) * BLACK + (4**3) * BLACK + (4**4) * BLACK + (4**5) * WHITE
+# BWWWWB
+cdef long WHITE_ENCLOSED_PATTERN = BLACK + 4 * WHITE + (4**2) * WHITE + (4**3) * WHITE + (4**4) * WHITE + (4**5) * BLACK
 
 cpdef long get_occ(long bs, int ind):
     ret = bs >> (ind * 2)
@@ -94,6 +98,34 @@ cdef int match_five_inner(long bs, int move_ind, long pattern):
         l += 1
     return False
 
+######################################################################
+
+cpdef int match_enclosed_four(long bs, int move_ind, int colour):
+    if colour == BLACK:
+        pattern = BLACK_ENCLOSED_PATTERN
+    else:
+        pattern = WHITE_ENCLOSED_PATTERN
+    return match_six_inner(bs, move_ind, pattern)
+    
+cdef int match_six_inner(long bs, int move_ind, long pattern):
+    cdef int l
+    cdef int to_right
+    cdef long occs
+
+    l = move_ind - 5
+    if l < 0:
+        l = 0
+
+    to_right = bs >> (l << 1)
+    while l <= move_ind:
+        occs = to_right & SIX_OCCS_MASK
+        if occs == pattern:
+            return True
+        to_right >>= 2
+        l += 1
+    return False
+
+######################################################################
 
 cpdef match_capture_left(long bs, int ind, int colour):
     if colour == BLACK:

@@ -327,18 +327,34 @@ class BoardStrip2Test(unittest.TestCase):
         self.assertEquals(match_five_in_a_row(bs, 2, BLACK), False)
 
 
-'''
-# TODO
 class BoardStripEnclosedFourTest(unittest.TestCase):
-    def test_get_match_enclosed_four(self):
+    def test_black_match_enclosed_four(self):
         bs = set_occ(0, 0, WHITE)
         bs = set_occ(bs, 1, BLACK)
         bs = set_occ(bs, 2, BLACK)
         bs = set_occ(bs, 3, BLACK)
         bs = set_occ(bs, 4, BLACK)
         bs = set_occ(bs, 5, WHITE)
-        self.assertEquals(black_match_enclosed_four(bs, 2), True)
-'''
+        self.assertEquals(match_enclosed_four(bs, 0, BLACK), True)
+        self.assertEquals(match_enclosed_four(bs, 1, BLACK), True)
+        self.assertEquals(match_enclosed_four(bs, 2, BLACK), True)
+        self.assertEquals(match_enclosed_four(bs, 3, BLACK), True)
+        self.assertEquals(match_enclosed_four(bs, 4, BLACK), True)
+        self.assertEquals(match_enclosed_four(bs, 5, BLACK), True)
+
+    def test_white_match_enclosed_four(self):
+        bs = set_occ(0, 0, BLACK)
+        bs = set_occ(bs, 1, WHITE)
+        bs = set_occ(bs, 2, WHITE)
+        bs = set_occ(bs, 3, WHITE)
+        bs = set_occ(bs, 4, WHITE)
+        bs = set_occ(bs, 5, BLACK)
+        self.assertEquals(match_enclosed_four(bs, 0, WHITE), True)
+        self.assertEquals(match_enclosed_four(bs, 1, WHITE), True)
+        self.assertEquals(match_enclosed_four(bs, 2, WHITE), True)
+        self.assertEquals(match_enclosed_four(bs, 3, WHITE), True)
+        self.assertEquals(match_enclosed_four(bs, 4, WHITE), True)
+        self.assertEquals(match_enclosed_four(bs, 5, WHITE), True)
 
 if __name__ == "__main__":
     unittest.main()
