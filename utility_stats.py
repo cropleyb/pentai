@@ -23,6 +23,7 @@ class UtilityStats():
             self.lines = [None, pl[BLACK][:], pl[WHITE][:]]
             self.takes = parent.takes[:]
             self.threats = parent.threats[:]
+            self.enclosed_four = parent.enclosed_four[:]
             # TODO: Use depth and/or min priority when copying the search filter
             self.search_filter = parent.search_filter.copy()
             self.s_num = 0 # irrel, just needs a value
@@ -31,6 +32,7 @@ class UtilityStats():
         self.lines = [None, [0] * 5, [0] * 5]
         self.takes = [0, 0, 0]
         self.threats = [0, 0, 0]
+        self.enclosed_four = [0, 0, 0]
         if self.search_filter != None:
             self.search_filter.reset()
 
@@ -55,6 +57,9 @@ class UtilityStats():
         self.threats[colour] += inc
         pos = self.i_to_p(ind, self.s_num)
         self.search_filter.add_or_remove_threat(colour, pos, inc)
+
+    def report_enclosed_four(self, colour, inc):
+        self.enclosed_four[colour] += inc
 
     def set_ind_to_pos(self, func, s_num):
         # These two should always be set together
@@ -90,4 +95,7 @@ class UtilityStats():
             if ccp:
                 bs_m.process_takes(bs, ind, strip_min, strip_max, self, inc)
                 bs_m.process_threats(bs, ind, strip_min, strip_max, self, inc)
+
+            for colour in [BLACK, WHITE]:
+                bs_m.process_enclosed_four(bs, ind, colour, self, inc)
 

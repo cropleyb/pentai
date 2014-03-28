@@ -209,7 +209,7 @@ standard rules
 7. (4, 9)
 """
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        m = self.p2.do_the_search()
         self.assertEquals(m, (8,6))
 
     def test_draw(self): # TODO
@@ -435,7 +435,7 @@ Standard rules
         m = self.p2.do_the_search()
         self.assertIn(m, ((10,6),(5,6)))
 
-    def test_think_in_opponents_move(self):
+    def atest_think_in_opponents_move(self):
         #self.p1.set_max_depth(8)
         game_str = \
 """Bruce versus DT
@@ -445,6 +445,23 @@ Standard rules
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
         self.assertIsNone(m)
+
+    def test_trap(self):
+        self.p1.set_max_depth(8)
+        game_str = \
+"""Killer versus Kang
+19x19
+Standard rules
+1. (9, 9)
+2. (8, 10)
+3. (6, 9)
+4. (8, 8)
+5. (8, 9)
+6. (7, 9)"""
+        st()
+        self.game.load_game(game_str)
+        m = self.p1.do_the_search()
+        self.assertNotEquals(m, (10,9))
 
 if __name__ == "__main__":
     unittest.main()

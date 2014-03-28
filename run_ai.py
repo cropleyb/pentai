@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+'''
 from guppy import hpy
 h = hpy()
 h.setref()
+'''
 
 import rules
 import game
@@ -108,13 +110,14 @@ class Match():
     def play_some_games(self):
 
         self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = False
+        #self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
         #self.genome2.take_score_base = 70
         #self.genome2.capture_score_base = 350 # Try this again for high depth
         #self.genome2.threat_score_base = 25 # Wins more for shallower depth
+        #self.genome2.enclosed_four_base = 500
         #self.genome1.vision = 0.98
         #self.genome2.vision = 0.98
 
@@ -145,12 +148,12 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        #for game_length in range(2,4):
+        for game_length in range(2,5):
         #for game_length in range(2,3):
-        for game_length in range(5,6):
+        #for game_length in range(5,6):
         #for game_length in range(5,8):
-            for board_size in [13]:
-            #for board_size in [9, 13, 19]:
+            #for board_size in [13]:
+            for board_size in [9, 13, 19]:
                 for first_player in [0, 1]:
                     self.set_up(game_length)
                     players = [self.p1, self.p2]
@@ -193,10 +196,12 @@ if __name__ == "__main__":
 
     mem = memory_usage_resource()
     print mem
+    '''
     heap_data = h.heap()
     print heap_data
     print heap_data.more
     st()
+    '''
     '''
     m = Match()
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")

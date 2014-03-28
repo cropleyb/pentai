@@ -3,12 +3,9 @@
 import random as r_m
 from defines import *
 
-import utility_stats as us_m # For debugging
-
 class UtilityCalculator():
     def __init__(self):
         pass
-        #self.misjudgement = 100 - self.judgement
 
     def set_rules(self, rules):
         self.rules = rules
@@ -213,6 +210,10 @@ class UtilityCalculator():
             score *= lf
             rev = 4 - i
             score += eval_lines[rev] * self.length_scale[rev]
+
+        if self.enclosed_four_base != 0:
+            ee4 = state.utility_stats.enclosed_four[eval_colour]
+            score += self.enclosed_four_base * ee4
 
         if ccp:
             if sfcw > 0:

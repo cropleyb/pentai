@@ -107,6 +107,8 @@ cpdef int match_enclosed_four(long bs, int move_ind, int colour):
         pattern = WHITE_ENCLOSED_PATTERN
     return match_six_inner(bs, move_ind, pattern)
     
+# This probably misses an extremely rare pattern of two enclosed 4s
+# but I'd be astonished if this has ever occurred.
 cdef int match_six_inner(long bs, int move_ind, long pattern):
     cdef int l
     cdef int to_right
@@ -241,6 +243,8 @@ def process_takes(bs, ind, strip_min, strip_max, us, inc):
     [ind, ... ind+3] for capture left
     [ind-3, ..., ind] for capture right
     """
+    # Why is iteration required? Ah, because this is really for counting
+    # potential takes.
     for i in range(max(strip_min+3, ind), 1 + min(ind+3, strip_max)):
         if len(match_black_capture_left(bs, i)) > 0:
             us.report_take(BLACK, i, inc)
@@ -275,4 +279,12 @@ def process_threats(bs, ind, strip_min, strip_max, us, inc):
             us.report_threat(BLACK, i, inc)
         if len(match_white_threat_right(bs, i)) > 0:
             us.report_threat(WHITE, i, inc)
+
+#######################################
+
+def process_enclosed_four(long bs, int move_ind, int colour, us, inc):
+    if match_enclosed_four(bs, move_ind, colour):
+        us.report_enclosed_four(colour, inc)
+	# TODO: Report ends indices?
+
 

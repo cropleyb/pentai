@@ -71,6 +71,10 @@ class AIFactory: # TODO: These are just functions
 
         genome.set_override(True)
         try:
+            uc.enclosed_four_base = genome.enclosed_four_base
+        except:
+            uc.enclosed_four_base = genome.enclosed_four_base = 500
+        try:
             uc.judgement = genome.judgement
         except:
             uc.judgement = 100 - genome.misjudgement

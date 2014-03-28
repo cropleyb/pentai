@@ -23,6 +23,7 @@ class AIGenome(object):
             "capture_score_base": 300,
             "take_score_base": 80,
             "threat_score_base": 20,
+            "enclosed_four_base": 500,
             "use_net_captures": True,
             "captures_scale": [1, 1, 1, 2, 4, 8],
             "length_scale": [1, 1, 1, 1, 1, 1],
