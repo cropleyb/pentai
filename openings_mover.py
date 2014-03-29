@@ -4,8 +4,8 @@ import pdb
 from defines import *
 
 class OpeningsMover(object):
-    def __init__(self, o_mgr, game):
-        self.o_mgr = o_mgr
+    def __init__(self, o_book, game):
+        self.o_book = o_book
         self.game = game
 
     def get_a_good_move(self):
@@ -16,7 +16,7 @@ class OpeningsMover(object):
         colour = self.game.to_move_colour()
         max_rating_factor = 1
 
-        move_games = self.o_mgr.get_move_games(self.game)
+        move_games = self.o_book.get_move_games(self.game)
         
         for mg in move_games:
             move, games = mg
