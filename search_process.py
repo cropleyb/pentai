@@ -1,7 +1,6 @@
 
 from players_mgr import PlayersMgr
 from defines import *
-from kivy.clock import Clock
 from preserved_game import *
 
 from multiprocessing import *
@@ -30,6 +29,7 @@ class SearchProcess(object):
         self.process.start()
         # Wait a bit to check for a move so it doesn't look like
         # it is instant.
+        from kivy.clock import Clock
         Clock.schedule_once(self.poll, .6)
 
     def poll(self, ignored):
