@@ -49,6 +49,12 @@ class AIPlayer(p_m.Player):
     def get_priority_filter(self):
         return self.search_filter
 
+    def get_rating(self):
+        guess = max(self.max_depth-3, 1)
+        guess *= self.genome.vision / 100.0
+        guess *= self.genome.judgement / 100.0
+        return guess
+
     def attach_to_game(self, base_game):
         # Super requires inheriting from object, which clashes with pickle?!
         #super(AIPlayer, self).attach_to_game(base_game)
@@ -88,7 +94,7 @@ class AIPlayer(p_m.Player):
             base_game = self.ab_game.base_game
 
             om = self.get_openings_mover()
-            move = om.get_a_good_move()
+            move = om.get_a_good_move(self)
             if move:
                 return move
 

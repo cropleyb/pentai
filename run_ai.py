@@ -66,8 +66,8 @@ class Match():
         self.genome2 = AIGenome("Contender")
         # We're not doing player lookups, so we don't need the players_mgr
         self.games_mgr = GamesMgr()
-        self.openings_book = None
-        #self.openings_book = OpeningsBook(self.games_mgr)
+        #self.openings_book = None
+        self.openings_book = OpeningsBook(self.games_mgr)
 
     def set_up(self, game_length):
         aif = AIFactory()
@@ -117,6 +117,7 @@ class Match():
         #self.genome2.take_score_base = 70
         #self.genome2.capture_score_base = 350 # Try this again for high depth
         #self.genome2.threat_score_base = 25 # Wins more for shallower depth
+        #self.genome1.enclosed_four_base = 300
         #self.genome2.enclosed_four_base = 500
         #self.genome1.vision = 0.98
         #self.genome2.vision = 0.98
@@ -148,10 +149,7 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        for game_length in range(2,5):
-        #for game_length in range(2,3):
-        #for game_length in range(5,6):
-        #for game_length in range(5,8):
+        for game_length in range(2,6):
             #for board_size in [13]:
             for board_size in [9, 13, 19]:
                 for first_player in [0, 1]:

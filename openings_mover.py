@@ -8,19 +8,27 @@ class OpeningsMover(object):
         self.o_book = o_book
         self.game = game
 
-    def get_a_good_move(self):
+    def get_a_good_move(self, aip):
         wins = 0
         losses = 0
         totals = []
 
         colour = self.game.to_move_colour()
-        max_rating_factor = 1
+
+        max_rating_factor = .1
 
         move_games = self.o_book.get_move_games(self.game)
+
+        ai_rating = aip.get_rating()
         
         for mg in move_games:
             move, games = mg
             for pg in games:
+
+                move_rating = pg.get_rating(colour)
+                if move_rating < ai_rating:
+                    continue
+
                 win_colour = pg.won_by
 
                 if win_colour == colour:
@@ -29,14 +37,12 @@ class OpeningsMover(object):
                     losses += 1
                 # else ignore draws and unfinished games (latter shouldn't get here)
 
-                move_rating = pg.get_rating(colour)
-
                 # TODO: More smarts here
                 max_rating_factor = \
                     max(max_rating_factor, move_rating)
 
-
-            totals.append((move, wins, losses, max_rating_factor))
+            if max_rating_factor >= 1:
+                totals.append((move, wins, losses, max_rating_factor))
 
         total_score = 1 # For fall through to inner filter
 

@@ -603,3 +603,8 @@ The game state is reset() before being replayed.
 How should it work?
 Take back/Back (1 move) should undo the last move, and give that player their
 time as it was when the move taken back started.
+
+Openings book early moves problem
+---------------------------------
+When the openings book is used for choosing a move in the early game, it is looking at a large number of games, and is using lots of memory.
+

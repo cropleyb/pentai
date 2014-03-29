@@ -8,6 +8,10 @@ from board import *
 
 import pdb
 
+class MockPlayer:
+    def get_rating(self):
+        return 1
+
 class MockPreservedGame:
     """ This one is for games that have been found in the opening book
     """
@@ -27,6 +31,7 @@ class OpeningsMoverTest(unittest.TestCase):
         self.msg = Mock() # Mock Search Game
         self.of = OpeningsMover(self.mom, self.msg)
         self.msg.mockAddReturnValues(to_move_colour=BLACK)
+        self.player = MockPlayer()
 
     def set_move_games(self, move_games):
         self.mom.mockAddReturnValues(get_move_games=move_games)
@@ -34,7 +39,7 @@ class OpeningsMoverTest(unittest.TestCase):
     def test_no_moves_available_suggest_nothing(self):
         move_games = []
         self.set_move_games(move_games)
-        move = self.of.get_a_good_move()
+        move = self.of.get_a_good_move(self.player)
         self.assertEquals(move, None)
 
     def multiple_tries(self, tries,  *args, **kwargs):
@@ -52,7 +57,7 @@ class OpeningsMoverTest(unittest.TestCase):
         move_games = [((4,4), (g1,))]
         self.set_move_games(move_games)
 
-        answers = self.multiple_tries(1000)
+        answers = self.multiple_tries(1000, self.player)
 
         self.assertGreater(answers[(4,4)], 600)
         self.assertGreater(answers[None], 100)
@@ -62,7 +67,7 @@ class OpeningsMoverTest(unittest.TestCase):
         g2 = MockPreservedGame(WHITE, 1)
         move_games = [((4,4), (g1,g2))]
         self.set_move_games(move_games)
-        answers = self.multiple_tries(1000)
+        answers = self.multiple_tries(1000, self.player)
 
         self.assertGreater(answers[(4,4)], 350)
         self.assertGreater(answers[None], 350)
@@ -72,7 +77,7 @@ class OpeningsMoverTest(unittest.TestCase):
         g2 = MockPreservedGame(WHITE, 1)
         move_games = [((4,4), (g1,)), ((3,4),(g2,))]
         self.set_move_games(move_games)
-        answers = self.multiple_tries(1000)
+        answers = self.multiple_tries(1000, self.player)
 
         self.assertGreater(answers[(4,4)], 650)
         self.assertGreater(answers[(3,4)], 50)
