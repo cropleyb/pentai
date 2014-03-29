@@ -73,7 +73,7 @@ class AIFactory: # TODO: These are just functions
         try:
             uc.enclosed_four_base = genome.enclosed_four_base
         except:
-            uc.enclosed_four_base = genome.enclosed_four_base = 500
+            uc.enclosed_four_base = genome.enclosed_four_base = 400
         try:
             uc.judgement = genome.judgement
         except:
