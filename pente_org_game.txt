@@ -1,0 +1,20 @@
+[Game "Pente"]
+[Site "Pente.org"]
+[Event "Turn-based Game"]
+[Round "-"]
+[Section "-"]
+[Date "01/19/2014"]
+[Time "20:05:04"]
+[TimeControl "7"]
+[Rated "Y"]
+[Player 1 Name "rainwolf"]
+[Player 2 Name "trigodan"]
+[Player 1 Rating "1568"]
+[Player 2 Rating "1224"]
+[Player 1 Type "Human"]
+[Player 2 Type "Human"]
+[Result "1-0"]
+
+1. K10 K8 2. K7 H8 3. M9 L8 4. J8 H9 5. M8 H10 6. H7 K9 7. M10 H11 8. H12 G6 9.
+H7 M7 10. J7 G7 11. J11 L9 12. G13 F14 13. M11 M12 14. J9 L11 15. K10 L9 16. N13
+M12 17. L8 J6 18. N10 O11 19. L10 O10 20. J10 1-0

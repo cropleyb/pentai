@@ -1,0 +1,15 @@
+Hi all
+
+I have been writing a program ("PentAI") to play Pente, and it is getting closer to being publicly available. It is quite a bit stronger than Mark Mammel's AI (5-0 so far playing second), and has an even record against a master level player (1-1 so far). If you are a computer scientist, you may be interested to read about how it works at http://bruce-cropley.com/pentai
+
+Having seen the great discussion on http://pente.org/gameServer/forums/thread.jspa?forumID=1&threadID=4653, I have a few comments.
+
+- Most of the techniques I have used are standard AI.
+- There is no difference in how it plays as P1 and P2
+- There is no explicit knowledge of the opponent's ability yet, although each game is automatically add to the openings DB.
+- It's not infallible yet, but it beats me almost every game on depth 6, and makes moves in around a minute on depth 10.
+- I plan to share it with the world as an app.
+- The openings book is not that great yet as I haven't been keen to toast my laptop.
+- "Adzi" is not explicitly coded for, but may possibly be played if the utility function and search depth are sufficient.
+- Symmetry is only exploited in the openings book, not in the transposition table (used for equivalent positions due to move ordering)
+- translational symmetry is not yet used

@@ -1,0 +1,229 @@
+Game was won by: B Defender
+B: 12.21s, W: 8.35s, B/W: 1.46
+Game was won by: W Defender
+B: 14.66s, W: 11.43s, B/W: 1.28
+Defender vs. Contender: Defender (13x13 5) B: 12.21s, W: 8.35s, B/W: 1.46
+Contender vs. Defender: Defender (13x13 5) B: 14.66s, W: 11.43s, B/W: 1.28
+B/W:[0, 1, 1] won: {'Defender': 2, 'Contender': 0} C/D avg. time: 0.982814288326
+4133.09375
+Partition of a set of 9387766 objects. Total size = 4284507864 bytes.
+Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+	0 2392123 25 3086140168 72 3086140168 72 dict (no owner)
+	1 2028450 22 280714064  7 3366854232  79 list
+	2 130725   1 136999800  3 3503854032  82 dict of utility_stats.UtilityStats
+	3 127912   1 134051776  3 3637905808  85 dict of game_state.GameState
+	4 1495413 16 110295808  3 3748201616  87 tuple
+	5 511648   5 108469376  3 3856670992  90 array.array
+	6 130725   1 36603000   1 3893273992  91 dict of ab_state.ABState
+	7 130233   1 36465240   1 3929739232  92 dict of priority_filter.PriorityFilter
+	8 127912   1 35815360   1 3965554592  93 dict of board.Board
+	9 127912   1 35815360   1 4001369952  93 dict of direction_strips.EDirectionStrips
+<117 more rows. Type e.g. '_.more' to view.>
+> /Users/cropleyb/Dropbox/pente/run_ai.py(199)<module>()
+
+Partition of a set of 1525641 objects. Total size = 330542640 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+	0 285321  19 127213272 38 127213272  38 dict (no owner)
+	1 272612  18 41699808  13 168913080  51 list
+	2 192587  13 16495536   5 185408616  56 tuple
+	3  13735   1 14394280   4 199802896  60 dict of utility_stats.UtilityStats
+	4  11358   1 11903184   4 211706080  64 dict of game_state.GameState
+	5  11154   1 11689392   4 223395472  68 dict of ab_game.ABGame
+	6  11154   1 11689392   4 235084864  71 dict of ai_player.AIPlayer
+	7  11154   1 11689392   4 246774256  75 dict of utility_calculator.UtilityCalculator
+	8  45432   3  9631584   3 256405840  78 array.array
+	9   8777   1  9198296   3 265604136  80 dict of game.Game
+   10   8777   1  9198296   3 274802432  83 dict of rules.Rules
+   11 228934  15  6419664   2 281222096  85 long
+   12  13735   1  3845800   1 285067896  86 dict of ab_state.ABState
+   13  13271   1  3715880   1 288783776  87 dict of priority_filter.PriorityFilter
+   14 134223   9  3221352   1 292005128  88 int
+   15  11358   1  3180240   1 295185368  89 dict of board.Board
+   16  11358   1  3180240   1 298365608  90 dict of direction_strips.EDirectionStrips
+   17  11358   1  3180240   1 301545848  91 dict of direction_strips.SDirectionStrips
+   18  11358   1  3180240   1 304726088  92 dict of direction_strips.SEDirectionStrips
+   19  11358   1  3180240   1 307906328  93 dict of direction_strips.SWDirectionStrips
+
+What and where are these dicts?
+
+Partition of a set of 1467129 objects. Total size = 294505568 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0 268594  18 98795440  34  98795440  34 dict (no owner)
+     1 258714  18 39672592  13 138468032  47 list
+     2 185409  13 15982616   5 154450648  52 tuple
+     3  12801   1 13415448   5 167866096  57 dict of utility_stats.UtilityStats
+     4  11199   1 11736552   4 179602648  61 dict of ab_game.ABGame
+     5  11199   1 11736552   4 191339200  65 dict of ai_player.AIPlayer
+     6  11199   1 11736552   4 203075752  69 dict of utility_calculator.UtilityCalculator
+     7  10405   1 10904440   4 213980192  73 dict of game_state.GameState
+     8   8803   1  9225544   3 223205736  76 dict of game.Game
+     9   8803   1  9225544   3 232431280  79 dict of rules.Rules
+    10  41620   3  8823440   3 241254720  82 array.array
+    11 229454  16  6434024   2 247688744  84 long
+    12  12801   1  3584280   1 251273024  85 dict of ab_state.ABState
+    13  12337   1  3454360   1 254727384  86 dict of priority_filter.PriorityFilter
+    14 134341   9  3224184   1 257951568  88 int
+    15  10405   1  2913400   1 260864968  89 dict of board.Board
+    16  10405   1  2913400   1 263778368  90 dict of direction_strips.EDirectionStrips
+    17  10405   1  2913400   1 266691768  91 dict of direction_strips.SDirectionStrips
+    18  10405   1  2913400   1 269605168  92 dict of direction_strips.SEDirectionStrips
+    19  10405   1  2913400   1 272518568  93 dict of direction_strips.SWDirectionStrips
+
+Partition of a set of 816362 objects. Total size = 143397288 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0  80573  10 80006840  56  80006840  56 dict (no owner)
+     1 198919  24 16964248  12  96971088  68 tuple
+     2  82921  10 12072328   8 109043416  76 list
+     3 230650  28  6467264   5 115510680  81 long
+     4 134505  16  3228120   2 118738800  83 int
+     5   2972   0  3114656   2 121853456  85 dict of utility_stats.UtilityStats
+     6   2968   0  3110464   2 124963920  87 dict of game_state.GameState
+     7  11872   1  2516864   2 127480784  89 array.array
+     8   2257   0  2365336   2 129846120  91 dict of preserved_game.PreservedGame
+     9      5   0  2017480   1 131863600  92 persistent_dict.PersistentDict
+     10   551   0  1846952   1 133710552  93 dict of ai_genome.AIGenome
+     11  2972   0   832160   1 134542712  94 dict of ab_state.ABState
+     12  2972   0   832160   1 135374872  94 dict of priority_filter.PriorityFilter
+     13  2968   0   831040   1 136205912  95 dict of board.Board
+     14  2968   0   831040   1 137036952  96 dict of direction_strips.EDirectionStrips
+     15  2968   0   831040   1 137867992  96 dict of direction_strips.SDirectionStrips
+     16  2968   0   831040   1 138699032  97 dict of direction_strips.SEDirectionStrips
+     17  2968   0   831040   1 139530072  97 dict of direction_strips.SWDirectionStrips
+     18  6539   1   540200   0 140070272  98 str
+     19  2999   0   239920   0 140310192  98 types.MethodType
+
+With openings book turned off:
+Partition of a set of 777511 objects. Total size = 108437952 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0  67961   9 50399192  46  50399192  46 dict (no owner)
+     1 198828  26 16960064  16  67359256  62 tuple
+     2  72458   9 10649808  10  78009064  72 list
+     3 230962  30  6475760   6  84484824  78 long
+     4 134640  17  3231360   3  87716184  81 int
+     5   2270   0  2378960   2  90095144  83 dict of utility_stats.UtilityStats
+     6   2266   0  2374768   2  92469912  85 dict of game_state.GameState
+     7   2261   0  2369528   2  94839440  87 dict of preserved_game.PreservedGame
+     8      5   0  2017480   2  96856920  89 persistent_dict.PersistentDict
+     9   9064   1  1921568   2  98778488  91 array.array
+    10    555   0  1860360   2 100638848  93 dict of ai_genome.AIGenome
+    11   2270   0   635600   1 101274448  93 dict of ab_state.ABState
+    12   2270   0   635600   1 101910048  94 dict of priority_filter.PriorityFilter
+    13   2266   0   634480   1 102544528  95 dict of board.Board
+    14   2266   0   634480   1 103179008  95 dict of direction_strips.EDirectionStrips
+    15   2266   0   634480   1 103813488  96 dict of direction_strips.SDirectionStrips
+    16   2266   0   634480   1 104447968  96 dict of direction_strips.SEDirectionStrips
+    17   2266   0   634480   1 105082448  97 dict of direction_strips.SWDirectionStrips
+    18   6542   1   540336   0 105622784  97 str
+    19   2297   0   183760   0 105806544  98 types.MethodType
+
+No openings book, only 2 .so files
+Partition of a set of 778257 objects. Total size = 108487096 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0  67951   9 50396392  46  50396392  46 dict (no owner)
+     1 199179  26 16987744  16  67384136  62 tuple
+     2  72472   9 10652352  10  78036488  72 list
+     3 230967  30  6475960   6  84512448  78 long
+     4 134711  17  3233064   3  87745512  81 int
+     5   2270   0  2378960   2  90124472  83 dict of utility_stats.UtilityStats
+     6   2266   0  2374768   2  92499240  85 dict of game_state.GameState
+     7   2263   0  2371624   2  94870864  87 dict of preserved_game.PreservedGame
+     8      5   0  2017480   2  96888344  89 persistent_dict.PersistentDict
+     9   9064   1  1921568   2  98809912  91 array.array
+    10    557   0  1867064   2 100676976  93 dict of ai_genome.AIGenome
+    11   2270   0   635600   1 101312576  93 dict of ab_state.ABState
+    12   2270   0   635600   1 101948176  94 dict of priority_filter.PriorityFilter
+    13   2266   0   634480   1 102582656  95 dict of board.Board
+    14   2266   0   634480   1 103217136  95 dict of direction_strips.EDirectionStrips
+    15   2266   0   634480   1 103851616  96 dict of direction_strips.SDirectionStrips
+    16   2266   0   634480   1 104486096  96 dict of direction_strips.SEDirectionStrips
+    17   2266   0   634480   1 105120576  97 dict of direction_strips.SWDirectionStrips
+    18   6879   1   569496   1 105690072  97 str
+    19   2297   0   183760   0 105873832  98 types.MethodType
+
+Negligable impact from turning off transposition table
+
+Should only be 1 ABState by the end of the game. Or none?
+Who creates them? ABGame creates them in successors()
+Who is holding them? ABGame holds current_state. Each GameState observer?
+
+Defender vs. Contender: Contender (13x13 2) B: 0.20s, W: 0.20s, B/W: 0.98
+Contender vs. Defender: Defender (13x13 2) B: 0.23s, W: 0.18s, B/W: 1.31
+B/W:[0, 0, 2] won: {'Defender': 1, 'Contender': 1} C/D avg. time: 1.16682000471
+80.0625
+Partition of a set of 615915 objects. Total size = 45873608 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0 162481  26 14350240  31  14350240  31 tuple
+     1  27129   4  7712472  17  22062712  48 dict (no owner)
+     2 231565  38  6492592  14  28555304  62 long
+     3  38602   6  6053072  13  34608376  75 list
+     4 135286  22  3246864   7  37855240  83 int
+     5   2283   0  2392584   5  40247824  88 dict of preserved_game.PreservedGame
+     6      5   0  2017480   4  42265304  92 persistent_dict.PersistentDict
+     7    575   0  1927400   4  44192704  96 dict of ai_genome.AIGenome
+     8   6895   1   570352   1  44763056  98 str
+     9   2283   0   164376   0  44927432  98 preserved_game.PreservedGame
+    10     78   0   152400   0  45079832  98 dict of module
+    11    942   0   120576   0  45200408  99 types.CodeType
+    12    895   0   107400   0  45307808  99 function
+    13     76   0    79264   0  45387072  99 dict of type
+    14   2285   0    73120   0  45460192  99 datetime.date
+    15    255   0    71400   0  45531592  99 dict of human_player.HumanPlayer
+    16     76   0    67936   0  45599528  99 type
+    17     48   0    66432   0  45665960 100 dict of class
+    18   2253   0    54072   0  45720032 100 float
+    19    575   0    36800   0  45756832 100 ai_genome.AIGenome
+
+Defender vs. Contender: Contender (13x13 2) B: 0.18s, W: 0.20s, B/W: 0.92
+Contender vs. Defender: Defender (13x13 2) B: 0.17s, W: 0.18s, B/W: 0.96
+B/W:[0, 0, 2] won: {'Defender': 1, 'Contender': 1} C/D avg. time: 1.0190764819
+20.8984375
+Partition of a set of 12884 objects. Total size = 1538336 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0   6070  47   531176  35    531176  35 str
+     1   3247  25   277904  18    809080  53 tuple
+     2     78   1   152400  10    961480  63 dict of module
+     3    942   7   120576   8   1082056  70 types.CodeType
+     4    881   7   105720   7   1187776  77 function
+     5     76   1    79264   5   1267040  82 dict of type
+     6     76   1    67936   4   1334976  87 type
+     7     48   0    66432   4   1401408  91 dict of class
+     8    281   2    20232   1   1421640  92 types.BuiltinFunctionType
+     9     24   0    20160   1   1441800  94 dict (no owner)
+    10    112   1    16064   1   1457864  95 list
+    11    180   1    14400   1   1472264  96 __builtin__.wrapper_descriptor
+    12    104   1     9152   1   1481416  96 __builtin__.weakref
+    13     88   1     6336   0   1487752  97 __builtin__.method_descriptor
+    14      1   0     5064   0   1492816  97 random.Random
+    15     48   0     4992   0   1497808  97 class
+    16     67   1     4824   0   1502632  98 types.GetSetDescriptorType
+    17     64   0     4608   0   1507240  98 types.MemberDescriptorType
+    18     78   1     4368   0   1511608  98 module
+    19    151   1     3624   0   1515232  98 int
+
+Defender vs. Contender: Defender (13x13 5) B: 23.23s, W: 24.78s, B/W: 0.94
+Contender vs. Defender: Contender (13x13 5) B: 23.12s, W: 24.67s, B/W: 0.94
+B/W:[0, 2, 0] won: {'Defender': 1, 'Contender': 1} C/D avg. time: 1.00203951052
+31.90234375
+Partition of a set of 12884 objects. Total size = 1538336 bytes.
+ Index  Count   %     Size   % Cumulative  % Kind (class / dict of class)
+     0   6070  47   531176  35    531176  35 str
+     1   3247  25   277904  18    809080  53 tuple
+     2     78   1   152400  10    961480  63 dict of module
+     3    942   7   120576   8   1082056  70 types.CodeType
+     4    881   7   105720   7   1187776  77 function
+     5     76   1    79264   5   1267040  82 dict of type
+     6     76   1    67936   4   1334976  87 type
+     7     48   0    66432   4   1401408  91 dict of class
+     8    281   2    20232   1   1421640  92 types.BuiltinFunctionType
+     9     24   0    20160   1   1441800  94 dict (no owner)
+    10    112   1    16064   1   1457864  95 list
+    11    180   1    14400   1   1472264  96 __builtin__.wrapper_descriptor
+    12    104   1     9152   1   1481416  96 __builtin__.weakref
+    13     88   1     6336   0   1487752  97 __builtin__.method_descriptor
+    14      1   0     5064   0   1492816  97 random.Random
+    15     48   0     4992   0   1497808  97 class
+    16     67   1     4824   0   1502632  98 types.GetSetDescriptorType
+    17     64   0     4608   0   1507240  98 types.MemberDescriptorType
+    18     78   1     4368   0   1511608  98 module
+    19    151   1     3624   0   1515232  98 int
+     
