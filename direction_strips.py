@@ -1,4 +1,4 @@
-from kivy.pentai.board_strip import *
+from board_strip import *
 import array as a_m
 
 class DirectionStrips():

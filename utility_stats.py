@@ -1,5 +1,5 @@
-import kivy.pentai.board_strip as bs_m
-import kivy.pentai.length_lookup_table as llt_m
+import board_strip as bs_m
+import length_lookup_table as llt_m
 from defines import *
 
 # TODO: move this to test code?

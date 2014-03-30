@@ -3,11 +3,6 @@ Distutils script for building cython .c and .so files. Call it with:
 python setup.py build_ext --inplace
 """
 
-import sys
-print "RUNNING SETUP.PY, PYTHON IS:"
-
-print sys.executable
-
 from distutils.core import setup
 from Cython.Build import cythonize
 
@@ -17,8 +12,8 @@ from Cython.Build import cythonize
 compile_cy_py = True
 
 cy_modules = [
-    'kivy/pentai/board_strip.pyx',
-    'kivy/pentai/length_lookup_table.pyx',
+    'board_strip.pyx',
+    'length_lookup_table.pyx',
     ]
 if compile_cy_py:
     cy_modules.extend([
@@ -35,20 +30,7 @@ if compile_cy_py:
     ])
 
 setup(
-        #name = "PentAI",
-        #name = "pente_ext",
         ext_modules = cythonize(
             cy_modules
         ),
-        #packages=[ 'pente_ext' ]
     )
-'''
-setup(name='board_strip',
-    version='1.0',
-    ext_modules = cythonize(
-        'board_strip.pyx',
-    ),
-    #packages=[ 'board_strip' ]
-)
-'''
-    #ext_modules=[Extension('board_strip', ["board_strip.)],

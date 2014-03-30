@@ -2,7 +2,7 @@
 from pente_exceptions import *
 from defines import *
 import board
-import kivy.pentai.board_strip as bs_m
+import board_strip as bs_m
 
 class GameState():
     """ This is for the state of a game as of a particular move. 
