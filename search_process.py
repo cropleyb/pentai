@@ -37,6 +37,7 @@ class SearchProcess(object):
         if ready:
             self.receive()
         else:
+            from kivy.clock import Clock
             Clock.schedule_once(self.poll, .05)
 
     def receive(self):
