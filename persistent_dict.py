@@ -1,6 +1,8 @@
 #/usr/bin/python
 
-import cPickle, json, csv, os, shutil
+import cPickle, json, os, shutil
+
+base_dir = ""
 
 class PersistentDict(dict):
     ''' Persistent dictionary with an API compatible with shelve and anydbm.
@@ -20,6 +22,8 @@ class PersistentDict(dict):
         self.flag = flag                    # r=readonly, c=create, or n=new
         self.mode = mode                    # None or an octal triple like 0644
         self.format = format                # 'csv', 'json', or 'pickle'
+        if len(base_dir):
+            filename = os.path.join(base_dir, filename)
         self.filename = filename
         if flag != 'n' and os.access(filename, os.R_OK):
             fileobj = open(filename, 'rb' if format=='pickle' else 'r')
@@ -66,7 +70,7 @@ class PersistentDict(dict):
 
     def load(self, fileobj):
         # try formats from most restrictive to least restrictive
-        for loader in (cPickle.load, json.load, csv.reader):
+        for loader in (cPickle.load, json.load):
             fileobj.seek(0)
             try:
                 return self.update(loader(fileobj))
