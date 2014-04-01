@@ -124,8 +124,11 @@ class Game(object):
             self.move_history = self.move_history[:-1]
             raise e
 
+        '''
+        # Temp: disable due to iOS restrictions
         if self.autosave_filename != None:
             self.save_history()
+        '''
 
     def set_won_by(self, colour):
         self.current_state.set_won_by(colour)
