@@ -62,6 +62,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def __init__(self, screen_size, filename, *args, **kwargs):
         # GuiPlayer?
         self.moved_marker = [None, None, None]
+        global ss
+        ss = screen_size
 
         self.marker = None
         self.stones_by_board_pos = {}
@@ -750,21 +752,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def are_reviewing(self):
         return self.reviewing
 
-'''
-class Image(Scatter):
-    source = StringProperty(None)
-
-    def __init__(self, *args, **kwargs):
-        #self.scale = 7. / board_size
-        super(Piece, self).__init__(*args, **kwargs)
-'''
-
 
 class Piece(Scatter):
     source = StringProperty(None)
 
     def __init__(self, board_size, *args, **kwargs):
-        self.scale = 7. / board_size
+        self.scale = ss[0] / (65.0 * board_size)
         super(Piece, self).__init__(*args, **kwargs)
 
 from kivy.uix.gridlayout import GridLayout
