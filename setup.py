@@ -197,9 +197,11 @@ else:
 if platform == 'ios':
     print('Kivy-IOS project environment detect, use it.')
     print('Kivy-IOS project located at {0}'.format(kivy_ios_root))
-    print('Activate SDL compilation.')
+    #print('Activate SDL compilation.')
     c_options['use_ios'] = True
+    '''
     c_options['use_sdl'] = True
+    '''
 
 # detect gstreamer, only on desktop
 if platform not in ('ios', 'android'):
@@ -595,6 +597,13 @@ for root, subFolders, files in walk('examples'):
 # -----------------------------------------------------------------------------
 # setup !
 setup(
+    name='pentai',
+    author='Bruce Cropley',
+    ext_modules=ext_modules,
+    )
+
+'''
+setup(
     name='Kivy',
     version=kivy.__version__,
     author='Kivy Crew',
@@ -696,4 +705,5 @@ setup(
     dependency_links=[
         'https://github.com/kivy-garden/garden/archive/master.zip'],
     install_requires=['Kivy-Garden==0.1.1'])
+'''
 
