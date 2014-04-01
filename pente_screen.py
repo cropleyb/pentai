@@ -64,6 +64,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.moved_marker = [None, None, None]
         global ss
         ss = screen_size
+        global my_dp
+        my_dp = ss[0] / 457.0
 
         self.marker = None
         self.stones_by_board_pos = {}
@@ -405,6 +407,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         base_y = self.board_offset[1] * .5 * (2.5-level)
 
         widget.pos = size_x/2, base_y
+
+    def get_my_dp(self):
+        return my_dp
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
@@ -757,7 +762,7 @@ class Piece(Scatter):
     source = StringProperty(None)
 
     def __init__(self, board_size, *args, **kwargs):
-        self.scale = ss[0] / (65.0 * board_size)
+        self.scale = my_dp * 7.5 / board_size
         super(Piece, self).__init__(*args, **kwargs)
 
 from kivy.uix.gridlayout import GridLayout
