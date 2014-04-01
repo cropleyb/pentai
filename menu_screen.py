@@ -31,7 +31,7 @@ Thanks go to:
 - Marion and Noel Lodge for their constant support and feedback
 - Thad Spreg for his expert Pente insights
 - Annette Campbell for inspiring me to write this in the first place
-- Sascha and Jespah for their comments on "The Sod"
+- Sascha, Jespah and Arwen for their comments on "The Sod"
 - Lots of other people for their support and feedback
 
 Enjoy,
