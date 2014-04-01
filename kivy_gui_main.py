@@ -2,7 +2,6 @@ from kivy.app import App
 from kivy.config import Config
 from kivy.clock import *
 from kivy.base import *
-#from kivy.core.window import Window # Hmmmm... TODO?
 
 from kivy.config import ConfigParser
 from kivy.uix.settings import Settings
@@ -27,7 +26,7 @@ import openings_book as ob_m
 from kivy.properties import ObjectProperty
 
 import alpha_beta as ab_m
-import os # TODO: Remove?
+import os
 import time
 import ai_player as aip_m # hack for debugging
 
@@ -263,11 +262,13 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
-        '''
-        # This may look OK on an iPad? Not so good on laptop ;)
-        if Window.height < Window.width:
-            Window.rotation = 90
-        '''
+        import persistent_dict
+        persistent_dict.base_dir = self.user_data_dir
+        if not "db" in os.listdir(self.user_data_dir):
+            print "Copying db"
+            import shutil
+            shutil.copytree("db", os.path.join(self.user_data_dir, "db"))
+
         root = ps_m.PScreenManager()
         self.root = root
         
