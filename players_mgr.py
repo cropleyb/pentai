@@ -7,7 +7,7 @@ import mru_cache as mru_m
 
 from defines import *
 
-misc = m_m.get_instance()
+misc = m_m.get_instance
 
 class PlayersMgr():
     # TODO: Borg pattern?
@@ -31,7 +31,7 @@ class PlayersMgr():
             key = "recent_ai_player_ids"
         else:
             key = "recent_human_ids"
-        rpks = misc.setdefault(key, mru_m.MRUCache(30))
+        rpks = misc().setdefault(key, mru_m.MRUCache(30))
         return rpks
 
     def mark_recent_player(self, player):
@@ -44,7 +44,7 @@ class PlayersMgr():
         p_type = player.get_type()
         rpks = self.get_rpks(p_type)
         rpks.add(p_key)
-        misc.sync()
+        misc().sync()
 
     def get_recent_player_names(self, player_type, number):
         # TODO: use "number" for # returned players
@@ -138,11 +138,11 @@ class PlayersMgr():
         return player
 
     def get_max_id(self):
-        return misc.setdefault("max_id", 0)
+        return misc().setdefault("max_id", 0)
 
     def next_id(self):
         curr_id = self.get_max_id() + 1
-        misc["max_id"] = curr_id
-        misc.sync()
+        misc()["max_id"] = curr_id
+        misc().sync()
         return curr_id
 
