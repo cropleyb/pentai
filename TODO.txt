@@ -1,5 +1,6 @@
 For Alpha release
 
+Make the minimum AI search time a config setting.
 Get cython building with iOS
 Openings Book is bloated in RAM. DB file per turn? Manually trim early moves?
  Openings editor?
