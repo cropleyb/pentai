@@ -1,7 +1,15 @@
 For Alpha release
 
+multiprocessing
+# Add libpente.a to the link line from tools scripts?
+Trim the size of the apps, both file and RAM
+Grid Line width
+Bigger default text size on iOS?
+Game selection screen 2 rows? Looks alright as-is?
+ AttributeError: 'AIGenome' object has no attribute 'vision'
+Schedule game save when game finished, check for dirty bit on_leave
 Make the minimum AI search time a config setting.
-Get cython building with iOS
+cythonize .py files
 Openings Book is bloated in RAM. DB file per turn? Manually trim early moves?
  Openings editor?
 Contact Hasbro again? By registered snail mail?
