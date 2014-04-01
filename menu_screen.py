@@ -48,6 +48,18 @@ Bruce
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 """
     def follow_link(self, inst, ref):
         print "User clicked on: %s" % ref
