@@ -54,6 +54,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     gridlines = ListProperty([])
     border_lines = ListProperty([0,0,0,0])
     border_colour = ListProperty([20,0,0,1])
+    border_width = NumericProperty(6.0)
     h_grid_text = StringProperty("ABCD")
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
@@ -62,10 +63,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def __init__(self, screen_size, filename, *args, **kwargs):
         # GuiPlayer?
         self.moved_marker = [None, None, None]
-        global ss
-        ss = screen_size
         global my_dp
-        my_dp = ss[0] / 457.0
+        my_dp = screen_size[0] / 457.0
 
         self.marker = None
         self.stones_by_board_pos = {}
@@ -443,13 +442,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return lines
 
     def setup_colour_border(self, size_x, size_y):
-        w = 6 # TODO this is copied and pasted from kv
+        w = 6 * my_dp
         # This is ugly, but using the "rectangle" feature causes issues in the corners
         self.border_lines = [w,w, size_x,w, w,w, w,size_y, w,size_y-w, size_x,size_y-w]
         self.border_lines.extend([size_x-w,size_y, size_x-w,w, w,w, w,0])
         # The last two points are just to fill in a point that is missing
         # at the bottom left.
         self.border_colour = self.game.rules.border_colour
+        self.border_width = w
 
     def setup_grid(self, _dt=None):
         if self.game != None:
@@ -762,7 +762,7 @@ class Piece(Scatter):
     source = StringProperty(None)
 
     def __init__(self, board_size, *args, **kwargs):
-        self.scale = my_dp * 7.5 / board_size
+        self.scale = my_dp * 7.0 / board_size
         super(Piece, self).__init__(*args, **kwargs)
 
 from kivy.uix.gridlayout import GridLayout

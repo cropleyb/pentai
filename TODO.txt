@@ -1,6 +1,7 @@
 For Alpha release
 
 multiprocessing
+Missing capture24.wav on iPad
 # Add libpente.a to the link line from tools scripts?
 Trim the size of the apps, both file and RAM
 Grid Line width
