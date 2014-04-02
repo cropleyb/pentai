@@ -91,7 +91,7 @@ if platform in ('ios', 'android'):
 else:
     try:
         # check for cython
-        from Cython.Distutils import build_ext
+        from Cython.Distutils import build_ext, Extension # No impact?
         have_cython = True
     except ImportError:
         print('\nCython is missing, its required for compiling kivy !\n\n')
@@ -201,7 +201,6 @@ def get_modulename_from_file(filename):
 
 def expand(*args):
     return join(dirname(__file__), *args)
-
 
 class CythonExtension(Extension):
 
@@ -355,6 +354,20 @@ sources = {
     'board_strip.pyx': base_flags,
     'length_lookup_table.pyx': base_flags,
     }
+'''
+    # BC TODO
+    'priority_filter.py': base_flags,
+    'priority_filter_2.py': base_flags,
+    'utility_stats.py': base_flags,
+    'bit_reverse.py': base_flags,
+    'utility_calculator.py': base_flags,
+    'direction_strips.py': base_flags,
+    'alpha_beta.py': base_flags,
+    'ab_state.py': base_flags,
+    'game_state.py': base_flags,
+    'board.py': base_flags,
+    }
+'''
 
 if c_options['use_sdl']:
     sdl_flags = determine_sdl()
@@ -431,7 +444,8 @@ def get_extensions_from_sources(sources):
         pyx = expand(pyx)
         depends = [expand(x) for x in flags.pop('depends', [])]
         if not have_cython:
-            pyx = '%s.c' % pyx[:-4]
+            #pyx = '%s.c' % pyx[:-4]
+            pyx = "".join(pyx.split('.')[:-1], '.c')
         if is_graphics:
             depends = resolve_dependencies(pyx, depends)
         f_depends = [x for x in depends if x.rsplit('.', 1)[-1] in (
@@ -451,7 +465,9 @@ ext_modules = get_extensions_from_sources(sources)
 # automatically detect data files
 data_file_prefix = 'share/kivy-'
 examples = {}
-examples_allowed_ext = ('readme', 'py', 'wav', 'png', 'jpg', 'svg', 'json',
+#examples_allowed_ext = ('readme', 'py', 'wav', 'png', 'jpg', 'svg', 'json',
+#                        'avi', 'gif', 'txt', 'ttf', 'obj', 'mtl', 'kv')
+examples_allowed_ext = ('readme', 'wav', 'png', 'jpg', 'svg', 'json',
                         'avi', 'gif', 'txt', 'ttf', 'obj', 'mtl', 'kv')
 for root, subFolders, files in walk('examples'):
     for fn in files:
@@ -463,6 +479,11 @@ for root, subFolders, files in walk('examples'):
         if not directory in examples:
             examples[directory] = []
         examples[directory].append(filename)
+
+'''
+import pdb
+pdb.set_trace()
+'''
 
 # -----------------------------------------------------------------------------
 # setup !
