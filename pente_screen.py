@@ -335,7 +335,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             level = colour
 
             base_y = self.board_offset[1] * .5 * (2.2-level)
-            centre = [2, 1, 3, 0, 4, -1, 5] # Could capture more than one pair for win
+            centre = [2, 1, 3, 0, 4, -1, 5] # Could capture more than one pair for the win
 
             for i in range(captured / 2):
                 i_centred = centre[i]
@@ -343,8 +343,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
                     try:
                         # load and place the appropriate stone image
                         new_piece = Piece(19, source=filename)
-                        x = base_x + j * 7
-                        y = base_y + i_centred * 20
+                        x = base_x + j * 7 * self.get_my_dp()
+                        y = base_y + i_centred * 20 * self.get_my_dp()
                         new_piece.pos = x,y
                         cw.append(new_piece)
                         self.add_widget(new_piece)
