@@ -66,7 +66,15 @@ class AIPlayer(p_m.Player):
         if test:
             return self.do_the_search()
         else:
-            self.do_search_process(gui)
+            # TODO: platform dependent choice?
+            # self.do_search_process(gui)
+            t = threading.Thread(target=self.search_thread, args=(gui,))
+            
+            # Allow the program to be exited quickly
+            t.daemon = True
+            
+            t.start()
+
         return "%s is thinking" % self.get_name()
 
     def get_type(self):
