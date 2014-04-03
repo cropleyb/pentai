@@ -1,18 +1,15 @@
 For Alpha release
 
-iOS sound effect horrible shrieking for win
+Make the minimum AI search time a config setting.
 multiprocessing
 crash on iPad
-except clause with logging in main?
 Missing capture24.wav on iPad
 Bigger default text size on iOS - help from IRC group
 # Add libpente.a to the link line from tools scripts?
 Trim the size of the apps, both file and RAM
-Grid Line width
 Game selection screen 2 rows? Looks alright as-is?
  AttributeError: 'AIGenome' object has no attribute 'vision'
 Schedule game save when game finished, check for dirty bit on_leave
-Make the minimum AI search time a config setting.
 cythonize .py files
 Openings Book is bloated in RAM. DB file per turn? Manually trim early moves?
  Openings editor?
