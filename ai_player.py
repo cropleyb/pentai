@@ -67,13 +67,15 @@ class AIPlayer(p_m.Player):
             return self.do_the_search()
         else:
             # TODO: platform dependent choice?
-            # self.do_search_process(gui)
-            t = threading.Thread(target=self.search_thread, args=(gui,))
-            
-            # Allow the program to be exited quickly
-            t.daemon = True
-            
-            t.start()
+            try:
+                self.do_search_process(gui)
+            except:
+                t = threading.Thread(target=self.search_thread, args=(gui,))
+                
+                # Allow the program to be exited quickly
+                t.daemon = True
+                
+                t.start()
 
         return "%s is thinking" % self.get_name()
 
