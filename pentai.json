@@ -31,6 +31,14 @@
         "true": "auto"
     },
     {
+        "type": "numeric",
+        "title": "Minimum wait time",
+        "desc": "Minimum time to wait for the AI to play (secs)",
+        "section": "PentAI",
+        "key": "minimum_wait",
+        "0.5": "auto"
+    },
+    {
         "type": "title",
         "title": "Popup confirmation"
     },

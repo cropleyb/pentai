@@ -27,12 +27,9 @@ class SearchProcess(object):
         self.process = Process(target=self.search_and_respond,
                 args=(child_conn, pg,))
         self.process.start()
-        # Wait a bit to check for a move so it doesn't look like
-        # it is instant.
-        from kivy.clock import Clock
-        Clock.schedule_once(self.poll, .6)
+        self.poll()
 
-    def poll(self, ignored):
+    def poll(self, ignored=None):
         ready = self.parent_conn.poll()
         if ready:
             self.receive()

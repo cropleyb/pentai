@@ -210,7 +210,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def enqueue_action(self, action):
         self.action_queue.put(action)
-        self.trig()
+        mw = self.config.getfloat("PentAI", "minimum_wait")
+        Clock.schedule_once(self.trig, mw)
 
     def load_file(self, dt):
         f = open(self.game_filename)
