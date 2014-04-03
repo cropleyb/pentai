@@ -52,7 +52,7 @@
         "desc": "How loud are the sound effects",
         "section": "PentAI",
         "key": "effects_volume",
-        ".5": "auto"
+        "1.0": "auto"
     },
     {
         "type": "bool",
