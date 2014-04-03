@@ -1,7 +1,6 @@
 For Alpha release
 
 Openings book move selection fallthrough eliminate options
-Rename AI players alphabetically
 multiprocessing
 crash on iPad
 Missing capture24.wav on iPad
