@@ -44,8 +44,6 @@ class Audio():
                 = g_m.glob("%s*.wav" % fn_in_subdir)
 
         filename = r_m.choice(filenames)
-        if "win" in filename:
-            print "Playing %s" % filename
         self.last_played[fn_in_subdir] = filename
 
         # Avoid loading the sound every time
