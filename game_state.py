@@ -85,13 +85,17 @@ class GameState():
         if self._won_by != EMPTY:
             raise IllegalMoveException("The game is already over")
 
+        rules = self.get_rules()
+        if self.move_number == 3:
+            if rules.move_is_too_close(move_pos):
+                raise IllegalMoveException("That move is too close to the centre.")
+
         my_colour = self.to_move_colour() # Save it before the turn is changed
         self.move_number += 1
 
         MC = my_colour
         OC = self.to_move_colour() # Other Colour
 
-        rules = self.get_rules()
         ccp = rules.can_capture_pairs
         if ccp:
             # Process captures

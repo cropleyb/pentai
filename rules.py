@@ -59,6 +59,14 @@ class Rules():
         else:
             raise UnknownRuleType("%s, %s" % (size, type_str))
 
+    def move_is_too_close(self, move_pos):
+        if self.type_char != 't':
+            return False
+        mid = (self.size) / 2
+        ab_x = abs(move_pos[0] - mid)
+        ab_y = abs(move_pos[1] - mid)
+        return ab_x < 3 and ab_y < 3
+
     def key(self):
         return (self.size, self.type_char, self.time_control/60)
 

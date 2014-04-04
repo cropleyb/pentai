@@ -608,3 +608,10 @@ Openings book early moves problem
 ---------------------------------
 When the openings book is used for choosing a move in the early game, it is looking at a large number of games, and is using lots of memory.
 
+Tournament rules
+----------------
+Human players - prevent them from moving illegally
+Computer players - prevent them from moving illegally too?
+Raise exception in game/game_state.
+Computer players openings mover special code?
+
