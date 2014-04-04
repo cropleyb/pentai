@@ -1,7 +1,6 @@
 For Alpha release
 
-Fix Tournament rules
-Post a request for top games
+White AI first move with tournament rules crashing
 Openings book move selection fallthrough eliminate options
 multitasking
 Bigger default text size on iOS - help from IRC group

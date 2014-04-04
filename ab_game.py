@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import ab_state as ab_m
+from pente_exceptions import *
 
 
 class ABGame():
@@ -62,11 +63,14 @@ class ABGame():
         tried_count = 0
         for pos in p_i:
             # create an ABState for each possible move from state
-            succ = state.create_state(pos)
-            yield pos, succ
+            try:
+                succ = state.create_state(pos)
+                yield pos, succ
 
-            if succ.terminal():
-                return
+                if succ.terminal():
+                    return
+            except IllegalMoveException:
+                pass
 
     def save_utility(self, state, depth, utility_value):
         """ Save to transposition table """
