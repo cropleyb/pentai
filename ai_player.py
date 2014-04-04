@@ -4,6 +4,7 @@ import alpha_beta as ab_m
 import openings_mover as om_m
 import player as p_m
 import utility_calculator as uc_m
+import random as r_m
 
 from defines import *
 
@@ -67,15 +68,15 @@ class AIPlayer(p_m.Player):
             return self.do_the_search()
         else:
             # TODO: platform dependent choice?
-            try:
-                self.do_search_process(gui)
-            except:
-                t = threading.Thread(target=self.search_thread, args=(gui,))
-                
-                # Allow the program to be exited quickly
-                t.daemon = True
-                
-                t.start()
+            #try:
+            #    self.do_search_process(gui)
+            #except:
+            t = threading.Thread(target=self.search_thread, args=(gui,))
+            
+            # Allow the program to be exited quickly
+            t.daemon = True
+            
+            t.start()
 
         return "%s is thinking" % self.get_name()
 
@@ -118,11 +119,18 @@ class AIPlayer(p_m.Player):
         ab_game = self.ab_game
 
         move = self.make_opening_move()
-        if move:
-            if ab_game.base_game.get_board().get_occ(move) == EMPTY:
-                return move
-            else:
-                print "Corrupt opening suggestion ignored"
+        rules = ab_game.get_rules()
+        turn = ab_game.get_move_number()
+        while move or (turn == 3):
+            if move:
+                if ab_game.base_game.get_board().get_occ(move) != EMPTY:
+                    print "Corrupt opening %s suggestion ignored" % (move,)
+                else:
+                    if turn != 3 or not rules.move_is_too_close(move):
+                        return move
+            x = r_m.randrange(-4, 5) + rules.size / 2
+            y = r_m.randrange(-4, 5) + rules.size / 2
+            move = (x, y)
 
         ab_ss = ab_game.current_state
         thinking_in_opponents_move = (ab_ss.get_state().to_move_player() != self)

@@ -18,6 +18,12 @@ class ABGame():
         self.transposition_table = {} # TODO: extract class?
         #self.transposition_hits = 0
 
+    def get_rules(self):
+        return self.base_game.get_rules()
+
+    def get_move_number(self):
+        return self.base_game.get_move_number()
+
     def to_move(self, state=None):
         if state is None:
             state = self.current_state
