@@ -1,6 +1,5 @@
 For Alpha release
 
-Show banned area for Tournament move
 White AI first move with tournament rules crashing - fixed?
 Openings book move selection fallthrough eliminate options
 multitasking
