@@ -59,6 +59,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
     confirm_rect_color = ListProperty([0, 0, 0, 0])
+    illegal_rect_color = ListProperty([0, 0, 0, 0])
+    illegal_rect_pos = ListProperty([0, 0])
+    illegal_rect_size = ListProperty([0, 0])
 
     def __init__(self, screen_size, filename, *args, **kwargs):
         # GuiPlayer?
@@ -362,6 +365,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
+        self.refresh_illegal()
         self.clocks[BLACK].refresh()
         self.clocks[WHITE].refresh()
 
@@ -684,6 +688,28 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.add_widget(new_piece)
         except Exception, e:
             Logger.exception('Board: Unable to load <%s>' % filename)
+
+    def refresh_illegal(self):
+        game = self.game
+        rules = game.get_rules()
+        self.illegal_rect_color = [0,0,0,0]
+        if (game.get_move_number() == 3) and (rules.type_char == 't'):
+            self.illegal_rect_color = [1, 0, 0, .5]
+            left = game.size()/2 - 2.5
+
+            irp = list(self.board_to_screen((left, left)))
+            irp[1] -= self.board_offset[1]
+            self.illegal_rect_pos = irp
+
+            size_x, size_y = self.size
+            size_y -= self.board_offset[1]
+
+            # Use float() to avoid python int / int = int prob
+            gs = float(self.grid_size())
+            width = 5
+            screen_x = (width / gs) * size_x
+            screen_y = (width / gs) * size_y
+            self.illegal_rect_size = (screen_x, screen_y)
 
     def make_move_on_the_gui_board(self, board_pos, colour):
         if colour == self.ghost_colour:

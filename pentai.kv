@@ -3,17 +3,17 @@
 #:import win kivy.core.window
 
 <Label>:
-    font_size: sp(25)
+    font_size: dp(25)
 
 <CheckBoxList>:
     cols: 2
 
 <MyCompositeListItem>:
-    height: 60
+    height: dp(60)
     rows: 2
 
 <Button>:
-    font_size: '25sp'
+    font_size: '25dp'
 
 <ConfirmPopup>:
     content:
@@ -21,16 +21,16 @@
         rows: 2
         Label:
             text: root.confirm_prompt
-            font_size: '20sp'
+            font_size: '20dp'
         GridLayout:
             cols: 2
             MyButton:
                 text: "Cancel"
-                font_size: '20sp'
+                font_size: '20dp'
                 on_release: root.clear()
             MyButton:
                 text: "OK"
-                font_size: '20sp'
+                font_size: '20dp'
                 on_release: root.ok_confirm()
 
 <GamesScreen>:
@@ -162,11 +162,11 @@
 
             MyLabel:
                 text: "Black Player"
-                height: '48sp'
+                height: '48dp'
 
             MyLabel:
                 text: "White Player"
-                height: '48sp'
+                height: '48dp'
 
             CheckBoxList:
                 group: 'black_type'
@@ -201,10 +201,10 @@
 
 # Globally set all Labels
 <MyLabel@Label>:
-    font_size: '25sp'
+    font_size: '25dp'
 
 <MyBigLabel@Label>:
-    font_size: '30sp'
+    font_size: '30dp'
     bold: True
 
 <AIPlayerScreen>:
@@ -228,7 +228,7 @@
         TextInput:
             id: rename_id
             text: root.rename_text
-            font_size: '25sp'
+            font_size: '25dp'
             multiline: False
 
         Label:
@@ -236,7 +236,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48sp'
+            height: '48dp'
 
             Label:
                 size_hint_x: .3
@@ -257,7 +257,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48sp'
+            height: '48dp'
 
             Label:
                 size_hint_x: .3
@@ -277,7 +277,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48sp'
+            height: '48dp'
 
             Label:
                 size_hint_x: .75
@@ -309,7 +309,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48sp'
+            height: '48dp'
 
             Label:
                 text: 'Lines / Captures'
@@ -328,7 +328,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48sp'
+            height: '48dp'
 
             Label:
                 text: 'Judgement'
@@ -385,7 +385,7 @@
         TextInput:
             id: rename_id
             text: root.rename_text
-            font_size: '25sp'
+            font_size: '25dp'
             multiline: False
 
         GridLayout:
@@ -468,10 +468,15 @@
             Color:
                 rgba: root.border_colour
             Line:
-                id: border_id
+                #id: border_id
                 points: root.border_lines
                 joint: 'none'
                 width: root.border_width
+            Color:
+                rgba: root.illegal_rect_color
+            Rectangle:
+                pos: root.illegal_rect_pos
+                size: root.illegal_rect_size
         #Label:
             #text: root.h_grid_text
             #halign: 'justify'
