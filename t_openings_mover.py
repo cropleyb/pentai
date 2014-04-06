@@ -83,6 +83,19 @@ class OpeningsMoverTest(unittest.TestCase):
         self.assertGreater(answers[(3,4)], 50)
         self.assertGreater(answers[None], 100)
 
+    def test_add_to_previously_seen(self):
+        g1 = MockPreservedGame(BLACK, 1)
+        g2 = MockPreservedGame(WHITE, 1)
+        move_games = [((4,4), (g1,)), ((3,4),(g2,))]
+        self.set_move_games(move_games)
+
+        seen = set()
+        answer = self.of.get_a_good_move(self.player, seen=seen)
+
+        self.assertIn((3,4), seen)
+        self.assertIn((4,4), seen)
+        self.assertNotIn((5,4), seen)
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -57,9 +57,10 @@ class PriorityFilter():
     def copy(self, min_priority=0):
         return PriorityFilter(orig=self, min_priority=min_priority)
 
-    def get_iter(self, our_colour, depth=0, min_priority=0):
+    def get_iter(self, our_colour, depth=0, min_priority=0, tried=None):
+        if tried is None:
+            tried = set()
         other_colour = opposite_colour(our_colour)
-        tried = set() 
 
         cbpc = self.candidates_by_priority_and_colour
         for length in range(1 + 5 - min_priority): # TODO constants

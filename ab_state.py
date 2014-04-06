@@ -22,6 +22,7 @@ class ABState(gso_m.GSObserver):
         else:
             assert parent != None
             self.utility_calculator = parent.utility_calculator
+        self.seen = set()
 
     def clean_up(self):
         self.state.remove_observer(self)
@@ -125,6 +126,12 @@ class ABState(gso_m.GSObserver):
         base_child.make_move(move_pos)
 
         return ab_child
+
+    def set_seen(self, seen):
+        self.seen = seen
+
+    def get_seen(self):
+        return self.seen
 
     def terminal(self):
         return self.state.get_won_by() != game.EMPTY

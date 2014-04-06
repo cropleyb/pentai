@@ -8,10 +8,14 @@ class OpeningsMover(object):
         self.o_book = o_book
         self.game = game
 
-    def get_a_good_move(self, aip):
+    def get_a_good_move(self, aip, seen=None):
+        # TODO: shouldn't need to pass in aip each time, make it self.player?
         wins = 0
         losses = 0
         totals = []
+
+        if seen is None:
+            seen = set()
 
         colour = self.game.to_move_colour()
 
@@ -48,6 +52,7 @@ class OpeningsMover(object):
 
         move_scores = []
         for move, wins, losses, mrf in totals:
+            seen.add(move)
             score = (mrf * (wins))/(losses or .2)
             move_scores.append((move, score))
             total_score += score

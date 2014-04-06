@@ -68,15 +68,15 @@ class AIPlayer(p_m.Player):
             return self.do_the_search()
         else:
             # TODO: platform dependent choice?
-            #try:
-            #    self.do_search_process(gui)
-            #except:
-            t = threading.Thread(target=self.search_thread, args=(gui,))
-            
-            # Allow the program to be exited quickly
-            t.daemon = True
-            
-            t.start()
+            try:
+                self.do_search_process(gui)
+            except:
+                t = threading.Thread(target=self.search_thread, args=(gui,))
+                
+                # Allow the program to be exited quickly
+                t.daemon = True
+                
+                t.start()
 
         return "%s is thinking" % self.get_name()
 
@@ -100,12 +100,12 @@ class AIPlayer(p_m.Player):
                     self.openings_book, self.ab_game.base_game)
         return self.openings_mover
 
-    def make_opening_move(self):
+    def make_opening_move(self, seen):
         if self.use_openings_book():
             base_game = self.ab_game.base_game
 
             om = self.get_openings_mover()
-            move = om.get_a_good_move(self)
+            move = om.get_a_good_move(self, seen)
             if move:
                 return move
 
@@ -118,7 +118,8 @@ class AIPlayer(p_m.Player):
     def do_the_search_inner(self):
         ab_game = self.ab_game
 
-        move = self.make_opening_move()
+        seen = set()
+        move = self.make_opening_move(seen)
         rules = ab_game.get_rules()
         turn = ab_game.get_move_number()
         while move or (turn == 3):
@@ -133,6 +134,8 @@ class AIPlayer(p_m.Player):
             move = (x, y)
 
         ab_ss = ab_game.current_state
+        if len(seen) < 2:
+            ab_ss.set_seen(seen)
         thinking_in_opponents_move = (ab_ss.get_state().to_move_player() != self)
 
         if thinking_in_opponents_move:

@@ -199,6 +199,15 @@ class PriorityFilterTest(unittest.TestCase):
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(5,7))
 
+    def test_skip_tried(self):
+        self.arc(BLACK, 4, ((4,6),), inc=1)
+        self.arc(BLACK, 4, ((5,7),), inc=1)
+        self.arc(BLACK, 4, ((6,8),), inc=1)
+        tried = set([(4,6),(6,8)])
+        l = list(self.pf.get_iter(BLACK, tried=tried))
+        self.assertEquals(len(l), 1)
+        self.assertEquals(l[0],(5,7))
+
 if __name__ == "__main__":
     unittest.main()
 

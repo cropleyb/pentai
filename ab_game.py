@@ -59,7 +59,8 @@ class ABGame():
                 min_priority = 3
                 if depth % 2:
                     min_priority = 5
-            p_i = pos_iter.get_iter(state.to_move_colour(), depth, min_priority)
+            p_i = pos_iter.get_iter(state.to_move_colour(),
+                    depth, min_priority, tried=state.get_seen())
         tried_count = 0
         for pos in p_i:
             # create an ABState for each possible move from state

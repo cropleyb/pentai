@@ -366,6 +366,14 @@ class ThreatTest(unittest.TestCase):
         g3 =     g2.create_state((2,1)) # B
         self.assertEquals(g3.get_threats(), [0, 0, 0])
 
+    ##########################################
+
+    '''
+    def test_seen(self):
+        self.s.set_seen(set([(1,2)]))
+        moves = list(self.s.successors())
+    '''
+
     # TODO: lots of threat cases, or unify stuff
 
 if __name__ == "__main__":
