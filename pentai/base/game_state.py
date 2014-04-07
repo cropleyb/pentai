@@ -4,7 +4,7 @@ from defines import *
 import board
 import board_strip as bs_m
 
-class GameState():
+class GameState(object):
     """ This is for the state of a game as of a particular move. 
     """
     def __init__(self, game, parent=None):

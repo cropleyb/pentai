@@ -1,6 +1,6 @@
 from pente_exceptions import *
 
-class Rules():
+class Rules(object):
     def __init__(self, *args, **kwargs):
         self.set_all(*args, **kwargs)
 

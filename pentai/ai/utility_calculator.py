@@ -3,7 +3,7 @@
 import random
 from pentai.base.defines import *
 
-class UtilityCalculator():
+class UtilityCalculator(object):
     def __init__(self):
         pass
 

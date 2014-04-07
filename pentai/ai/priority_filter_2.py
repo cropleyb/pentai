@@ -3,7 +3,7 @@ from pentai.base.defines import *
 def max_moves_sample_func(depth):
     return 9
 
-class PriorityFilter2():
+class PriorityFilter2(object):
     def __init__(self, orig=None):
         self.reset(orig)
 

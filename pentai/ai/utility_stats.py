@@ -7,7 +7,7 @@ def pass_through_func(a, ignored):
     """ This is just a stub, shouldn't be called in production code. """
     return (a, 0)
 
-class UtilityStats():
+class UtilityStats(object):
 
     def __init__(self, parent=None, search_filter=None):
         if parent == None:

@@ -3,7 +3,7 @@ import direction_strips as ds_m
 from pente_exceptions import *
 from defines import *
 
-class Board():
+class Board(object):
     def __init__(self, size, clone_it=False):
         self.size = size
         if not clone_it:

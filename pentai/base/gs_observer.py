@@ -1,5 +1,5 @@
 
-class GSObserver():
+class GSObserver(object):
     def before_set_occ(self, game, pos, colour):
         pass
 

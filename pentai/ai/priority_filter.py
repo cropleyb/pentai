@@ -5,7 +5,7 @@ import random
 def max_moves_sample_func(depth):
     return 9
 
-class PriorityFilter():
+class PriorityFilter(object):
     def __init__(self, orig=None, min_priority=0):
 
         self.max_moves_func = max_moves_sample_func

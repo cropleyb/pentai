@@ -5,9 +5,7 @@
 # TODO: Undo support?
 # TODO: Resign?
 
-# super requires inheriting from object, which clashes with pickle?!
-#class Player(object):
-class Player():
+class Player(object):
     def __init__(self, p_name):
         self.p_name = p_name
 

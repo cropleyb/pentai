@@ -1,7 +1,7 @@
 from board_strip import *
 import array as a_m
 
-class DirectionStrips():
+class DirectionStrips(object):
     """ A list of BoardStrips for those going in a particular direction.
         The directions are E, SE, S, SW.
         For E and S there are the same number of strips as the board size.
