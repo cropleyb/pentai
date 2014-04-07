@@ -92,6 +92,7 @@ else:
     try:
         # check for cython
         from Cython.Distutils import build_ext, Extension # No impact?
+        from Cython.Build import cythonize
         have_cython = True
     except ImportError:
         print('\nCython is missing, its required for compiling kivy !\n\n')
@@ -445,7 +446,8 @@ def get_extensions_from_sources(sources):
         depends = [expand(x) for x in flags.pop('depends', [])]
         if not have_cython:
             #pyx = '%s.c' % pyx[:-4]
-            pyx = "".join(pyx.split('.')[:-1], '.c')
+            print pyx
+            pyx = "%s.c" % ".".join(pyx.split('.')[:-1])
         if is_graphics:
             depends = resolve_dependencies(pyx, depends)
         f_depends = [x for x in depends if x.rsplit('.', 1)[-1] in (
@@ -491,5 +493,6 @@ setup(
     name='pentai',
     author='Bruce Cropley',
     ext_modules=ext_modules,
+    #ext_modules=cythonize(sources.keys()),
     )
 

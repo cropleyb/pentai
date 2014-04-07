@@ -1,0 +1,20 @@
+[Game "Pente"]
+[Site "Pente.org"]
+[Event "Live Game"]
+[Round "-"]
+[Section "-"]
+[Date "04/04/2014"]
+[Time "16:00:07"]
+[TimeControl "5+5"]
+[Rated "Y"]
+[Player 1 Name "xtraclassy"]
+[Player 2 Name "data22"]
+[Player 1 Rating "2111"]
+[Player 2 Rating "1651"]
+[Player 1 Type "Human"]
+[Player 2 Type "Human"]
+[Result "0-1"]
+
+1. K10 K8 2. L13 J11 3. J13 M11 4. K13 M13 5. K11 K9 6. K7 K9 7. H13 G13 8. F15
+L10 9. G14 J12 10. J10 J12 11. K12 K14 12. N12 J8 13. H7 M14 14. M12 N11 15. M12
+O12 16. M15 L12 17. L13 N12 0-1
