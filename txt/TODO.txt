@@ -3,6 +3,7 @@ For Alpha release
 White AI first move with tournament rules crashing - fixed?
 Get iPad working again
 
+Inherit from object
 Tony isn't getting any moves and it crashes when it does the search
 Restructure code - directories
 multitasking
