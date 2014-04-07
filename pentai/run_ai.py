@@ -5,19 +5,19 @@ h = hpy()
 h.setref()
 '''
 
-import rules
-import game
+import pentai.base.rules as rules
+import pentai.base.game as game
 
 import time
 
-from ai_player import *
-from priority_filter import *
-from priority_filter_2 import *
-from vision_filter import * # TODO: Rename file and class
-from evaluator import *
-from ai_factory import *
-from openings_book import *
-from games_mgr import *
+from pentai.ai.ai_player import *
+from pentai.ai.priority_filter import *
+from pentai.ai.priority_filter_2 import *
+#from pentai.ai.vision_filter import * # TODO: Rename file and class
+#from pentai.db.evaluator import *
+from pentai.db.ai_factory import *
+from pentai.db.openings_book import *
+from pentai.db.games_mgr import *
 
 import pdb
 

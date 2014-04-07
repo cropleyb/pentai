@@ -3,6 +3,7 @@ For Alpha release
 White AI first move with tournament rules crashing - fixed?
 Get iPad working again
 
+Tony isn't getting any moves and it crashes when it does the search
 Restructure code - directories
 multitasking
 Bigger default text size on iOS - help from IRC group
@@ -38,7 +39,6 @@ Memory error detection
 Memory Usage - can it be brought down?
 Improve rules demo - click to skip sections, double click to end, swipe for forwards/backwards, up/down for speed
 Submit Pull requests
-# Tony isn't getting any moves - haven't seen this since
 Multiline input into name boxes should be prevented
 IOS build: simulation blocked by: https://github.com/kivy/kivy-ios/issues/9 - wait for new release of kivy?
 or just use real iPhone

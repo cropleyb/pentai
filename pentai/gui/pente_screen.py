@@ -6,6 +6,7 @@ from kivy.clock import Clock
 from kivy.graphics import *
 
 import pentai.base.gs_observer as gso_m
+from pentai.base.pente_exceptions import *
 
 import audio as a_m
 from pentai.base.defines import *
