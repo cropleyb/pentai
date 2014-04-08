@@ -245,6 +245,7 @@ class Game(object):
         rules_type, ignored = rules_line.split(" rules", 1)
         size = int(side_length)
         self.rules.set_all(size, type_str=rules_type)
+        self.setup(self.rules, self.players[1], self.players[2])
 
         return the_rest
 
