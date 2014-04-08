@@ -3,9 +3,9 @@ For Alpha release
 White AI first move with tournament rules crashing - fixed?
 Get iPad working again
 
-Inherit from object
+Use __all__ in time critical code
+pxd files?
 Tony isn't getting any moves and it crashes when it does the search
-Restructure code - directories
 multitasking
 Bigger default text size on iOS - help from IRC group
 # Add libpente.a to the link line from tools scripts?
