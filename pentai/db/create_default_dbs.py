@@ -81,7 +81,7 @@ if __name__ == "__main__":
     { "p_name": "Anthony", "use_openings_book": False, "max_depth": 1,
         "judgement": 10, "vision": 10, "capture_score_base": 300 },
     { "p_name": "Tony", "use_openings_book": False, "max_depth": 1,
-        "judgement": 0, "vision": 0, "capture_score_base": 350 },
+        "judgement": 0, "vision": 10, "capture_score_base": 400 },
     ]
     '''
     { "p_name": "Deep Thunk", "use_openings_book": True, "max_depth": 10,
