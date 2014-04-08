@@ -45,33 +45,38 @@ class ABGame():
 
     # TODO: Where does this belong?
     def successors(self, state, depth):
-        mn = state.get_move_number()
-        # TODO: First move constraints are associated with the rules
-        if mn == 1:
-            # The first black move is always in the centre
-            brd_size = self.base_game.get_board().get_size()
-            centre_pos = (brd_size/2, brd_size/2)
-            p_i = [centre_pos]
-        else:
-            pos_iter = state.get_iter(state.to_move())
-            min_priority = 0
-            if depth > self.max_depth:
-                min_priority = 3
-                if depth % 2:
-                    min_priority = 5
-            p_i = pos_iter.get_iter(state.to_move_colour(),
-                    depth, min_priority, tried=state.get_seen())
-        tried_count = 0
-        for pos in p_i:
-            # create an ABState for each possible move from state
-            try:
-                succ = state.create_state(pos)
-                yield pos, succ
+            mn = state.get_move_number()
+            tried_count = 0
+            # This while loop is to make sure there is at least one move
+            # suggested. The move number is to stop infinite loops when
+            # there is a draw.
+            while tried_count == 0 and mn < 70:
+                # TODO: First move constraints are associated with the rules
+                if mn == 1:
+                    # The first black move is always in the centre
+                    brd_size = self.base_game.get_board().get_size()
+                    centre_pos = (brd_size/2, brd_size/2)
+                    p_i = [centre_pos]
+                else:
+                    pos_iter = state.get_iter(state.to_move())
+                    min_priority = 0
+                    if depth > self.max_depth:
+                        min_priority = 3
+                        if depth % 2:
+                            min_priority = 5
+                    p_i = pos_iter.get_iter(state.to_move_colour(),
+                            depth, min_priority, tried=state.get_seen())
+                for pos in p_i:
+                    # create an ABState for each possible move from state
+                    try:
+                        succ = state.create_state(pos)
+                        tried_count += 1
+                        yield pos, succ
 
-                if succ.terminal():
-                    return
-            except IllegalMoveException:
-                pass
+                        if succ.terminal():
+                            return
+                    except IllegalMoveException:
+                        pass
 
     def save_utility(self, state, depth, utility_value):
         """ Save to transposition table """
