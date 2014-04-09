@@ -1,6 +1,6 @@
 cimport cython
 
-from defines import *
+from pentai.base.defines import *
 
 '''
 cdef:

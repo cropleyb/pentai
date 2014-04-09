@@ -1,10 +1,10 @@
 
 from pente_exceptions import *
 
-import game_state
-import player # Shouldn't be necessary?
-import rules
-from defines import *
+import pentai.base.game_state as gs_m
+import pentai.base.player as p_m # TODO: Shouldn't be necessary
+import pentai.base.rules as r_m
+from pentai.base.defines import *
 
 import datetime
 
@@ -22,7 +22,7 @@ class Game(object):
     def setup(self, rules=None, player1=None, player2=None):
         self.rules = rules
         if rules != None:
-            self.current_state = game_state.GameState(self)
+            self.current_state = gs_m.GameState(self)
 
             total_time = rules.time_control
             if total_time:
@@ -232,7 +232,7 @@ class Game(object):
 
         # TODO: This is ugly - these values will be replaced shortly
         if self.players[BLACK] is None:
-            self.players = [None, player.Player("Black"), player.Player("White")]
+            self.players = [None, p_m.Player("Black"), p_m.Player("White")]
         if self.rules is None:
             self.rules = rules.Rules(5,"standard")
 

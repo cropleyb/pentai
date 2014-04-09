@@ -1,4 +1,5 @@
 from pentai.base.game import *
+import pentai.base.rules as r_m
 
 class PreservedGame():
     def __init__(self, game=None):
@@ -33,7 +34,7 @@ class PreservedGame():
     def restore(self, pm, update_cache=True):
         p1 = pm.find(self.players[1], update_cache)
         p2 = pm.find(self.players[2], update_cache)
-        orig_game = Game(rules.Rules(*self.rules), p1, p2)
+        orig_game = Game(r_m.Rules(*self.rules), p1, p2)
         orig_game.game_id = self.game_id
         orig_game.date = self.date
         try:

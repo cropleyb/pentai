@@ -264,14 +264,17 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
-        '''
-        # TEMPORARILY DISABLED
         import pentai.db.persistent_dict as pd_m
-        pd_m.base_dir = self.user_data_dir
         if not "db" in os.listdir(self.user_data_dir):
             print "Copying db"
             import shutil
             shutil.copytree("db", os.path.join(self.user_data_dir, "db"))
+        '''
+        import shutil
+        #print "Deleting db"
+        #shutil.rmtree("db", os.path.join(self.user_data_dir, "db"))
+        print "Copying db"
+        shutil.copytree("db", os.path.join(self.user_data_dir, "db"))
         '''
 
         root = ps_m.PScreenManager()

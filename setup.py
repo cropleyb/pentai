@@ -201,7 +201,7 @@ def get_modulename_from_file(filename):
 
 
 def expand(*args):
-    return join(dirname(__file__), *args)
+    return join('pentai', dirname(__file__), *args)
 
 class CythonExtension(Extension):
 
@@ -352,23 +352,19 @@ base_flags = determine_base_flags()
 gl_flags = determine_gl_flags()
 
 sources = {
-    'board_strip.pyx': base_flags,
-    'length_lookup_table.pyx': base_flags,
+    'base/board_strip.pyx': base_flags,
+    'base/direction_strips.pyx': base_flags,
+    'base/board.pyx': base_flags,
+    'base/game_state.pyx': base_flags,
+    'ai/length_lookup_table.pyx': base_flags,
+    'ai/priority_filter.pyx': base_flags,
+    'ai/priority_filter_2.pyx': base_flags,
+    'ai/utility_stats.pyx': base_flags,
+    'base/bit_reverse.pyx': base_flags,
+    'ai/utility_calculator.pyx': base_flags,
+    'ai/alpha_beta.pyx': base_flags,
+    'ai/ab_state.pyx': base_flags,
     }
-'''
-    # BC TODO
-    'priority_filter.py': base_flags,
-    'priority_filter_2.py': base_flags,
-    'utility_stats.py': base_flags,
-    'bit_reverse.py': base_flags,
-    'utility_calculator.py': base_flags,
-    'direction_strips.py': base_flags,
-    'alpha_beta.py': base_flags,
-    'ab_state.py': base_flags,
-    'game_state.py': base_flags,
-    'board.py': base_flags,
-    }
-'''
 
 if c_options['use_sdl']:
     sdl_flags = determine_sdl()
@@ -448,6 +444,7 @@ def get_extensions_from_sources(sources):
             #pyx = '%s.c' % pyx[:-4]
             print pyx
             pyx = "%s.c" % ".".join(pyx.split('.')[:-1])
+            print " -> %s" % pyx
         if is_graphics:
             depends = resolve_dependencies(pyx, depends)
         f_depends = [x for x in depends if x.rsplit('.', 1)[-1] in (
@@ -491,7 +488,8 @@ pdb.set_trace()
 # setup !
 setup(
     name='pentai',
-    author='Bruce Cropley',
+    #author='Bruce Cropley',
+    package_dir={'pentai': 'pentai'},
     ext_modules=ext_modules,
     #ext_modules=cythonize(sources.keys()),
     )

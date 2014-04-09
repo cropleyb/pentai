@@ -5,12 +5,9 @@ from pentai.gui.kivy_gui_main import *
 'KIVY_METRICS_FONTSCALE'
 '''
 
-#import os
-'''
-if not os.environ.has_key('KIVY_METRICS_FONTSCALE'):
-    os.environ['KIVY_METRICS_FONTSCALE'] = '6'
-'''
-#os.environ['KIVY_METRICS_FONTSCALE'] = '6'
+import pentai.db.persistent_dict as pd_m
+
+import os
 
 if __name__ == '__main__':
     Config.set('kivy', 'log_level', 'info')
@@ -22,7 +19,16 @@ if __name__ == '__main__':
     Config.set('graphics', 'height', '720')
 
     try:
+        pentai_path = os.environ['PENTAIPATH']
+    except KeyError:
+        pentai_path = None
+
+    try:
         pa = PentAIApp()
+
+        if pentai_path == None:
+            pentai_path = pa.user_data_dir
+        pd_m.base_dir = pentai_path
         
         err_fn = os.path.join(pa.user_data_dir, "err.txt")
         try:

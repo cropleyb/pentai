@@ -1,8 +1,8 @@
 
-from pente_exceptions import *
-from defines import *
-import board
-import board_strip as bs_m
+from pentai.base.pente_exceptions import *
+from pentai.base.defines import *
+import pentai.base.board as b_m
+import pentai.base.board_strip as bs_m
 
 class GameState(object):
     """ This is for the state of a game as of a particular move. 
@@ -30,7 +30,7 @@ class GameState(object):
     def reset(self, game=None):
         if game is None:
             game = self.game
-        self.board = board.Board(game.size())
+        self.board = b_m.Board(game.size())
         # 3 for convenience, should only use [1] and [2]
         self.captured = [0,0,0]
         self.set_won_by(EMPTY)

@@ -1,7 +1,7 @@
 
-import direction_strips as ds_m
-from pente_exceptions import *
-from defines import *
+import pentai.base.direction_strips as ds_m
+from pentai.base.pente_exceptions import *
+from pentai.base.defines import *
 
 class Board(object):
     def __init__(self, size, clone_it=False):

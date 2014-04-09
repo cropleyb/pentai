@@ -1,4 +1,4 @@
-from board_strip import *
+from pentai.base.board_strip import *
 import array as a_m
 
 class DirectionStrips(object):
