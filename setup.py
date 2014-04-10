@@ -94,7 +94,7 @@ if platform in ('ios', 'android'):
 else:
     try:
         # check for cython
-        from Cython.Distutils import build_ext, Extension # No impact?
+        from Cython.Distutils import build_ext
         from Cython.Build import cythonize
         have_cython = True
     except ImportError:
@@ -200,11 +200,18 @@ def get_modulename_from_file(filename):
     filename = filename.replace(sep, '/')
     pyx = '.'.join(filename.split('.')[:-1])
     pyxl = pyx.split('/')
-    return pyxl[-1]
+
+    while pyxl[0] != 'pente':
+        pyxl.pop(0)
+    if pyxl[1] == 'pente':
+        pyxl.pop(0)
+    r = '.'.join(pyxl)
+    #print "module %s from file %s" % (r, filename)
+    return r
 
 
 def expand(*args):
-    return join('pentai', dirname(__file__), *args)
+    return join(dirname(__file__), 'pentai', *args)
 
 class CythonExtension(Extension):
 
@@ -467,9 +474,7 @@ ext_modules = get_extensions_from_sources(sources)
 # automatically detect data files
 data_file_prefix = 'share/kivy-'
 examples = {}
-#examples_allowed_ext = ('readme', 'py', 'wav', 'png', 'jpg', 'svg', 'json',
-#                        'avi', 'gif', 'txt', 'ttf', 'obj', 'mtl', 'kv')
-examples_allowed_ext = ('readme', 'wav', 'png', 'jpg', 'svg', 'json',
+examples_allowed_ext = ('readme', 'py', 'wav', 'png', 'jpg', 'svg', 'json',
                         'avi', 'gif', 'txt', 'ttf', 'obj', 'mtl', 'kv')
 for root, subFolders, files in walk('examples'):
     for fn in files:
@@ -482,18 +487,18 @@ for root, subFolders, files in walk('examples'):
             examples[directory] = []
         examples[directory].append(filename)
 
-'''
-import pdb
-pdb.set_trace()
-'''
-
 # -----------------------------------------------------------------------------
 # setup !
 setup(
     name='pentai',
     #author='Bruce Cropley',
     package_dir={'pentai': 'pentai'},
+    cmdclass=cmdclass,
+    packages=[
+        'pentai',
+        'pentai.base',
+        'pentai.ai',
+        ],
     ext_modules=ext_modules,
-    #ext_modules=cythonize(sources.keys()),
     )
 
