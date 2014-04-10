@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import ab_state as ab_m
+import pentai.ai.ab_state as ab_m
 from pentai.base.pente_exceptions import *
 
 
