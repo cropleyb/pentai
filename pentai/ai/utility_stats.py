@@ -18,8 +18,8 @@ class UtilityStats(object):
             # TODO: move this to test code?
             self.s_num = 0 # irrel, just needs a value
         else:
-            pl = parent.lines
             # Manual deep copy
+            pl = parent.lines
             self.lines = [None, pl[BLACK][:], pl[WHITE][:]]
             self.takes = parent.takes[:]
             self.threats = parent.threats[:]
@@ -40,6 +40,7 @@ class UtilityStats(object):
         return "Lines: %s, Takes: %s, Threats: %s, Best: %s" % \
                 (self.lines, self.takes, self.threats, self.search_filter)
 
+    # This is called LOTS of times
     def report_length_candidate(self, colour, length, ind_list, inc):
         self.lines[colour][length-1] += inc
 
@@ -66,6 +67,7 @@ class UtilityStats(object):
         self.i_to_p = func
         self.s_num = s_num
     
+    # Slowish
     def set_or_reset_occs(self, brd, rules, pos, inc):
         # update substrips
         ccp = rules.can_capture_pairs
@@ -96,6 +98,6 @@ class UtilityStats(object):
                 bs_m.process_takes(bs, ind, strip_min, strip_max, self, inc)
                 bs_m.process_threats(bs, ind, strip_min, strip_max, self, inc)
 
-            for colour in [BLACK, WHITE]:
-                bs_m.process_enclosed_four(bs, ind, colour, self, inc)
+            bs_m.process_enclosed_four(bs, ind, BLACK, self, inc)
+            bs_m.process_enclosed_four(bs, ind, WHITE, self, inc)
 
