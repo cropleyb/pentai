@@ -22,15 +22,13 @@ if compile_cy_py:
         'pentai/base/game_state.py',
         'pentai/base/board.py',
         'pentai/base/direction_strips.py',
+        'pentai/ai/priority_filter.py',
+        'pentai/ai/priority_filter_2.py',
+        'pentai/ai/utility_stats.py',
+        'pentai/ai/utility_calculator.py',
+        'pentai/ai/alpha_beta.py',
+        'pentai/ai/ab_state.py',
     ])
-    '''
-        'priority_filter.py',
-        'priority_filter_2.py',
-        'utility_stats.py',
-        'utility_calculator.py',
-        'alpha_beta.py',
-        'ab_state.py',
-    '''
 
 setup(
         ext_modules = cythonize(
