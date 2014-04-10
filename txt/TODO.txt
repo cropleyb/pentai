@@ -3,32 +3,29 @@ Disability solicitor
 
 For Alpha release
 
-White AI first move with tournament rules crashing - fixed?
+Sudden exit on iOS from clicking on edge of screen
 Making AI move when human player clicks on the board?
 Get pentai onto Lachie's iPad
-cythonize further?
-Tony isn't getting any moves and it crashes when it does the search
-multitasking
 Bigger default text size on iOS - help from IRC group
 # Add libpente.a to the link line from tools scripts?
 Game selection screen 2 rows? Looks alright as-is?
-AttributeError: 'AIGenome' object has no attribute 'vision'
-Schedule game save when game finished, check for dirty bit on_leave
-cythonize .py files
+use setup.py on both platforms
+cythonize .py files rather than using soft links
 Openings Book is bloated in RAM. DB file per turn? Manually trim early moves?
- Openings editor?
+Load lots of top games
+Openings editor?
 Contact Hasbro again? By registered snail mail?
-Navigation
 Eliminate duplicate player names (fix upgrade script)
 # Check "Winning Ways" link
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 
 Beta release
+cythonize further?
+multitasking
 Trim the size of the apps, both file and RAM
 crash on iPad
 Demo halting occasionally?
 Restore game doesn't restore time controls etc. check
-Hmm sounds?
 Start game default rules to last game played - rules variation, size, timing
 Thinking in opponent's time - swap search colour then reuse position cache
 Prettify "About" text
@@ -50,6 +47,7 @@ Sadistic mode for Rich
 iPad: "Rich Guano" I am running IOS7 on iPad mini.
 
 First public release
+Hmm sounds?
 Stone noise higher pitch?
 Review mode no clicking on board
 icons for everything for internationalization?
