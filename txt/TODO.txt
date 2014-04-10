@@ -1,12 +1,13 @@
+Letter from Prof. Rosenthal that I can't work
+Disability solicitor
+
 For Alpha release
 
-Reply to Liam again?
+lower case for non-standard AI players
 White AI first move with tournament rules crashing - fixed?
-Get iPad working again - check it in
 Making AI move when human player clicks on the board?
 Get pentai onto Lachie's iPad
-Use __all__ in time critical code
-pxd files?
+cythonize further?
 Tony isn't getting any moves and it crashes when it does the search
 multitasking
 Bigger default text size on iOS - help from IRC group
