@@ -13,6 +13,9 @@ from distutils.core import setup
 from distutils.extension import Extension
 from collections import OrderedDict
 
+#from Cython.Compiler.Options import directive_defaults
+#directive_defaults['profile'] = True
+
 if sys.version > '3':
     PY3 = True
 else:
