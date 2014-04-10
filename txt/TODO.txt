@@ -3,7 +3,6 @@ Disability solicitor
 
 For Alpha release
 
-lower case for non-standard AI players
 White AI first move with tournament rules crashing - fixed?
 Making AI move when human player clicks on the board?
 Get pentai onto Lachie's iPad
