@@ -20,7 +20,7 @@ class GamesScreen(Screen):
     def games_view(self):
         return self.ids.games_view
 
-    def on_pre_enter(self):
+    def on_enter(self):
         self.games_view().refresh()
         self.clear_selected()
 
