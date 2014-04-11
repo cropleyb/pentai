@@ -201,14 +201,16 @@ def get_modulename_from_file(filename):
     pyx = '.'.join(filename.split('.')[:-1])
     pyxl = pyx.split('/')
 
-    while pyxl[0] != 'pente':
-        pyxl.pop(0)
-    if pyxl[1] == 'pente':
-        pyxl.pop(0)
+    try:
+        while pyxl[0] != 'pente':
+            pyxl.pop(0)
+        if pyxl[1] == 'pente':
+            pyxl.pop(0)
+    except:
+        print "Couldn't get_modulename_from_file from %s" % filename
+        pyxl = pyx.split('/')[1:] # Strip off the leading "./"
     r = '.'.join(pyxl)
-    #print "module %s from file %s" % (r, filename)
     return r
-
 
 def expand(*args):
     return join(dirname(__file__), 'pentai', *args)
@@ -370,11 +372,14 @@ sources = {
     'ai/length_lookup_table.pyx': base_flags,
     'ai/priority_filter.pyx': base_flags,
     'ai/priority_filter_2.pyx': base_flags,
-    'ai/utility_stats.pyx': base_flags,
-    'ai/utility_calculator.pyx': base_flags,
     'ai/alpha_beta.pyx': base_flags,
-    'ai/ab_state.pyx': base_flags,
     }
+'''
+    # TODO: These were causing grief with iOS for some bizarre reason
+    'ai/utility_calculator.pyx': base_flags,
+    'ai/utility_stats.pyx': base_flags,
+    'ai/ab_state.pyx': base_flags,
+'''
 
 if c_options['use_sdl']:
     sdl_flags = determine_sdl()

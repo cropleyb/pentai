@@ -10,6 +10,23 @@ import pentai.db.persistent_dict as pd_m
 import os
 
 if __name__ == '__main__':
+    '''
+    import pentai.base.bit_reverse as br_m
+    print "bit_reverse imported!"
+    import pentai.ai.alpha_beta as ab_m
+    print "alpha_beta imported!"
+    import pentai.ai.priority_filter as pf_m
+    print "priority_filter imported!"
+    import pentai.ai.length_lookup_table as llt_m
+    print "llt imported!"
+    import pentai.ai.utility_stats as us_m
+    print "us imported!"
+    import pentai.ai.utility_calculator as uc_m
+    print "uc imported!"
+    import pentai.ai.ab_state as abs_m
+    print "ab_state imported!"
+    '''
+
     Config.set('kivy', 'log_level', 'info')
     Config.set('kivy', 'log_enable', 1)
     Config.set('kivy', 'log_dir', 'logs')
