@@ -2,7 +2,7 @@
 
 import unittest
 
-from board_strip import *
+from pentai.base.board_strip import *
 
 class BoardStripTest(unittest.TestCase):
     def test_empty_board_strip_is_empty(self):

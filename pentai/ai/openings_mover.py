@@ -1,5 +1,4 @@
 import random
-import pdb
 
 from pentai.base.defines import *
 

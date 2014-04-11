@@ -1,9 +1,5 @@
-
 from pentai.base.bit_reverse import *
-
 from pentai.base.game_state import *
-
-import pdb
 
 """ N.B. These 3 operations only process the horizontal and vertical
 representations of the board, so the diagonal representations will be

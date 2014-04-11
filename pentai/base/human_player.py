@@ -1,4 +1,4 @@
-from player import *
+from pentai.base.player import *
 
 class HumanPlayer(Player):
     def prompt_for_action(self, game, gui):

@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
-import pentai.ai.ab_state as ab_m
+import pentai.ai.ab_state as abs_m
 from pentai.base.pente_exceptions import *
-
 
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
@@ -12,7 +11,7 @@ class ABGame():
         self.max_depth = player.max_depth
         self.force_depth = player.force_depth
 
-        s = self.current_state = ab_m.ABState(None, search_filter, utility_calculator)
+        s = self.current_state = abs_m.ABState(None, search_filter, utility_calculator)
         s.set_state(base_game.current_state)
         self.base_game = base_game
         self.interrupted = False

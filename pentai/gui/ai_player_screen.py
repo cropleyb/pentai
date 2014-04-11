@@ -8,16 +8,12 @@ from kivy.properties import *
 from kivy.uix.screenmanager import Screen
 
 from scrollable_label import *
-
-#import pentai.base.rules
-#import pentai.base.game
-#import pentai.base.human_player
-import pentai.ai.ai_genome as aig_m
-#import pentai.db.ai_factory
-
+from popup import *
 import checkbox_list as cb_l
 
-from popup import *
+import pentai.ai.ai_genome as aig_m
+
+
 
 from kivy.event import EventDispatcher
 

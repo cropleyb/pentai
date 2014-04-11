@@ -1,7 +1,6 @@
-
-from players_mgr import PlayersMgr
-from defines import *
-from preserved_game import *
+from pentai.base.defines import *
+from pentai.db.preserved_game import *
+from pentai.db.players_mgr import PlayersMgr
 
 from multiprocessing import *
 

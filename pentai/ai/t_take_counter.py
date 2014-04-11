@@ -3,10 +3,8 @@
 import unittest
 
 from pentai.base.board_strip import *
-from utility_stats import *
-from priority_filter import * # TODO: NullFilter
-
-import pdb
+from pentai.ai.utility_stats import *
+from pentai.ai.priority_filter import * # TODO: NullFilter
 
 mapping = {
     " ": 0, # empty

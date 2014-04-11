@@ -4,7 +4,7 @@ import unittest
 
 from pentai.base.mock import Mock
 from pentai.base.board import *
-from openings_mover import *
+from pentai.ai.openings_mover import *
 
 class MockPlayer:
     def get_rating(self):

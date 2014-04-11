@@ -2,13 +2,13 @@
 
 import unittest
 
-from pente_exceptions import IllegalMoveException
-from game_state import *
-from human_player import *
-from rules import *
-from game import *
+from pentai.base.pente_exceptions import IllegalMoveException
+from pentai.base.game_state import *
+from pentai.base.human_player import *
+from pentai.base.rules import *
+from pentai.base.game import *
 
-from mock import *
+from pentai.base.mock import *
 
 B = BLACK
 W = WHITE

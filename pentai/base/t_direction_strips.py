@@ -2,7 +2,7 @@
 
 import unittest
 
-from direction_strips import *
+from pentai.base.direction_strips import *
 
 class DirectionStripsTest(unittest.TestCase):
 

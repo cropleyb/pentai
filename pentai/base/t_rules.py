@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import unittest
-from rules import *
+
+from pentai.base.rules import *
 
 class RulesTest(unittest.TestCase):
 

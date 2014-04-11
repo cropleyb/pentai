@@ -3,16 +3,14 @@
 import unittest
 
 from pentai.base.board_strip import *
-from utility_stats import *
-from priority_filter import * # TODO: NullFilter
+from pentai.ai.utility_stats import *
+from pentai.ai.priority_filter import * # TODO: NullFilter
 
 mapping = {
     " ": 0, # empty
     "B": 1, # Black
     "W": 2, # White
 }
-
-import pdb
 
 def pattern_string_to_board_strip(occ_str):
     occs = 0

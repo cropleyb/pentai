@@ -2,9 +2,9 @@
 
 import unittest
 
-from game import *
-from rules import *
-from player import *
+from pentai.base.game import *
+from pentai.base.rules import *
+from pentai.base.player import *
 
 class GameTest(unittest.TestCase):
     def setUp(self):

@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 import unittest
+
 from pentai.base import mock
 from pentai.base import board_strip
 
-from length_lookup_table import *
-from utility_stats import *
+from pentai.ai.length_lookup_table import *
+from pentai.ai.utility_stats import *
 
 def pattern_string_to_bs(occ_str):
     ret = 0

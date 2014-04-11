@@ -1,4 +1,4 @@
-from pente_exceptions import *
+from pentai.base.pente_exceptions import *
 
 class Rules(object):
     def __init__(self, *args, **kwargs):

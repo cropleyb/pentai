@@ -18,16 +18,16 @@ cy_modules = [
     ]
 if compile_cy_py:
     cy_modules.extend([
-        'pentai/base/bit_reverse.py',
-        'pentai/base/game_state.py',
-        'pentai/base/board.py',
-        'pentai/base/direction_strips.py',
-        'pentai/ai/priority_filter.py',
-        'pentai/ai/priority_filter_2.py',
-        'pentai/ai/utility_stats.py',
-        'pentai/ai/utility_calculator.py',
-        'pentai/ai/alpha_beta.py',
-        'pentai/ai/ab_state.py',
+        'pentai/base/bit_reverse.pyx',
+        'pentai/base/game_state.pyx',
+        'pentai/base/board.pyx',
+        'pentai/base/direction_strips.pyx',
+        'pentai/ai/priority_filter.pyx',
+        'pentai/ai/priority_filter_2.pyx',
+        'pentai/ai/utility_stats.pyx',
+        'pentai/ai/utility_calculator.pyx',
+        'pentai/ai/alpha_beta.pyx',
+        'pentai/ai/ab_state.pyx',
     ])
 
 setup(

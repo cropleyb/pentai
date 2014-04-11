@@ -1,14 +1,10 @@
 #!/usr/bin/python
 
-#import pentai.base.board
 import pentai.base.game_state as gs_m
-import alpha_beta
 import pentai.base.game as g_m
-#from pentai.base import *
 from pentai.base.defines import *
 import pentai.base.gs_observer as gso_m
-
-import utility_stats as us_m
+import pentai.ai.utility_stats as us_m
 
 class ABState(gso_m.GSObserver):
     """ Bridge for state, for use by alpha_beta code """

@@ -2,24 +2,26 @@
 
 import unittest
 
-from length_lookup_table import *
-from ab_state import *
-from utility_calculator import *
-from priority_filter import * # TODO: NullFilter
-from pentai.base.player import *
-import pentai.base.game_state
-from pentai.base.board import *
+#from pentai.base.player import *
+#import pentai.base.game_state
+import pentai.base.board as b_m
 from pentai.base.mock import *
-import ai_genome as aig_m
-import pentai.db.ai_factory as aif_m # Hmmm
+
+from pentai.ai.length_lookup_table import *
+import pentai.ai.ab_state as abs_m
+import pentai.ai.utility_calculator as uc_m
+import pentai.ai.utility_stats as us_m
+import pentai.ai.priority_filter as pf_m # TODO: NullFilter
+import pentai.ai.ai_genome as aig_m
+import pentai.db.ai_factory as aif_m # Hmmm. Shouldn't need to use this here
 
 inf = INFINITY / 1000
 
 class UtilityTest(unittest.TestCase):
     def setUp(self):
 
-        self.search_filter = PriorityFilter()
-        self.util_calc = UtilityCalculator()
+        self.search_filter = pf_m.PriorityFilter()
+        self.util_calc = uc_m.UtilityCalculator()
 
         # Set defaults for utility calculation
         player = Mock({"get_utility_calculator":self.util_calc})
@@ -27,7 +29,7 @@ class UtilityTest(unittest.TestCase):
         aif = aif_m.AIFactory()
         aif.set_utility_config(genome, player)
 
-        self.s = ABState(search_filter=self.search_filter,
+        self.s = abs_m.ABState(search_filter=self.search_filter,
                 utility_calculator=self.util_calc)
         self.us = us_m.UtilityStats()
         self.rules = Mock()
@@ -40,7 +42,7 @@ class UtilityTest(unittest.TestCase):
             "game":self.game,
             "get_won_by": EMPTY,
             "get_rules":self.rules}) 
-        self.gs.board = Board(13)
+        self.gs.board = b_m.Board(13)
         self.gs.game = self.game
         self.set_turn_player_colour(BLACK)
         self.set_search_player_colour(BLACK)

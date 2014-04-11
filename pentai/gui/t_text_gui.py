@@ -8,8 +8,6 @@ from text_gui import *
 from pente_exceptions import *
 from human_player import *
 
-import pdb
-
 class TextGuiTest(unittest.TestCase):
 
     def setUp(self):

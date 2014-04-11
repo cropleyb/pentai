@@ -1,13 +1,12 @@
 from pentai.base.pente_exceptions import *
-import ab_game
-import alpha_beta as ab_m
-import openings_mover as om_m
-import pentai.base.player as p_m
-import utility_calculator as uc_m
-import random
-
 from pentai.base.defines import *
+import pentai.ai.ab_game as abg_m
+import pentai.ai.alpha_beta as ab_m
+import pentai.ai.openings_mover as om_m
+import pentai.base.player as p_m
+import pentai.ai.utility_calculator as uc_m
 
+import random
 import threading
 
 skip_openings_book = False
@@ -60,7 +59,7 @@ class AIPlayer(p_m.Player):
         # Super requires inheriting from object, which clashes with pickle?!
         #super(AIPlayer, self).attach_to_game(base_game)
         p_m.Player.attach_to_game(self, base_game)
-        self.ab_game = ab_game.ABGame(self, base_game)
+        self.ab_game = abg_m.ABGame(self, base_game)
         self.openings_mover = None
 
     def prompt_for_action(self, base_game, gui, test=False):

@@ -5,11 +5,9 @@ import unittest
 import pentai.base.rules as r_m
 import pentai.base.game as g_m
 
-from ai_player import *
-import ai_genome as aig_m
+from pentai.ai.ai_player import *
+import pentai.ai.ai_genome as aig_m
 import pentai.db.ai_factory as aif_m
-
-import pdb
 
 class AIPlayerTest(unittest.TestCase):
 

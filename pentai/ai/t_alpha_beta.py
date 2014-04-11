@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import unittest
-from alpha_beta import *
+
+from pentai.ai.alpha_beta import *
 
 class MockState(object):
     def __init__(self, name, utility, successors):

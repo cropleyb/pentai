@@ -13,13 +13,10 @@ import time
 from pentai.ai.ai_player import *
 from pentai.ai.priority_filter import *
 from pentai.ai.priority_filter_2 import *
-#from pentai.ai.vision_filter import * # TODO: Rename file and class
 #from pentai.db.evaluator import *
 from pentai.db.ai_factory import *
 from pentai.db.openings_book import *
 from pentai.db.games_mgr import *
-
-import pdb
 
 class TwoTimer:
     def __init__(self):

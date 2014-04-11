@@ -2,15 +2,12 @@
 
 import unittest
 
-#import alpha_beta
-
 import pentai.base.human_player as h_m
 import pentai.base.rules as r_m
 import pentai.base.game as g_m
 
-import priority_filter as pf_m
-import utility_calculator as uc_m
-
+import pentai.ai.priority_filter as pf_m
+import pentai.ai.utility_calculator as uc_m
 from pentai.ai.ab_state import *
 
 def get_black_line_counts(ab_game_state):

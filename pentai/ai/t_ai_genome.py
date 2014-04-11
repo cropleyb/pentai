@@ -2,7 +2,7 @@
 
 import unittest
 
-from ai_genome import *
+from pentai.ai.ai_genome import *
 
 class AIGenomeTest(unittest.TestCase):
     def test_set_genome_valid_field(self):

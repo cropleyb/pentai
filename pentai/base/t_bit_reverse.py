@@ -2,7 +2,7 @@
 
 import unittest
 
-from bit_reverse import *
+from pentai.base.bit_reverse import *
 
 class BitReverseTest(unittest.TestCase):
 

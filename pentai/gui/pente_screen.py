@@ -4,6 +4,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
+from kivy.uix.label import Label
 
 import pentai.base.gs_observer as gso_m
 from pentai.base.pente_exceptions import *
@@ -16,6 +17,7 @@ import gui_clock as gc_m
 
 import Queue
 import datetime # TODO: Remove when old file format is gone
+import string
 
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
@@ -56,7 +58,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     border_lines = ListProperty([0,0,0,0])
     border_colour = ListProperty([20,0,0,1])
     border_width = NumericProperty(6.0)
-    h_grid_text = StringProperty("ABCD")
+    #h_grid_text = StringProperty("ABCD")
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
     confirm_rect_color = ListProperty([0, 0, 0, 0])
@@ -447,6 +449,36 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_colour_border(size_x, size_y)
         return lines
 
+    def setup_grid_text(self):
+        hg = self.ids.lower_horiz_grid_id
+        if len(hg.children) > 0:
+            return
+        hg.pos = self.board_to_screen((0,0))
+
+        hgg = hg.children[0]
+        l = Label()
+        l.text = "Help!"
+        hgg.add_widget(l)
+
+        '''
+        chars = string.ascii_uppercase.replace('I','')[:self.board_size()]
+        chars = "%s " % chars
+        for val in chars:
+            l = Label()
+            l.text = val
+            l.color = 0, 0, 0, 1
+            hgg.add_widget(l)
+        '''
+
+    def setup_grid(self, _dt=None):
+        if self.game != None:
+            self.gridlines = self.setup_grid_lines()
+            #self.h_grid_text = "ABC"
+            self.setup_grid_text()
+
+    def snap_to_grid(self, screen_pos):
+        return self.board_to_screen(self.screen_to_board(screen_pos))
+
     def setup_colour_border(self, size_x, size_y):
         w = 6 * my_dp
         # This is ugly, but using the "rectangle" feature causes issues in the corners
@@ -456,14 +488,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         # at the bottom left.
         self.border_colour = self.game.rules.border_colour
         self.border_width = w
-
-    def setup_grid(self, _dt=None):
-        if self.game != None:
-            self.gridlines = self.setup_grid_lines()
-            self.h_grid_text = "ABC"
-
-    def snap_to_grid(self, screen_pos):
-        return self.board_to_screen(self.screen_to_board(screen_pos))
 
     # screen_to_board and board_to_screen do their own compensating for
     # the canvas coordinate system covering the whole screen. It would be nice

@@ -5,10 +5,8 @@ import unittest
 from pentai.base.game_state import *
 from pentai.base.game import *
 from pentai.base.rules import *
-from openings_book import *
-from standardise import *
-
-import pdb
+from pentai.ai.openings_book import *
+from pentai.ai.standardise import *
 
 class StandardiseTest(unittest.TestCase):
     def setUp(self):

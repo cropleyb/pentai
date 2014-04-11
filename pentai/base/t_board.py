@@ -2,7 +2,7 @@
 
 import unittest
 
-from board import *
+from pentai.base.board import *
 
 class BoardTest(unittest.TestCase):
     def test_create_board(self):

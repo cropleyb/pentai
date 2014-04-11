@@ -2,12 +2,11 @@
 
 import unittest
 
-#import gui
 import pentai.base.rules as r_m
 import pentai.base.human_player
 import pentai.base.game as g_m
 
-from ai_player import *
+from pentai.ai.ai_player import *
 from pentai.db.ai_factory import *
 
 class AIPlayerSubsystemTest(unittest.TestCase):

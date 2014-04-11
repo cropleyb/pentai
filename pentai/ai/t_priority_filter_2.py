@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import unittest
-from priority_filter_2 import *
+
 from pentai.base.board import *
+from pentai.ai.priority_filter_2 import *
 
 class PriorityFilter2Test(unittest.TestCase):
     def setUp(self):

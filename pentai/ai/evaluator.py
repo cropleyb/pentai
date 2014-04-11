@@ -1,8 +1,8 @@
-from utility_stats import *
-from null_filter import *
-import ai_factory as aif_m
-import ai_genome as aig_m
-import gs_observer as gso_m
+import pentai.base.gs_observer as gso_m
+from pentai.ai.utility_stats import *
+from pentai.ai.null_filter import *
+import pentai.ai.ai_factory as aif_m
+import pentai.ai.ai_genome as aig_m
 
 class Evaluator(gso_m.GSObserver):
     """

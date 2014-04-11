@@ -1,9 +1,7 @@
 #!/usr/bin/python
 
 import unittest
-#import importlib
 
-#import misc_db as m_m
 import pentai.base.t_all as b_t
 import pentai.ai.t_all as ai_t
 import pentai.db.t_all as db_t
