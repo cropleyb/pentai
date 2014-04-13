@@ -269,6 +269,12 @@ class PentAIApp(App):
             print "Copying db"
             import shutil
             shutil.copytree("db", os.path.join(self.user_data_dir, "db"))
+        ini_file = "pentai.ini"
+        ini_path = os.path.join(self.user_data_dir, ini_file)
+        if not ini_file in os.listdir(self.user_data_dir):
+            print "Copying ini"
+            import shutil
+            shutil.copy(ini_file, ini_path)
         '''
         import shutil
         #print "Deleting db"
@@ -294,7 +300,7 @@ class PentAIApp(App):
 
         # Assign to self.config so all screens can get at it.
         self.config = ConfigParser()
-        self.config.read('pentai.ini')
+        self.config.read(ini_path)
 
         self.audio = a_m.Audio(self.config)
 
