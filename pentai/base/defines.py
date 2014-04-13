@@ -11,7 +11,8 @@ WHITE = 2
 def opposite_colour(col):
     if col == BLACK:
         return WHITE
-    if col == WHITE:
+    elif col == WHITE:
         return BLACK
+    return EMPTY
 
 from pdb import set_trace as st
