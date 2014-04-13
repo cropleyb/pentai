@@ -373,13 +373,10 @@ sources = {
     'ai/priority_filter.pyx': base_flags,
     'ai/priority_filter_2.pyx': base_flags,
     'ai/alpha_beta.pyx': base_flags,
-    }
-'''
-    # TODO: These were causing grief with iOS for some bizarre reason
     'ai/utility_calculator.pyx': base_flags,
     'ai/utility_stats.pyx': base_flags,
     'ai/ab_state.pyx': base_flags,
-'''
+    }
 
 if c_options['use_sdl']:
     sdl_flags = determine_sdl()

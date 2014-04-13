@@ -1,5 +1,5 @@
 import pentai.base.board_strip as bs_m
-import length_lookup_table as llt_m
+import pentai.ai.length_lookup_table as llt_m
 from pentai.base.defines import *
 
 # TODO: move this to test code?

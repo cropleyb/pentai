@@ -19,10 +19,10 @@ if __name__ == '__main__':
     print "priority_filter imported!"
     import pentai.ai.length_lookup_table as llt_m
     print "llt imported!"
-    import pentai.ai.utility_stats as us_m
-    print "us imported!"
     import pentai.ai.utility_calculator as uc_m
     print "uc imported!"
+    import pentai.ai.utility_stats as us_m
+    print "us imported!"
     import pentai.ai.ab_state as abs_m
     print "ab_state imported!"
     '''

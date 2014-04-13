@@ -3,8 +3,10 @@ Disability solicitor
 
 For Alpha release
 
+write access to pentai.ini on iOS
 Sudden exit on iOS from clicking on edge of screen
 Making AI move when human player clicks on the board?
+Some games continuously making AI moves when it's AI vs Human
 Get pentai onto Lachie's iPad
 Bigger default text size on iOS - help from IRC group
 # Add libpente.a to the link line from tools scripts?
