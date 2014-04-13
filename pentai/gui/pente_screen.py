@@ -262,6 +262,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if self.action_queue.empty():
             return
         action = self.action_queue.get()
+        if not self.action_queue.empty():
+            self.action_queue.get()
         if not action:
             if self.game.get_won_by() == (BLACK+WHITE):
                 print "Draw detected"
