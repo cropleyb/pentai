@@ -3,7 +3,6 @@ Disability solicitor
 
 For Alpha release
 
-write access to pentai.ini on iOS
 Sudden exit on iOS from clicking on edge of screen
 Making AI move when human player clicks on the board?
 Some games continuously making AI moves when it's AI vs Human
@@ -11,9 +10,8 @@ Get pentai onto Lachie's iPad
 Bigger default text size on iOS - help from IRC group
 # Add libpente.a to the link line from tools scripts?
 Game selection screen 2 rows? Looks alright as-is?
-use setup.py on both platforms
-cythonize .py files rather than using soft links
-Openings Book is bloated in RAM. DB file per turn? Manually trim early moves?
+Set wrap mode by default
+Openings Book is bloated in RAM. DB file per turn? Manually trim early moves? DB as weak ref dictionary? pod? ZODB? SqlAlchemy?
 Load lots of top games
 Openings editor?
 Contact Hasbro again? By registered snail mail?
