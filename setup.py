@@ -376,6 +376,7 @@ sources = {
     'ai/utility_calculator.pyx': base_flags,
     'ai/utility_stats.pyx': base_flags,
     'ai/ab_state.pyx': base_flags,
+    'ai/ab_game.pyx': base_flags,
     }
 
 if c_options['use_sdl']:
