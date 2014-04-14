@@ -97,7 +97,7 @@ class Audio():
         if self.muted:
             return
         
-        fn_in_subdir = join("media", "demo", "%s.wav" % part)
+        fn_in_subdir = join("media", "demo", "%s.ogg" % part)
 
         self.current_demo_sound = SoundLoader.load(fn_in_subdir)
 
