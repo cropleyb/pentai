@@ -40,8 +40,9 @@ class Audio():
             if len(filenames) > 1:
                 filenames.remove(last_played)
         except KeyError:
-            self.filenames_cache[fn_in_subdir] = filenames \
-                = g_m.glob("%s*.wav" % fn_in_subdir)
+            filenames = g_m.glob("%s*.wav" % fn_in_subdir)
+            filenames.extend(g_m.glob("%s*.ogg" % fn_in_subdir))
+            self.filenames_cache[fn_in_subdir] = filenames
 
         filename = random.choice(filenames)
         self.last_played[fn_in_subdir] = filename
