@@ -1,0 +1,85 @@
+I have recently managed to get my app to run on my iPad, and I thought I'd pass on some tips about how to do that. The instructions at http://kivy.org/docs/guide/packaging-ios.html got me started, but there was much more that I needed to learn and do...
+Disclaimer: I'm not a kivy expert, and some of this information may be totally wrong; it reflects my current understanding and experience with a kivy on iOS. Before embarking on this quest, I had no experience on iOS.
+It would be great if someone could turn some or all of this into official kivy documentation, it might have saved me a week or three.
+
+Requirements:
+Install the latest XCode 5 (I used Version 5.1 (5B130a))
+Buy an Apple iOS developer's licence (~$100US/year)
+Buy/borrow/steal a recent iOS device(s) (kivy may or may not work through the iOS simulator in XCode - it hasn't worked for me yet)
+
+Apple is paranoid about security (fair enough). You need to create certificates, profiles etc., for everything and anything used to build, test and release an app.
+There is also a review process that Apple conducts before an app can be put in the iStore: https://developer.apple.com/appstore/resources/approval/guidelines.html (I haven't got to this yet)
+
+Apple Dev Support will want you to upgrade to the latest versions of XCode, iOS OS X and anything else they can think of. Some of this may be necessary to get provisioning and certificates that are compatible with their ios dev center site.
+https://developer.apple.com/devcenter/ios/index.action
+
+Python's "multiprocessing" module is not supported on iOS. There is an iOS specific "multitasking" facility; I haven't tried using it yet. Python multithreading works, but the Global Interpreter Lock (GIL) basically constrains you to one processor on iOS.
+
+Any code that needs to write persistent data needs to write it to the app's Documents or tmp directory. You can access it through kivy's app.user_data_dir.
+This includes the kivy config ini file (if you use kivy.uix.settings)
+
+Some dependencies for building for iOS and OS X are currently failing to compile with the latest clang (Apple's C compiler) with the message:
+"clang: error: unknown argument: '-mno-fused-madd' [-Wunused-command-line-argument-hard-error-in-future]
+
+clang: note: this will be a hard error (cannot be downgraded to a warning) in the future
+
+error: command 'cc' failed with exit status 1"
+
+There is a workaround:
+export CFLAGS=-Qunused-arguments
+sudo -E pip install <whatever>
+...the -E flag passes the environment to the sudo shell
+
+Building your own cythonized modules
+------------------------------------
+(for masochists only)
+See:
+https://groups.google.com/forum/#!topic/kivy-users/VTiP9qFepNc
+for some Qs and As
+
+Tips:
+Don't use gcc at all on OS X.
+Get it working on iOS _without_ any additional cythonized modules first.
+Don't try to run cythonize on iOS; follow the example of kivy's setup.py and cythonise .pyx -> .c on iOS first
+
+git clone git://github.com/kivy/kivy-ios
+(you may need to manually approve downloads from some sites)
+cd kivy-ios
+Add build-<your_library>.sh (copy and hack build-kivy.sh)
+Modify build-all.sh to call that.
+Modify template-Info.plist? I did to change to portrait instead of landscape.
+Run kivy-ios/tools/build-all then create-xcode-project.sh as described in the existing iOS packaging docs.
+
+setup.py:
+copy and hack kivy's setup.py
+Change sources list to just your pyx files.
+Make sure you can build your extensions on OS X first. (necessary but not sufficient for iOS)
+
+Source code:
+Use .pyx extension for all source files that you want to cythonize - don't try to be fancy by trying to cythonize .py files.
+Put all modules in package(s) like kivy does.
+Give the full name of your extension modules, even if they appear in modules in the same package as the extension module. e.g.:
+  bar/foo.py
+  bar/baz.pyx
+foo.py:
+import baz     # This works fine on OS X
+import bar.baz # This is required on iOS
+
+XCode:
+When you get to building the app in XCode, add kivy-ios/build/lib/libPente.a
+to the link under "Build Phases/Link Binary With Libraries" "+" "Add Other" "kivy-ios/build/lib/libYourExtensions.a" - without this none of the cythonized modules will be linked in.
+
+If you see: ImportError: dynamic module does not define init function (initWhateverModuleName)
+it means that the module referred to does not appear in any of the static libraries that XCode is linking with to create your iOS app binary
+This could be because:
+- you haven't added a static library for your app to the XCode build yet
+- the static library does not contain that module
+- somehow a .so file from your OS X build found its way into the static library
+- the kivy-ios hierarchy or XCode project has gotten into an unclean state. I have found that creating a new project with create-xcode-project.sh usually fixes this. Sometimes you need to start again from scratch.
+
+Thanks to all the Kivy team and others who have helped me to get this far!
+
+Well good luck, and I hope that saves you some time :)
+Bruce
+
+PS: If you are interested in my Pente playing app (strategic abstract board game), see http://www.bruce-cropley.com/pentai
