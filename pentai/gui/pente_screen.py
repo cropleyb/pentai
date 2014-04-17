@@ -630,6 +630,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.get_audio().unmute()
 
     def on_touch_down(self, touch):
+        if touch.is_double_tap or touch.is_triple_tap:
+            return
+
         if touch.pos[1] < self.board_offset[1]:
             if self.confirmation_in_progress:
                 if self.confirm_mode() == "Off Board":
