@@ -369,8 +369,6 @@ PlayerMgr - Stores the Players HumanPlayers directly,
 AIPlayer(?)
 DatabaseMgr? Container for all these singletons?
 
-BaseDB - wrapper around PersistentDict - rename? remove?
-
 Rename OpeningsFilter to openings_mover
 Rename OpeningsMgr to openings_library
 save the games_mgr in run_ai to save the game_id to game mapping
@@ -622,3 +620,11 @@ src/base
 src/ai
 src/db
 src/gui
+
+Persistence
+-----------
+For games, openings, players, misc etc.
+Want something like a real DB:
+  Load objects from file on demand.
+  MRU Cache
+Easiest to use: ZODB (i.e. migrate from PersistentDict)
