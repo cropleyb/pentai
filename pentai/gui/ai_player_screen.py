@@ -113,9 +113,7 @@ There are several settings that can be adjusted for a given Artificial Intellige
     Lines/Captures: How much value should the AI place on lines versus captures?
     Judgement: How well should the AI judge the value of positions?
 
-Several profiles are included, have a look at and experiment with their configurations, or create your own.
-
-Note that it is a significant advantage to go first (Black), so the Rematch button (on the main game screen) gives the first move to the loser of the previous game.
+Several profiles are included, have a look at and experiment with their configurations, or create your own. The AI players starting with a capital letter increase in difficulty alphabetically.
 
 """
         st = ScrollableLabel(text=help_text)
