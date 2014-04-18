@@ -32,6 +32,7 @@ Thanks go to:
 - Thad Spreg for his expert Pente insights
 - Annette Campbell for inspiring me to write this in the first place
 - Sascha, Jespah and Arwen for their comments on "The Sod"
+- The Kivy team for lots of help with their excellent toolset
 - Lots of other people for their support and feedback
 
 Enjoy,
