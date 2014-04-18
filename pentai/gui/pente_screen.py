@@ -631,7 +631,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def on_touch_down(self, touch):
         if touch.is_double_tap or touch.is_triple_tap:
-            return
+            return True
 
         if touch.pos[1] < self.board_offset[1]:
             if self.confirmation_in_progress:
@@ -659,10 +659,30 @@ class PenteScreen(Screen, gso_m.GSObserver):
                             source=x_filename)
                 except Exception, e:
                     Logger.exception('Board: Unable to load <%s>' % x_filename)
+            if self.marker.parent == self:
+                # Second touch, cancel both?
+                self.remove_widget(self.marker)
+                self.marker = None
+                return True
             self.marker.pos = self.snap_to_grid(touch.pos)
             self.add_widget(self.marker)
         else:
             self.display_error("It is not your turn!")
+
+    def on_touch_move(self, touch):
+        if touch.pos[1] < self.board_offset[1]:
+            # This is assuming that controls below the board
+            # are only using touch down.
+            return True
+        if self.are_reviewing():
+            return True
+        if self.marker != None:
+            # Move the marker position
+            try:
+                self.marker.pos = self.snap_to_grid(touch.pos)
+            except OffBoardException:
+                self.remove_widget(self.marker)
+                self.marker = None
 
     def on_touch_up(self, touch):
         # This is assuming that controls below the board
@@ -767,21 +787,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
             self.get_audio().place()
-
-    def on_touch_move(self, touch):
-        if touch.pos[1] < self.board_offset[1]:
-            # This is assuming that controls below the board
-            # are only using touch down.
-            return True
-        if self.are_reviewing():
-            return True
-        if self.marker != None:
-            # Move the marker position
-            try:
-                self.marker.pos = self.snap_to_grid(touch.pos)
-            except OffBoardException:
-                self.remove_widget(self.marker)
-                self.marker = None
 
     def on_size(self,*args,**kwargs):
         self.setup_grid()
