@@ -121,13 +121,29 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.set_review_mode(False)
         og = self.game
         rules = og.get_rules()
-        # Loser goes first
-        colours = [WHITE, BLACK]
-        if og.get_won_by() == WHITE:
-            colours = [BLACK, WHITE]
-        p1 = og.get_player(colours[0])
-        p2 = og.get_player(colours[1])
-        g = self.gm.create_game(rules, p1, p2)
+
+        o_winner = og.get_won_by()
+        if o_winner != EMPTY:
+            # Last game was finished - Loser goes first
+            p2 = og.get_player(o_winner)
+            p1 = og.get_player(opposite_colour(o_winner))
+            g = self.gm.create_game(rules, p1, p2)
+
+        # The game was unfinished
+        else:
+            # old game players
+            o_p1 = og.get_player(BLACK)
+            o_p2 = og.get_player(WHITE)
+            if o_p1.get_type() == o_p2.get_type():
+                # H vs. H, or C vs. C - Always swap who goes first
+                g = self.gm.create_game(rules, o_p2, o_p1)
+            else:
+                # HvC - Assume computer won, Human first
+                if o_p1.get_type() == "Human":
+                    g = self.gm.create_game(rules, o_p1, o_p2)
+                else:
+                    g = self.gm.create_game(rules, o_p2, o_p1)
+
         self.app.start_game(g, self.size)
 
     def set_game(self, game):
