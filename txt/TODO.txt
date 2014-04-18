@@ -5,6 +5,7 @@ For Alpha release
 
 Space bar from demo keeps talking
 
+Rematch -> assume resign unless won
 ios radio buttons for Human/Computer showing both?!
 OS X packaging
 ZODB on iPad...
