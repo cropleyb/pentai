@@ -41,10 +41,12 @@ class BasePopup(Popup):
 class MessagePopup(BasePopup):
     """ Message Popup is for errors so far. Click anywhere to dismiss. """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, timeout_val=None, *args, **kwargs):
         self.auto_dismiss = True
         self.going = False
-        Clock.schedule_once(self.timeout, 4)
+
+        if timeout_val:
+            Clock.schedule_once(self.timeout, timeout_val)
         super(MessagePopup, self).__init__(*args, **kwargs)
     
     def on_touch_down(self, touch):

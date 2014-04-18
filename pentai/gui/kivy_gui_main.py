@@ -43,7 +43,8 @@ class PentAIApp(App):
 
     def display_error(self, message):
         self.popup = MessagePopup(title='Error', content=Label(text=message, font_size='20sp'), \
-                size_hint=(.9, .2))
+                size_hint=(.9, .2),
+                timeout_val=4)
         self.popup.open()
         print message
 
