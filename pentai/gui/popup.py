@@ -1,5 +1,6 @@
 from kivy.uix.popup import *
 from kivy.properties import StringProperty
+from kivy.clock import Clock
 
 import audio as a_m
 
@@ -43,6 +44,7 @@ class MessagePopup(BasePopup):
     def __init__(self, *args, **kwargs):
         self.auto_dismiss = True
         self.going = False
+        Clock.schedule_once(self.timeout, 4)
         super(MessagePopup, self).__init__(*args, **kwargs)
     
     def on_touch_down(self, touch):
@@ -58,6 +60,9 @@ class MessagePopup(BasePopup):
             self.going = not self.going
             return True
         return super(BasePopup, self).on_touch_up(touch)
+
+    def timeout(self, dt):
+        self.ok_confirm()
 
 class ConfirmPopup(BasePopup):
     """ ConfirmPopup is for True/False confirmation popup with a message """
