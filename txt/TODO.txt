@@ -5,9 +5,6 @@ For Alpha release
 
 Space bar from demo keeps talking
 
-Automatic dismissal of error messages after 5 or so seconds?
-
-Sudden exit on iOS from clicking on edge of screen? Run from XCode and get mum to test
 ios radio buttons for Human/Computer showing both?!
 OS X packaging
 ZODB on iPad...
