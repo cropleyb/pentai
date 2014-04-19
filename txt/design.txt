@@ -628,3 +628,10 @@ Want something like a real DB:
   Load objects from file on demand.
   MRU Cache
 Easiest to use: ZODB (i.e. migrate from PersistentDict)
+
+Rematch
+-------
+Finished: Loser goes first
+Unfinished:
+HvC - Assume computer won, Human first
+HvH, CvC - Always swap
