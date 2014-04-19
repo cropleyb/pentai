@@ -5,23 +5,20 @@ For Alpha release
 
 Space bar from demo keeps talking
 
-Setting toggle buttons dodgy - report to kivy IRC
-Menu "about" text on iOS
 Settings screen text size
 Scrolled text on menu screen only at the top
-Convert to ZODB on OS X
-ZODB on iPad...
-ios radio buttons for Human/Computer showing both?!
-# Making AI move when human player clicks on the board?
-# Some games continuously making AI moves when it's AI vs Human
+Use ZODB on iPad... (need internet)
+Menu "about" text on iOS
+Player sections in new game screen - center each
+Setting toggle buttons dodgy (settings screen) - report to kivy IRC
+ios radio buttons for Human/Computer occasionally showing both?!
 Get pentai onto Lachie's iPad
 # Add libpente.a to the link line from tools scripts?
 Game selection screen 2 rows on iOS
 Load lots of top games
 Openings editor?
 Contact Hasbro again? By registered snail mail?
-Eliminate duplicate player names (fix upgrade script)
-# Check "Winning Ways" link
+Remove "Winning Ways" link?
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 
 Beta release
