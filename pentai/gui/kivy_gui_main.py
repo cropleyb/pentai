@@ -51,7 +51,8 @@ class PentAIApp(App):
         print message
 
     def return_screen(self, ignored=None):
-        if self.pente_screen:
+        if self.pente_screen and self.pente_screen.game \
+                and not self.pente_screen.game.finished():
             self.show_pente_screen()
         else:
             self.show_menu_screen()
@@ -273,24 +274,20 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
-        import pentai.db.persistent_dict as pd_m
-        if not "db" in os.listdir(self.user_data_dir):
+        # TODO: Untested yet.
+        if not "db.fs" in os.listdir(self.user_data_dir):
             print "Copying db"
             import shutil
-            shutil.copytree("db", os.path.join(self.user_data_dir, "db"))
+            dest = self.user_data_dir
+            for fn in ["db.fs", "db.fs.index", "db.fs.tmp"]:
+                shutil.copy(fn, dest)
+
         ini_file = "pentai.ini"
         ini_path = os.path.join(self.user_data_dir, ini_file)
         if not ini_file in os.listdir(self.user_data_dir):
             print "Copying ini"
             import shutil
             shutil.copy(ini_file, ini_path)
-        '''
-        import shutil
-        #print "Deleting db"
-        #shutil.rmtree("db", os.path.join(self.user_data_dir, "db"))
-        print "Copying db"
-        shutil.copytree("db", os.path.join(self.user_data_dir, "db"))
-        '''
 
         root = ps_m.PScreenManager()
         self.root = root
