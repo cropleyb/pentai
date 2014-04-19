@@ -69,6 +69,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def __init__(self, screen_size, filename, *args, **kwargs):
         # GuiPlayer?
         self.moved_marker = [None, None, None]
+
+        # TODO: Use scale module
         global my_dp
         my_dp = screen_size[0] / 457.0
 
