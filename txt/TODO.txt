@@ -5,14 +5,15 @@ For Alpha release
 
 Space bar from demo keeps talking
 
-Rematch -> assume resign unless won
-ios radio buttons for Human/Computer showing both?!
-OS X packaging
+Bigger default text size on iOS - help from IRC group? Try setting from main/kivy_gui_main.py
+AI Player screen help update
+Scrolled text on menu screen only at the top
+Convert to ZODB on OS X
 ZODB on iPad...
-Making AI move when human player clicks on the board?
-Some games continuously making AI moves when it's AI vs Human
+ios radio buttons for Human/Computer showing both?!
+# Making AI move when human player clicks on the board?
+# Some games continuously making AI moves when it's AI vs Human
 Get pentai onto Lachie's iPad
-Bigger default text size on iOS - help from IRC group
 # Add libpente.a to the link line from tools scripts?
 Game selection screen 2 rows? Looks alright as-is?
 Load lots of top games
@@ -23,6 +24,7 @@ Eliminate duplicate player names (fix upgrade script)
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 
 Beta release
+OS X packaging
 cythonize further?
 multitasking
 Trim the size of the apps, both file and RAM
