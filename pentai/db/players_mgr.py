@@ -13,12 +13,10 @@ def misc():
 
 class PlayersMgr():
     # TODO: Borg pattern?
-    def __init__(self, prefix=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.factory = ai_factory.AIFactory()
-        if prefix is None:
-            prefix = os.path.join("db","")
-        filename = "%splayers.pkl" % prefix
-        self.players = z_m.get_section(filename)
+        section = "players"
+        self.players = z_m.get_section(section)
 
     def ensure_has_key(self, player):
         assert not player is None

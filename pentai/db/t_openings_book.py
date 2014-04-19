@@ -12,11 +12,11 @@ from pentai.base.player import *
 class ATOTest(unittest.TestCase):
     def setUp(self):
         self.rules = Rules(9, "standard")
-        self.games_mgr = GamesMgr(prefix="test_")
+        self.games_mgr = GamesMgr()
         p1 = Player("BC")
         p2 = Player("Whoever")
         self.game = self.games_mgr.create_game(self.rules, p1, p2)
-        self.ob = OpeningsBook(self.games_mgr, prefix="test_")
+        self.ob = OpeningsBook(self.games_mgr)
 
     def tearDown(self):
         z_m.delete_all_dangerous()
@@ -186,8 +186,8 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.ob.add_position(self.game, 1, sync=True)
 
-        games_mgr = GamesMgr(prefix="test_")
-        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
+        games_mgr = GamesMgr()
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))
@@ -198,8 +198,8 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.ob.add_position(self.game, 1, sync=True)
 
-        games_mgr = GamesMgr(prefix="test_")
-        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
+        games_mgr = GamesMgr()
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr)
 
         rules2 = Rules(13, "standard")
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))
@@ -210,8 +210,8 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.ob.add_position(self.game, 1, sync=True)
 
-        games_mgr = GamesMgr(prefix="test_")
-        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
+        games_mgr = GamesMgr()
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr)
 
         rules2 = Rules(9, "5 in a row")
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))
@@ -222,8 +222,8 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", EMPTY)
         self.ob.add_game(self.game)
 
-        games_mgr = GamesMgr(prefix="test_")
-        o_mgr2 = OpeningsBook(games_mgr=games_mgr, prefix="test_")
+        games_mgr = GamesMgr()
+        o_mgr2 = OpeningsBook(games_mgr=games_mgr)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))

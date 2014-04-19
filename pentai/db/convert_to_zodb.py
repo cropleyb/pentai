@@ -13,7 +13,7 @@ zd_m.set_db(zdb_filename)
 
 def convert(fn):
     pd = pd_m.PersistentDict(fn)
-    section_name = fn[fn.index("db/"):]
+    section_name = fn[fn.index("db/")+3:-4]
     section = zd_m.get_section(section_name)
     section.update(pd)
     zd_m.sync()

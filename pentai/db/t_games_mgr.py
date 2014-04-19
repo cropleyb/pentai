@@ -16,37 +16,31 @@ import ai_factory as aif_m
 
 class GamesMgrTest(unittest.TestCase):
     def setUp(self):
-        self.test_players_fn = 'test_players.pkl'
-        self.test_game_fn = 'test_S_9.pkl' # Hacky but it works
-        self.gm = GamesMgr("test_")
+        self.gm = GamesMgr()
 
     def tearDown(self):
-        for filename in [self.test_players_fn, self.test_game_fn,
-                "test_unfinished.pkl", "test_id_map.pkl"]:
-            try:
-                os.unlink(filename)
-            except OSError: pass
+        pass
 
     def test_game_to_filename(self):
         rules = Rules(13, "tournament")
         g = self.gm.create_game(rules, p_m.Player("Freddo"), p_m.Player("Sam"))
 
-        fn = self.gm.get_filename(g)
-        self.assertEquals(fn, "test_t_13.pkl")
+        fn = self.gm.get_filename(g) # TODO: get section?
+        self.assertEquals(fn, "t_13")
 
     def test_game_to_filename2(self):
         rules = Rules(19, "5 in a row")
         g = self.gm.create_game(rules, p_m.Player("Alpha"), p_m.Player("Romeo"))
 
         fn = self.gm.get_filename(g)
-        self.assertEquals(fn, "test_5_19.pkl")
+        self.assertEquals(fn, "5_19")
 
     def test_id_to_filename(self):
         rules = Rules(19, "5 in a row")
         g = self.gm.create_game(rules, p_m.Player("Freddo"), p_m.Player("Sam"))
 
         fn = self.gm.get_filename(g.key())
-        self.assertEquals(fn, "test_5_19.pkl")
+        self.assertEquals(fn, "5_19")
 
     def test_save_and_fetch_game(self):
         rules = Rules(9, "Standard")

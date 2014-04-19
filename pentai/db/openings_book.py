@@ -10,12 +10,9 @@ import pentai.db.preserved_game as pg_m
 instance = None
 
 class OpeningsBook(object):
-    def __init__(self, games_mgr, prefix=None):
+    def __init__(self, games_mgr):
         self.games_mgr = games_mgr
         self.positions_dbs = {}
-        if prefix is None:
-            prefix = os.path.join("db","")
-        self.prefix = prefix
 
         global instance
         instance = self
@@ -28,7 +25,7 @@ class OpeningsBook(object):
         else:
             rk = g
 
-        fn = "%s%s_%s_openings.pkl" % (self.prefix, rk[1], rk[0])
+        fn = "%s_%s_openings" % (rk[1], rk[0])
         return fn
 
     def get_db(self, g):
@@ -70,7 +67,7 @@ class OpeningsBook(object):
                 game.get_captured(BLACK),
                 game.get_captured(WHITE))
 
-        # Get the appropriate file for positions of this rule type and size
+        # Get the appropriate section for positions of this rule type and size
         if db is None:
             db = self.get_db(game)
         pos_slot = db.setdefault(position_key, {})

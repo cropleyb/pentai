@@ -9,16 +9,13 @@ from pentai.base.defines import *
 
 class GamesMgr(gso_m.GSObserver):
     # TODO: Borg pattern?
-    def __init__(self, prefix=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.games_dbs = {}
-        if prefix is None:
-            prefix = os.path.join("db","")
-        self.prefix = prefix
-        self.players_mgr = players_mgr.PlayersMgr(prefix=prefix[:])
-        id_filename = "%sid_map.pkl" % prefix
-        self.id_lookup = zd_m.get_section(id_filename)
-        u_f = "%sunfinished.pkl" % prefix
-        self.unfinished_db = zd_m.get_section(u_f)
+        self.players_mgr = players_mgr.PlayersMgr()
+        id_section = "id_map"
+        self.id_lookup = zd_m.get_section(id_section)
+        u_s = "unfinished"
+        self.unfinished_db = zd_m.get_section(u_s)
 
     def get_filename(self, key):
         if key.__class__ is g_m.Game:
@@ -31,7 +28,7 @@ class GamesMgr(gso_m.GSObserver):
             except KeyError:
                 return None
 
-        fn = "%s%s_%s.pkl" % (self.prefix, rk[1], rk[0])
+        fn = "%s_%s" % (rk[1], rk[0])
         return fn
 
     def ensure_has_id(self, game):
@@ -101,11 +98,6 @@ class GamesMgr(gso_m.GSObserver):
         if not rules is None:
             # Might as well save it now.
             self.id_lookup[uid] = rules.key()
-            #zd_m.sync() Don't need to sync until it's saved
-
-            # And save it to the DB when the game is finished
-            if not self.prefix: # TODO: Make this a boolean self.test
-                g.current_state.add_observer(self)
 
         return g
 

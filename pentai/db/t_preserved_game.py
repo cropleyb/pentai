@@ -12,13 +12,10 @@ import unittest
 
 class PreservedGameTest(unittest.TestCase):
     def setUp(self):
-        self.test_players_fn = 'test_players.pkl'
         self.aif = AIFactory()
 
     def tearDown(self):
-        try:
-            os.unlink(self.test_players_fn)
-        except OSError: pass
+        pass
 
     def create_player(self, genome):
         p = self.aif.create_player(genome)
