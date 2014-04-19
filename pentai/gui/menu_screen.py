@@ -11,6 +11,7 @@ class MenuScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super(MenuScreen, self).__init__(*args, **kwargs)
+
         self.ids.about_id.ids.label_id.bind(on_ref_press=self.follow_link)
         self.about_text = \
 """PentAI by Bruce Cropley\n
@@ -62,6 +63,7 @@ Bruce
 
 
 """
+
     def follow_link(self, inst, ref):
         print "User clicked on: %s" % ref
         if ref == "ww":
@@ -69,5 +71,5 @@ Bruce
         elif ref == "bc":
             link = "http://www.bruce-cropley.com/pente"
         print link
-        #webbrowser.open_new_tab(link)
+        webbrowser.open_new_tab(link)
 
