@@ -24,6 +24,9 @@ def main():
     unittest.TextTestRunner().run(suite())
     
     os.unlink("test.db")
+    os.unlink("test.db.lock")
+    os.unlink("test.db.tmp")
+    os.unlink("test.db.index")
 
 if __name__ == "__main__":
     main()
