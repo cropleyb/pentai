@@ -1,0 +1,34 @@
+2 pyx files are causing problems with iOS
+On OS X they work fine as pyx (or py)
+utility_stats.py[x] and ab_state.py[x]
+
+There are 2 issues:
+1. What is wrong with them?
+2. How do I clean the kivy-ios and/or XCode data so that it runs again after switching from .pyx to .py?
+
+Both issues show the same symptom when the app is run from XCode:
+  File "/Users/cropleyb/kivy-ios/app-pentair/YourApp/pentai/ai/ab_state.py", line 7, in <module>
+  File "<string>", line 32, in load_module
+   ImportError: dynamic module does not define init function (initutility_stats)
+   2014-04-12 16:23:18.557 pentair[7114:60b] Application quit abnormally!
+   2014-04-12 16:23:18.579 pentair[7114:60b] Leaving
+
+Other modules in the same package work fine cythonized.
+This error message is usually caused by a corrupt (or missing?) .so file.
+For 2., where is this? I've cleaned the entire kivy-ios directory of utility_stats.* files, and forced a rebuild of libpentai.a
+The build/test cycle is very slow. If problem 2. could be solved then this could be improved.
+app-pentai/YourApp/build seem to be identical
+
+Qs:
+- diff the app directories
+  Small differences in templates? Doesn't seem different enough?
+- it can't be libpentai.a as that is the same for both working & failing.
+- Does creating a new "app-pentai" project fix the second problem?
+  Yes: At least that is faster than creating a new kivy-ios.
+  # No:  Either there is something being cached in kivy-ios, or XCode, or something is still broken in the pentai source.
+- Is there another file under kivy-ios that is caching the old utility_stats extension? Or is it XCode that is doing dodgy caching?
+- What else is going into the XCode project besides libpentai.a (if anything)
+  kivy-ios/app-pentair; lots of other static libs
+
+Try:
+Create a new project, with an empty utility_stats.pyx, use binary search to find what is causing it to fail.
