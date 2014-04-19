@@ -5,7 +5,7 @@ from pentai.gui.kivy_gui_main import *
 'KIVY_METRICS_FONTSCALE'
 '''
 
-import pentai.db.persistent_dict as pd_m
+import pentai.db.zodb_dict as z_m
 import pentai.gui.scale as sc_m
 
 import kivy.core.window as w_m
@@ -32,9 +32,9 @@ if __name__ == '__main__':
 
         if pentai_path == None:
             pentai_path = pa.user_data_dir
-        pd_m.base_dir = pentai_path
-        
-        err_fn = os.path.join(pa.user_data_dir, "err.txt")
+
+        z_m.set_db(os.path.join(pentai_path, "db.fs"))
+        err_fn = os.path.join(pentai_path, "err.txt")
 
         try:
             print "Previous crash:"

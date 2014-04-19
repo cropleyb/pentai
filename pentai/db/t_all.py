@@ -2,6 +2,7 @@
 
 import unittest
 import importlib
+import os
 
 import misc_db as m_m
 
@@ -28,11 +29,15 @@ def suite():
     return all_tests
 
 def main():
+    st()
+
     m_m.get_instance("test_")
+    z_m.set_db("test.db")
 
     unittest.TextTestRunner().run(suite())
     
     m_m.delete("test_")
+    os.unlink("test.db")
 
 if __name__ == "__main__":
     main()

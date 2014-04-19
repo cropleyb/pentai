@@ -1,11 +1,11 @@
-
-import pentai.base.game as g_m
-import pentai.ai.standardise as st_m
-import pentai.db.persistent_dict as pd_m
 import os
+
 from pentai.base.defines import *
-import pentai.db.preserved_game as pg_m
 from pentai.base.pente_exceptions import *
+import pentai.base.game as g_m
+import pentai.db.zodb_dict as z_m
+import pentai.ai.standardise as st_m
+import pentai.db.preserved_game as pg_m
 
 instance = None
 
@@ -38,7 +38,7 @@ class OpeningsBook(object):
         try:
             f = self.positions_dbs[fn]
         except KeyError:
-            f = self.positions_dbs[fn] = pd_m.PersistentDict(fn)
+            f = self.positions_dbs[fn] = z_m.get_section(fn)
         return f
 
     def add_game(self, g, db=None):
@@ -60,7 +60,7 @@ class OpeningsBook(object):
         for mn in range(1, 1+len(g.move_history)):
             # Only needs to be looked up the first time
             db = self.add_position(g, mn, db)
-        db.sync()
+        z_m.sync()
 
     def add_position(self, game, move_number, db=None, sync=False):
         game.go_to_move(move_number)
@@ -86,8 +86,8 @@ class OpeningsBook(object):
         arr.append(game.game_id)
 
         if sync:
-            db.sync()
             self.games_mgr.save(game)
+            z_m.sync()
         return db
 
     def get_move_games(self, game):

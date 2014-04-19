@@ -19,12 +19,15 @@ class ATOTest(unittest.TestCase):
         self.ob = OpeningsBook(self.games_mgr, prefix="test_")
 
     def tearDown(self):
+        z_m.delete_all_dangerous()
+        '''
         for fn in (["test_s_9_openings.pkl", "test_id_map.pkl",
                     "test_unfinished.pkl", "test_s_9.pkl"]):
             try:
                 os.unlink(fn)
             except:
                 pass
+        '''
 
     def load_moves_and_set_win(self, moves, winner=BLACK):
         self.game.load_moves(moves)

@@ -1,7 +1,7 @@
 import pentai.base.game as g_m
 import players_mgr
 import preserved_game as pg_m
-import persistent_dict as pd_m
+import zodb_dict as zd_m
 import os
 import pentai.base.gs_observer as gso_m
 
@@ -16,9 +16,9 @@ class GamesMgr(gso_m.GSObserver):
         self.prefix = prefix
         self.players_mgr = players_mgr.PlayersMgr(prefix=prefix[:])
         id_filename = "%sid_map.pkl" % prefix
-        self.id_lookup = pd_m.PersistentDict(id_filename)
+        self.id_lookup = zd_m.get_section(id_filename)
         u_f = "%sunfinished.pkl" % prefix
-        self.unfinished_db = pd_m.PersistentDict(u_f)
+        self.unfinished_db = zd_m.get_section(u_f)
 
     def get_filename(self, key):
         if key.__class__ is g_m.Game:
@@ -46,7 +46,7 @@ class GamesMgr(gso_m.GSObserver):
         if key is None:
             return None
         del self.id_lookup[key]
-        self.id_lookup.sync()
+        zd_m.sync()
 
     def delete_game(self, key):
         game_db = self.get_db(key)
@@ -55,17 +55,17 @@ class GamesMgr(gso_m.GSObserver):
             return
         
         del game_db[key]
-        game_db.sync()
+        zd_m.sync()
 
         try:
             del self.unfinished_db[key]
-            self.unfinished_db.sync()
+            zd_m.sync()
         except KeyError:
             pass
 
         try:
             del self.id_lookup[key]
-            self.id_lookup.sync()
+            zd_m.sync()
         except KeyError:
             pass
 
@@ -81,7 +81,7 @@ class GamesMgr(gso_m.GSObserver):
             f = self.games_dbs[fn]
         except KeyError:
             f = self.games_dbs[fn] = \
-                pd_m.PersistentDict(fn)
+                zd_m.get_section(fn)
         return f
 
     def next_id(self):
@@ -91,7 +91,7 @@ class GamesMgr(gso_m.GSObserver):
             curr_id = 0
         curr_id += 1
         self.id_lookup["id"] = curr_id
-        self.id_lookup.sync()
+        #zd_m.sync() Don't need to sync until it's saved
         return curr_id
 
     def create_game(self, rules=None, p1=None, p2=None):
@@ -101,13 +101,12 @@ class GamesMgr(gso_m.GSObserver):
         if not rules is None:
             # Might as well save it now.
             self.id_lookup[uid] = rules.key()
-            self.id_lookup.sync()
+            #zd_m.sync() Don't need to sync until it's saved
 
             # And save it to the DB when the game is finished
             if not self.prefix: # TODO: Make this a boolean self.test
                 g.current_state.add_observer(self)
 
-            # TODO: Save the game to game_db now?
         return g
 
     def save(self, g, game_db=None):
@@ -120,10 +119,9 @@ class GamesMgr(gso_m.GSObserver):
         self.ensure_has_id(g)
         pg = pg_m.PreservedGame(g)
         game_db[pg.key()] = pg
-        game_db.sync()
 
         self.id_lookup[g.game_id] = g.rules.key()
-        self.id_lookup.sync()
+        zd_m.sync()
 
         gid = g.key()
 
@@ -134,19 +132,14 @@ class GamesMgr(gso_m.GSObserver):
                 pass
         else:
             self.unfinished_db[gid] = gid
-        self.unfinished_db.sync()
+        zd_m.sync()
 
         # Save players
         self.players_mgr.save(g.get_player(1))
         self.players_mgr.save(g.get_player(2))
 
     def sync_all(self):
-        self.unfinished_db.sync()
-        self.id_lookup.sync()
-        for g_db in self.games_dbs.itervalues():
-            g_db.sync()
-        self.players_mgr.sync()
-        # TODO: Openings DB?
+        zd_m.sync()
 
     def get_unfinished_game(self, g_id):
         if not g_id in self.unfinished_db:

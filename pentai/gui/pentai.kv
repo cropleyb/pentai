@@ -10,7 +10,7 @@
     font_size: my.dp(35)
 
 <MyCategoryLabel@Label>:
-    font_size: my.dp(20)
+    font_size: my.dp(22)
 
 <MyBigLabel@Label>:
     font_size: my.dp(30)
@@ -168,6 +168,7 @@
                     size_hint_x: .28
                     text: root.time_control_text(time_control_id.value)
 
+            # TODO: Horizontal Line
             Label:
                 text: "Players"
 
@@ -184,10 +185,12 @@
                 height: my.dp(48)
 
             CheckBoxList:
+                # TODO: Horizontally centred
                 group: 'black_type'
                 values: ('Human', 'Computer')
                 id: black_type_id
             CheckBoxList:
+                # TODO: Horizontally centred
                 group: 'white_type'
                 values: ('Human', 'Computer')
                 id: white_type_id
@@ -221,7 +224,7 @@
         Label:
             text: "Computer Player Editor"
         # Line:
-            # TODO: <hr> equivalent
+            # TODO: Horizontal Line
 
         Label:
             text: 'Choose Player'
@@ -377,7 +380,7 @@
         Label:
             text: "Human Player Editor"
         # Line:
-            # TODO: <hr> equivalent
+            # TODO: Horizontal Rule
 
         Label:
             text: 'Choose Player'

@@ -8,6 +8,7 @@ from kivy.uix.settings import Settings
 
 from kivy.uix.screenmanager import * # TODO: Remove
 
+import pentai.db.zodb_dict as z_m
 import p_screen_manager as ps_m
 
 from intro_screen import *
@@ -84,28 +85,34 @@ class PentAIApp(App):
         # Intercept all touch events
         self.root.set_demo(d)
 
+        '''
         for db_inst in [self.games_mgr, self.openings_book, misc_db.get_instance()]:
             # Deep copy and save.
             # (Players are in games_mgr)
             orig = db_inst.__dict__
             db_inst.__dict__ = c_m.deepcopy(db_inst.__dict__)
             db_inst._backup = orig
+        '''
 
         d.start()
 
     def finish_demo(self):
+        z_m.abort()
+
         self.show_menu_screen()
         self.pente_screen = None
         self.root.set_demo(None)
-        Clock.schedule_once(self.restore_from_demo, .1)
+        #Clock.schedule_once(self.restore_from_demo, .1)
 
     def in_demo_mode(self):
         return self.root.in_demo_mode()
 
+    '''
     def restore_from_demo(self, *ignored):
         for db_inst in [self.games_mgr, self.openings_book, misc_db.get_instance()]:
             # Restore each to backup
             db_inst.__dict__ = db_inst._backup
+    '''
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames

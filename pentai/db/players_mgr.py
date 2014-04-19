@@ -1,15 +1,13 @@
 import pentai.ai.ai_genome as aig_m
 import ai_factory
-import persistent_dict
 import misc_db as m_m
 import mru_cache as mru_m
 
 from pentai.base.defines import *
+import zodb_dict as z_m
 
 import os
 
-#st()
-#misc = m_m.get_instance
 def misc():
     return m_m.get_instance()
 
@@ -20,7 +18,7 @@ class PlayersMgr():
         if prefix is None:
             prefix = os.path.join("db","")
         filename = "%splayers.pkl" % prefix
-        self.players = persistent_dict.PersistentDict(filename)
+        self.players = z_m.get_section(filename)
 
     def ensure_has_key(self, player):
         assert not player is None
@@ -48,7 +46,7 @@ class PlayersMgr():
         p_type = player.get_type()
         rpks = self.get_rpks(p_type)
         rpks.add(p_key)
-        misc().sync()
+        z_m.sync()
 
     def get_recent_player_names(self, player_type, number):
         # TODO: use "number" for # returned players
@@ -97,11 +95,11 @@ class PlayersMgr():
             pass
 
         self.players[p_key] = player
-        self.players.sync()
+        z_m.sync()
         self.mark_recent_player(p_key)
 
     def sync(self):
-        self.players.sync()
+        z_m.sync()
 
     def find_by_name(self, name, player_type=None):
         genome = self.find_genome_by_name(name, player_type)
@@ -146,8 +144,7 @@ class PlayersMgr():
 
     def next_id(self):
         curr_id = self.get_max_id() + 1
-        #st()
         misc()["max_id"] = curr_id
-        misc().sync()
+        z_m.sync()
         return curr_id
 

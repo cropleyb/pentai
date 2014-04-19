@@ -107,7 +107,7 @@ class Match():
     def play_some_games(self):
 
         self.genome1.use_openings_book = False
-        #self.genome2.use_openings_book = False
+        self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
@@ -179,8 +179,9 @@ import pstats, cProfile
 import gc
 
 if __name__ == "__main__":
-    random.seed()
      
+    '''
+    random.seed()
     # the code you want to memory-profile
       
     #while True:
@@ -192,11 +193,11 @@ if __name__ == "__main__":
     mem = memory_usage_resource()
     print mem
     '''
+    '''
     heap_data = h.heap()
     print heap_data
     print heap_data.more
     st()
-    '''
     '''
     m = Match()
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
@@ -204,4 +205,3 @@ if __name__ == "__main__":
     s = pstats.Stats("Profile.prof")
     #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
     s.strip_dirs().sort_stats("time").print_stats(20)
-    '''
