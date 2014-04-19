@@ -6,6 +6,7 @@ from defines import *
 if __name__ == "__main__":
     source_fn = sys.argv[1]
 
+    # TODO: filenames -> sections etc.
     #source_fn = "%s%s_%s_openings.pkl" % (prefix, rk[1], rk[0])
     dest_fn = source_fn[:-4] + "_b.pkl"
     #dest_fn = "%s%s_%s_openings_b.pkl" % (prefix, rk[1], rk[0])
