@@ -1,19 +1,27 @@
 #:kivy 1.1.0
-#:import kivy kivy
-#:import win kivy.core.window
+#:import my pentai.gui.scale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
 
+# Globally set lots of size defaults
 <Label>:
-    font_size: dp(25)
+    font_size: my.dp(25)
+
+<TextInput>:
+    font_size: my.dp(35)
+
+<MyCategoryLabel@Label>:
+    font_size: my.dp(20)
+
+<MyBigLabel@Label>:
+    font_size: my.dp(30)
+    bold: True
 
 <CheckBoxList>:
     cols: 2
 
 <MyCompositeListItem>:
-    height: dp(60)
+    height: my.dp(60)
     rows: 2
-
-<Button>:
-    font_size: '25dp'
 
 <ConfirmPopup>:
     content:
@@ -21,16 +29,16 @@
         rows: 2
         Label:
             text: root.confirm_prompt
-            font_size: '20dp'
+            font_size: my.dp(20)
         GridLayout:
             cols: 2
             MyButton:
                 text: "Cancel"
-                font_size: '20dp'
+                font_size: my.dp(20)
                 on_release: root.clear()
             MyButton:
                 text: "OK"
-                font_size: '20dp'
+                font_size: my.dp(20)
                 on_release: root.ok_confirm()
 
 <GamesScreen>:
@@ -60,7 +68,7 @@
     Label:
         size_hint_y: None
         height: self.texture_size[1]
-        text_size: self.width - 20, None
+        text_size: (.95 * self.width), None
         text: root.text
         markup: True
         id: label_id
@@ -69,6 +77,13 @@
     ScrollableLabel:
         text: root.about_text
         id: about_id
+        #size_hint_y: None
+        #size_hint_y: .5
+        #height: self.texture_size[1]
+        #text_size: (.95 * self.width), None
+        #text: root.text
+        #markup: True
+        #id: label_id
 
     GridLayout:
         cols: 1
@@ -111,12 +126,12 @@
         GridLayout:
             cols: 2
             size_hint: 1, None
-            height: 170
+            height: my.dp(170)
 
-            MyLabel:
+            MyCategoryLabel:
                 text: "Rules"
 
-            MyLabel:
+            MyCategoryLabel:
                 text: "Board Size"
 
             Spinner:
@@ -160,13 +175,13 @@
             cols: 2
             size_hint_y: .9
 
-            MyLabel:
+            MyCategoryLabel:
                 text: "Black Player"
-                height: '48dp'
+                height: my.dp(48)
 
-            MyLabel:
+            MyCategoryLabel:
                 text: "White Player"
-                height: '48dp'
+                height: my.dp(48)
 
             CheckBoxList:
                 group: 'black_type'
@@ -199,13 +214,6 @@
                 id: start_game_id
 
 
-# Globally set all Labels
-<MyLabel@Label>:
-    font_size: '25dp'
-
-<MyBigLabel@Label>:
-    font_size: '30dp'
-    bold: True
 
 <AIPlayerScreen>:
     GridLayout:
@@ -228,7 +236,6 @@
         TextInput:
             id: rename_id
             text: root.rename_text
-            font_size: '25dp'
             multiline: False
 
         Label:
@@ -236,7 +243,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48dp'
+            height: my.dp(48)
 
             Label:
                 size_hint_x: .3
@@ -257,7 +264,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48dp'
+            height: my.dp(48)
 
             Label:
                 size_hint_x: .3
@@ -277,7 +284,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48dp'
+            height: my.dp(48)
 
             Label:
                 size_hint_x: .75
@@ -309,7 +316,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48dp'
+            height: my.dp(48)
 
             Label:
                 text: 'Lines / Captures'
@@ -328,7 +335,7 @@
 
         BoxLayout:
             size_hint_y: None
-            height: '48dp'
+            height: my.dp(48)
 
             Label:
                 text: 'Judgement'
@@ -385,7 +392,6 @@
         TextInput:
             id: rename_id
             text: root.rename_text
-            font_size: '25dp'
             multiline: False
 
         GridLayout:
