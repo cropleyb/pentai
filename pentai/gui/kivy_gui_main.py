@@ -10,11 +10,12 @@ from kivy.uix.screenmanager import * # TODO: Remove
 
 import p_screen_manager as ps_m
 
+from intro_screen import *
+from menu_screen import *
 from ai_player_screen import *
 from human_player_screen import *
 from setup_screen import *
 from settings_screen import *
-from menu_screen import *
 from games_screen import *
 import pente_screen
 from popup import *
@@ -294,16 +295,25 @@ class PentAIApp(App):
         self.games_mgr = GamesMgr()
         self.openings_book = ob_m.OpeningsBook(self.games_mgr)
 
-        screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
-                   (SetupScreen, "Setup"), (GamesScreen, "Games"),
-                   (AIPlayerScreen, "AI"), (HumanPlayerScreen, "Human"),
-                   ]
+        self.add_screen(IntroScreen, "Intro")
 
         # Assign to self.config so all screens can get at it.
         self.config = ConfigParser()
         self.config.read(ini_path)
 
         self.audio = a_m.Audio(self.config)
+
+        Clock.schedule_once(self.create_screens, .5)
+        return root
+
+    def create_screens(self, ignored):
+        root = self.root
+        intro_screen = root.get_screen("Intro")
+
+        screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
+                   (SetupScreen, "Setup"), (GamesScreen, "Games"),
+                   (AIPlayerScreen, "AI"), (HumanPlayerScreen, "Human"),
+                   ]
 
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
@@ -321,7 +331,7 @@ class PentAIApp(App):
         # Kivy Settings editor.
         self.settings_screen.set_config(self.config)
 
-        return root
+        self.show_menu_screen()
     
     def set_confirmation_popups(self):
         p_m.ConfirmPopup.bypass = \
@@ -329,15 +339,4 @@ class PentAIApp(App):
 
     def on_pause(self):
         return True
-
-if __name__ == '__main__':
-    Config.set('kivy', 'log_level', 'info')
-    Config.set('kivy', 'log_enable', 1)
-    Config.set('kivy', 'log_dir', 'logs')
-    Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
-
-    Config.set('graphics', 'width', '457')
-    Config.set('graphics', 'height', '720')
-
-    PentAIApp().run()
 
