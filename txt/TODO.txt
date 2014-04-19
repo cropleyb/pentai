@@ -9,7 +9,7 @@ Settings screen text size
 Scrolled text on menu screen only at the top
 Use ZODB on iPad... (need internet)
 Menu "about" text on iOS
-Player sections in new game screen - center each
+Player types in new game screen - center each
 Setting toggle buttons dodgy (settings screen) - report to kivy IRC
 ios radio buttons for Human/Computer occasionally showing both?!
 Get pentai onto Lachie's iPad

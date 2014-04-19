@@ -19,6 +19,10 @@
 <CheckBoxList>:
     cols: 2
 
+<ClickLabel@Label>:
+    halign: 'center'
+    text_size: self.width, None
+
 <MyCompositeListItem>:
     height: my.dp(60)
     rows: 2
@@ -233,7 +237,7 @@
             # TODO: double click to edit name
             text: root.current_name
             values: root.player_names
-            size_hint: (1, None)
+            size_hint: (1, 0.7)
             id: player_spinner_id
 
         TextInput:
@@ -389,7 +393,7 @@
             # TODO: double click to edit name
             text: root.current_name
             values: root.player_names
-            size_hint: (1, None)
+            size_hint: (1, 0.35)
             id: player_spinner_id
 
         TextInput:

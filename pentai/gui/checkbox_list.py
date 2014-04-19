@@ -34,9 +34,7 @@ class CheckBoxList(GridLayout):
         Clock.schedule_once(self.setup, 0)
 
     def setup(self, ignored):
-        l = Label(text=self.text)
-        self.add_widget(l)
-        vals_gl = GridLayout(cols=2)
+        vals_gl = GridLayout(cols=3)
         self.add_widget(vals_gl)
         self.widgets_by_val = {}
 
@@ -46,13 +44,17 @@ class CheckBoxList(GridLayout):
             l.bind(on_press=self.label_clicked)
             vals_gl.add_widget(l)
 
-            cb = CheckBox(group=self.group, active=first)
+            cb = CheckBox(group=self.group, active=first, size_hint_x=0.1)
             cb.bind(active=self.on_checkbox_active)
             cb.val = v
             if first:
                 self.on_checkbox_active(cb, None)
             vals_gl.add_widget(cb)
             self.widgets_by_val[v] = cb
+
+            # This is just padding
+            l2 = Label(size_hint_x=0.2)
+            vals_gl.add_widget(l2)
 
             first = False
 
