@@ -46,7 +46,6 @@ class Demo():
             self.script = None
             self.interrupted = False
             self.sleep_remaining = 0
-            a_m.instance.cut_demo()
 
         if self.sleep_remaining > 0:
             self.sleep_remaining -= 0.05
