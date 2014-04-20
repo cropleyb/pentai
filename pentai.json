@@ -56,7 +56,7 @@
     },
     {
         "type": "numeric",
-        "title": "Volume",
+        "title": "Effects Volume",
         "desc": "How loud are the sound effects",
         "section": "PentAI",
         "key": "effects_volume",
@@ -69,5 +69,13 @@
         "section": "PentAI",
         "key": "tick",
         "true": "auto"
+    },
+    {
+        "type": "numeric",
+        "title": "Music Volume",
+        "desc": "How loud is the music",
+        "section": "PentAI",
+        "key": "music_volume",
+        "0.5": "auto"
     }
 ]
