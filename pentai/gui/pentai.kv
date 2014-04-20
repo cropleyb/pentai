@@ -154,8 +154,10 @@
         GridLayout:
             cols: 1
             size_hint_y: .3
+			Label:
             Label:
                 text: "Game Time (minutes each)"
+			Label:
 
             GridLayout:
                 rows: 1
@@ -172,7 +174,17 @@
                     size_hint_x: .28
                     text: root.time_control_text(time_control_id.value)
 
-            # TODO: Horizontal Line
+			Label:
+
+            # Elaborate way of getting a horizontal line ;)
+			BoxLayout:
+				orientation: 'vertical'
+				Splitter:
+					sizable_from: 'bottom'
+					Label:
+			Label:
+			Label:
+
             Label:
                 text: "Players"
 
@@ -244,6 +256,14 @@
             id: rename_id
             text: root.rename_text
             multiline: False
+
+		# Elaborate way of getting a horizontal line ;)
+		BoxLayout:
+			orientation: 'vertical'
+			Splitter:
+				sizable_from: 'bottom'
+				Label:
+		#Label:
 
         Label:
             text: 'Search Parameters'
@@ -317,6 +337,13 @@
                         source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
                         size: 60, 60
                         pos: int(self.center_x - 30), int(self.center_y - 30)
+
+		# Elaborate way of getting a horizontal line ;)
+		BoxLayout:
+			orientation: 'vertical'
+			Splitter:
+				sizable_from: 'bottom'
+				Label:
 
         Label:
             text: 'Position Evaluation'
