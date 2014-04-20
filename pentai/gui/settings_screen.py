@@ -33,6 +33,11 @@ def s2b(state):
     """ state string to boolean """
     return state == "down"
 
+class MySettingsWithNoMenu(SettingsWithNoMenu):
+    def on_config_change(self, *args):
+        import audio as a_m
+        a_m.adjust_volumes()
+
 class SettingsScreen(Screen):
     # TODO
     sound_effects_vol = NumericProperty(0)
@@ -52,7 +57,7 @@ class SettingsScreen(Screen):
         bw.bind(on_press=self.app.return_screen)
 
     def set_config(self, config):
-        self.settings = SettingsWithNoMenu(text_size="30")
+        self.settings = MySettingsWithNoMenu(text_size="30")
         self.settings.add_json_panel('PentAI', config, 'pentai.json')
 
     def on_enter(self):
@@ -61,4 +66,5 @@ class SettingsScreen(Screen):
 
     def on_leave(self, ignored=None):
         self.app.set_confirmation_popups()
+
 

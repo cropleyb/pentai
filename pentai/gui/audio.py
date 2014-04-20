@@ -2,10 +2,11 @@ import kivy
 kivy.require('1.0.8')
 
 from kivy.core.audio import SoundLoader
+from kivy.clock import Clock
+
 import glob as g_m
 from os.path import dirname, join, basename
 import random
-#from defines import *
 
 instance = None
 
@@ -93,11 +94,13 @@ class Audio():
     def cut_demo(self):
         self.current_demo_sound.stop()
         self.demo_volume = 1
+        self.adjust_music_volume()
 
     def demo(self, part):
         if self.muted:
             return
         
+        self.adjust_music_volume()
         fn_in_subdir = join("media", "demo", "%s.ogg" % part)
 
         self.current_demo_sound = SoundLoader.load(fn_in_subdir)
@@ -105,4 +108,25 @@ class Audio():
         vol = self.config.get("PentAI", "effects_volume")
         self.current_demo_sound.volume = float(vol)
         self.current_demo_sound.play()
+
+    def adjust_music_volume(self):
+        vol = self.config.get("PentAI", "music_volume")
+        self.current_music_sound.volume = float(vol) * self.demo_volume
+
+    def play_music(self):
+        if self.muted:
+            return
+        vol = self.config.get("PentAI", "music_volume")
+
+        next_piece = "Cool_School.ogg"
+        fn_in_subdir = join("media", "music", next_piece)
+        self.current_music_sound = SoundLoader.load(fn_in_subdir)
+
+        self.adjust_music_volume()
+        self.current_music_sound.play()
+        Clock.schedule_once(self.play_music, self.current_music_sound.length + 3.0)
+
+def adjust_volumes():
+    instance.adjust_music_volume()
+
 

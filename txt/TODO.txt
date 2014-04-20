@@ -5,13 +5,32 @@ For Alpha release
 
 Space bar from demo keeps talking
 
-Settings screen text size
+Optional Music
+- Rain
+- Modal Podal
+- Marriage
+- Cool School
+- Sometimes
+- Permeation
+- Razorwire
+- Lunar Discovery
+- Septic
+- Six Shift
+- Y Files
+- Alien Zoo
+- Brain Food
+- Progress
+- Barbells
+- Desert Crossing
+- Direction
+
+
 Scrolled text on menu screen only at the top
 Use ZODB on iPad... (need internet)
 Menu "about" text on iOS
 Player types in new game screen - center each
 Setting toggle buttons dodgy (settings screen) - report to kivy IRC
-ios radio buttons for Human/Computer occasionally showing both?!
+radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC
 Get pentai onto Lachie's iPad
 # Add libpente.a to the link line from tools scripts?
 Game selection screen 2 rows on iOS
