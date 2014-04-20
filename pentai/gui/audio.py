@@ -19,6 +19,7 @@ class Audio():
         self.last_played = {}
         self.muted = False
         self.demo_volume = 1.0
+        self.piece_number = 1
 
         global instance
         instance = self
@@ -113,14 +114,22 @@ class Audio():
         vol = self.config.get("PentAI", "music_volume")
         self.current_music_sound.volume = float(vol) * self.demo_volume
 
-    def play_music(self):
+    def play_music(self, *ignored):
         if self.muted:
             return
         vol = self.config.get("PentAI", "music_volume")
 
-        next_piece = "Cool_School.ogg"
-        fn_in_subdir = join("media", "music", next_piece)
-        self.current_music_sound = SoundLoader.load(fn_in_subdir)
+        while True:
+            music_file_pattern = join("media", "music", str(self.piece_number))
+            filenames = g_m.glob("%s.*.ogg" % music_file_pattern)
+            try:
+                filename = filenames[0] # Should be 1
+                self.piece_number += 1
+                break
+            except:
+                self.piece_number = 1
+
+        self.current_music_sound = SoundLoader.load(filename)
 
         self.adjust_music_volume()
         self.current_music_sound.play()
