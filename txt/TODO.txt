@@ -3,31 +3,13 @@ Disability solicitor
 
 For Alpha release
 
+BadPickleGet
 Space bar from demo keeps talking
-
-Optional Music
-- Rain
-- Modal Podal
-- Marriage
-- Cool School
-- Sometimes
-- Permeation
-- Razorwire
-- Lunar Discovery
-- Septic
-- Six Shift
-- Y Files
-- Alien Zoo
-- Brain Food
-- Progress
-- Barbells
-- Desert Crossing
-- Direction
-
-
+Handcrafted setting screen
+Music/Effects from games screen?
 Scrolled text on menu screen only at the top
 Use ZODB on iPad... (need internet)
-Menu "about" text on iOS
+Menu "about" text missing on iOS
 Player types in new game screen - center each
 Setting toggle buttons dodgy (settings screen) - report to kivy IRC
 radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC
