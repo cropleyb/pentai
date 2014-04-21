@@ -4,6 +4,7 @@ import pentai.db.games_mgr as gm_m
 import pentai.db.openings_book as ol_m
 import pentai.base.human_player as h_m
 import pentai.db.players_mgr as pm_m
+import pentai.db.zodb_dict as z_m
 import pentai.ai.ai_genome as aig_m
 from pentai.base.defines import *
 
@@ -15,12 +16,9 @@ def dot():
     sys.stdout.flush()
 
 if __name__ == "__main__":
-    print "Creating Human Players"
-    '''
-    app_supp_dir = "/Users/cropleyb/Library/Application Support/pentai/db/"
+    z_m.set_db("db.fs")
 
-    pm = pm_m.PlayersMgr(prefix=app_supp_dir)
-    '''
+    print "Creating Human Players"
     pm = pm_m.PlayersMgr()
 
     # TODO: Don't release these.
@@ -56,7 +54,7 @@ if __name__ == "__main__":
         "judgement": 70, "vision": 70, "capture_score_base": 350 },
     { "p_name": "Lenora", "use_openings_book": True, "max_depth": 6,
         "judgement": 65, "vision": 65, "capture_score_base": 350 },
-    { "p_name": "killer", "use_openings_book": True, "max_depth": 6,
+    { "p_name": "*killer*", "use_openings_book": True, "max_depth": 6,
         "judgement": 100, "vision": 100, "capture_score_base": 300 },
     { "p_name": "Kelvin", "use_openings_book": True, "max_depth": 6,
         "judgement": 60, "vision": 60, "capture_score_base": 350 },
@@ -80,7 +78,7 @@ if __name__ == "__main__":
         "judgement": 15, "vision": 15, "capture_score_base": 200 },
     { "p_name": "Anthony", "use_openings_book": False, "max_depth": 1,
         "judgement": 10, "vision": 10, "capture_score_base": 300 },
-    { "p_name": "tony", "use_openings_book": False, "max_depth": 1,
+    { "p_name": "*tony*", "use_openings_book": False, "max_depth": 1,
         "judgement": 0, "vision": 10, "capture_score_base": 400 },
     ]
     '''
