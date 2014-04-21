@@ -70,11 +70,7 @@ class HumanPlayerScreen(Screen):
             # Attempt to save with no name set.
             self.app.display_error("Please choose a name first")
             return
-        '''
-        self.genome.p_name = self.ids.rename_id.text
-        self.genome.screen2genome()
-        self.pm.save(self.genome.inst.clone())
-        '''
+
         hpn = self.ids.rename_id.text
         hp = HumanPlayer(hpn)
         self.pm.save(hp)
@@ -82,16 +78,7 @@ class HumanPlayerScreen(Screen):
         self.refresh_names()
 
     def show_help(self):
-        help_text = """You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below.
-There are several settings that can be adjusted for a given AI player profile:
-    Depth: Controls how many moves the AI looks ahead each move.
-    Vision: How often does the AI miss a move possibility entirely?
-    Openings book: Should the AI be able to refer to previous games?
-    Lines/Captures: How much value should the AI place on lines versus captures?
-    Judgement: How well should the AI judge the value of positions?
-
-Several profiles are included, have a look at and experiment with their configurations, or create your own.
-
+        help_text = """You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below). At the moment there is nothing else to change about a human player besides their name.
 """
         st = ScrollableLabel(text=help_text)
         MessagePopup(title='Help', content=st).open()
