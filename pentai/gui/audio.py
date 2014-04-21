@@ -7,8 +7,11 @@ from kivy.clock import Clock
 import glob as g_m
 from os.path import dirname, join, basename
 import random
+from pentai.db.misc_db import get_instance as m_m
 
 instance = None
+
+PN_KEY = "piece_number"
 
 class Audio():
 # Sound effects: place, capture, tick, win, loss, music
@@ -19,7 +22,6 @@ class Audio():
         self.last_played = {}
         self.muted = False
         self.demo_volume = 1.0
-        self.piece_number = 1
 
         global instance
         instance = self
@@ -114,20 +116,35 @@ class Audio():
         vol = self.config.get("PentAI", "music_volume")
         self.current_music_sound.volume = float(vol) * self.demo_volume
 
+    def inc_piece_number(self):
+        m_m()[PN_KEY] += 1
+        return m_m()[PN_KEY]
+
+    def reset_piece_number(self):
+        pn = m_m()[PN_KEY] = 1
+        return pn
+
     def play_music(self, *ignored):
         if self.muted:
             return
         vol = self.config.get("PentAI", "music_volume")
 
         while True:
-            music_file_pattern = join("media", "music", str(self.piece_number))
+            try:
+                pn = self.inc_piece_number()
+            except:
+                # For initial value of 1
+                pn = self.reset_piece_number()
+
+            music_file_pattern = join("media", "music", str(pn))
             filenames = g_m.glob("%s.*.ogg" % music_file_pattern)
             try:
                 filename = filenames[0] # Should be 1
-                self.piece_number += 1
+                # Found one, quit looping
                 break
-            except:
-                self.piece_number = 1
+            except IndexError:
+                # Loop back to first piece
+                pn = self.reset_piece_number()
 
         self.current_music_sound = SoundLoader.load(filename)
 
