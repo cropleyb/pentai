@@ -96,51 +96,53 @@
         id: label_id
 
 <MenuScreen>:
-    ScrollableLabel:
-        text: root.about_text
-        id: about_id
-        #size_hint_y: None
-        #size_hint_y: .5
-        #height: self.texture_size[1]
-        #text_size: (.95 * self.width), None
-        #text: root.text
-        #markup: True
-        #id: label_id
-
     GridLayout:
         cols: 1
-        size_hint: 1, .5
+        Label:
+            size_hint: 1, .1
+            text: "PentAI by Bruce Cropley"
 
-        MyButton:
-            id: new_game_id
-            text: "New Game"
-            on_release: root.app.show_new_game_screen()
-
-        MyButton:
-            text: "In Progress"
-            on_release: root.app.show_games_screen()
-
-        MyButton:
-            text: "Edit Human Players"
-            on_release: root.app.show_human_screen()
-
-        MyButton:
-            text: "Edit AI Players"
-            on_release: root.app.show_ai_screen()
-
-        MyButton:
-            text: "Settings"
-            on_release: root.app.show_settings_screen()
-
-        MyButton:
-            text: "Show Demo"
-            on_release: root.app.show_demo()
-
-        MyButton:
-            text: "Quit"
-            on_release: root.app.prompt_quit()
-
-        # TODO: Edit openings? Review completed games?
+        SettingSpacer:
+    
+        ScrollableLabel:
+            text: root.about_text
+            size_hint_y: .7
+            id: about_id
+    
+        GridLayout:
+            cols: 1
+            size_hint: 1, .5
+    
+            MyButton:
+                id: new_game_id
+                text: "New Game"
+                on_release: root.app.show_new_game_screen()
+    
+            MyButton:
+                text: "In Progress"
+                on_release: root.app.show_games_screen()
+    
+            MyButton:
+                text: "Edit Human Players"
+                on_release: root.app.show_human_screen()
+    
+            MyButton:
+                text: "Edit AI Players"
+                on_release: root.app.show_ai_screen()
+    
+            MyButton:
+                text: "Settings"
+                on_release: root.app.show_settings_screen()
+    
+            MyButton:
+                text: "Show Demo"
+                on_release: root.app.show_demo()
+    
+            MyButton:
+                text: "Quit"
+                on_release: root.app.prompt_quit()
+    
+            # TODO: Edit openings? Review completed games?
 
 <SetupScreen>:
     GridLayout:
@@ -148,7 +150,7 @@
 
         Label:
             text: "New Game"
-            size_hint_y: .15
+            size_hint_y: .10
 
         SettingSpacer:
 
@@ -185,6 +187,7 @@
             Label:
 
             GridLayout:
+                size_hint_y: .5
                 rows: 1
                 Slider:
                     id: time_control_id
@@ -198,14 +201,20 @@
                     size_hint_x: .28
                     text: root.time_control_text(time_control_id.value)
 
-            SettingSpacer:
+        Label:
+            size_hint_y: .05
 
-            Label:
-                text: "Players"
+        SettingSpacer:
+
+        Label:
+            text: "Players"
+            size_hint_y: .11
+
+        SettingSpacer:
 
         GridLayout:
             cols: 2
-            size_hint_y: .9
+            size_hint_y: .8
 
             MyCategoryLabel:
                 text: "Black Player"
@@ -229,20 +238,20 @@
             # TODO: double click to edit player?
             Spinner:
                 values: root.player_names[1]
-                size_hint: (1, None)
+                size_hint: (1, .8)
                 id: bpl_id
             Spinner:
                 values: root.player_names[2]
-                size_hint: (1, None)
+                size_hint: (1, .8)
                 id: wpl_id
 
             MyButton:
-                size_hint: (.2, .4)
+                size_hint: (.2, .8)
                 text: "Return"
                 on_press: root.app.return_screen()
 
             MyButton:
-                size_hint: (.2, .4)
+                size_hint: (.2, .8)
                 text: "Start Game"
                 on_press: root.start_game()
                 id: start_game_id
@@ -683,7 +692,7 @@
             desc: "How loud should the music be?"
             min: 0
             max: 1
-            step: .01
+            step: 0.01
             key: "music_volume"
             display_factor: 100
             on_value: root.adjust_volumes()
