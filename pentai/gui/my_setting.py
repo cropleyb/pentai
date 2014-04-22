@@ -141,6 +141,8 @@ class SliderSetting(MySetting):
 
         self.slider.bind(value=self.save_value)                  
         self.slider.bind(value=self.display_value)
+        # This call should not be necessary, Kivy bug (value 0 not being passed through bind)
+        self.display_value()
         self.load_value()
 
     def load_value(self):
@@ -151,10 +153,10 @@ class SliderSetting(MySetting):
         self.get_config().set('PentAI', self.key, val)
         self.get_config().write()
 
-    def display_value(self, slider, val):
-        v = val
+    def display_value(self, *unused):
+        v = self.slider.value
         if self.display_factor == 100:
-            self.display.text = "%d%%" % int(100 * val)
+            self.display.text = "%d%%" % int(100 * v)
         else:
-            self.display.text = "%.1fs" % val
+            self.display.text = "%.1fs" % v
 
