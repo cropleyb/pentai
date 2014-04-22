@@ -117,6 +117,8 @@ class Audio():
 
     def adjust_music_volume(self):
         vol = self.config.get("PentAI", "music_volume")
+        if vol < .01:
+            vol = 0
         self.current_music_sound.volume = float(vol) * self.demo_volume
 
     def inc_piece_number(self):
