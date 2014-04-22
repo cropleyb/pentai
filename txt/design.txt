@@ -635,3 +635,25 @@ Finished: Loser goes first
 Unfinished:
 HvC - Assume computer won, Human first
 HvH, CvC - Always swap
+
+Optional Music
+--------------
+/ Rain
+/ Modal Podal
+/ Marriage
+/ Cool School
+/ Sometimes
+/ Permeation
+/ Razorwire
+/ Lunar Discovery
+/ Septic
+/ Six Shift
+/ Y Files
+/ Alien Zoo
+/ Brain Food
+/ Progress
+/ Barbells
+/ Desert Crossing
+/ Direction
+
+

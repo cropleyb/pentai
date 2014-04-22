@@ -4,7 +4,6 @@ from kivy.clock import *
 from kivy.base import *
 
 from kivy.config import ConfigParser
-from kivy.uix.settings import Settings
 
 from kivy.uix.screenmanager import * # TODO: Remove
 
@@ -17,6 +16,7 @@ from ai_player_screen import *
 from human_player_screen import *
 from setup_screen import *
 from settings_screen import *
+from new_settings_screen import *
 from games_screen import *
 import pente_screen
 from popup import *
@@ -59,6 +59,9 @@ class PentAIApp(App):
 
     def show_settings_screen(self):
         self.root.set_current("Settings")
+
+    def show_new_settings_screen(self):
+        self.root.set_current("NewSettings")
 
     def show_pente_screen(self):
         self.root.set_current("Pente")
@@ -175,6 +178,7 @@ class PentAIApp(App):
         if current_screen:
             current_screen.on_pre_leave()
             current_screen.on_leave()
+        z_m.sync()
         self.stop()
 
     def hook_keyboard(self, window, key, *ignored_args):               
@@ -318,6 +322,7 @@ class PentAIApp(App):
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
                    (AIPlayerScreen, "AI"), (HumanPlayerScreen, "Human"),
+                   (NewSettingsScreen, "NewSettings"),
                    ]
 
         for scr_cls, scr_name in screens:

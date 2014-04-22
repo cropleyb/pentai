@@ -6,6 +6,21 @@
 <Label>:
     font_size: my.dp(25)
 
+# Labels for Settings screen
+<SectionLabel@Label>:
+    color: (0.5,0.5,0.5,1)
+
+<SmallLabel@Label>:
+    font_size: my.dp(20)
+    padding_x: my.dp(20)
+    text_size: self.size
+
+<TinyLabel@Label>:
+    font_size: my.dp(15)
+    text_size: self.size
+    padding_x: my.dp(20)
+    color: (0.5,0.5,0.5,1)
+
 <TextInput>:
     font_size: my.dp(30)
 
@@ -115,6 +130,10 @@
             on_release: root.app.show_settings_screen()
 
         MyButton:
+            text: "NewSettings"
+            on_release: root.app.show_new_settings_screen()
+
+        MyButton:
             text: "Show Demo"
             on_release: root.app.show_demo()
 
@@ -154,10 +173,10 @@
         GridLayout:
             cols: 1
             size_hint_y: .3
-			Label:
+            Label:
             Label:
                 text: "Game Time (minutes each)"
-			Label:
+            Label:
 
             GridLayout:
                 rows: 1
@@ -166,7 +185,6 @@
                     min: 0
                     max: 10
                     step: .5
-                    #step: .1 # TEMP
                     value: root.time_control
                     on_value: root.time_control = (int(2*self.value)) / 2.0
 
@@ -174,16 +192,7 @@
                     size_hint_x: .28
                     text: root.time_control_text(time_control_id.value)
 
-			Label:
-
-            # Elaborate way of getting a horizontal line ;)
-			BoxLayout:
-				orientation: 'vertical'
-				Splitter:
-					sizable_from: 'bottom'
-					Label:
-			Label:
-			Label:
+            SettingSpacer:
 
             Label:
                 text: "Players"
@@ -239,6 +248,7 @@
         cols: 1
         Label:
             text: "Computer Player Editor"
+        SettingSpacer:
         # Line:
             # TODO: Horizontal Line
 
@@ -257,16 +267,10 @@
             text: root.rename_text
             multiline: False
 
-		# Elaborate way of getting a horizontal line ;)
-		BoxLayout:
-			orientation: 'vertical'
-			Splitter:
-				sizable_from: 'bottom'
-				Label:
-		#Label:
-
         Label:
             text: 'Search Parameters'
+
+        SettingSpacer:
 
         BoxLayout:
             size_hint_y: None
@@ -318,6 +322,7 @@
                 text: 'Openings Book'
 
             CheckBox:
+                # TODO: Turn this into a BigCheckBox class
                 id: openings_id
                 active: root.genome.use_openings_book
                 on_active: root.genome.use_openings_book = self.active
@@ -338,15 +343,12 @@
                         size: 60, 60
                         pos: int(self.center_x - 30), int(self.center_y - 30)
 
-		# Elaborate way of getting a horizontal line ;)
-		BoxLayout:
-			orientation: 'vertical'
-			Splitter:
-				sizable_from: 'bottom'
-				Label:
+        SettingSpacer:
 
         Label:
             text: 'Position Evaluation'
+
+        SettingSpacer:
 
         BoxLayout:
             size_hint_y: None
@@ -410,8 +412,9 @@
         cols: 1
         Label:
             text: "Human Player Editor"
-        # Line:
-            # TODO: Horizontal Rule
+            size_hint_y: .33
+
+        SettingSpacer:
 
         Label:
             text: 'Choose Player'
@@ -587,6 +590,97 @@
                 id: 'confirm_rect'
             Rectangle:
                 size: (root.size[0], self.parent.board_offset[1])
+
+<NewSettingsScreen>:
+    GridLayout:
+        cols: 1
+
+        SectionLabel:
+            text: "User Interface"
+            size_hint_y: .15
+
+        SettingSpacer:
+
+        SwitchSetting:
+            text: "Mark Moves"
+            desc: "Mark the last two moves, each with a dot in the centre"
+            key: "mark_moves"
+
+        SettingSpacer:
+
+        SwitchSetting:
+            text: "Show Captures"
+            desc: "Show pieces that were captured last move as transparent ghost pieces"
+            key: "mark_captures"
+
+        SettingSpacer:
+
+        OptionsSetting:
+            text: "Move Confirmation"
+            values: ("None Required", "Off Board", "On Piece")
+            desc: "For small screens or while travelling"
+            key: "move_confirmation"
+
+        SettingSpacer:
+
+        SliderSetting:
+            text: "Minimum Wait Time"
+            desc: "Minimum time to wait for the AI to play (secs)"
+            min: 0
+            max: 2
+            step: .1
+            key: "minimum_wait"
+                    #text: "%.1f" % s_id.value
+
+        SettingSpacer:
+
+        SwitchSetting:
+            text: "Show Confirmation Popups"
+            desc: "For major actions such as exiting"
+            key: "confirm_popups"
+
+        SettingSpacer:
+
+        SectionLabel:
+            text: "Sound"
+            size_hint_y: .15
+
+        SettingSpacer:
+
+        SliderSetting:
+            text: "Effects Volume"
+            desc: "How loud are the sound effects"
+            min: 0
+            max: 1
+            step: .01
+            key: "effects_volume"
+            display_factor: 100
+            on_value: root.adjust_volumes()
+
+        SettingSpacer:
+
+        SwitchSetting:
+            text: "Tick"
+            desc: "Should the clock make a ticking sound?"
+            key: "tick"
+
+        SettingSpacer:
+
+        SliderSetting:
+            text: "Music Volume"
+            desc: "How loud is the music"
+            min: 0
+            max: 1
+            step: .01
+            key: "music_volume"
+            display_factor: 100
+            on_value: root.adjust_volumes()
+
+        Button:
+            size_hint_y: .2
+            text: "Return"
+            on_press: root.app.return_screen()
+
 
 <Piece>:
     Image:
