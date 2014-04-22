@@ -44,16 +44,12 @@ class SwitchSetting(MySetting):
         gl.add_widget(sl)
 
         self.sw = Switch()
-        self.sw.size_hint_x = .1
+        self.sw.size_hint_x = .35
+        self.sw.align = "center"
         gl.add_widget(self.sw)
 
         self.load_value()
         self.sw.bind(active=self.save_value)                  
-
-        # TODO?
-        #l = Label() # Padding
-        #sw.size_hint_x = .02
-        #gl.add_widget(l)
 
         dl = TinyLabel(text=self.desc)
         self.add_widget(dl)
@@ -82,9 +78,18 @@ class OptionsSetting(MySetting):
 
         self.sp = sp = Spinner()
         sp.values = self.values
+        #sp.align = "center"
+        sp.size_hint_x = .5
+        #sp.padding_y = 100
+        #sp.size_hint = .5, None
         sp.font_size = my.dp(20)
         sp.option_cls = MySpinnerOption
         gl.add_widget(sp)
+
+        # Padding only.
+        l = Label()
+        l.size_hint_x = .05
+        gl.add_widget(l)
 
         dl = TinyLabel(text=self.desc)
         self.add_widget(dl)
@@ -109,14 +114,10 @@ class SliderSetting(MySetting):
     def __init__(self, *args, **kwargs):
         super(SliderSetting, self).__init__(*args, **kwargs)
         
-        self.size_hint_y = .45
+        self.size_hint_y = .35
        
     def setup(self, ignored):
-        #gl = GridLayout(rows=1)
-        #self.add_widget(gl)
-
         sl = SmallLabel(text=self.text)
-        #gl.add_widget(sl)
         self.add_widget(sl)
 
         gl = GridLayout(rows=1)
@@ -129,13 +130,10 @@ class SliderSetting(MySetting):
         slider.min = self.min
         slider.max = self.max
         slider.step = self.step
-        #slider.id = "s_id"
         gl.add_widget(slider)
 
         self.display = Label()
-        self.display.size_hint_x = 0.15
-        #display.text = str(self.value)
-        #display.text = "%.1f" % s_id.value
+        self.display.size_hint_x = 0.2
         gl.add_widget(self.display)
 
         dl = TinyLabel(text=self.desc)
