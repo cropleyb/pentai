@@ -106,6 +106,9 @@ class Audio():
         self.adjust_music_volume()
         fn_in_subdir = join("media", "demo", "%s.ogg" % part)
 
+        try:
+            self.current_demo_sound.stop()
+        except: pass
         self.current_demo_sound = SoundLoader.load(fn_in_subdir)
 
         vol = self.config.get("PentAI", "effects_volume")

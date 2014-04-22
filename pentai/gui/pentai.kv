@@ -62,7 +62,10 @@
 
 <GamesScreen>:
     GridLayout:
-        rows: 2
+        cols: 1
+        Label:
+            text: "Unfinished Games"
+            size_hint_y: .10
 
         GamesView:
             id: games_view
@@ -142,6 +145,13 @@
 <SetupScreen>:
     GridLayout:
         cols: 1
+
+        Label:
+            text: "New Game"
+            size_hint_y: .15
+
+        SettingSpacer:
+
         GridLayout:
             cols: 2
             size_hint: 1, None
@@ -591,6 +601,12 @@
     GridLayout:
         cols: 1
 
+        Label:
+            text: "PentAI Settings"
+            size_hint_y: .15
+
+        SettingSpacer:
+
         SectionLabel:
             text: "User Interface"
             size_hint_y: .15
@@ -645,7 +661,7 @@
 
         SliderSetting:
             text: "Effects Volume"
-            desc: "How loud are the sound effects"
+            desc: "How loud should the sound effects be?"
             min: 0
             max: 1
             step: .01
@@ -664,7 +680,7 @@
 
         SliderSetting:
             text: "Music Volume"
-            desc: "How loud is the music"
+            desc: "How loud should the music be?"
             min: 0
             max: 1
             step: .01

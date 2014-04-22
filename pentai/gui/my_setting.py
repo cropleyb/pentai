@@ -74,14 +74,13 @@ class OptionsSetting(MySetting):
         self.add_widget(gl)
 
         sl = SmallLabel(text=self.text)
+        sl.valign = "middle"
         gl.add_widget(sl)
 
         self.sp = sp = Spinner()
         sp.values = self.values
-        #sp.align = "center"
+        sp.valign = 'bottom'
         sp.size_hint_x = .5
-        #sp.padding_y = 100
-        #sp.size_hint = .5, None
         sp.font_size = my.dp(20)
         sp.option_cls = MySpinnerOption
         gl.add_widget(sp)
@@ -92,6 +91,7 @@ class OptionsSetting(MySetting):
         gl.add_widget(l)
 
         dl = TinyLabel(text=self.desc)
+        dl.size_hint_y = .8
         self.add_widget(dl)
 
         self.load_value()
