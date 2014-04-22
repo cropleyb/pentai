@@ -9,7 +9,6 @@ from kivy.uix.spinner import Spinner, SpinnerOption
 from kivy.config import Config
 
 import pentai.gui.scale as my
-#from pentai.gui.checkbox_list import *
 
 class SmallLabel(Label):
     pass
@@ -33,6 +32,7 @@ class MySetting(GridLayout):
         Clock.schedule_once(self.setup, 0)
 
     def get_config(self):
+        # TODO: Eliminate Hack
         return self.parent.parent.config
 
 class SwitchSetting(MySetting):

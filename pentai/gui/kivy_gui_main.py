@@ -16,7 +16,6 @@ from ai_player_screen import *
 from human_player_screen import *
 from setup_screen import *
 from settings_screen import *
-from new_settings_screen import *
 from games_screen import *
 import pente_screen
 from popup import *
@@ -59,9 +58,6 @@ class PentAIApp(App):
 
     def show_settings_screen(self):
         self.root.set_current("Settings")
-
-    def show_new_settings_screen(self):
-        self.root.set_current("NewSettings")
 
     def show_pente_screen(self):
         self.root.set_current("Pente")
@@ -322,7 +318,6 @@ class PentAIApp(App):
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
                    (AIPlayerScreen, "AI"), (HumanPlayerScreen, "Human"),
-                   (NewSettingsScreen, "NewSettings"),
                    ]
 
         for scr_cls, scr_name in screens:
@@ -336,10 +331,6 @@ class PentAIApp(App):
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         self.popup = None
-
-        # Pass the config to the settings screen to use it for the
-        # Kivy Settings editor.
-        self.settings_screen.set_config(self.config)
 
         self.show_menu_screen()
     

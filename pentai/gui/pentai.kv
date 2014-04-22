@@ -130,10 +130,6 @@
             on_release: root.app.show_settings_screen()
 
         MyButton:
-            text: "NewSettings"
-            on_release: root.app.show_new_settings_screen()
-
-        MyButton:
             text: "Show Demo"
             on_release: root.app.show_demo()
 
@@ -591,7 +587,7 @@
             Rectangle:
                 size: (root.size[0], self.parent.board_offset[1])
 
-<NewSettingsScreen>:
+<SettingsScreen>:
     GridLayout:
         cols: 1
 
