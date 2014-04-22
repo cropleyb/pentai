@@ -7,17 +7,20 @@ import pentai.db.zodb_dict as z_m
 import pentai.ai.standardise as st_m
 import pentai.db.preserved_game as pg_m
 
+ZM = z_m.ZM
+ZL = z_m.ZL
+
 instance = None
 
 class OpeningsBook(object):
     def __init__(self, games_mgr):
         self.games_mgr = games_mgr
-        self.positions_dbs = {}
+        self.positions_dbs = ZM()
 
         global instance
         instance = self
 
-    def get_filename(self, g):
+    def get_filename(self, g): # TODO: Rename to get_rules_key
         if g.__class__ is g_m.Game:
             rk = g.rules.key()
         elif g.__class__ is tuple:
@@ -25,7 +28,7 @@ class OpeningsBook(object):
         else:
             rk = g
 
-        fn = "%s_%s_openings" % (rk[1], rk[0])
+        fn = "%s_%s_openings" % (rk[1], rk[0]) # Ditch this?
         return fn
 
     def get_db(self, g):
@@ -70,12 +73,12 @@ class OpeningsBook(object):
         # Get the appropriate section for positions of this rule type and size
         if db is None:
             db = self.get_db(game)
-        pos_slot = db.setdefault(position_key, {})
+        pos_slot = db.setdefault(position_key, ZM())
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
         assert(standardised_move[0] >= 0)
         assert(standardised_move[1] >= 0)
-        arr = pos_slot.setdefault(standardised_move, [])
+        arr = pos_slot.setdefault(standardised_move, ZL())
         if move_number == 1:
             # Should only be in there once per id
             if game.game_id in arr:
@@ -98,7 +101,11 @@ class OpeningsBook(object):
 
         options = {}
         try:
+            # try:
+            # TODO
             pos_slot = db[position_key]
+            #except BadPickleGet:
+                #st()
             size = game.size()
             for pos, gids in pos_slot.iteritems():
                 x, y = rev(*pos)

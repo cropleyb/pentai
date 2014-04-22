@@ -17,6 +17,7 @@ from pentai.ai.priority_filter_2 import *
 from pentai.db.ai_factory import *
 from pentai.db.openings_book import *
 from pentai.db.games_mgr import *
+import pentai.db.zodb_dict as z_m
 
 class TwoTimer:
     def __init__(self):
@@ -179,6 +180,7 @@ import pstats, cProfile
 import gc
 
 if __name__ == "__main__":
+    z_m.set_db("db.fs")
      
     '''
     random.seed()

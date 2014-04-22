@@ -3,6 +3,8 @@
 from ZODB import FileStorage, DB
 from BTrees import OOBTree
 from persistent import Persistent
+from persistent.mapping import PersistentMapping as ZM
+from persistent.list import PersistentList as ZL
 import transaction
 
 """

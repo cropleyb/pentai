@@ -9,11 +9,11 @@ class PreservedGame():
             self.date = game.get_date()
             p1 = game.get_player(1)
             p2 = game.get_player(2)
-            self.players = [None, p1.get_key(), p2.get_key()]
-            self.ratings = [None, p1.get_rating(), p2.get_rating()]
+            self.players = (None, p1.get_key(), p2.get_key())
+            self.ratings = (None, p1.get_rating(), p2.get_rating())
             self.won_by = game.get_won_by()
-            self.moves = game.move_history[:]
-            self.times = game.time_history[:]
+            self.moves = tuple(game.move_history)
+            self.times = tuple(game.time_history)
             self.resume_move_number = game.resume_move_number
 
     def key(self):
@@ -43,9 +43,9 @@ class PreservedGame():
             # Backward compatibility
             won_by = self.winner
         orig_game.set_won_by(won_by)
-        orig_game.move_history = self.moves[:]
+        orig_game.move_history = list(self.moves)
         try:
-            orig_game.time_history = self.times[:]
+            orig_game.time_history = list(self.times)
         except AttributeError:
             orig_game.time_history = [0] * (len(self.moves) + 2)
         try:
