@@ -848,6 +848,9 @@ class Piece(Scatter):
     def __init__(self, board_size, *args, **kwargs):
         self.scale = my_dp * 7.0 / board_size
         super(Piece, self).__init__(*args, **kwargs)
+        self.do_translation = False
+        self.do_rotation = False
+        self.do_scale = False
 
 from kivy.uix.gridlayout import GridLayout
 
