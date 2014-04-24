@@ -85,34 +85,18 @@ class PentAIApp(App):
         # Intercept all touch events
         self.root.set_demo(d)
 
-        '''
-        for db_inst in [self.games_mgr, self.openings_book, misc_db.get_instance()]:
-            # Deep copy and save.
-            # (Players are in games_mgr)
-            orig = db_inst.__dict__
-            db_inst.__dict__ = c_m.deepcopy(db_inst.__dict__)
-            db_inst._backup = orig
-        '''
-
         d.start()
 
     def finish_demo(self):
+        a_m.instance.cut_demo()
         z_m.abort()
 
         self.show_menu_screen()
         self.pente_screen = None
         self.root.set_demo(None)
-        #Clock.schedule_once(self.restore_from_demo, .1)
 
     def in_demo_mode(self):
         return self.root.in_demo_mode()
-
-    '''
-    def restore_from_demo(self, *ignored):
-        for db_inst in [self.games_mgr, self.openings_book, misc_db.get_instance()]:
-            # Restore each to backup
-            db_inst.__dict__ = db_inst._backup
-    '''
 
     def load_game_file_cb(self, path, filenames):
         f_n = filenames
@@ -218,6 +202,9 @@ class PentAIApp(App):
 
         elif key == 32:
             # Space
+            if self.in_demo_mode():
+                self.finish_demo()
+                return True
             # Ignore spaces on other pages, could be entering names
             if self.root.current == "Pente":
                 if self.game.finished():

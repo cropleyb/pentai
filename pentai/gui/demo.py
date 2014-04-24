@@ -73,9 +73,10 @@ class Demo():
         self.interrupted = True
 
     def finish(self):
-        a_m.instance.cut_demo()
         self.app.finish_demo()
 
+    def clean_up(self):
+        Clock.unschedule(self.play)
 
     def rules_script1(self):
         play_speech("intersections")

@@ -10,6 +10,8 @@ class PScreenManager(ScreenManager):
         self.random_transition()
 
     def set_demo(self, d):
+        if self.demo:
+            self.demo.clean_up()
         self.demo = d 
 
     def set_current(self, screen_name):
