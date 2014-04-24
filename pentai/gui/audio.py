@@ -145,6 +145,7 @@ class Audio():
             filenames = g_m.glob("%s.*.ogg" % music_file_pattern)
             try:
                 filename = filenames[0] # Should be 1
+                self.current_track_name = filename.split('.')[1]
                 # Found one, quit looping
                 break
             except IndexError:
@@ -155,7 +156,16 @@ class Audio():
 
         self.adjust_music_volume()
         self.current_music_sound.play()
-        Clock.schedule_once(self.play_music, self.current_music_sound.length + 3.0)
+
+        # length of a sound may be 0 when it has just been loaded.
+        # 3 seconds also serves as a track divider.
+        Clock.schedule_once(self.schedule_music, 3.0)
+
+    def schedule_music(self, *ignored):
+        Clock.schedule_once(self.play_music, self.current_music_sound.length)
+
+    def get_current_track_name(self):
+        return self.current_track_name
 
 def adjust_volumes():
     instance.adjust_music_volume()
