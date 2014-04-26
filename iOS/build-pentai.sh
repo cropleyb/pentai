@@ -5,8 +5,9 @@
 PROJ=pente
 EXTSRC=$KIVYIOSROOT/src/$PROJ
 mkdir -p $EXTSRC
-# cp -r -n ~/Dropbox/$PROJ $KIVYIOSROOT/src
-try rsync -av --delete ~/Dropbox/$PROJ $KIVYIOSROOT/src
+pushd ~/Dropbox/$PROJ
+try ./copy_to.sh $EXTSRC
+popd
 pushd $EXTSRC
 
 # TODO: cp other py files
