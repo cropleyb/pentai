@@ -261,7 +261,6 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
-        # TODO: Untested yet.
         if not "db.fs" in os.listdir(self.user_data_dir):
             print "Copying db"
             import shutil
