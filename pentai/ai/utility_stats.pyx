@@ -69,6 +69,8 @@ class UtilityStats(object):
     
     # Slowish
     def set_or_reset_occs(self, brd, rules, pos, inc):
+        cdef unsigned long bs
+
         # update substrips
         ccp = rules.can_capture_pairs
         brd_size = brd.get_size()

@@ -13,7 +13,7 @@ Here, we build a lookup table, which is a mapping from a bit pattern
 to the information we need - the colour, current length and empty indices
 of the row of 5 positions that we are currently looking at.
 """
-cdef long FIVE_OCCS_MASK
+cdef unsigned long FIVE_OCCS_MASK
 FIVE_OCCS_MASK = (4 ** 5 - 1)
 
 global length_lookup
@@ -74,7 +74,7 @@ def prepare_length_lookups():
 prepare_length_lookups()
 
 #@cython.profile(False)
-cpdef process_substrips(long bs, int min_ind, int max_ind, us, int inc):
+cpdef process_substrips(unsigned long bs, int min_ind, int max_ind, us, int inc):
     """
     Try to match each stretch of 5 positions against our lookup table.
     If we find a match then report the number of stones of the same
@@ -84,7 +84,7 @@ cpdef process_substrips(long bs, int min_ind, int max_ind, us, int inc):
     """
     cdef int ind
     cdef int shift
-    cdef long occs
+    cdef unsigned long occs
     cdef int colour
     cdef int length
 
