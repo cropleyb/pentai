@@ -33,7 +33,9 @@ if __name__ == '__main__':
         if pentai_path == None:
             pentai_path = pa.user_data_dir
 
-        z_m.set_db(os.path.join(pentai_path, "db.fs"))
+        db_path = os.path.join(pentai_path, "db.fs")
+        print "Loading DB from %s" % db_path
+        z_m.set_db(db_path)
         err_fn = os.path.join(pentai_path, "err.txt")
 
         try:
