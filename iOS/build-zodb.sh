@@ -4,12 +4,13 @@
 
 cd $TMPROOT
 
+mkdir -p bciosbuild bcinst
+
 PKGS="transaction BTrees persistent zc.lockfile ZConfig zdaemon zope.event zope.interface zope.proxy zope.testing six zodb"
 
+# Download (build, install, clean)
 # bypass download
-PKGS=
-
-# download (and install)
+#for p in 
 for p in $PKGS
 do
     # Hack due to lack of openssl in $HOSTPYTHON:
@@ -21,6 +22,10 @@ do
     python ./setup.py clean
     popd
 done
+
+# Ignore errors from patches
+patch -d $TMPROOT/bciosbuild/btrees/BTrees -p1 < $KIVYIOSROOT/tools/patches/btree.patch || true
+patch -d $TMPROOT/bciosbuild/persistent -p0 < $KIVYIOSROOT/tools/patches/persistent.patch || true
 
 # build 
 OLD_CC="$CC"
