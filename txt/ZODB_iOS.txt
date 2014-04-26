@@ -1,0 +1,98 @@
+ZODB depends on several other distributed packages, and installs them with easyinstall.py
+        'persistent',
+        'BTrees',
+        'ZConfig',
+        'transaction >= 1.4.1' if PY3 else 'transaction',
+        'six',
+        'zc.lockfile',
+        'zdaemon >= 4.0.0a1',
+        'zope.interface',
+        ] + (['zodbpickle >= 0.2'] if PY3 else []),
+
+python ./setuptools-3.4.4/easy_install.py --build-directory ./bciosbuild --always-copy --install-dir ./bcinst zodb
+
+Need .pyo files in the Python27.zip file?
+
+Need .so files in: libzodb.a, something like:
+bd=$EXTSRC/build/lib.macosx-*
+#try $KIVYIOSROOT/tools/biglink $BUILDROOT/lib/libpente.a $bd
+try $KIVYIOSROOT/tools/biglink $BUILDROOT/lib/libpente.a $bd $bd/pentai/base    $bd/pentai/ai
+deduplicate $BUILDROOT/lib/libpente.a
+
+Bruces-MacBook-Pro-2:tmp cropleyb$ python ./setuptools-3.4.4/easy_install.py --build-directory ./bciosbuild --always-copy --install-dir /Users/cropleyb/kivy-ios/tmp/bcinst zodb
+...
+Writing ./bciosbuild/zdaemon/setup.cfg
+Running setup.py -q bdist_egg --dist-dir ./bciosbuild/zdaemon/egg-dist-tmp-Wxc9Du
+error: ./bciosbuild/zdaemon/README.txt: No such file or directory
+
+python ./setuptools-3.4.4/easy_install.py --build-directory ./bciosbuild --always-copy --install-dir ./bcinst zdaemon
+???
+
+You also need the transaction, BTrees, persistent, zc.lockfile,
+ZConfig, zdaemon, zope.event, zope.interface, zope.proxy and
+zope.testing packages. 
+
+OK So we have the .so files:
+
+Bruces-MacBook-Pro-2:tmp/bcinst cropleyb$ find . -name "*.so"
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_fsBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_IFBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_IIBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_IOBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_LFBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_LLBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_LOBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_OIBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_OLBTree.so
+./BTrees-4.0.8-py2.7-macosx-10.9-intel.egg/BTrees/_OOBTree.so
+./persistent-4.0.8-py2.7-macosx-10.9-intel.egg/persistent/_timestamp.so
+./persistent-4.0.8-py2.7-macosx-10.9-intel.egg/persistent/cPersistence.so
+./persistent-4.0.8-py2.7-macosx-10.9-intel.egg/persistent/cPickleCache.so
+./zope.interface-3.8.0-py2.7-macosx-10.9-intel.egg/zope/interface/_zope_interface_coptimizations.so
+./zope.proxy-4.1.4-py2.7-macosx-10.9-intel.egg/zope/proxy/_zope_proxy_proxy.so
+
+No we don't have the .so files as they are not built for iOS.
+Try again...
+
+Searching for zodb
+Skipping development or system egg: ZODB 4.0.0
+Reading https://pypi.python.org/simple/zodb/
+Download error on https://pypi.python.org/simple/zodb/: unknown url type: https -- Some packages may not be found!
+Couldn't retrieve index page for 'zodb'
+Scanning index of all packages (this may take a while)
+
+OK Got them...
+both .so and .pyc files are in:
+/Users/cropleyb/kivy-ios/tmp/bciosbuild/*/iosbuild/usr/local/lib/python2.7/site-packages/BTrees/
+
+.pyc files need to go to:
+
+And .so files? 
+Bruces-MacBook-Pro-2:bciosbuild cropleyb$ ls -R |grep lib.macosx
+lib.macosx-10.9-armv7-2.7
+./btrees/build/lib.macosx-10.9-armv7-2.7:
+./btrees/build/lib.macosx-10.9-armv7-2.7/BTrees:
+./btrees/build/lib.macosx-10.9-armv7-2.7/BTrees/tests:
+lib.macosx-10.9-armv7-2.7
+./persistent/build/lib.macosx-10.9-armv7-2.7:
+./persistent/build/lib.macosx-10.9-armv7-2.7/persistent:
+./persistent/build/lib.macosx-10.9-armv7-2.7/persistent/tests:
+lib.macosx-10.9-armv7-2.7
+./zope.interface/build/lib.macosx-10.9-armv7-2.7:
+./zope.interface/build/lib.macosx-10.9-armv7-2.7/zope:
+./zope.interface/build/lib.macosx-10.9-armv7-2.7/zope/interface:
+./zope.interface/build/lib.macosx-10.9-armv7-2.7/zope/interface/common:
+./zope.interface/build/lib.macosx-10.9-armv7-2.7/zope/interface/common/tests:
+./zope.interface/build/lib.macosx-10.9-armv7-2.7/zope/interface/tests:
+lib.macosx-10.9-armv7-2.7
+./zope.proxy/build/lib.macosx-10.9-armv7-2.7:
+./zope.proxy/build/lib.macosx-10.9-armv7-2.7/zope:
+./zope.proxy/build/lib.macosx-10.9-armv7-2.7/zope/proxy:
+./zope.proxy/build/lib.macosx-10.9-armv7-2.7/zope/proxy/tests:
+
+Hacks:
+Discard all ??BTree code except for OOBTree (in biglink?)
+Hacked cPickleCache.c and cPersistence.c to include ring.h
+#ifndef _ring_h wrapper added to ring.h
+Took ring.c out of cPersistence module source in setup.py
+
