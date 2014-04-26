@@ -151,9 +151,11 @@ class SliderSetting(MySetting):
         self.slider.value = self.get_config().getfloat('PentAI', self.key)
 
     def save_value(self, switch, val):
-        self.value = val
         self.get_config().set('PentAI', self.key, val)
         self.get_config().write()
+
+        # Set value last so observers of self.value can use config.
+        self.value = val
 
     def display_value(self, *unused):
         v = self.slider.value
