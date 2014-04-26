@@ -4,7 +4,7 @@ from kivy.properties import ListProperty
 from kivy.adapters.dictadapter import DictAdapter
 from kivy.uix.listview import ListItemButton, ListItemLabel, \
         CompositeListItem, ListView
-from kivy.uix.gridlayout import GridLayout
+import kivy.uix.gridlayout as gl_m
 
 import popup as p_m
 import audio as a_m
@@ -65,39 +65,38 @@ class GamesScreen(Screen):
 
 def game_data(game):
     data = {}
-    data['id'] = str(game.game_id)
-    data['black'] = game.get_player_name(BLACK)
+    data["id"] = str(game.game_id)
+    data["black"] = game.get_player_name(BLACK)
 
     # TODO: This is a hack.
     try:
-        data['white'] = game.get_player_name(WHITE)
+        data["white"] = game.get_player_name(WHITE)
     except:
-        data['white'] = "Corrupted"
+        data["white"] = "Corrupted"
 
-    data['date'] = str(game.get_date())
-    #data['status_colour'] = [0,0,0,.5] #game.get_won_by()
+    data["date"] = str(game.get_date())
+    #data["status_colour"] = [0,0,0,.5] #game.get_won_by()
     wb = game.get_won_by()
     if wb == BLACK:
-        data['deselected_color'] = [0,0,0,.5] #game.get_won_by()
-        data['selected_color'] = [0,0,0,.5] #game.get_won_by()
-    data['height'] = 50
-    data['size'] = str(game.size())
-    data['rules'] = str(game.rules.get_type_name())
-    data['is_selected'] = False
+        data["deselected_color"] = [0,0,0,.5] #game.get_won_by()
+        data["selected_color"] = [0,0,0,.5] #game.get_won_by()
+    data["height"] = 50
+    data["size"] = str(game.size())
+    data["rules"] = str(game.rules.get_type_name())
+    data["is_selected"] = False
     # TODO: Winner
     return data
 
 class MyCompositeListItem(CompositeListItem):
     pass
 
-class GamesView(GridLayout):
+class GamesView(gl_m.GridLayout):
 
     def __init__(self, **kwargs):
-        kwargs['cols'] = 2
+        kwargs["cols"] = 2
         super(GamesView, self).__init__(**kwargs)
 
-        '''
-        TODO:
+        """
         We have a collection of unfinished games, and another of all games
         We want to display them in several orders:
         Black Player Name (A or Z first)
@@ -105,7 +104,7 @@ class GamesView(GridLayout):
         Date (latest as default, or earliest)
         Board size
         Rules type
-        '''
+        """
 
     def on_enter(self):
         self.fill_er_up()
@@ -134,41 +133,41 @@ class GamesView(GridLayout):
             print "Removed"
 
     def fill_er_up(self, unused=None):
-        dc = 'deselected_color'
-        sc = 'selected_color'
+        dc = "deselected_color"
+        sc = "selected_color"
         args_converter = \
             lambda row_index, rec: \
-                {'size_hint_y': None,
-                 'height': 25,
-                 #'height': rec['height'],
-                 #'background_color': rec['status_colour'],
-                 'cls_dicts': [
-                       {'cls': MyListItemButton,
-                           'kwargs': {'text': rec['id']}}, #, dc: rec[dc]}},
-                       {'cls': MyListItemButton,
-                           'kwargs': {'text': rec['black']}},
-                       {'cls': MyListItemButton,
-                           'kwargs': {'text': rec['white']}},
-                       {'cls': MyListItemButton,
-                           'kwargs': {'text': rec['date']}},
-                       {'cls': MyListItemButton,
-                           'kwargs': {'text': rec['size']}},
-                       {'cls': MyListItemButton,
-                           'kwargs': {'text': rec['rules']}},
+                {"size_hint_y": None,
+                 "height": 25,
+                 #"height": rec["height"],
+                 #"background_color": rec["status_colour"],
+                 "cls_dicts": [
+                       {"cls": MyListItemButton,
+                           "kwargs": {"text": rec["id"]}}, #, dc: rec[dc]}},
+                       {"cls": MyListItemButton,
+                           "kwargs": {"text": rec["black"]}},
+                       {"cls": MyListItemButton,
+                           "kwargs": {"text": rec["white"]}},
+                       {"cls": MyListItemButton,
+                           "kwargs": {"text": rec["date"]}},
+                       {"cls": MyListItemButton,
+                           "kwargs": {"text": rec["size"]}},
+                       {"cls": MyListItemButton,
+                           "kwargs": {"text": rec["rules"]}},
                        ]}
 
         # TODO: Another hack - parent.parent
         gm = self.parent.parent.gm
         games = gm.get_all_unfinished()
 
-        # TODO: The 'if' is a hack
+        # TODO: The "if" is a hack
         games_dict = { g.game_id: game_data(g) for g in games if g }
 
         self.item_strings = ["{0}".format(g_id) for g_id in games_dict.iterkeys() ]
 
         dict_adapter = DictAdapter(data=games_dict,
                                    args_converter=args_converter,
-                                   selection_mode='single',
+                                   selection_mode="single",
                                    allow_empty_selection=False, # Not working?
                                    cls=MyCompositeListItem)
 
