@@ -1,0 +1,24 @@
+diff -Naur BTrees.orig/BTreeModuleTemplate.c BTrees/BTreeModuleTemplate.c
+--- BTrees.orig/BTreeModuleTemplate.c	2014-04-26 16:47:45.000000000 +1000
++++ BTrees/BTreeModuleTemplate.c	2014-04-26 16:33:56.000000000 +1000
+@@ -487,7 +487,7 @@
+ BTREEITEMSTEMPLATE_C
+ ;
+ 
+-int
++static int
+ init_persist_type(PyTypeObject *type)
+ {
+ #ifdef PY3K
+diff -Naur BTrees.orig/BTreeTemplate.c BTrees/BTreeTemplate.c
+--- BTrees.orig/BTreeTemplate.c	2014-04-26 16:47:45.000000000 +1000
++++ BTrees/BTreeTemplate.c	2014-04-26 16:31:49.000000000 +1000
+@@ -1231,7 +1231,7 @@
+  * ConflictError then, but may be TypeError if the state makes no sense at all
+  * for a BTree (corrupted or hostile state).
+  */
+-PyObject *
++static PyObject *
+ get_bucket_state(PyObject *t)
+ {
+     if (t == Py_None)
