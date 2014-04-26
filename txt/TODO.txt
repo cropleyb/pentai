@@ -5,13 +5,11 @@ For Alpha release
 
 
 BadPickleGet: Try to reproduce with an ai sub-system test?
-Space bar from demo keeps talking
-Scrolled text on menu screen only at the top. Check once ZODB issues fixed.
-Report 0 not being sent through bind to Kivy group (internet)
-Use ZODB on iPad... (need internet)
+Negative Padding on new setting screen on iOS
+Crash on loading 19x19 game on iOS
+Report Slider 0 not being sent through bind to Kivy group (internet)
+#Use ZODB on iPad... (need internet)
 Menu "about" text missing on iOS
-Player types in new game screen - center each
-Setting switch buttons dodgy reverse drag (settings screen) - report to kivy IRC
 radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC
 Get pentai onto Lachie's iPad
 # Add libpente.a to the link line from tools scripts?
@@ -19,6 +17,8 @@ Game selection screen 2 rows on iOS
 Load lots of top games from pente.org (python downloading script) Contact Hasbro again? By registered snail mail?
 Remove "Winning Ways" link?
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
+# Scatter controls (two finger tap on arrow image) - red circle: Hide? Reported https://github.com/kivy/kivy/issues/2111
+#Setting switch buttons dodgy reverse drag (settings screen) - report to kivy IRC https://github.com/kivy/kivy/issues/2112
 
 Beta release
 OS X packaging
