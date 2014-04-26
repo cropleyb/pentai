@@ -3,7 +3,7 @@ from kivy.clock import Clock
 
 import time
 import audio as a_m
-#from defines import *
+from defines import *
 
 class GuiClock(object):
     def __init__(self, colour, widget, game):
