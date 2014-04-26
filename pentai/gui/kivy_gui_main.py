@@ -41,6 +41,13 @@ class PentAIApp(App):
     def __init__(self, *args, **kwargs):
         self.debug = False
         super(PentAIApp, self).__init__(*args, **kwargs)
+        #if True:
+        if not "db.fs" in os.listdir(self.user_data_dir):
+            print "Copying db"
+            import shutil
+            dest = self.user_data_dir
+            for fn in ["db.fs", "db.fs.index", "db.fs.tmp"]:
+                shutil.copy(fn, dest)
 
     def display_error(self, message):
         self.popup = MessagePopup(title='Error', content=Label(text=message, font_size='20sp'), \
@@ -261,12 +268,6 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
-        if not "db.fs" in os.listdir(self.user_data_dir):
-            print "Copying db"
-            import shutil
-            dest = self.user_data_dir
-            for fn in ["db.fs", "db.fs.index", "db.fs.tmp"]:
-                shutil.copy(fn, dest)
 
         ini_file = "pentai.ini"
         ini_path = os.path.join(self.user_data_dir, ini_file)
@@ -274,6 +275,12 @@ class PentAIApp(App):
             print "Copying ini"
             import shutil
             shutil.copy(ini_file, ini_path)
+
+        # Assign to self.config so all screens can get at it.
+        self.config = ConfigParser()
+        self.config.read(ini_path)
+
+        self.audio = a_m.Audio(self.config)
 
         root = ps_m.PScreenManager()
         self.root = root
@@ -287,19 +294,13 @@ class PentAIApp(App):
 
         self.add_screen(IntroScreen, "Intro")
 
-        # Assign to self.config so all screens can get at it.
-        self.config = ConfigParser()
-        self.config.read(ini_path)
-
-        self.audio = a_m.Audio(self.config)
-        self.audio.schedule_music()
-
         Clock.schedule_once(self.create_screens, .5)
         return root
 
     def create_screens(self, ignored):
         root = self.root
         intro_screen = root.get_screen("Intro")
+        self.audio.schedule_music()
 
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
