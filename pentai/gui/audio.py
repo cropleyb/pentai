@@ -8,6 +8,7 @@ import glob as g_m
 from os.path import dirname, join, basename
 import random
 from pentai.db.misc_db import get_instance as m_m
+from pentai.base.defines import *
 
 instance = None
 
@@ -22,6 +23,7 @@ class Audio():
         self.last_played = {}
         self.muted = False
         self.demo_volume = 1.0
+        self.current_music_sound = None
 
         global instance
         instance = self
@@ -132,6 +134,11 @@ class Audio():
     def play_music(self, *ignored):
         if self.muted:
             return
+
+        cms = self.current_music_sound
+        if cms and cms.state == "play":
+            return
+
         vol = self.config.get("PentAI", "music_volume")
 
         while True:
@@ -157,12 +164,12 @@ class Audio():
         self.adjust_music_volume()
         self.current_music_sound.play()
 
-        # length of a sound may be 0 when it has just been loaded.
-        # 3 seconds also serves as a track divider.
-        Clock.schedule_once(self.schedule_music, 3.0)
-
     def schedule_music(self, *ignored):
-        Clock.schedule_once(self.play_music, self.current_music_sound.length)
+        self.play_music()
+        Clock.schedule_interval(self.start_music_soon, .5)
+
+    def start_music_soon(self, *ignored):
+        Clock.schedule_once(self.play_music, 2.5)
 
     def get_current_track_name(self):
         return self.current_track_name

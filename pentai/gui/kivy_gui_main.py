@@ -292,7 +292,7 @@ class PentAIApp(App):
         self.config.read(ini_path)
 
         self.audio = a_m.Audio(self.config)
-        self.audio.play_music()
+        self.audio.schedule_music()
 
         Clock.schedule_once(self.create_screens, .5)
         return root
