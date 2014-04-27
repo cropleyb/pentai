@@ -6,6 +6,7 @@ from persistent import Persistent
 from persistent.mapping import PersistentMapping as ZM
 from persistent.list import PersistentList as ZL
 import transaction
+import zc.zlibstorage
 
 """
 TODO:
@@ -19,7 +20,8 @@ conn = None
 def set_db(filename):
     global db, zdbroot, conn
 
-    storage = FileStorage.FileStorage(filename)
+    storage = zc.zlibstorage.ZlibStorage(
+                        FileStorage.FileStorage(filename))
     db = DB(storage)
     conn = db.open()
     zdbroot = conn.root()
