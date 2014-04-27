@@ -8,7 +8,6 @@ Test how long opening move selection is taking with prints
 Build openings DB (and the rest of the db) after deployment.
 BadPickleGet: Try to reproduce with an ai sub-system test?
 Use ZODB on iPad... clean up and put in Kivy's Garden. Include test
-"J10" style position report from error message
 Get pentai onto Lachie's iPad
 # Add libpente.a to the link line from tools scripts?
 Load lots of top games from pente.org (python downloading script) Contact Hasbro again? By registered snail mail?
