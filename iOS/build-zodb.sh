@@ -6,7 +6,7 @@ cd $TMPROOT
 
 mkdir -p bciosbuild bcinst
 
-PKGS="transaction BTrees persistent zc.lockfile ZConfig zdaemon zope.event zope.interface zope.proxy zope.testing six zodb"
+PKGS="transaction BTrees persistent zc.lockfile ZConfig zdaemon zope.event zope.interface zope.proxy zope.testing six zodb zc.zlibstorage"
 
 # Download (build, install, clean)
 # bypass download
@@ -46,7 +46,8 @@ do
     #find iosbuild | grep -E '.*\.(py|pyc|so\.o|so\.a|so\.libs|.pth|.egg-info)$$' | xargs rm
     try cp -a iosbuild/usr/local/lib/python2.7/site-packages/* "$BUILDROOT/python/lib/python2.7/site-packages"
     cd $BUILDROOT/python/lib/python2.7/site-packages
-    zip -r ../../python27.zip $p
+	p_path=`echo $p | sed 's/\./\//g'`
+    zip -r ../../python27.zip $p_path
 	popd
 done
 
