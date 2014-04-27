@@ -166,10 +166,10 @@ class Audio():
 
     def schedule_music(self, *ignored):
         self.play_music()
-        Clock.schedule_interval(self.start_music_soon, .5)
+        Clock.schedule_interval(self.start_music_soon, 2.0)
 
     def start_music_soon(self, *ignored):
-        Clock.schedule_once(self.play_music, 2.5)
+        Clock.schedule_once(self.play_music, 1.5)
 
     def get_current_track_name(self):
         return self.current_track_name
