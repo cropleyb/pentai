@@ -78,10 +78,10 @@ class GameState(object):
     def make_move(self, move_pos):
         if self.board.off_board(move_pos):
             raise IllegalMoveException("Position %s is off the board" % \
-                    (move_pos,))
+                    b_m.pos2str(move_pos))
         if self.board.get_occ(move_pos) > 0:
             raise IllegalMoveException("Position %s is already occupied" % \
-                    (move_pos,))
+                    b_m.pos2str(move_pos))
         if self._won_by != EMPTY:
             raise IllegalMoveException("The game is already over")
 

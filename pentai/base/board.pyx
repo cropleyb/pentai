@@ -65,3 +65,12 @@ class Board(object):
             # We maintain the board position in four ways, update them all
             s.set_occ(pos, colour)
 
+import string
+COL_NAMES = string.ascii_uppercase.replace('i','')[:25]
+
+def pos2str(pos):
+    x, y = pos
+    ret = "%s%s" % (COL_NAMES[x], y)
+    return ret
+
+
