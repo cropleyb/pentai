@@ -1,9 +1,12 @@
 Letter from Prof. Rosenthal that I can't work
-Disability solicitor
+Disability solicitor: Maurice Blackburn?
 
 For Alpha release
 
 
+Test how long opening move selection is taking with prints
+ZODB storage space usage: optimise?
+Build openings DB (and the rest of the db) after deployment.
 BadPickleGet: Try to reproduce with an ai sub-system test?
 Use ZODB on iPad... clean up and put in Kivy's Garden
 Get pentai onto Lachie's iPad
