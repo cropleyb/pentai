@@ -151,7 +151,7 @@ class Audio():
             music_file_pattern = join("media", "music", str(pn))
             filenames = g_m.glob("%s.*.ogg" % music_file_pattern)
             try:
-                filename = filenames[0] # Should be 1
+                filename = filenames[0] # Should be only 1 track per track num.
                 self.current_track_name = filename.split('.')[1]
                 # Found one, quit looping
                 break
