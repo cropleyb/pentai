@@ -44,8 +44,7 @@ Thanks go to:
 - Annette Campbell for inspiring me to write this in the first place
 - Sascha, Jespah and Arwen for their comments on "The Sod"
 - The Kivy team for lots of help with their excellent toolset
-- Lots of other people for their support and feedback
-"""
+- Lots of other people for their support and feedback"""
         self.about_text6 = \
 """
 Enjoy,
