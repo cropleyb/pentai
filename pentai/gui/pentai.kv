@@ -86,14 +86,38 @@
                 text: "Load"
                 on_release: root.load_game()
 
-<ScrollableLabel>:
-    Label:
+<SLPart@Label>:
+    size_hint_y: None
+    text_size: (.95 * root.width), None
+    height: self.texture_size[1]
+    markup: True
+
+<ScrollableLabel@ScrollView>:
+    size_hint_y: .8
+    GridLayout:
+	    # This GridLayout and its children are due to an issue with
+        # Kivy textures that are cannot be allocated because they are too big:
+        # https://github.com/kivy/kivy/issues/2119
+        id: gl_id
+        cols: 1
+        size_hint_x: 1
+        height: self.minimum_height
         size_hint_y: None
-        height: self.texture_size[1]
-        text_size: (.95 * self.width), None
-        text: root.text
-        markup: True
-        id: label_id
+        SLPart:
+            text: root.text1
+            id: label1_id
+        SLPart:
+            text: root.text2
+            id: label2_id
+        SLPart:
+            text: root.text3
+        SLPart:
+            text: root.text4
+        SLPart:
+            text: root.text5
+        SLPart:
+            text: root.text6
+
 
 <MenuScreen>:
     GridLayout:
@@ -105,9 +129,14 @@
         SettingSpacer:
     
         ScrollableLabel:
-            text: root.about_text
-            size_hint_y: .7
-            id: about_id
+            id: gl_id
+            size_hint_x: 1
+            text1: root.about_text1
+            text2: root.about_text2
+            text3: root.about_text3
+            text4: root.about_text4
+            text5: root.about_text5
+            text6: root.about_text6
     
         GridLayout:
             cols: 1
@@ -214,7 +243,7 @@
 
         GridLayout:
             cols: 2
-            size_hint_y: .8
+            size_hint_y: .75
 
             MyCategoryLabel:
                 text: "Black Player"
