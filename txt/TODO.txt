@@ -2,16 +2,18 @@ Letter from Prof. Rosenthal that I can't work
 Disability solicitor: Maurice Blackburn?
 
 For Alpha release
+Contact Hasbro again? By registered snail mail?
+Update kivy version? or just hack?
 
-
-Test how long opening move selection is taking with prints
+Text wrapping - spaces at start of line -> go to RST?
 Build openings DB (and the rest of the db) after deployment.
+Load lots of top games from pente.org (python downloading script)
+Test how long opening move selection is taking with prints
 BadPickleGet: Try to reproduce with an ai sub-system test?
 Use ZODB on iPad... clean up and put in Kivy's Garden. Include test
 Get pentai onto Lachie's iPad
 # Add libpente.a to the link line from tools scripts?
-Load lots of top games from pente.org (python downloading script) Contact Hasbro again? By registered snail mail?
-Remove "Winning Ways" link?
+Remove "Winning Ways" link
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 # Scatter controls (two finger tap on arrow image) - red circle: Hide? Reported https://github.com/kivy/kivy/issues/2111
 Game selection screen 2 rows on iOS: Pull request
