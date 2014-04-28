@@ -686,7 +686,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 self.remove_widget(self.marker)
                 self.marker = None
                 return True
-            self.marker.pos = self.snap_to_grid(touch.pos)
+            try:
+                self.marker.pos = self.snap_to_grid(touch.pos)
+            except OffBoardException:
+                return True
             self.add_widget(self.marker)
         else:
             self.display_error("It is not your turn!")
