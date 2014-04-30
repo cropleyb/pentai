@@ -655,5 +655,38 @@ Optional Music
 / Barbells
 / Desert Crossing
 / Direction
+(had to prune a few for space)
 
+Openings book translational symmetry
+------------------------------------
+9x9, 13x13, 19x19
+Once a board position comes within 5 intersections of an edge, it becomes incapable of being equivalently shifted in that dimension.
+Let's say that if if is past that point on both sides, it is equivalent.
+|
+|
+|
+| . . . . X
+|
+|
+|
+At least one piece is within 5 intersections of the edge -> untranslatable in x
+
+If it is over that on both sides, we'll assume it is equivalent.
+|
+|
+|
+| . . . . . . X
+|
+|
+|
+
+~==
+
+|
+|
+|
+| . . . . . X
+|
+|
+|
 
