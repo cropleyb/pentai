@@ -1,26 +1,23 @@
 Letter from Prof. Rosenthal that I can't work
-Disability solicitor: Maurice Blackburn?
+Disability solicitor: Maurice Blackburn 1800 173 657
 
 For Alpha release
 Contact Hasbro again? By registered snail mail?
 Update kivy version? or just hack?
 
-Text wrapping - spaces at start of line -> go to RST?
+Merge mathams text branch into a master branch
+Investigate Test Flight
 Build openings DB (and the rest of the db) after deployment.
 Load lots of top games from pente.org (python downloading script)
 Test how long opening move selection is taking with prints
 BadPickleGet: Try to reproduce with an ai sub-system test?
-Use ZODB on iPad... clean up and put in Kivy's Garden. Include test
+Use ZODB on iPad... clean up and put on a branch. Include test
 Get pentai onto Lachie's iPad
 # Add libpente.a to the link line from tools scripts?
-Remove "Winning Ways" link
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 # Scatter controls (two finger tap on arrow image) - red circle: Hide? Reported https://github.com/kivy/kivy/issues/2111
 Game selection screen 2 rows on iOS: Pull request
-Upgrade to master branch for ios's kivy
 radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC? Check mainline
-Menu "about" text missing on iOS due to size of text (fixed on mainline?)
-Negative Padding on new setting screen on iOS - Fixed in kivy mainline
 
 Beta release
 OS X packaging
@@ -102,6 +99,7 @@ Update kivy to remove need for:
    /Applications/Kivy.app/Contents/Resources/kivy/kivy/tools/packaging/pyinstaller_hooks hack
 Patch DB from http://code.activestate.com/recipes/576642/ comments
 Get permission from Hasbro? Asked pente.net webmaster 8 Jan 2014
+Asked Hasbro (2nd time) 29/4/2014, deadline: 18/5/2014
 
 Apple Dev support 1300 068 387
 Apple support 1300 321 456
