@@ -46,17 +46,6 @@ class StandardiseTest(unittest.TestCase):
         self.assertEqual(brd.get_occ((4,3)), BLACK)
         self.assertEqual(brd.get_occ((4,5)), WHITE)
 
-    def test_diagonal_flip(self):
-        """ i.e. swap x and y """
-        self.game.load_moves("1. (0,0)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
-        gdf = diagonal_flip(self.game.current_state)
-        brd = gdf.get_board()
-
-        self.assertEqual(brd.get_occ((0,0)), BLACK)
-        self.assertEqual(brd.get_occ((3,3)), WHITE)
-        self.assertEqual(brd.get_occ((4,3)), BLACK)
-        self.assertEqual(brd.get_occ((4,5)), WHITE)
-
     def test_diagonal_then_page(self):
         self.game.load_moves("1. (0,0)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         gdf = diagonal_flip(self.game.current_state)
