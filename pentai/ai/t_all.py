@@ -25,6 +25,8 @@ def suite():
     iam("t_priority_filter")
     iam("t_priority_filter_2")
     iam("t_ai_genome")
+    iam("t_rot_standardise")
+    iam("t_trans_standardise")
     iam("t_standardise")
     iam("t_openings_mover")
 

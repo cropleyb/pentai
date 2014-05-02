@@ -101,12 +101,15 @@ class AIPlayer(p_m.Player):
 
     def make_opening_move(self, seen):
         if self.use_openings_book():
+            print "Looking for an opening book move"
             base_game = self.ab_game.base_game
 
             om = self.get_openings_mover()
             move = om.get_a_good_move(self, seen)
             if move:
+                print "Found an opening book move"
                 return move
+        print "Didn't find an opening book move"
 
     def do_the_search(self):
         try:
