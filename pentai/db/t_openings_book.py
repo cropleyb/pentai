@@ -259,6 +259,40 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(moves), 1)
         self.assertEquals(moves[0], ((5,4), [self.game]))
 
+class TranslationalSymmetryTest(unittest.TestCase):
+    def setUp(self):
+        self.rules = Rules(19, "5")
+        self.games_mgr = GamesMgr()
+        p1 = Player("BC")
+        p2 = Player("Whoever")
+        self.game = self.games_mgr.create_game(self.rules, p1, p2)
+        self.ob = OpeningsBook(self.games_mgr)
+
+    def tearDown(self):
+        z_m.delete_all_dangerous()
+
+    def load_moves_and_set_win(self, moves, winner=BLACK):
+        self.game.load_moves(moves)
+        self.game.current_state.set_won_by(winner)
+
+    def atest_translation_away_from_edges(self):
+        # TODO
+        self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n")
+        self.ob.add_game(self.game)
+
+        # Pick a spot slightly away from the centre
+        g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
+        g2.load_moves("1. (8,8)\n")
+
+        moves = list(self.ob.get_move_games(g2))
+
+        self.assertEquals(len(moves), 1)
+        possibilities = [[(7,8), [self.game]],
+                         [(8,7), [self.game]],
+                         [(9,8), [self.game]],
+                         [(8,9), [self.game]]]
+        self.assertIn(moves[0], possibilities)
+
     # TODO: rules types delegation tests
 
 if __name__ == "__main__":
