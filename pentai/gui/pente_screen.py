@@ -104,6 +104,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.stones_by_board_pos = {}
         self.remove_ghosts()
         self.cancel_confirmation()
+        self.captured_widgets = [None, [], []]
 
     # GuiPlayer
     def setup_turn_markers(self):
@@ -320,7 +321,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.clean_board()
 
     def after_set_occ(self, game, pos, colour):
-        #st()
         self.make_move_on_the_gui_board(pos, colour)
 
         if colour:
