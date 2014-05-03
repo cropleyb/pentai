@@ -4,7 +4,6 @@ from pentai.base.game_state import *
 
 def shift(orig_state):
     state = GameState(orig_state.game, parent=orig_state)
-    #e_strips = state.board.d_strips[0].strips
     brd = state.board
     east_occs = brd.d_strips[0].strips
     south_occs = brd.d_strips[2].strips
@@ -19,18 +18,18 @@ def shift(orig_state):
             leftmost = i
         if lowest == 0 and east_occs[i] > 0:
             lowest = i
-        if south_occs[i] > rightmost:
+        if south_occs[i] > 0 and i > rightmost:
             rightmost = i
-        if east_occs[i] > highest:
+        if east_occs[i] > 0 and i > highest:
             highest = i
 
     l_shift = 0
     d_shift = 0
 
-    if leftmost > 5 and rightmost < board_size - 4:
-        l_shift = leftmost - 6
-    if lowest > 5 and highest < board_size - 4:
-        d_shift = lowest - 6
+    if leftmost > 5 and rightmost < board_size - 5:
+        l_shift = leftmost - 5
+    if lowest > 5 and highest < board_size - 5:
+        d_shift = lowest - 5
 
     east_occs = east_occs[d_shift:]
     l_factor = 4 ** l_shift
@@ -39,4 +38,3 @@ def shift(orig_state):
     
     return state, l_shift, d_shift
     
-

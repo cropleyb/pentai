@@ -17,9 +17,9 @@ class TransStandardiseTest(unittest.TestCase):
         std, x, y = shift(self.game.current_state)
 
         brd = std.get_board()
-        self.assertEqual(x, 4)
-        self.assertEqual(y, 4)
-        self.assertEqual(brd.get_occ((6,6)), BLACK)
+        self.assertEqual(x, 5)
+        self.assertEqual(y, 5)
+        self.assertEqual(brd.get_occ((5,5)), BLACK)
 
     def test_dont_shift(self):
         self.game.load_moves("1. (5, 5)\n")
@@ -35,9 +35,9 @@ class TransStandardiseTest(unittest.TestCase):
         std, x, y = shift(self.game.current_state)
 
         brd = std.get_board()
-        self.assertEqual(x, 1)
+        self.assertEqual(x, 2)
         self.assertEqual(y, 0)
-        self.assertEqual(brd.get_occ((6,5)), BLACK)
+        self.assertEqual(brd.get_occ((5,5)), BLACK)
 
     def test_only_shift_y(self):
         self.game.load_moves("1. (5, 7)\n")
@@ -45,59 +45,59 @@ class TransStandardiseTest(unittest.TestCase):
 
         brd = std.get_board()
         self.assertEqual(x, 0)
-        self.assertEqual(y, 1)
-        self.assertEqual(brd.get_occ((5,6)), BLACK)
+        self.assertEqual(y, 2)
+        self.assertEqual(brd.get_occ((5,5)), BLACK)
 
     def test_only_shift_y_because_of_right_edge(self):
-        self.game.load_moves("1. (7, 7)\n2. (15, 7)")
+        self.game.load_moves("1. (7, 7)\n2. (14, 7)")
         std, x, y = shift(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(x, 0)
-        self.assertEqual(y, 1)
-        self.assertEqual(brd.get_occ((7,6)), BLACK)
-        self.assertEqual(brd.get_occ((15,6)), WHITE)
+        self.assertEqual(y, 2)
+        self.assertEqual(brd.get_occ((7,5)), BLACK)
+        self.assertEqual(brd.get_occ((14,5)), WHITE)
 
     def test_only_shift_x_because_of_top_edge(self):
-        self.game.load_moves("1. (7, 7)\n2. (7, 15)")
+        self.game.load_moves("1. (7, 7)\n2. (7, 14)")
         std, x, y = shift(self.game.current_state)
 
         brd = std.get_board()
-        self.assertEqual(x, 1)
+        self.assertEqual(x, 2)
         self.assertEqual(y, 0)
-        self.assertEqual(brd.get_occ((6,7)), BLACK)
-        self.assertEqual(brd.get_occ((6,15)), WHITE)
+        self.assertEqual(brd.get_occ((5,7)), BLACK)
+        self.assertEqual(brd.get_occ((5,14)), WHITE)
 
     def test_shift_a_few_both_ways(self):
         self.game.load_moves("1. (8, 7)\n2. (8, 10)\n3. (9, 11)")
         std, x, y = shift(self.game.current_state)
 
         brd = std.get_board()
-        self.assertEqual(x, 2)
-        self.assertEqual(y, 1)
-        self.assertEqual(brd.get_occ((6,6)), BLACK)
-        self.assertEqual(brd.get_occ((6,9)), WHITE)
-        self.assertEqual(brd.get_occ((7,10)), BLACK)
+        self.assertEqual(x, 3)
+        self.assertEqual(y, 2)
+        self.assertEqual(brd.get_occ((5,5)), BLACK)
+        self.assertEqual(brd.get_occ((5,8)), WHITE)
+        self.assertEqual(brd.get_occ((6,9)), BLACK)
 
     def test_shift_left_in_spite_of_right_edge(self):
-        self.game.load_moves("1. (7, 5)\n2. (14, 5)")
+        self.game.load_moves("1. (7, 5)\n2. (13, 5)")
         std, x, y = shift(self.game.current_state)
 
         brd = std.get_board()
-        self.assertEqual(x, 1)
+        self.assertEqual(x, 2)
         self.assertEqual(y, 0)
-        self.assertEqual(brd.get_occ((6,5)), BLACK)
-        self.assertEqual(brd.get_occ((13,5)), WHITE)
+        self.assertEqual(brd.get_occ((5,5)), BLACK)
+        self.assertEqual(brd.get_occ((11,5)), WHITE)
 
     def test_shift_down_in_spite_of_top_edge(self):
-        self.game.load_moves("1. (5, 9)\n2. (5, 14)")
+        self.game.load_moves("1. (5, 9)\n2. (5, 13)")
         std, x, y = shift(self.game.current_state)
 
         brd = std.get_board()
         self.assertEqual(x, 0)
-        self.assertEqual(y, 3)
-        self.assertEqual(brd.get_occ((5,6)), BLACK)
-        self.assertEqual(brd.get_occ((5,11)), WHITE)
+        self.assertEqual(y, 4)
+        self.assertEqual(brd.get_occ((5,5)), BLACK)
+        self.assertEqual(brd.get_occ((5,9)), WHITE)
 
 if __name__ == "__main__":
     unittest.main()
