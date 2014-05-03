@@ -104,7 +104,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.stones_by_board_pos = {}
         self.remove_ghosts()
         self.cancel_confirmation()
-        self.captured_widgets = [None, [], []]
+        for colour in (BLACK, WHITE):
+            self.remove_captured_widgets(colour)
 
     # GuiPlayer
     def setup_turn_markers(self):
@@ -344,6 +345,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def get_audio(self):
         return a_m.instance
 
+    def remove_captured_widgets(self, colour):
+        cw = self.captured_widgets[colour]
+
+        while len(cw) > 0:
+            w = cw.pop()
+            self.remove_widget(w)
+
     # KivyPlayer
     def update_captures(self, colour, captured):
         """ Update the display of captured stones below the board """
@@ -354,9 +362,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         if len(cw) != captured:
             # It has changed. Remove them all first
-            while len(cw) > 0:
-                w = cw.pop()
-                self.remove_widget(w)
+            self.remove_captured_widgets(colour)
+
             # We capture pieces of the opposite colour
             filename = ["", black_filename, white_filename] \
                     [opposite_colour(colour)]
