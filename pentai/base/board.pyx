@@ -36,7 +36,10 @@ class Board(object):
         size = self.size
         rep = '\n'
         for j in range(size-1,-1,-1):
-            line = [ ['.','B','W'][self.d_strips[0].get_occ((i,j))] for i in range(size) ]
+            try:
+                line = [ ['.','B','W'][self.d_strips[0].get_occ((i,j))] for i in range(size) ]
+            except IndexError:
+                line = ['-']
             rep = rep + ' '.join(line) + '\n'
         return rep
  
