@@ -124,7 +124,7 @@ def get_operation(ind, size):
     except IndexError:
         pass
 
-def standardise(orig_state):
+def rot_possibilities(orig_state):
     state = GameState(orig_state.game, parent=orig_state)
     possibilities = [(state, fwd0, rev0)]
 
@@ -136,7 +136,11 @@ def standardise(orig_state):
         operation(state)
         possibilities.append((state, fwd, rev))
 
-    #st()
+    return possibilities
+
+def standardise(orig_state): # Test code only
+    possibilities = rot_possibilities(orig_state)
+
     pb = [(p[0].board.d_strips[0].strips, p) for p in possibilities]
 
     s = min(pb)[1]
