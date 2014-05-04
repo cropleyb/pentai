@@ -690,3 +690,23 @@ If it is over that on both sides, we'll assume it is equivalent.
 |
 |
 
+Big openings book
+-----------------
+1. Package openings games in zip file
+2. Unzip it into data directory/openings/??
+3. On start up, process a number of games, to add to the openings book.
+
+Make sure this is only included in one of the copies of the pente directory.
+
+Put all games in the same openings book?
+9x9 - scrap? don't allow?
+5 in a row - scrap?
+tournament rule - filter out illegal moves on P1's second
+13x13 using 19x19? Games that are too wide will not match.
+Check that trans_standardise cuts them to the same size
+Separate positions per move number? can't hurt? Removes need for captured stones
+
+Does rot std followed by trans std always give a canonical position?
+        Add: (0L, 0L, 0L, 0L, 0L, 2048L, 0L, 4096L, 0L, 65536L)
+        Get: (0L, 0L, 0L, 0L, 0L, 2048L, 16384L, 0L, 262144L)
+Must do both rot and trans before selecting the minimum or maximum as the std.
