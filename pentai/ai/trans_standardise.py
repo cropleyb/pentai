@@ -10,13 +10,13 @@ def shift(orig_state):
 
     board_size = brd.get_size()
 
-    leftmost = rightmost = 0
-    lowest = highest = 0
+    leftmost = rightmost = -1
+    lowest = highest = -1
 
     for i in range(board_size):
-        if leftmost == 0 and south_occs[i] > 0:
+        if leftmost < 0 and south_occs[i] > 0:
             leftmost = i
-        if lowest == 0 and east_occs[i] > 0:
+        if lowest < 0 and east_occs[i] > 0:
             lowest = i
         if south_occs[i] > 0 and i > rightmost:
             rightmost = i
