@@ -12,6 +12,9 @@ class DirectionStrips(object):
     def __init__(self, board_size, clone=False):
         self.set_up_strips(board_size)
 
+    def _override(self, strips):
+        self.strips = list(strips)
+
     # This method is only used for unit testing of the setting functions, AFAIK
     def get_occ_list(self, move_pos, board_size):
         # We only want the strip (in this direction) that goes through 'pos'
