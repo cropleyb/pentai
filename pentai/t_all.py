@@ -6,8 +6,7 @@ import pentai.base.t_all as b_t
 import pentai.ai.t_all as ai_t
 import pentai.db.t_all as db_t
 import pentai.db.zodb_dict as z_m
-
-import os
+import pentai.db.test_db as tdb_m
 
 def suite():
     global all_tests
@@ -19,14 +18,8 @@ def suite():
     return all_tests
 
 def main():
-    z_m.set_db("test.db")
-
     unittest.TextTestRunner().run(suite())
-    
-    os.unlink("test.db")
-    os.unlink("test.db.lock")
-    os.unlink("test.db.tmp")
-    os.unlink("test.db.index")
 
 if __name__ == "__main__":
     main()
+    tdb_m.delete_test_db()
