@@ -19,6 +19,9 @@ class PreservedGame():
     def key(self):
         return self.game_id
 
+    def __eq__(self, other):
+        return self.key() == other.key()
+
     def get_rating(self, colour):
         try:
             return self.ratings[colour]
