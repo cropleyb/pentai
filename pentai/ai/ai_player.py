@@ -109,7 +109,8 @@ class AIPlayer(p_m.Player):
             if move:
                 print "Found an opening book move"
                 return move
-        print "Didn't find an opening book move"
+            else:
+                print "Didn't find an opening book move"
 
     def do_the_search(self):
         try:
