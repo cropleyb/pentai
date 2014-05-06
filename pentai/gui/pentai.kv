@@ -10,12 +10,12 @@
 <SectionLabel@Label>:
     color: (0.5,0.5,0.5,1)
 
-<SmallLabel@Label>:
+<SmallLabel>:
     font_size: my.dp(20)
     padding_x: my.dp(20)
     text_size: self.size
 
-<TinyLabel@Label>:
+<TinyLabel>:
     font_size: my.dp(15)
     text_size: self.size
     padding_x: my.dp(20)
@@ -34,7 +34,7 @@
 <CheckBoxList>:
     cols: 2
 
-<ClickLabel@Label>:
+<ClickLabel>:
     halign: 'center'
     text_size: self.width, None
 
@@ -93,7 +93,7 @@
     strip: False
     markup: True
 
-<ScrollableLabel@ScrollView>:
+<ScrollableLabel>:
     size_hint_y: .8
     GridLayout:
 	    # This GridLayout and its children are due to an issue with
@@ -494,7 +494,7 @@
                 text: "Help"
                 on_release: root.show_help()
 
-<ReviewButtons@GridLayout>:
+<ReviewButtons>:
     size_hint_x: .3
     cols: 1
     MyButton:
