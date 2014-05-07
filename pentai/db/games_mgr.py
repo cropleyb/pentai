@@ -22,6 +22,10 @@ class GamesMgr(gso_m.GSObserver):
             rk = key.rules.key()
         elif key.__class__ is tuple:
             rk = key[0]
+        elif key.__class__ is int and key > 1000000:
+            # Test for key >= very large number?
+            # -> is from Openings DB
+            rk = [19,'s']
         else:
             try:
                 rk = self.id_lookup[key]
@@ -49,22 +53,30 @@ class GamesMgr(gso_m.GSObserver):
         game_db = self.get_db(key)
         if game_db is None:
             # No such game
+            print "No such game: %s" % key
             return
         
-        del game_db[key]
-        zd_m.sync()
+        try:
+            del game_db[key]
+        except KeyError:
+            # Corrupt DB, ignore
+            print "No such game: %s" % key
+            pass
 
         try:
             del self.unfinished_db[key]
-            zd_m.sync()
         except KeyError:
+            print "game not in unfinished_db: %s" % key
+            print type(key)
             pass
 
         try:
             del self.id_lookup[key]
-            zd_m.sync()
         except KeyError:
+            print "game not in id_lookup: %s" % key
+            print key
             pass
+        zd_m.sync()
 
     def get_db(self, key):
         if key is None:
@@ -88,7 +100,8 @@ class GamesMgr(gso_m.GSObserver):
             curr_id = 0
         curr_id += 1
         self.id_lookup["id"] = curr_id
-        #zd_m.sync() Don't need to sync until it's saved
+
+        # Don't need to sync until it's saved
         return curr_id
 
     def create_game(self, rules=None, p1=None, p2=None):
@@ -141,6 +154,7 @@ class GamesMgr(gso_m.GSObserver):
     def get_all_unfinished(self):
         ret = []
         for g_id in self.unfinished_db.iterkeys():
+            print "get_all_unfinished: %s" % g_id
             g = self.get_game(g_id, update_cache=False)
             ret.append(g)
         return ret
@@ -165,7 +179,10 @@ class GamesMgr(gso_m.GSObserver):
             if game_db is None:
                 return None
 
-        pg = game_db[g_id]
+        try:
+            pg = game_db[g_id]
+        except KeyError:
+            return None
 
         return pg
 
