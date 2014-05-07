@@ -21,3 +21,6 @@ class UnknownRuleType(Exception):
 
 class OpeningsBookDuplicateException(Exception):
     pass
+
+class ParseException(Exception):
+    pass
