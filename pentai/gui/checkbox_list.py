@@ -59,14 +59,18 @@ class CheckBoxList(GridLayout):
             first = False
 
     def label_clicked(self, l):
+        print "CheckBoxList: label_clicked"
         self.set_active(l.text)
 
     def on_checkbox_active(self, checkbox, value):
+        print "CheckBoxList: on_checkbox_active"
         if checkbox.active:
+            print "CheckBoxList: on_checkbox_active True"
             self.val = checkbox.val
 
     def set_active(self, val):
         """ Set the active value from other python code. """
+        print "CheckBoxList: set_active"
         old = self.widgets_by_val[str(self.val)]
         old.active = False
 
