@@ -5,7 +5,10 @@ For Alpha release
 Contact Hasbro again? By registered snail mail?
 Update kivy version? or just hack?
 
-Merge mathams text branch into a master branch
+Demo - "is already occupied"
+
+Hang when finishing with Escape?
+radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC?
 Investigate Test Flight
 Build openings DB (and the rest of the db) after deployment.
 Load lots of top games from pente.org (python downloading script)
@@ -15,9 +18,6 @@ Use ZODB on iPad... clean up and put on a branch. Include test
 Get pentai onto Lachie's iPad
 # Add libpente.a to the link line from tools scripts?
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
-# Scatter controls (two finger tap on arrow image) - red circle: Hide? Reported https://github.com/kivy/kivy/issues/2111
-Game selection screen 2 rows on iOS: Pull request
-radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC? Check mainline
 
 Beta release
 OS X packaging
@@ -103,3 +103,4 @@ Asked Hasbro (2nd time) 29/4/2014, deadline: 18/5/2014
 
 Apple Dev support 1300 068 387
 Apple support 1300 321 456
+
