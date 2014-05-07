@@ -21,8 +21,8 @@ class OpeningsBook(object):
         global instance
         instance = self
 
-    def add_openings(self):
-        obl_m.build(self)
+    def add_openings(self, user_data_dir):
+        obl_m.build(self, user_data_dir)
 
     def get_filename(self, g):
         return "move%s" % g.get_move_number()

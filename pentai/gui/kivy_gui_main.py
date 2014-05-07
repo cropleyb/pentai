@@ -291,8 +291,10 @@ class PentAIApp(App):
 
         self.games_mgr = GamesMgr()
         self.openings_book = ob_m.OpeningsBook(self.games_mgr)
-
+        
         self.add_screen(IntroScreen, "Intro")
+
+        self.openings_book.add_openings(self.user_data_dir)
 
         Clock.schedule_once(self.create_screens, .5)
         return root
@@ -320,7 +322,7 @@ class PentAIApp(App):
         self.popup = None
 
         self.show_menu_screen()
-    
+
     def set_confirmation_popups(self):
         p_m.ConfirmPopup.bypass = \
             not self.config.getint("PentAI", "confirm_popups")
