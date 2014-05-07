@@ -203,7 +203,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def set_live(self, val):
         if val:
-            if not self.live:
+            if not self.live and not self.game.finished():
                 # Transitioning to live, so get things going
                 self.prompt_for_action()
         else:
@@ -841,6 +841,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
             cls = PlayButtons
             self.go_to_the_end()
             self.start_ticking()
+            '''
+            try:
+                self.go_to_the_end()
+                self.start_ticking()
+            except IllegalMoveException, e:
+                pass
+            '''
         panel_buttons = cls()
         self.panel_buttons = panel_buttons
         panel_buttons.ps = self
