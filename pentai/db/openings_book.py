@@ -70,8 +70,10 @@ class OpeningsBook(object):
         pos_slot = db.setdefault(position_key, ZM())
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
-        assert(standardised_move[0] >= 0)
-        assert(standardised_move[1] >= 0)
+        if standardised_move[0] < 0 or standardised_move[1] < 0:
+            # Off the board - it's probably one of those suicide moves
+            # to finish the game sooner
+            return
         arr = pos_slot.setdefault(standardised_move, ZL())
         if move_number == 1:
             # Should only be in there once per id
