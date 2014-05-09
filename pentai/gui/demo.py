@@ -12,6 +12,7 @@ import pentai.base.game as g_m
 import pentai.ai.ai_genome as aig_m
 import pentai.db.ai_factory as f_m
 import pentai.db.players_mgr as pm_m
+from pentai.base.pente_exceptions import *
 
 import audio as a_m
 
@@ -62,7 +63,7 @@ class Demo():
         try:
             self.sleep_remaining = self.script.next() / self.speed_factor
             self.sleep_remaining = (.8 + .4 * rand_m.random()) * self.sleep_remaining
-        except StopIteration:
+        except (StopIteration, IllegalMoveException):
             self.script = None
             self.sleep_remaining = 0
 
@@ -363,7 +364,7 @@ class Demo():
         s.mm(3, 9)
         yield(0.5)
         play_speech("capt_no_win")
-        yield(3.5)
+        yield(4)
 
         # Demonstrate review mode
         play_speech("review")
