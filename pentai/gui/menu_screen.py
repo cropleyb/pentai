@@ -20,7 +20,7 @@ class MenuScreen(Screen):
         self.ids.gl_id.ids.label1_id.bind(on_ref_press=self.follow_link)
         self.ids.gl_id.ids.label2_id.bind(on_ref_press=self.follow_link)
         self.about_text1 = \
-"""      Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [ref=ww][color=00ffff]Winning Ways[/color][/ref] until recently.
+"""      Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [ref=ww][color=00ffff]Winning Moves[/color][/ref] until recently.
 
       The rules of the game are very simple: The first player to get 5 stones in a straight line wins. Pairs of stones can be captured by placing a stone at each end of the pair. Capturing 5 pairs first also wins. Click "Rules Demo" below!
 """
