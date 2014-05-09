@@ -154,12 +154,12 @@ class Demo():
         yield(.5)
 
         s.mm(6,10)
-        yield(4)
+        yield(3)
 
         # Diagonal white win
         s.app.pente_screen.set_review_mode(False)
         s.game.go_to_the_beginning()
-        yield(2)
+        yield(1)
 
         s.mm(6, 6)
         yield(.5)
@@ -186,7 +186,7 @@ class Demo():
         s.mm(8, 6)
         yield(.8)
         s.mm(8, 2)
-        yield(3.5)
+        yield(2.5)
 
     def rules_script3(s):
         # Captures
@@ -282,7 +282,7 @@ class Demo():
         s.mm(6, 1)
         yield(1)
         s.mm(6, 4)
-        yield(3)
+        yield(2)
 
         # Double capture
         s.mm(7, 6)
@@ -300,7 +300,7 @@ class Demo():
         s.mm(6, 8)
         yield(.5)
         s.mm(4, 6)
-        yield(3)
+        yield(2)
 
     def rules_script5(s):
         # 5 Pairs win the game
@@ -363,7 +363,7 @@ class Demo():
         s.mm(3, 9)
         yield(0.5)
         play_speech("capt_no_win")
-        yield(5)
+        yield(3.5)
 
         # Demonstrate review mode
         play_speech("review")
