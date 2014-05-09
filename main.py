@@ -35,6 +35,10 @@ if __name__ == '__main__':
 
         db_path = os.path.join(pentai_path, "db.fs")
         print "Loading DB from %s" % db_path
+        lockfile_path = db_path + ".lock"
+        if os.path.isfile(lockfile_path):
+            os.unlink(lockfile_path)
+            print "Cleared DB lock"
         z_m.set_db(db_path)
         err_fn = os.path.join(pentai_path, "err.txt")
 
