@@ -147,9 +147,10 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        for game_length in range(2,6):
+        #for game_length in range(2,6):
+        for game_length in range(2,5):
             #for board_size in [13]:
-            for board_size in [9, 13, 19]:
+            for board_size in [13, 19]:
                 for first_player in [0, 1]:
                     self.set_up(game_length)
                     players = [self.p1, self.p2]
