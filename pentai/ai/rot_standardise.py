@@ -47,6 +47,15 @@ def diagonal_flip(state):
 
 # Forward and Reverse operations for an x, y pos, when applying
 # the sequence of operations
+
+operations = None
+last_size = 0
+
+# TODO: cdef
+def w(v):
+    # Wrap to the board width/height
+    return v + last_size - 1
+
 def fwd0(x, y):
     return (x, y)
 
@@ -60,64 +69,53 @@ def rev1(x, y):
     return (y, x)
 
 def fwd2(x, y):
-    return (y, -x)
+    return (y, w(-x))
 
 def rev2(x, y):
-    return (-y, x)
+    return (w(-y), x)
 
 def fwd3(x, y):
-    return (-x, y)
+    return (w(-x), y)
 
 def rev3(x, y):
-    return (-x, y)
+    return (w(-x), y)
 
 def fwd4(x, y):
-    return (-x, -y)
+    return (w(-x), w(-y))
 
 def rev4(x, y):
-    return (-x, -y)
+    return (w(-x), w(-y))
 
 def fwd5(x, y):
-    return (-y, -x)
+    return (w(-y), w(-x))
 
 def rev5(x, y):
-    return (-y, -x)
+    return (w(-y), w(-x))
 
 def fwd6(x, y):
-    return (-y, x)
+    return (w(-y), x)
 
 def rev6(x, y):
-    return (y, -x)
+    return (y, w(-x))
 
 def fwd7(x, y):
-    return (x, -y)
+    return (x, w(-y))
 
 def rev7(x, y):
-    return (x, -y)
+    return (x, w(-y))
 
-operations = None
-last_size = 0
 
 def get_operation(ind, size):
     global operations, last_size
 
     if operations == None or last_size != size:
-        def wrap(func):
-            def w(x, y):
-                xx, yy = func(x, y)
-                if xx < 0:
-                    xx += (size-1)
-                if yy < 0:
-                    yy += (size-1)
-                return xx, yy
-            return w
-        operations = [(diagonal_flip, wrap(fwd1), wrap(rev1)),
-                      (calendar_flip, wrap(fwd2), wrap(rev2)),
-                      (diagonal_flip, wrap(fwd3), wrap(rev3)),
-                      (calendar_flip, wrap(fwd4), wrap(rev4)),
-                      (diagonal_flip, wrap(fwd5), wrap(rev5)),
-                      (calendar_flip, wrap(fwd6), wrap(rev6)),
-                      (diagonal_flip, wrap(fwd7), wrap(rev7))]
+        operations = [(diagonal_flip, fwd1, rev1),
+                      (calendar_flip, fwd2, rev2),
+                      (diagonal_flip, fwd3, rev3),
+                      (calendar_flip, fwd4, rev4),
+                      (diagonal_flip, fwd5, rev5),
+                      (calendar_flip, fwd6, rev6),
+                      (diagonal_flip, fwd7, rev7)]
         last_size = size
     try:
         return operations[ind]
