@@ -21,6 +21,7 @@ class Rules(object):
             self.can_capture_threes = False
             self.exactly_five = False
             self.border_colour = (0.83,0.83,0.83,1)
+            self.tournament_rule = False
         elif tc == 't': # "tournament"
             self.center_first = True
             self.stones_for_capture_win = 10
@@ -28,6 +29,7 @@ class Rules(object):
             self.can_capture_threes = False
             self.exactly_five = False
             self.border_colour = (0.25,0.30,0.60,1)
+            self.tournament_rule = True
         elif tc[:5] == 'k': # "keryo"
             self.center_first = True
             self.stones_for_capture_win = 15
@@ -35,6 +37,7 @@ class Rules(object):
             self.can_capture_threes = True
             self.exactly_five = False
             self.border_colour = (0.45,0.15,0.40,1)
+            self.tournament_rule = False
         elif tc == 'f': # "freestyle"
             self.center_first = False
             self.stones_for_capture_win = 10
@@ -42,6 +45,7 @@ class Rules(object):
             self.can_capture_threes = False
             self.exactly_five = False
             self.border_colour = (0.03,0.43,0.30,1)
+            self.tournament_rule = False
         elif tc == '5': # "five in a row"
             self.center_first = False
             self.stones_for_capture_win = 0 # can capture, but wins are only from 5
@@ -49,6 +53,7 @@ class Rules(object):
             self.can_capture_threes = False
             self.exactly_five = True
             self.border_colour = (0.48,0.08,0.08,1)
+            self.tournament_rule = False
         elif tc == 'n': # captures
             self.center_first = False
             self.stones_for_capture_win = 0
@@ -56,16 +61,26 @@ class Rules(object):
             self.can_capture_threes = False
             self.exactly_five = False
             self.border_colour = (0.90,0.81,0.11,1)
+            self.tournament_rule = False
         else:
             raise UnknownRuleType("%s, %s" % (size, type_str))
 
     def move_is_too_close(self, move_pos):
         if self.type_char != 't':
             return False
+        return self.move_is_near_centre(move_pos)
+
+    def move_is_near_centre(self, move_pos):
         mid = (self.size) / 2
         ab_x = abs(move_pos[0] - mid)
         ab_y = abs(move_pos[1] - mid)
         return ab_x < 3 and ab_y < 3
+
+    def ok_third_move(self, move_pos):
+        near_centre = self.move_is_near_centre(move_pos)
+        if self.type_char == 't':
+            return not near_centre
+        return near_centre
 
     def key(self):
         return (self.size, self.type_char, self.time_control/60)

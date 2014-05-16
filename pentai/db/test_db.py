@@ -14,10 +14,25 @@ init()
 
 def clear_all():
     z_m.delete_all_dangerous()
+    z_m.sync()
+    initialise = False
+    #delete_test_db()
 
 def delete_test_db():
-    os.unlink("test.db")
-    os.unlink("test.db.lock")
-    os.unlink("test.db.tmp")
-    os.unlink("test.db.index")
+    try:
+        os.unlink("test.db")
+    except:
+        pass
+    try:
+        os.unlink("test.db.lock")
+    except:
+        pass
+    try:
+        os.unlink("test.db.tmp")
+    except:
+        pass
+    try:
+        os.unlink("test.db.index")
+    except:
+        pass
 

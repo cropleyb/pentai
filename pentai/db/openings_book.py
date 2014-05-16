@@ -6,23 +6,22 @@ import pentai.base.game as g_m
 import pentai.db.zodb_dict as z_m
 import pentai.ai.standardise as st_m
 import pentai.db.preserved_game as pg_m
-import pentai.db.openings_builder as obl_m
+#import pentai.db.openings_builder as obl_m
 
 ZM = z_m.ZM
 ZL = z_m.ZL
 
 instance = None
 
+OPENINGS_DEPTH = 10
+
 class OpeningsBook(object):
     def __init__(self, games_mgr):
         self.games_mgr = games_mgr
-        self.positions_dbs = ZM()
+        self.positions_dbs = z_m.get_section("openings")
 
         global instance
         instance = self
-
-    def add_openings(self, user_data_dir):
-        obl_m.build(self, user_data_dir)
 
     def get_filename(self, g):
         return "move%s" % g.get_move_number()
@@ -37,9 +36,9 @@ class OpeningsBook(object):
             f = self.positions_dbs[fn] = z_m.get_section(fn)
         return f
 
-    def add_game(self, g):
+    def add_game(self, g, update_cache=True, sync=True):
         # Save the game first, before it is manipulated
-        self.games_mgr.save(g)
+        self.games_mgr.save(g, update_cache=update_cache)
 
         # Copy the game instance as this process munges the game.
         pm = self.games_mgr.players_mgr
@@ -53,20 +52,22 @@ class OpeningsBook(object):
         # when we try to replay the game?! (TODO: Why is this special?)
         g.current_state._won_by = EMPTY
 
-        for mn in range(1, 1+len(g.move_history)):
-            # Only needs to be looked up the first time
+        max_moves = min(OPENINGS_DEPTH, len(g.move_history))
+        for mn in range(1, 1+max_moves):
+            # TODO: Limit the number of moves into the game.
             self.add_position(g, mn)
-        z_m.sync()
+        if sync:
+            z_m.sync()
 
-    def add_position(self, game, move_number, db=None, sync=False):
+    def add_position(self, game, move_number, sync=False):
         game.go_to_move(move_number)
 
         std_state, fwd, rev = st_m.standardise(game.current_state)
         position_key = std_state
-        #print "Add: %s" % (std_state,)
 
         # Get the appropriate section for positions of this rule type and size
         db = self.get_db(game)
+        print "Placing in %s" % (position_key,)
         pos_slot = db.setdefault(position_key, ZM())
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
@@ -96,20 +97,23 @@ class OpeningsBook(object):
 
         options = {}
         try:
-            # TODO
+            print "looking in %s" % (position_key,)
             pos_slot = db[position_key]
-            size = game.size()
+            safe_size = game.size() - 5
+
             for pos, gids in pos_slot.iteritems():
                 x, y = rev(*pos)
-                if x < 0: x += size - 1
-                if y < 0: y += size - 1
 
                 # Convert the game_ids to games
                 for gid in gids:
                     g = self.games_mgr.get_preserved_game(gid, update_cache=False)
                     if g:
+                        if g.get_size() != game.size() and (x > safe_size or y > safe_size):
+                            # Suggested move is too near a far edge, don't suggest it.
+                            continue
                         options.setdefault((x,y),[]).append(g)
-        except KeyError:
+        except KeyError, e:
+            #print "KeyError: %s" % e.message
             return
         for move, games in options.iteritems():
             yield move, games

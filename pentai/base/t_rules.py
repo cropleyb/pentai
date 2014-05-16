@@ -46,17 +46,17 @@ class RulesTest(unittest.TestCase):
         self.assertEquals(r.move_is_too_close((8,9)), False)
         self.assertEquals(r.move_is_too_close((9,8)), False)
 
-    def atest_move_is_too_close_19_tournament(self):
+    def test_move_is_too_close_19_tournament(self):
         r = Rules(19, "tournament")
-        self.assertEquals(r.move_is_too_close((10,10)), True)
+        self.assertEquals(r.move_is_too_close((7,7)), True)
         self.assertEquals(r.move_is_too_close((8,8)), True)
-        self.assertEquals(r.move_is_too_close((7,8)), False)
-        self.assertEquals(r.move_is_too_close((8,7)), False)
-        self.assertEquals(r.move_is_too_close((12,12)), True)
+        self.assertEquals(r.move_is_too_close((9,9)), True)
+        self.assertEquals(r.move_is_too_close((10,10)), True)
+        self.assertEquals(r.move_is_too_close((11,11)), True)
         self.assertEquals(r.move_is_too_close((12,13)), False)
         self.assertEquals(r.move_is_too_close((13,12)), False)
 
-    def atest_move_is_too_close_19_std(self):
+    def test_move_is_too_close_19_std(self):
         r = Rules(19, "standard")
         self.assertEquals(r.move_is_too_close((10,10)), False)
         self.assertEquals(r.move_is_too_close((8,8)), False)
@@ -65,6 +65,27 @@ class RulesTest(unittest.TestCase):
         self.assertEquals(r.move_is_too_close((12,12)), False)
         self.assertEquals(r.move_is_too_close((12,13)), False)
         self.assertEquals(r.move_is_too_close((13,12)), False)
+
+    def test_tournament_move_not_ok(self):
+        r = Rules(19, "tournament")
+        centre_move = (9,9)
+        self.assertEquals(r.ok_third_move(centre_move), False)
+
+    def test_standard_move_ok(self):
+        r = Rules(19, "standard")
+        centre_move = (9,9)
+        self.assertEquals(r.ok_third_move(centre_move), True)
+
+    def test_tournament_move_ok(self):
+        r = Rules(19, "tournament")
+        outer_move = (6,6)
+        self.assertEquals(r.ok_third_move(outer_move), True)
+
+    def test_standard_move_not_ok(self):
+        r = Rules(19, "standard")
+        outer_move = (6,6)
+        # Legal, but not really recommended
+        self.assertEquals(r.ok_third_move(outer_move), False)
 
 if __name__ == "__main__":
     unittest.main()

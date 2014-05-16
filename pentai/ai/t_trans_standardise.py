@@ -99,5 +99,67 @@ class TransStandardiseTest(unittest.TestCase):
         self.assertEqual(brd.get_occ((5,5)), BLACK)
         self.assertEqual(brd.get_occ((5,9)), WHITE)
 
+    ################################################################
+    # Corner tests
+
+    # !python pentai/ai/t_trans_standardise.py TransStandardiseTest.test_NE
+    def test_corners(self):
+        for pos in [(0,18), (18,18), (18,0), (0,0)]:
+            self.game.load_moves("1. %s" % (pos,))
+            std, l_shift, d_shift = shift(self.game.current_state)
+
+            brd = std.get_board()
+            self.assertEqual(l_shift, 0)
+            self.assertEqual(d_shift, 0)
+
+    # !python pentai/ai/t_trans_standardise.py TransStandardiseTest.test_outer_edges1
+    def test_outer_edges1(self):
+        self.outer_edge_check((4,14))
+        
+    def test_outer_edges2(self):
+        self.outer_edge_check((14,14))
+        
+    def test_outer_edges3(self):
+        self.outer_edge_check((14,4))
+        
+    def test_outer_edges4(self):
+        self.outer_edge_check((4,4))
+        
+    def outer_edge_check(self, pos):
+        # These should stay where they are because they are close to
+        # an edge.
+        self.game.load_moves("1. %s" % (pos,))
+        std, l_shift, d_shift = shift(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(l_shift, 0)
+        self.assertEqual(d_shift, 0)
+
+    # !python pentai/ai/t_trans_standardise.py TransStandardiseTest.test_inner_edges
+    def test_inner_edges1(self):
+        self.inner_edge_check((5,12))
+
+    def test_inner_edges2(self):
+        self.inner_edge_check((6,12))
+
+    def test_inner_edges3(self):
+        self.inner_edge_check((12,12))
+        
+    def test_inner_edges4(self):
+        self.inner_edge_check((12,5))
+
+    def test_inner_edges5(self):
+        self.inner_edge_check((5,5))
+
+    def inner_edge_check(self, pos):
+        # These should all move to (5,5)
+        self.game.load_moves("1. %s" % (pos,))
+        std, l_shift, d_shift = shift(self.game.current_state)
+
+        brd = std.get_board()
+        self.assertEqual(l_shift, pos[0] - 5)
+        self.assertEqual(d_shift, pos[1] - 5)
+
+
 if __name__ == "__main__":
     unittest.main()

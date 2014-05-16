@@ -114,7 +114,7 @@ class GamesMgr(gso_m.GSObserver):
 
         return g
 
-    def save(self, g, game_db=None):
+    def save(self, g, game_db=None, update_cache=True):
         for p in g.get_all_players()[1:]:
             self.players_mgr.ensure_has_key(p)
 
@@ -140,8 +140,8 @@ class GamesMgr(gso_m.GSObserver):
         zd_m.sync()
 
         # Save players
-        self.players_mgr.save(g.get_player(1))
-        self.players_mgr.save(g.get_player(2))
+        self.players_mgr.save(g.get_player(1), update_cache)
+        self.players_mgr.save(g.get_player(2), update_cache)
 
     def sync_all(self):
         zd_m.sync()

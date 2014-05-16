@@ -375,6 +375,7 @@ sources = {
     'ai/alpha_beta.pyx': base_flags,
     'ai/utility_calculator.pyx': base_flags,
     'ai/utility_stats.pyx': base_flags,
+    'ai/openings_mover.pyx': base_flags,
     'ai/ab_state.pyx': base_flags,
     'ai/ab_game.pyx': base_flags,
     }

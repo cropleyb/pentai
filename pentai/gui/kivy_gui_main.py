@@ -23,6 +23,7 @@ import my_button
 
 from pentai.db.games_mgr import *
 import pentai.db.openings_book as ob_m
+import pentai.db.openings_builder as obl_m
 
 from kivy.properties import ObjectProperty
 
@@ -57,11 +58,7 @@ class PentAIApp(App):
         print message
 
     def return_screen(self, ignored=None):
-        if self.pente_screen and self.pente_screen.game \
-                and not self.pente_screen.game.finished():
-            self.show_pente_screen()
-        else:
-            self.show_menu_screen()
+        self.root.return_screen()
 
     def show_settings_screen(self):
         self.root.set_current("Settings")
@@ -294,7 +291,7 @@ class PentAIApp(App):
         
         self.add_screen(IntroScreen, "Intro")
 
-        self.openings_book.add_openings(self.user_data_dir)
+        #obl_m.build(self.openings_book, self.user_data_dir, count=10)
 
         Clock.schedule_once(self.create_screens, .5)
         return root

@@ -1,15 +1,37 @@
+Kids in Melbourne 2 July
 Letter from Prof. Rosenthal that I can't work
 Disability solicitor: Maurice Blackburn 1800 173 657
+Local toy broker: Malcolm Hall: 9886 9122
+Test Flight: http://tflig.ht/1mL1zQu
+bundle id: org.kivy.pentai
+Financial Advisor: Mark Costigan
 
 For Alpha release
-Contact Hasbro again? By registered snail mail?
+# Contact Hasbro again?
+Call copyright lawyer: ?
+Kristel contacts?
+Liam feedback?
+
+Gary Gabrel:
+http://www.inc.com/magazine/19830701/1772.html
+
 Update kivy version? or just hack?
 
-Demo - "is already occupied"
 
-Hang when finishing with Escape?
+splash screen for loading openings games
+Confirm rematch popup if not at last move in review mode.
+Move "opposite_colour()" (and cythonise it)
+profile app
+don't search move number 1, 2, 3
+13x13 using 19x19
+Opening book ratings factor
+Donate to pente.org
+Opening position viewer/editor?
 radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC?
-Investigate Test Flight
+Load games invisibly - don't alter recent players (or recent game for prod.)
+Delete human player
+Delete computer player
+Hang when finishing with Escape? Don't use escape?!
 Build openings DB (and the rest of the db) after deployment.
 Load lots of top games from pente.org (python downloading script)
 Test how long opening move selection is taking with prints

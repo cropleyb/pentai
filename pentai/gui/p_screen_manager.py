@@ -15,9 +15,13 @@ class PScreenManager(ScreenManager):
         self.demo = d 
 
     def set_current(self, screen_name):
-        self.random_transition()
         if self.current != screen_name:
+            self.random_transition()
+            self.previous = self.current
             self.current = screen_name
+
+    def return_screen(self):
+        self.current = self.previous
 
     def random_transition(self):
         trans = self.transition

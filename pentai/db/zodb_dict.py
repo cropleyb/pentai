@@ -14,26 +14,34 @@ A multi-threaded program should open a separate Connection instance for each thr
 """
 
 db = None
-zdbroot = None
+_zdbroot = None
 conn = None
 
 def set_db(filename):
-    global db, zdbroot, conn
+    global db, _zdbroot, conn
 
     storage = zc.zlibstorage.ZlibStorage(
                         FileStorage.FileStorage(filename))
     db = DB(storage)
     conn = db.open()
-    zdbroot = conn.root()
+    _zdbroot = conn.root()
 
 def get_section(section_key, tp=None):
-    if zdbroot.has_key(section_key):
-        section = zdbroot[section_key]
+    '''
+    if not _zdbroot:
+        import pdb
+        pdb.set_trace()
+    '''
+    if _zdbroot.has_key(section_key):
+        section = _zdbroot[section_key]
     else:
         if tp is None:
             tp = OOBTree.OOBTree
-        section = zdbroot[section_key] = tp()
+        section = _zdbroot[section_key] = tp()
     return section
+
+def root():
+    return _zdbroot
 
 def sync():
     transaction.commit()
@@ -43,6 +51,6 @@ def abort():
 
 def delete_all_dangerous():
     """ Only use this for test code!!!"""
-    zdbroot.clear()
+    _zdbroot.clear()
 
 

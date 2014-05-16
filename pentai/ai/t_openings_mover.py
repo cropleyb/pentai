@@ -8,25 +8,30 @@ from pentai.ai.openings_mover import *
 
 class MockPlayer:
     def get_rating(self):
-        return 1
+        return 1000
 
 class MockPreservedGame:
     """ This one is for games that have been found in the opening book
     """
-    def __init__(self, wc, rf):
+    def __init__(self, wc, rating):
         self.won_by = wc
-        self.rf = rf
+        self.rating = rating
+
+    def get_size(self):
+        return 9
 
     def get_won_by(self):
         return self.won_by
 
     def get_rating(self, colour):
-        return self.rf
+        return self.rating
 
 class OpeningsMoverTest(unittest.TestCase):
     def setUp(self):
         self.mom = Mock() # Mock Openings Manager
         self.msg = Mock() # Mock Search Game
+        self.msg.mockAddReturnValues(size=9)
+
         self.of = OpeningsMover(self.mom, self.msg)
         self.msg.mockAddReturnValues(to_move_colour=BLACK)
         self.player = MockPlayer()
@@ -51,39 +56,39 @@ class OpeningsMoverTest(unittest.TestCase):
         return answers
 
     def test_one_favourable_game_mostly_doesnt_fall_through(self):
-        g1 = MockPreservedGame(BLACK, 1)
+        g1 = MockPreservedGame(BLACK, 1000)
         move_games = [((4,4), (g1,))]
         self.set_move_games(move_games)
 
         answers = self.multiple_tries(1000, self.player)
 
         self.assertGreater(answers[(4,4)], 600)
-        self.assertGreater(answers[None], 100)
+        self.assertGreater(answers[None], 10)
 
     def test_one_move_equal_standings(self):
-        g1 = MockPreservedGame(BLACK, 1)
-        g2 = MockPreservedGame(WHITE, 1)
+        g1 = MockPreservedGame(BLACK, 1000)
+        g2 = MockPreservedGame(WHITE, 1000)
         move_games = [((4,4), (g1,g2))]
         self.set_move_games(move_games)
         answers = self.multiple_tries(1000, self.player)
 
         self.assertGreater(answers[(4,4)], 350)
-        self.assertGreater(answers[None], 350)
+        self.assertGreater(answers[None], 10)
 
     def test_two_moves_one_good_one_bad(self):
-        g1 = MockPreservedGame(BLACK, 1)
-        g2 = MockPreservedGame(WHITE, 1)
+        g1 = MockPreservedGame(BLACK, 1000)
+        g2 = MockPreservedGame(WHITE, 1000)
         move_games = [((4,4), (g1,)), ((3,4),(g2,))]
         self.set_move_games(move_games)
         answers = self.multiple_tries(1000, self.player)
 
         self.assertGreater(answers[(4,4)], 650)
         self.assertGreater(answers[(3,4)], 50)
-        self.assertGreater(answers[None], 100)
+        self.assertGreater(answers[None], 10)
 
     def test_add_to_previously_seen(self):
-        g1 = MockPreservedGame(BLACK, 1)
-        g2 = MockPreservedGame(WHITE, 1)
+        g1 = MockPreservedGame(BLACK, 1000)
+        g2 = MockPreservedGame(WHITE, 1000)
         move_games = [((4,4), (g1,)), ((3,4),(g2,))]
         self.set_move_games(move_games)
 

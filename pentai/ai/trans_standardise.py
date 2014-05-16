@@ -13,6 +13,8 @@ def shift(orig_state):
     leftmost = rightmost = -1
     lowest = highest = -1
 
+    #st()
+
     for i in range(board_size):
         if leftmost < 0 and south_occs[i] > 0:
             leftmost = i
@@ -26,9 +28,19 @@ def shift(orig_state):
     l_shift = 0
     d_shift = 0
 
-    if leftmost > 5 and rightmost < board_size - 5:
+    # | . . . . . . .
+    # | 0 1 2 3 4 5 6
+    # Something at 5 (5,y) should stay there.
+    # Something at 6 (6,y) should move to 5 (l_shift 1)
+
+    # .  .  .  .  .  .  . |
+    # 12 13 14 15 16 17 18
+    # Something at 14 (14,y) should stay there.
+    # Something at 13 or 12 (13,y) should move to 5 (d_shift 1)
+
+    if leftmost >= 5 and rightmost < board_size - 5:
         l_shift = leftmost - 5
-    if lowest > 5 and highest < board_size - 5:
+    if lowest >= 5 and highest < board_size - 5:
         d_shift = lowest - 5
 
     east_occs = east_occs[d_shift:]

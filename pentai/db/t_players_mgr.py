@@ -10,13 +10,6 @@ from ai_factory import *
 from players_mgr import *
 
 class AIFactoryTest(unittest.TestCase):
-    '''
-    def setUp(self):
-        self.test_db_filename = 'test_players.pkl'
-
-    def tearDown(self):
-        os.unlink(self.test_db_filename)
-    '''
 
     def test_ai_restore_player(self):
         genome = AIGenome("Samuel")
@@ -51,13 +44,6 @@ class AIFactoryTest(unittest.TestCase):
         self.assertEquals(gp.max_depth, 3)
 
 class HumanDBTest(unittest.TestCase):
-    '''
-    def setUp(self):
-        self.test_db_filename = 'test_players.pkl'
-
-    def tearDown(self):
-        os.unlink(self.test_db_filename)
-    '''
 
     def test_human_save_to_db(self):
         db = PlayersMgr(prefix="test_")

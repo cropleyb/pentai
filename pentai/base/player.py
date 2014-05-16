@@ -34,8 +34,14 @@ class Player(object):
         pass
 
     def get_rating(self):
-        # TODO
-        return 1
+        # TODO: More
+        try:
+            return self.rating
+        except AttributeError:
+            return 1000
+
+    def set_rating(self, val):
+        self.rating = val
 
     def attach_to_game(self, base_game):
         pass

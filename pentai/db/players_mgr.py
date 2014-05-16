@@ -76,7 +76,7 @@ class PlayersMgr():
     def remove(self, pid):
         del self.players[pid]
 
-    def save(self, player):
+    def save(self, player, update_cache=True):
         if player.__class__ is type(0):
             player = self.find(player)
 
@@ -93,25 +93,27 @@ class PlayersMgr():
             pass
 
         self.players[p_key] = player
+        if update_cache:
+            self.mark_recent_player(p_key)
         z_m.sync()
-        self.mark_recent_player(p_key)
 
     def sync(self):
         z_m.sync()
 
-    def find_by_name(self, name, player_type=None):
-        genome = self.find_genome_by_name(name, player_type)
+    def find_by_name(self, name, player_type=None, update_cache=True):
+        genome = self.find_genome_by_name(name, player_type, update_cache)
         if genome:
             return self.convert_to_player(genome)
 
-    def find_genome_by_name(self, name, player_type=None):
+    def find_genome_by_name(self, name, player_type=None, update_cache=True):
         for p_key, genome in self.players.iteritems():
             if type(genome) == type(0):
                 continue
             if player_type and genome.get_type() != player_type:
                 continue
             if genome.get_name() == name:
-                self.mark_recent_player(p_key)
+                if update_cache:
+                    self.mark_recent_player(p_key)
                 return genome
 
     def find(self, p_key, update_cache=True):

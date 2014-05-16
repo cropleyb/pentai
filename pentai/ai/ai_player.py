@@ -50,9 +50,10 @@ class AIPlayer(p_m.Player):
         return self.search_filter
 
     def get_rating(self):
-        guess = max(self.max_depth-3, 1)
-        guess *= self.genome.vision / 100.0
-        guess *= self.genome.judgement / 100.0
+        # Min: 100 for "max_depth": 1, "judgement": 10, "vision": 10,
+        # Max: 1900 for "max_depth": 10, "judgement": 100, "vision": 100,
+        mult = self.genome.vision * self.genome.judgement * self.max_depth
+        guess = mult / 52.6
         return guess
 
     def attach_to_game(self, base_game):
@@ -68,6 +69,7 @@ class AIPlayer(p_m.Player):
         else:
             # TODO: platform dependent choice?
             try:
+                disable_process()
                 self.do_search_process(gui)
             except:
                 t = threading.Thread(target=self.search_thread, args=(gui,))
@@ -99,7 +101,9 @@ class AIPlayer(p_m.Player):
                     self.openings_book, self.ab_game.base_game)
         return self.openings_mover
 
-    def make_opening_move(self, seen):
+    def make_opening_move(self, turn, seen):
+        if turn > 10: # TODO: Use OPENINGS_DEPTH constant - but where should it live???
+            return
         if self.use_openings_book():
             print "Looking for an opening book move"
             base_game = self.ab_game.base_game
@@ -107,7 +111,7 @@ class AIPlayer(p_m.Player):
             om = self.get_openings_mover()
             move = om.get_a_good_move(self, seen)
             if move:
-                print "Found an opening book move"
+                print "Used an opening book move"
                 return move
             else:
                 print "Didn't find an opening book move"
@@ -122,9 +126,9 @@ class AIPlayer(p_m.Player):
         ab_game = self.ab_game
 
         seen = set()
-        move = self.make_opening_move(seen)
-        rules = ab_game.get_rules()
         turn = ab_game.get_move_number()
+        move = self.make_opening_move(turn, seen)
+        rules = ab_game.get_rules()
         while move or (turn == 3):
             if move:
                 if ab_game.base_game.get_board().get_occ(move) != EMPTY:

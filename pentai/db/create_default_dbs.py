@@ -33,7 +33,6 @@ if __name__ == "__main__":
         dot()
         pm.save(h)
 
-    #sys.exit()
     print "Creating Computer Players"
     genome = aig_m.AIGenome("")
     
@@ -123,4 +122,6 @@ if __name__ == "__main__":
             genome.p_key = pm.next_id()
 
         pm.save(genome.clone())
+
+    z_m.sync()
 

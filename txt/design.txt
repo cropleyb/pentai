@@ -710,3 +710,10 @@ Does rot std followed by trans std always give a canonical position?
         Add: (0L, 0L, 0L, 0L, 0L, 2048L, 0L, 4096L, 0L, 65536L)
         Get: (0L, 0L, 0L, 0L, 0L, 2048L, 16384L, 0L, 262144L)
 Must do both rot and trans before selecting the minimum or maximum as the std.
+
+ZODB openings too big
+---------------------
+
+Cut it down to just the first N moves (8?)
+Measure it
+

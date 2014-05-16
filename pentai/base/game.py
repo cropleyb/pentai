@@ -18,6 +18,7 @@ class Game(object):
         self.resume_move_number = None
         self.date = datetime.date.today() # TODO
         self.setup(*args, **kwargs)
+        self.ratings = [None, None, None]
 
     def setup(self, rules=None, player1=None, player2=None):
         self.rules = rules
@@ -297,3 +298,11 @@ class Game(object):
     def set_remaining_time(self, colour, t):
         self.remaining_times[colour] = t
 
+    def get_rating(self, colour):
+        game_rating = self.ratings[colour]
+        if game_rating:
+            return game_rating
+        return self.players[colour].get_rating()
+
+    def set_rating(self, colour, val):
+        self.ratings[colour] = val

@@ -215,16 +215,20 @@ class GamesMgrTest(unittest.TestCase):
 
     def test_get_preserved_game(self):
         rules = Rules(9, "Standard")
-        g1 = self.gm.create_game(rules, HumanPlayer("Nadia"),
-                                        HumanPlayer("Roberto"))
+        p1 = HumanPlayer("Nadia")
+        p2 = HumanPlayer("Roberto")
+        p1.set_rating(1500)
+
+        g1 = self.gm.create_game(rules, p1, p2)
         g1.make_move((6,3))
+        g1.set_rating(WHITE, 1800)
         self.gm.save(g1)
 
         fpg = self.gm.get_preserved_game(g1.key())
         self.assertEquals(fpg.key(), g1.key())
 
-        self.assertEquals(fpg.get_rating(BLACK), 1)
-        self.assertEquals(fpg.get_rating(WHITE), 1)
+        self.assertEquals(fpg.get_rating(BLACK), 1500)
+        self.assertEquals(fpg.get_rating(WHITE), 1800)
 
 
 if __name__ == "__main__":

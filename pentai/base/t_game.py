@@ -189,6 +189,22 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.remaining_time(BLACK), 179)
         self.assertEquals(g.remaining_time(WHITE), 179)
 
+    def test_get_rating_from_player(self):
+        rules = Rules(9, "standard")
+        p1 = Player("P1")
+        p1.set_rating(1179)
+        p2 = Player("P2")
+        g = Game(rules, p1, p2)
+        self.assertEquals(g.get_rating(BLACK), 1179)
+
+    def test_get_rating_from_game(self):
+        rules = Rules(9, "standard")
+        p1 = Player("P1")
+        p2 = Player("P2")
+        g = Game(rules, p1, p2)
+        g.set_rating(BLACK, 1179)
+        self.assertEquals(g.get_rating(BLACK), 1179)
+
 if __name__ == "__main__":
     unittest.main()
 

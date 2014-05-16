@@ -10,7 +10,9 @@ class PreservedGame():
             p1 = game.get_player(1)
             p2 = game.get_player(2)
             self.players = (None, p1.get_key(), p2.get_key())
-            self.ratings = (None, p1.get_rating(), p2.get_rating())
+            #self.ratings = (None, p1.get_rating(), p2.get_rating())
+            self.ratings = (None, game.get_rating(BLACK),
+                                  game.get_rating(WHITE))
             self.won_by = game.get_won_by()
             self.moves = tuple(game.move_history)
             self.times = tuple(game.time_history)
@@ -27,6 +29,9 @@ class PreservedGame():
             return self.ratings[colour]
         except AttributeError:
             return 1
+
+    def get_size(self):
+        return self.rules[0]
 
     '''
     # TODO?
