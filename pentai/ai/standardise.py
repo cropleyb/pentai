@@ -1,7 +1,7 @@
 import rot_standardise as rs_m
 import trans_standardise as t_m
 
-def standardise(orig_state): # Test code only
+def standardise(orig_state):
     possibilities = rs_m.rot_possibilities(orig_state)
     all_combined = []
     for p in possibilities:
@@ -9,7 +9,7 @@ def standardise(orig_state): # Test code only
         all_combined.append((c[0], c))
 
     try:
-        s = min(all_combined)[1]
+        s = max(all_combined)[1]
     except IndexError:
         import pdb
         pdb.set_trace()
