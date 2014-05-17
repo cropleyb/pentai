@@ -289,26 +289,30 @@ class PentAIApp(App):
     def build_more(self, ignored):
         self.game = None
 
+        self.openings_builder_timeout = False
+        Clock.schedule_once(self.ob_timeout, 5)
+
         self.games_mgr = GamesMgr()
         self.openings_book = ob_m.OpeningsBook(self.games_mgr)
         
-        self.added_opening_games = 0
         Clock.schedule_once(self.load_games, 0)
 
         return self.root
 
+    def ob_timeout(self, ignored):
+        self.openings_builder_timeout = True
+
     def load_games(self, ignored):
-        obl_m.build(self.openings_book, self.user_data_dir, count=5)
-        self.added_opening_games += 5
-        if self.added_opening_games < 100:
-            # TODO: Max DB space, Intro screen Max time.
+        if not self.openings_builder_timeout:
+            obl_m.build(self.openings_book, self.user_data_dir, count=2)
+            # TODO: Max DB space
             # We'll add some more, but give Kivy some CPU too.
             Clock.schedule_once(self.load_games, 0)
         else:
             # Finished loading openings games. Pack the DB to reclaim space 
             z_m.pack()
             # Don't need this variable any more
-            del self.added_opening_games
+            del self.openings_builder_timeout
             Clock.schedule_once(self.create_screens, 0)
 
     def create_screens(self, ignored):
