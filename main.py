@@ -3,7 +3,7 @@ def main():
     import startup
     startup.run()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     '''
     import pstats, cProfile
     cProfile.runctx("main()", globals(), locals(), "Profile.prof")
