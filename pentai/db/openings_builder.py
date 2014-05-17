@@ -62,7 +62,7 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
         try:
             section = misc()["opening_section"]
         except:
-            section = misc()["opening_section"] = 38
+            section = misc()["opening_section"] = 60
 
     if not start:
         try:
@@ -86,9 +86,9 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
         if remaining:
             # Not enough games in that section
             start = 0
-            section += 1
+            section -= 1
             count = remaining
-            if section > 54:
+            if section < 30:
                 break
         else:
             start += count
