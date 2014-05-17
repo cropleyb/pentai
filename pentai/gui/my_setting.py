@@ -36,6 +36,8 @@ class MySetting(GridLayout):
         return self.parent.parent.config
 
 class SwitchSetting(MySetting):
+    value = BooleanProperty(False)
+
     def setup(self, ignored):
         gl = GridLayout(rows=1)
         self.add_widget(gl)
@@ -55,11 +57,12 @@ class SwitchSetting(MySetting):
         self.add_widget(dl)
 
     def load_value(self):
-        self.sw.active = self.get_config().getint('PentAI', self.key)
+        self.value = self.sw.active = self.get_config().getint('PentAI', self.key)
 
     def save_value(self, switch, val):
         self.get_config().set('PentAI', self.key, int(val))
         self.get_config().write()
+        self.value = val
 
 class MySpinnerOption(SpinnerOption):
     def __init__(self, *args, **kwargs):
