@@ -12,3 +12,6 @@ class SettingsScreen(Screen):
     def adjust_volumes(self, *args):
         a_m.adjust_volumes()
 
+    def set_confirmation_popups(self, *args):
+        self.app.set_confirmation_popups()
+
