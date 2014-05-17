@@ -10,7 +10,6 @@ from kivy.uix.screenmanager import * # TODO: Remove
 import pentai.db.zodb_dict as z_m
 import p_screen_manager as ps_m
 
-from intro_screen import *
 from menu_screen import *
 from ai_player_screen import *
 from human_player_screen import *
@@ -265,7 +264,6 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
-
         ini_file = "pentai.ini"
         ini_path = os.path.join(self.user_data_dir, ini_file)
         if not ini_file in os.listdir(self.user_data_dir):
@@ -277,29 +275,44 @@ class PentAIApp(App):
         self.config = ConfigParser()
         self.config.read(ini_path)
 
-        self.audio = a_m.Audio(self.config)
-
         root = ps_m.PScreenManager()
+        root.show_intro_screen()
         self.root = root
-        
-        self.root.random_transition()
 
+        self.audio = a_m.Audio(self.config)
+        self.audio.schedule_music()
+        
+        Clock.schedule_once(self.build_more, 0.1)
+
+        return root
+
+    def build_more(self, ignored):
         self.game = None
 
         self.games_mgr = GamesMgr()
         self.openings_book = ob_m.OpeningsBook(self.games_mgr)
         
-        self.add_screen(IntroScreen, "Intro")
+        self.added_opening_games = 0
+        Clock.schedule_once(self.load_games, 0)
 
-        #obl_m.build(self.openings_book, self.user_data_dir, count=10)
+        return self.root
 
-        Clock.schedule_once(self.create_screens, .5)
-        return root
+    def load_games(self, ignored):
+        obl_m.build(self.openings_book, self.user_data_dir, count=5)
+        self.added_opening_games += 5
+        if self.added_opening_games < 100:
+            # TODO: Max DB space, Intro screen Max time.
+            # We'll add some more, but give Kivy some CPU too.
+            Clock.schedule_once(self.load_games, 0)
+        else:
+            # Finished loading openings games. Pack the DB to reclaim space 
+            z_m.pack()
+            # Don't need this variable any more
+            del self.added_opening_games
+            Clock.schedule_once(self.create_screens, 0)
 
     def create_screens(self, ignored):
         root = self.root
-        intro_screen = root.get_screen("Intro")
-        self.audio.schedule_music()
 
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
