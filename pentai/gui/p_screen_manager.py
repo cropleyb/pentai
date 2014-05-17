@@ -1,5 +1,7 @@
 from kivy.uix.screenmanager import *
 
+import pentai.gui.intro_screen as i_m
+
 import random
 
 class PScreenManager(ScreenManager):
@@ -13,6 +15,10 @@ class PScreenManager(ScreenManager):
         if self.demo:
             self.demo.clean_up()
         self.demo = d 
+
+    def show_intro_screen(self):
+        self.add_widget(i_m.IntroScreen(name="Intro"))
+        self.current = "Intro"
 
     def set_current(self, screen_name):
         if self.current != screen_name:
