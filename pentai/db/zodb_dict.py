@@ -7,6 +7,7 @@ from persistent.mapping import PersistentMapping as ZM
 from persistent.list import PersistentList as ZL
 import transaction
 import zc.zlibstorage
+import os
 
 """
 TODO:
@@ -16,22 +17,29 @@ A multi-threaded program should open a separate Connection instance for each thr
 db = None
 _zdbroot = None
 conn = None
+db_path = None
 
-def set_db(filename):
+def set_db(path):
+    global db_path
+    db_path = path
+
+def load_db():
     global db, _zdbroot, conn
 
-    storage = zc.zlibstorage.ZlibStorage(
-                        FileStorage.FileStorage(filename))
+    lock_file_path = db_path + ".lock"
+    try:
+        os.unlink(lock_file_path)
+    except OSError:
+        pass
+    fs = FileStorage.FileStorage(db_path)
+    storage = zc.zlibstorage.ZlibStorage(fs)
     db = DB(storage)
     conn = db.open()
     _zdbroot = conn.root()
 
 def get_section(section_key, tp=None):
-    '''
     if not _zdbroot:
-        import pdb
-        pdb.set_trace()
-    '''
+        load_db()
     if _zdbroot.has_key(section_key):
         section = _zdbroot[section_key]
     else:
@@ -41,10 +49,15 @@ def get_section(section_key, tp=None):
     return section
 
 def root():
+    if not _zdbroot:
+        load_db()
     return _zdbroot
 
 def sync():
     transaction.commit()
+
+def pack(*args, **kwargs):
+    db.pack(*args, **kwargs)
 
 def abort():
     transaction.abort()
