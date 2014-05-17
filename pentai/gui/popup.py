@@ -20,9 +20,10 @@ class BasePopup(Popup):
             BasePopup.my_active.ok_confirm()
 
     def ok_confirm(self):
-        a_m.instance.click()
-        BasePopup.my_active = None
-        self.dismiss()
+        if BasePopup.my_active != None:
+            a_m.instance.click()
+            BasePopup.my_active = None
+            self.dismiss()
         return True
 
     @staticmethod
