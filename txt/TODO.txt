@@ -17,7 +17,6 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-Extra click on clearing error popup
 Confirm rematch popup if not at last move in review mode.
 Move "opposite_colour()" (and cythonise it)
 profile app
