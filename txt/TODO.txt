@@ -4,7 +4,7 @@ Disability solicitor: Maurice Blackburn 1800 173 657
 Local toy broker: Malcolm Hall: 9886 9122
 Test Flight: http://tflig.ht/1mL1zQu
 bundle id: org.kivy.pentai
-Financial Advisor: Mark Costigan
+Financial Advisor: Mark Costigan 9739 6911
 
 For Alpha release
 # Contact Hasbro again?
@@ -17,8 +17,7 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-
-splash screen for loading openings games
+Extra click on clearing error popup
 Confirm rematch popup if not at last move in review mode.
 Move "opposite_colour()" (and cythonise it)
 profile app
