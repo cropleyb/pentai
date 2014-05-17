@@ -7,7 +7,6 @@ from kivy.clock import Clock
 import glob as g_m
 from os.path import dirname, join, basename
 import random
-from pentai.db.misc_db import get_instance as m_m
 from pentai.base.defines import *
 
 instance = None
@@ -15,7 +14,7 @@ instance = None
 PN_KEY = "piece_number"
 
 class Audio():
-# Sound effects: place, capture, tick, win, loss, music
+    """ Sound effects: place, capture, tick, win, loss, music """
     def __init__(self, config):
         self.config = config
         self.sound_cache = {}
@@ -124,12 +123,15 @@ class Audio():
         self.current_music_sound.volume = float(vol) * self.demo_volume
 
     def inc_piece_number(self):
-        m_m()[PN_KEY] += 1
-        return m_m()[PN_KEY]
+        try:
+            self.piece_number += 1
+        except AttributeError:
+            # Choose a random piece to start at.
+            self.piece_number = random.randrange(0, 13)
+        return self.piece_number
 
     def reset_piece_number(self):
-        pn = m_m()[PN_KEY] = 1
-        return pn
+        self.piece_number = 1
 
     def play_music(self, *ignored):
         if self.muted:
@@ -145,7 +147,6 @@ class Audio():
             try:
                 pn = self.inc_piece_number()
             except:
-                # For initial value of 1
                 pn = self.reset_piece_number()
 
             music_file_pattern = join("media", "music", str(pn))
