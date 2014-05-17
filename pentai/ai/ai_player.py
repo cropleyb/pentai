@@ -102,7 +102,7 @@ class AIPlayer(p_m.Player):
         return self.openings_mover
 
     def make_opening_move(self, turn, seen):
-        if turn > 10: # TODO: Use OPENINGS_DEPTH constant - but where should it live???
+        if turn > 8: # TODO: Use OPENINGS_DEPTH constant - but where should it live???
             return
         if self.use_openings_book():
             print "Looking for an opening book move"

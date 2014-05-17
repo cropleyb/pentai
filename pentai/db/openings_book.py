@@ -6,14 +6,13 @@ import pentai.base.game as g_m
 import pentai.db.zodb_dict as z_m
 import pentai.ai.standardise as st_m
 import pentai.db.preserved_game as pg_m
-#import pentai.db.openings_builder as obl_m
 
 ZM = z_m.ZM
 ZL = z_m.ZL
 
 instance = None
 
-OPENINGS_DEPTH = 10
+OPENINGS_DEPTH = 8
 
 class OpeningsBook(object):
     def __init__(self, games_mgr):
