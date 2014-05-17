@@ -78,12 +78,18 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     while remaining:
         section_dir = os.path.join(openings_dir, str(section))
 
-        remaining = add_games(openings_book, section_dir, start, count)
+        try:
+            remaining = add_games(openings_book, section_dir, start, count)
+        except OSError:
+            pass
+
         if remaining:
             # Not enough games in that section
             start = 0
             section += 1
             count = remaining
+            if section > 54:
+                break
         else:
             start += count
 
