@@ -26,31 +26,34 @@ def add_games(openings_book, section_dir, start, count=100):
     game_files = os.listdir(section_dir)
 
     added = 0
-    
+
     for gf in game_files[start:]:
         gf_path = os.path.join(section_dir, gf)
         gf_str = open(gf_path).readlines()
         try:
             g = par_m.convert_game(gf_str, int(gf))
+            add_game(openings_book, g)
+            added += 1
+            if added >= count:
+                break
         except pe_m.IllegalMoveException, e:
             print "%s: %s" % (gf, e.message)
         except pe_m.ParseException, e:
             print "%s: %s" % (gf, e.message)
         except Exception, e:
             print "%s: %s" % (gf, e.message)
-        print "Adding: %s" % g.game_id
-        try:
-            #import pdb
-            #pdb.set_trace()
-            openings_book.add_game(g, update_cache=False, sync=False)
-        except pe_m.OpeningsBookDuplicateException:
-            pass
-
-        added += 1
-        if added >= count:
-            break
     z_m.sync()
     return count - added
+
+def add_game(openings_book, g):
+    print "Adding: %s" % g.game_id
+    try:
+        #import pdb
+        #pdb.set_trace()
+        openings_book.add_game(g, update_cache=False, sync=False)
+    except pe_m.OpeningsBookDuplicateException:
+        pass
+
 
 def build(openings_book, user_data_dir, section=None, start=None, count=100):
     # Extend library
@@ -69,8 +72,6 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
             start = misc()["opening_start"]
         except:
             start = misc()["opening_start"] = 0
-
-    # TODO Stop adding games
 
     par_m.create_ai_players()
 
