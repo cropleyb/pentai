@@ -12,7 +12,7 @@ from pentai.base.pente_exceptions import *
 import audio as a_m
 from pentai.base.defines import *
 import pentai.base.mock as mock
-#from gui import *
+import pentai.gui.popup as popup
 import gui_clock as gc_m
 
 import Queue
@@ -122,6 +122,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.turn_markers.append(tm)
 
     def rematch(self):
+        cs = self.game.get_current_state()
+        if not self.reviewing:
+            self.rematch_confirmed()
+        elif cs.get_won_by():
+            self.rematch_confirmed()
+        else:
+            popup.ConfirmPopup.create_and_open(message="Rematch and leave this game?",
+                        action=self.rematch_confirmed,
+                        size_hint=(.8, .2),
+                        force=True)
+
+    def rematch_confirmed(self, *ignored):
         self.set_review_mode(False)
         og = self.game
         rules = og.get_rules()

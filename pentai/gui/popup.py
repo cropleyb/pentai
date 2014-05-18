@@ -81,8 +81,8 @@ class ConfirmPopup(BasePopup):
     bypass = True
 
     @staticmethod
-    def create_and_open(message, action, *args, **kwargs):
-        if ConfirmPopup.bypass:
+    def create_and_open(message, action, force=False, *args, **kwargs):
+        if ConfirmPopup.bypass and not force:
             action()
             return
         if BasePopup.my_active == None:
