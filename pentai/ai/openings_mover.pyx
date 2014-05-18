@@ -37,7 +37,7 @@ class OpeningsMover(object):
             for pg in games:
 
                 move_rating = pg.get_rating(colour)
-                if move_rating < (ai_rating + 300):
+                if move_rating < (ai_rating - 300):
                     print "Move rating %s too low %s" % (move_rating, ai_rating)
                     continue
                 
