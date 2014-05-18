@@ -86,6 +86,7 @@ class OpeningsMoverTest(unittest.TestCase):
         self.assertGreater(answers[(3,4)], 50)
         self.assertGreater(answers[None], 10)
 
+    #! python pentai/ai/t_openings_mover.py OpeningsMoverTest.test_add_to_previously_seen
     def test_add_to_previously_seen(self):
         g1 = MockPreservedGame(BLACK, 1000)
         g2 = MockPreservedGame(WHITE, 1000)
