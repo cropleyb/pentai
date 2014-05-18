@@ -13,11 +13,12 @@ import misc_db as m_m
 def misc():
     return m_m.get_instance()
 
-def unzip_openings(openings_dir):
+def unzip_section(section, user_data_dir):
+    print "unzipping %s" % section
     import zipfile as zf_m
-    zip_path = "openings.zip"
+    zip_path = os.path.join("openings", "%s.zip" % section)
     zf = zf_m.ZipFile(zip_path)
-    target_directory = openings_dir
+    target_directory = os.path.join(user_data_dir, "openings")
     os.makedirs(target_directory)
     zf.extractall(target_directory)
 
@@ -48,8 +49,6 @@ def add_games(openings_book, section_dir, start, count=100):
 def add_game(openings_book, g):
     print "Adding: %s" % g.game_id
     try:
-        #import pdb
-        #pdb.set_trace()
         openings_book.add_game(g, update_cache=False, sync=False)
     except pe_m.OpeningsBookDuplicateException:
         pass
@@ -57,15 +56,19 @@ def add_game(openings_book, g):
 
 def build(openings_book, user_data_dir, section=None, start=None, count=100):
     # Extend library
-    openings_dir = os.path.join(user_data_dir, "openings")
-    if not os.path.isdir(openings_dir):
-        unzip_openings(openings_dir)
-
     if not section:
         try:
             section = misc()["opening_section"]
         except:
             section = misc()["opening_section"] = 60
+
+    openings_dir = os.path.join(user_data_dir, "openings")
+    section_dir = os.path.join(openings_dir, str(section))
+
+    if not os.path.isdir(section_dir):
+        unzip_section(section, user_data_dir)
+        # That will be enough startup time for now.
+        return
 
     if not start:
         try:
@@ -77,8 +80,6 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
 
     remaining = count
     while remaining:
-        section_dir = os.path.join(openings_dir, str(section))
-
         try:
             remaining = add_games(openings_book, section_dir, start, count)
         except OSError:
