@@ -19,7 +19,10 @@ def unzip_section(section, user_data_dir):
     zip_path = os.path.join("openings", "%s.zip" % section)
     zf = zf_m.ZipFile(zip_path)
     target_directory = os.path.join(user_data_dir, "openings")
-    os.makedirs(target_directory)
+    try:
+        os.makedirs(target_directory)
+    except OSError:
+        pass
     zf.extractall(target_directory)
 
 def add_games(openings_book, section_dir, start, count=100):
