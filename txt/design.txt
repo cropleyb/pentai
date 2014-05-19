@@ -716,4 +716,17 @@ ZODB openings too big
 
 Cut it down to just the first N moves (8?)
 Measure it
+pack() helped ;)
+
+Candidate Move Ordering
+-----------------------
+If a move makes two or more threats, it should be searched before another move
+that makes a single threat
+
+B 4 + W 3
+B 4 + B 3 -> search this one first
+
+For each candidate move at the current priority level,
+Maintain a list of the counts of priority levels it appears in
+Need to be able to traverse it with own moves before opponent moves at each level.
 
