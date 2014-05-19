@@ -3,6 +3,8 @@
 import pentai.ai.ab_state as ab_s_m
 from pentai.base.pente_exceptions import *
 
+import time
+
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
     def __init__(self, player, base_game):
@@ -17,6 +19,7 @@ class ABGame():
         self.interrupted = False
         self.transposition_table = {} # TODO: extract class?
         #self.transposition_hits = 0
+        self.sleep_count = 0
 
     def get_rules(self):
         return self.base_game.get_rules()
@@ -39,6 +42,11 @@ class ABGame():
                 return ret
             except AttributeError:
                 pass
+
+        self.sleep_count += 1
+        if not self.sleep_count % 8:
+            # Give other thread(s) some time too
+            time.sleep(0.000001)
 
         return state.utility()
 
