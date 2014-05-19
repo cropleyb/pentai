@@ -33,7 +33,7 @@ def load_db():
         pass
     fs = FileStorage.FileStorage(db_path)
     storage = zc.zlibstorage.ZlibStorage(fs)
-    db = DB(storage)
+    db = DB(storage, cache_size=5000)
     conn = db.open()
     _zdbroot = conn.root()
 
