@@ -17,9 +17,9 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-Clock time.sleep(0) in search thread.
+GamesMgr constructor is slow
 First AI move is __slow__, don't search move number 1, 2, 3?
-order the search by sorting multiple level of threats
+order the search by sorting multiple level of threats - bugs?
 Trim iOS deployment size
 Move "opposite_colour()" (and cythonise it)
 profile app
