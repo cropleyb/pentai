@@ -24,7 +24,7 @@ class AIPlayerSubsystemTest(unittest.TestCase):
         r = r_m.Rules(13, "standard")
         self.game = g_m.Game(r, self.p1, self.p2)
 
-    # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_find_one_move
+    # !./pentai/ai/t_ai_subsystem.py AIPlayerSubsystemTest.test_find_one_move
     def test_find_one_move(self):
         self.p2.set_max_depth(2)
         game_str = \
