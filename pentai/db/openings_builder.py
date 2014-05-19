@@ -17,13 +17,17 @@ def unzip_section(section, user_data_dir):
     print "unzipping %s" % section
     import zipfile as zf_m
     zip_path = os.path.join("openings", "%s.zip" % section)
-    zf = zf_m.ZipFile(zip_path)
+    try:
+        zf = zf_m.ZipFile(zip_path)
+    except IOError:
+        return False
     target_directory = os.path.join(user_data_dir, "openings")
     try:
         os.makedirs(target_directory)
     except OSError:
         pass
     zf.extractall(target_directory)
+    return True
 
 def add_games(openings_book, section_dir, start, count=100):
 
@@ -69,9 +73,8 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     section_dir = os.path.join(openings_dir, str(section))
 
     if not os.path.isdir(section_dir):
-        unzip_section(section, user_data_dir)
         # That will be enough startup time for now.
-        return
+        return unzip_section(section, user_data_dir)
 
     if not start:
         try:
@@ -101,6 +104,7 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     misc()["opening_section"] = section
     misc()["opening_start"] = start
     z_m.sync()
+    return True
 
 def main():
     # TODO Move this to zodb_dict

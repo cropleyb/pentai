@@ -306,7 +306,10 @@ class PentAIApp(App):
 
     def load_games(self, ignored):
         if not self.openings_builder_timeout:
-            obl_m.build(self.openings_book, self.user_data_dir, count=2)
+            ok = obl_m.build(self.openings_book, self.user_data_dir, count=2)
+            if not ok:
+                # Might as well stop waiting
+                self.openings_builder_timeout = True
             # TODO: Max DB space
             # We'll add some more, but give Kivy some CPU too.
             Clock.schedule_once(self.load_games, 0.01)
