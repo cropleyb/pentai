@@ -17,11 +17,12 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-Confirm rematch popup if not at last move in review mode.
+Clock time.sleep(0) in search thread.
+First AI move is __slow__, don't search move number 1, 2, 3?
+order the search by sorting multiple level of threats
+Trim iOS deployment size
 Move "opposite_colour()" (and cythonise it)
 profile app
-don't search move number 1, 2, 3
-13x13 using 19x19
 Opening book ratings factor
 Donate to pente.org
 Opening position viewer/editor?
