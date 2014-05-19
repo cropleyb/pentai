@@ -35,20 +35,21 @@ class IntroScreen(Screen):
         self.show_activity()
 
     def on_enter(self):
-        # TODO: Fancy graphics, transition to menu
-        Clock.schedule_interval(self.show_activity, 5)
-        Clock.schedule_interval(self.add_dot, .5)
+        # TODO: Fancy graphics? transition to menu
+        Clock.schedule_once(self.add_progress, .5)
 
     def on_leave(self):
-        Clock.unschedule(self.show_activity)
-        Clock.unschedule(self.add_dot)
+        Clock.unschedule(self.add_progress)
 
-    def add_dot(self, *ignored):
-        self.progress_bar.value += 100
-        #self.activity_label.text = self.activity_label.text + "."
+    def add_progress(self, *ignored):
+        self.progress_bar.value += random.randrange(50, 150)
+        if self.progress_bar.value >= 1000:
+            self.progress_bar.value = 0
+            self.show_activity()
+        Clock.schedule_once(self.add_progress, .2 + 2 * random.random())
 
     activity_list = [
-        "Unpacking board", "Polishing stones", "Brushing teeth", "Arranging furniture", "Winding clocks", "Getting snacks", "Putting kids to bed", "Putting cat out", "Adjusting central heating", "Sound check", "Getting a drink", "Call of nature", "Preparing distractions", "Answering phone", "Texting workmate", "Putting away dishes", "Reading the paper", "Paying bills", "Gathering audience", "Placing wagers", "Practicing openings", "Gossiping with neighbours", "Procrastinating", "Boasting about previous games", "Anticipating", "Watching an ad", "Watering pot-plants", "Online shopping", "Grazed knee", "Complaining"
+        "Unpacking board", "Polishing stones", "Brushing teeth", "Arranging furniture", "Winding clocks", "Getting snacks", "Putting kids to bed", "Putting cat out", "Adjusting central heating", "Sound check", "Getting a drink", "Call of nature", "Preparing distractions", "Answering phone", "Texting workmate", "Putting away dishes", "Reading the paper", "Paying bills", "Gathering audience", "Placing wagers", "Practicing openings", "Gossiping with neighbours", "Procrastinating", "Boasting about previous games", "Anticipating", "Watching an ad", "Watering pot-plants", "Online shopping", "Grazed knee", "Complaining", "None of your business", "Composing oneself", "Nothing much", "CPR on Aunt Mabel", "Finishing meal", "Toasting marshmallows", "Biting nails", "Scratching", "(censored)", "Changing footwear"
         ]
 
     def show_activity(self, *ignored):
