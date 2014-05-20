@@ -17,8 +17,13 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-GamesMgr constructor is slow
+Don't suggest moves that are too near an edge.
 First AI move is __slow__, don't search move number 1, 2, 3?
+Pause after loading game screen
+More unit tests for fukumi etc.
+Add logging support
+GamesMgr constructor seems slow? ZODB init.
+Do pack in background / overnight? / separate thread?
 order the search by sorting multiple level of threats - bugs?
 Trim iOS deployment size
 Move "opposite_colour()" (and cythonise it)
