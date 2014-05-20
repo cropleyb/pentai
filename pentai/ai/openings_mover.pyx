@@ -7,10 +7,6 @@ class OpeningsMover(object):
         self.o_book = o_book
         self.game = game
 
-    def filter_out_by_rules(self, move):
-        rules = self.game.get_rules()
-        return rules.ok_third_move(move)
-
     def get_a_good_move(self, aip, seen=None):
         # TODO: shouldn't need to pass in aip each time, make it self.player?
         wins = 0
@@ -21,7 +17,6 @@ class OpeningsMover(object):
             seen = set()
 
         colour = self.game.to_move_colour()
-        move_number = self.game.get_move_number()
 
         max_rating = .1
 
@@ -31,9 +26,6 @@ class OpeningsMover(object):
         
         for mg in move_games:
             move, games = mg
-            if move_number == 3:
-                if self.filter_out_by_rules(move):
-                    continue
             for pg in games:
 
                 move_rating = pg.get_rating(colour)

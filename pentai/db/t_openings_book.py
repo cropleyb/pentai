@@ -78,19 +78,19 @@ class ATOTest(unittest.TestCase):
 
     # Up to here (converting to 19x19 default)
     def test_suggest_second_black_move(self):
-        #st()
+        st()
         print_func()
         self.load_moves_and_set_win(
-                "1. (1,4)\n2. (2,3)\n3. (3,4)\n4. (5,4)")
+                "1. (9,9)\n2. (10,8)\n3. (11,9)\n4. (13,9)")
         self.ob.add_game(self.game)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
-        g2.load_moves("1. (1,4)\n2. (2,3)")
+        g2.load_moves("1. (9,9)\n2. (10,8)")
 
         moves = list(self.ob.get_move_games(g2))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((3,4), [self.game]))
+        self.assertEquals(moves[0], ((11,9), [self.game]))
 
     def test_add_second_white_move(self):
         print_func()
@@ -162,6 +162,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((8, 9), [self.game]))
 
     def run_and_check_moves(self, moves_str, last_move_pos):
+        self.game.rules.type_char = 't'
         self.game.load_moves(moves_str)
         self.game.make_move(last_move_pos)
         self.game.current_state.set_won_by(BLACK)
@@ -177,12 +178,8 @@ class ATOTest(unittest.TestCase):
 
     # !pentai/db/t_openings_book.py ATOTest.test_NW
     def test_NW(self):
-        # TODO: Something is broken...
         print_func()
-        #st()
-        self.run_and_check_moves("1. (0,17)\n2. (1,17)", (2,17)) # Works
-        #self.run_and_check_moves("1. (0,18)\n2. (1,18)", (2,18)) # Doesn't
-        #self.run_and_check_moves("1. (0,8)\n2. (1,8)", (2,8))
+        self.run_and_check_moves("1. (0,18)\n2. (1,18)", (2,18))
 
     def test_NE(self):
         print_func()

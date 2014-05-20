@@ -99,22 +99,28 @@ class OpeningsBook(object):
         return (x >= safe_min_size and y >= safe_min_size and \
                 x <= safe_max_size and y <= safe_max_size)
 
-    def get_move_games(self, game):
-        std_state, fwd, rev = st_m.standardise(game.current_state)
+    def filter_out_by_rules(self, search_game, move):
+        rules = search_game.get_rules()
+        return not rules.ok_third_move(move)
+
+    def get_move_games(self, search_game):
+        std_state, fwd, rev = st_m.standardise(search_game.current_state)
         #print "Get: %s" % (std_state,)
 
         position_key = std_state
 
-        db = self.get_db(game)
+        db = self.get_db(search_game)
 
         options = {}
         try:
             print "looking in %s" % (position_key,)
             pos_slot = db[position_key]
             safe_min_size = 5
-            safe_max_size = game.size() - 5
+            safe_max_size = search_game.size() - 5
 
             option_count = 0
+
+            move_number = search_game.get_move_number()
 
             for pos, gids in pos_slot.iteritems():
                 move = rev(*pos)
@@ -125,7 +131,11 @@ class OpeningsBook(object):
                 for gid in gids:
                     g = self.games_mgr.get_preserved_game(gid, update_cache=False)
                     if g:
-                        if not self.safe_move(move, g, game):
+                        if move_number == 3:
+                            if self.filter_out_by_rules(search_game, move):
+                                continue
+
+                        if not self.safe_move(move, g, search_game):
                             # Suggested move is too near an edge
                             continue
 
@@ -143,7 +153,7 @@ class OpeningsBook(object):
                         return
 
         except KeyError, e:
-            #print "KeyError: %s" % e.message
+            print "KeyError: %s" % e.message
             return
 
     def after_game_won(self, game, colour):
