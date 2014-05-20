@@ -76,9 +76,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(moves[0], ((8,8), [self.game]))
 
 
-    # Up to here (converting to 19x19 default)
     def test_suggest_second_black_move(self):
-        st()
         print_func()
         self.load_moves_and_set_win(
                 "1. (9,9)\n2. (10,8)\n3. (11,9)\n4. (13,9)")
@@ -92,6 +90,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(moves), 1)
         self.assertEquals(moves[0], ((11,9), [self.game]))
 
+    # Up to here (converting to 19x19 default)
     def test_add_second_white_move(self):
         print_func()
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
@@ -397,6 +396,25 @@ class TranslationalSymmetryTest(unittest.TestCase):
         self.assertIn(moves[0], possibilities)
 
     # TODO: rules types delegation tests
+
+class CirculateTest(unittest.TestCase):
+    def test_circulate_array(self):
+        a = range(20)
+        aid = id(a)
+
+        ob_m.circulate(a)
+
+        self.assertEquals(a, range(10,20) + range(0,10))
+        self.assertEquals(aid, id(a))
+
+    def test_short_array(self):
+        a = range(2)
+        aid = id(a)
+
+        ob_m.circulate(a)
+
+        self.assertEquals(a, range(2))
+        self.assertEquals(aid, id(a))
 
 if __name__ == "__main__":
     unittest.main()

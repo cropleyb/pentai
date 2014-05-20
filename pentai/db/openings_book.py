@@ -14,6 +14,12 @@ instance = None
 
 OPENINGS_DEPTH = 8
 
+def circulate(a):
+    if len(a) > 10:
+        a.extend(a[:10])
+        a[:10] = []
+    return a
+
 class OpeningsBook(object):
     def __init__(self, games_mgr):
         self.games_mgr = games_mgr
@@ -115,46 +121,58 @@ class OpeningsBook(object):
         try:
             print "looking in %s" % (position_key,)
             pos_slot = db[position_key]
-            safe_min_size = 5
-            safe_max_size = search_game.size() - 5
+        except KeyError, e:
+            return
 
-            option_count = 0
+        safe_min_size = 5
+        safe_max_size = search_game.size() - 5
 
-            move_number = search_game.get_move_number()
+        option_count = 0
 
-            for pos, gids in pos_slot.iteritems():
-                move = rev(*pos)
+        move_number = search_game.get_move_number()
+        aip = search_game.get_current_player()
+        ai_rating = aip.get_rating()
+        colour = search_game.to_move_colour()
 
-                games = []
+        for pos, gids in pos_slot.iteritems():
+            # TODO: Some sort of LRU for pos_slot iteritems?!
+            move = rev(*pos)
 
-                # Convert the game_ids to games
-                for gid in gids:
-                    g = self.games_mgr.get_preserved_game(gid, update_cache=False)
-                    if g:
-                        if move_number == 3:
-                            if self.filter_out_by_rules(search_game, move):
-                                continue
+            games = []
 
-                        if not self.safe_move(move, g, search_game):
-                            # Suggested move is too near an edge
+            # Convert the game_ids to games
+            for gid in gids:
+                pg = self.games_mgr.get_preserved_game(gid, update_cache=False)
+                if pg:
+                    if move_number == 3:
+                        if self.filter_out_by_rules(search_game, move):
                             continue
 
-                        # options.setdefault((x,y),[]).append(g)
-                        games.append(g)
-                        if len(games) > 10:
-                            # That'll do
-                            break
+                    if not self.safe_move(move, pg, search_game):
+                        # Suggested move is too near an edge
+                        continue
 
-                if len(games):
-                    yield move, games
-                    option_count += 1
-                    if option_count > 6:
-                        print "Enough options"
-                        return
+                    move_rating = pg.get_rating(colour)
+                    if move_rating < (ai_rating - 300):
+                        print "Potential move rating %s is too low for AI %s" % \
+                                (move_rating, ai_rating)
+                        continue
 
-        except KeyError, e:
-            print "KeyError: %s" % e.message
-            return
+                    games.append(pg)
+                    if len(games) > 10:
+                        # That'll do
+                        break
+
+            # Use different saved games next time
+            circulate(gids)
+
+            if len(games):
+                yield move, games
+                option_count += 1
+                if option_count > 6:
+                    print "Enough options"
+                    return
+
 
     def after_game_won(self, game, colour):
         # Add the game to the openings library if req.

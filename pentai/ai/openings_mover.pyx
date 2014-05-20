@@ -22,28 +22,17 @@ class OpeningsMover(object):
 
         move_games = self.o_book.get_move_games(self.game)
 
-        ai_rating = aip.get_rating()
-        
         for mg in move_games:
             move, games = mg
             for pg in games:
 
-                move_rating = pg.get_rating(colour)
-                if move_rating < (ai_rating - 300):
-                    print "Suggested move rating is %s too low for AI %s" % \
-                            (move_rating, ai_rating)
-                    continue
-                
                 win_colour = pg.won_by
 
                 if win_colour == colour:
                     wins += 1
                 elif win_colour == opposite_colour(colour):
                     losses += 1
-                else:
-                    # ignore draws and unfinished games (latter shouldn't get here)
-                    print "Game drawn or unfinished?"
-                    continue
+                # count draws and unfinished games as no win, no loss
 
                 # TODO: More smarts here
                 max_rating = max(max_rating, move_rating)
