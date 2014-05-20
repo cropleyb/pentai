@@ -102,7 +102,7 @@ class PriorityFilter2(object):
                 ret.append(self.priority_level(level, colour))
         return ret
 
-    def get_iter(self, our_colour, depth=0, min_priority=0): # min_priority is ignored
+    def get_iter(self, our_colour, depth=0, min_priority=0, tried={}): # min_priority is ignored
         their_colour = opposite_colour(our_colour)
         candidate_slots = self.get_priority_levels(our_colour)
         
