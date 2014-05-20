@@ -129,64 +129,28 @@ class AIPlayer(p_m.Player):
         turn = ab_game.get_move_number()
         move = self.make_opening_move(turn, seen)
         rules = ab_game.get_rules()
-        while move or (turn == 3):
-            if move:
-                if ab_game.base_game.get_board().get_occ(move) != EMPTY:
-                    print "Corrupt opening %s suggestion ignored" % (move,)
-                else:
-                    if turn != 3 or not rules.move_is_too_close(move):
-                        return move
-            x = random.randrange(-4, 5) + rules.size / 2
-            y = random.randrange(-4, 5) + rules.size / 2
-            move = (x, y)
+
+        if move:
+            if ab_game.base_game.get_board().get_occ(move) != EMPTY:
+                print "Corrupt opening %s suggestion ignored" % (move,)
+            else:
+                assert(turn != 3 or not rules.move_is_too_close(move))
+                return move
 
         ab_ss = ab_game.current_state
         if len(seen) < 2:
             ab_ss.set_seen(seen)
-        thinking_in_opponents_move = (ab_ss.get_state().to_move_player() != self)
 
-        if thinking_in_opponents_move:
-            st()
-            last_move_state = ab_game.current_state.clone()
-            last_move_state.go_backwards_one()
-            ab_ss = ABState(last_move_state)
-            #current_tt = {}
-            #old_tt = current_tt # FIXME
-            ab_game.transposition_table = {}
-            prev_tt = {}
-            # TODO: depth + 1
-        # else don't adjust tt
-        i = 0
-        while i < 2:
-            #move, value = ab_m.alphabeta_search(ab_game.current_state, ab_game)
             move, value = ab_m.alphabeta_search(ab_ss, ab_game)
             if self.ab_game.interrupted:
-                if thinking_in_opponents_move:
-                    # Fill it out as well as we can.
-                    ab_game.transposition_table = \
-                            old_tt.update(ab_game.transposition_table)
                 return
-            if not thinking_in_opponents_move:
-                # Just one iteration
-                break
-            # Merge in the latesttable
-            prev_tt = prev_tt.update(ab_game.transposition_table)
-            # Next time, start from scratch
-            ab_game.transposition_table = {}
-            # TODO: Increase the depth level by 2
-
-            i += 1
 
         action = move[0]
 
         '''
         print "size of transposition table: %s" % len(ab_game.transposition_table)
         '''
-        if not thinking_in_opponents_move:
-            # Don't reset if we have "thinking in opponents time" turned on
-            ab_game.reset_transposition_table()
-
-        # TODO: if we were thinking in the opponent's time, return nothing
+        ab_game.reset_transposition_table()
 
         #print " => %s" % (action,)
         return action
