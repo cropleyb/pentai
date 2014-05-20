@@ -18,6 +18,7 @@ import gui_clock as gc_m
 import Queue
 import datetime # TODO: Remove when old file format is gone
 import string
+import time
 
 black_filename = "./media/black_transparent.png"
 white_filename = "./media/white_transparent.png"
@@ -275,6 +276,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def on_enter(self):
         self.refresh_all()
         self.start_ticking()
+        time.sleep(0.5)
 
     def on_pre_leave(self):
         self.set_live(False)
