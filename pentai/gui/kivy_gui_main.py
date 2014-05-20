@@ -290,7 +290,7 @@ class PentAIApp(App):
         self.game = None
 
         self.openings_builder_timeout = False
-        Clock.schedule_once(self.ob_timeout, 5)
+        Clock.schedule_once(self.ob_timeout, 10)
 
         print "Create Games Mgr"
         self.games_mgr = GamesMgr()
@@ -312,10 +312,12 @@ class PentAIApp(App):
                 self.openings_builder_timeout = True
             # TODO: Max DB space
             # We'll add some more, but give Kivy some CPU too.
-            Clock.schedule_once(self.load_games, 0.01)
+            Clock.schedule_once(self.load_games, 0.1)
         else:
+            print "About to pack DB"
             # Finished loading openings games. Pack the DB to reclaim space 
             z_m.pack()
+            print "Done packing DB"
             # Don't need this variable any more
             del self.openings_builder_timeout
             Clock.schedule_once(self.create_screens, 0)
@@ -323,11 +325,13 @@ class PentAIApp(App):
     def create_screens(self, ignored):
         root = self.root
 
+        print "Creating screens"
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
                    (AIPlayerScreen, "AI"), (HumanPlayerScreen, "Human"),
                    ]
 
+        print "Adding screens to SM"
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
 
@@ -339,6 +343,7 @@ class PentAIApp(App):
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         self.popup = None
+        print "Showing menu"
 
         self.show_menu_screen()
 
