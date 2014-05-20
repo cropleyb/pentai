@@ -88,7 +88,7 @@ class ATOTest(unittest.TestCase):
         moves = list(self.ob.get_move_games(g2))
 
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0], ((11,9), [self.game]))
+        self.assertIn(moves[0], [((11,9), [self.game]), ((9,7), [self.game])])
 
     # Up to here (converting to 19x19 default)
     def test_add_second_white_move(self):
@@ -398,6 +398,11 @@ class TranslationalSymmetryTest(unittest.TestCase):
     # TODO: rules types delegation tests
 
 class CirculateTest(unittest.TestCase):
+    def tearDown(self):
+        tdb_m.clear_all()
+        ob_m.instance = None
+        m_m.the_instance = None
+
     def test_circulate_array(self):
         a = range(20)
         aid = id(a)
