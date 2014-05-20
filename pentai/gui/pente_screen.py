@@ -167,6 +167,20 @@ class PenteScreen(Screen, gso_m.GSObserver):
         g = self.gm.create_game(rules, p1, p2)
         self.app.start_game(g, self.size)
 
+    def create_clocks(self):
+        # TODO: Ugly
+        self.clocks = [None]
+        if self.game.get_total_time() > 0:
+            # Time controls active.
+            for colour, time_id in [
+                    (BLACK, self.ids.black_time_id),
+                    (WHITE, self.ids.white_time_id)]:
+                gc = gc_m.GuiClock(colour, time_id, self.game)
+                self.clocks.append(gc)
+        else:
+            self.clocks.append(mock.Mock())
+            self.clocks.append(mock.Mock())
+
     def set_game(self, game):
         self.clean_board()
         self.game = game
@@ -177,7 +191,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
                  str(datetime.date.today()))
             game.autosave_filename = filename
 
-        # We must watch what happens to the logical board, and update accordingly
+        # We must watch what happens to the logical board,
+        # and update the screen accordingly
         cs = game.get_current_state()
         cs.add_observer(self)
 
@@ -185,18 +200,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.display_names()
         self.setup_grid()
 
-        # TODO: Ugly
-        self.clocks = [None]
-        if game.get_total_time() > 0:
-            # Time controls active.
-            for colour, time_id in [
-                    (BLACK, self.ids.black_time_id),
-                    (WHITE, self.ids.white_time_id)]:
-                gc = gc_m.GuiClock(colour, time_id, self.game)
-                self.clocks.append(gc)
-        else:
-            self.clocks.append(mock.Mock())
-            self.clocks.append(mock.Mock())
+        self.create_clocks()
 
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
