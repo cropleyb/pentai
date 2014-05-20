@@ -56,8 +56,11 @@ class Game(object):
     def key(self):
         return self.game_id
 
-    # TODO: get_size for consistency
+    # TODO: get_size only for consistency
     def size(self):
+        return self.rules.size
+
+    def get_size(self):
         return self.rules.size
 
     def get_current_state(self):
