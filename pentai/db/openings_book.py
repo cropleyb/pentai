@@ -86,6 +86,19 @@ class OpeningsBook(object):
             z_m.sync()
         return db
 
+    def safe_move(self, pos, candidate_game, our_game):
+        x, y = pos
+
+        if candidate_game.get_size() <= our_game.size():
+            return True
+
+        safe_min_size = 4
+        safe_max_size = our_game.size() - 5
+
+        # Suggested move may be too near an edge
+        return (x >= safe_min_size and y >= safe_min_size and \
+                x <= safe_max_size and y <= safe_max_size)
+
     def get_move_games(self, game):
         std_state, fwd, rev = st_m.standardise(game.current_state)
         #print "Get: %s" % (std_state,)
@@ -98,24 +111,40 @@ class OpeningsBook(object):
         try:
             print "looking in %s" % (position_key,)
             pos_slot = db[position_key]
-            safe_size = game.size() - 5
+            safe_min_size = 5
+            safe_max_size = game.size() - 5
+
+            option_count = 0
 
             for pos, gids in pos_slot.iteritems():
-                x, y = rev(*pos)
+                move = rev(*pos)
+
+                games = []
 
                 # Convert the game_ids to games
                 for gid in gids:
                     g = self.games_mgr.get_preserved_game(gid, update_cache=False)
                     if g:
-                        if g.get_size() != game.size() and (x > safe_size or y > safe_size):
-                            # Suggested move is too near a far edge, don't suggest it.
+                        if not self.safe_move(move, g, game):
+                            # Suggested move is too near an edge
                             continue
-                        options.setdefault((x,y),[]).append(g)
+
+                        # options.setdefault((x,y),[]).append(g)
+                        games.append(g)
+                        if len(games) > 10:
+                            # That'll do
+                            break
+
+                if len(games):
+                    yield move, games
+                    option_count += 1
+                    if option_count > 6:
+                        print "Enough options"
+                        return
+
         except KeyError, e:
             #print "KeyError: %s" % e.message
             return
-        for move, games in options.iteritems():
-            yield move, games
 
     def after_game_won(self, game, colour):
         # Add the game to the openings library if req.

@@ -246,6 +246,47 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(moves), 1)
         self.assertEquals(moves[0], ((8,6), [self.game]))
 
+    def test_safe_size_candidate_board_smaller(self):
+        print_func()
+        our_rules = Rules(19, "standard")
+        our_game = Game(our_rules, Player("Alpha"), Player("Beta"))
+        cand_rules = Rules(13, "standard")
+        cand_game = Game(cand_rules, Player("Psycho"), Player("Smith"))
+
+        ob = ob_m.OpeningsBook(self.games_mgr)
+
+        self.assertTrue(ob.safe_move((0,0), cand_game, our_game))
+        self.assertTrue(ob.safe_move((12,12), cand_game, our_game))
+
+    def test_safe_size_candidate_board_same(self):
+        print_func()
+        our_rules = Rules(19, "standard")
+        our_game = Game(our_rules, Player("Alpha"), Player("Beta"))
+        cand_rules = Rules(19, "standard")
+        cand_game = Game(cand_rules, Player("Psycho"), Player("Smith"))
+
+        ob = ob_m.OpeningsBook(self.games_mgr)
+
+        self.assertTrue(ob.safe_move((0,0), cand_game, our_game))
+        self.assertTrue(ob.safe_move((18,18), cand_game, our_game))
+
+    def test_safe_size_candidate_board_bigger(self):
+        print_func()
+        our_rules = Rules(13, "standard")
+        our_game = Game(our_rules, Player("Alpha"), Player("Beta"))
+        cand_rules = Rules(19, "standard")
+        cand_game = Game(cand_rules, Player("Psycho"), Player("Smith"))
+
+        ob = ob_m.OpeningsBook(self.games_mgr)
+
+        self.assertTrue(ob.safe_move((4,4), cand_game, our_game))
+        self.assertTrue(ob.safe_move((8,8), cand_game, our_game))
+
+        self.assertFalse(ob.safe_move((3,4), cand_game, our_game))
+        self.assertFalse(ob.safe_move((4,3), cand_game, our_game))
+        self.assertFalse(ob.safe_move((9,8), cand_game, our_game))
+        self.assertFalse(ob.safe_move((8,9), cand_game, our_game))
+
     def test_apersist_position_lookup_different_rules_type(self):
         print_func()
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
