@@ -185,7 +185,7 @@ class GamesMgr(gso_m.GSObserver):
             return None
 
         return pg
-
+        
     def reset_state(self, game):
         pass
 
