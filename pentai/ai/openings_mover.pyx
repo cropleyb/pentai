@@ -34,7 +34,7 @@ class OpeningsMover(object):
                     losses += 1
                 # count draws and unfinished games as no win, no loss
 
-                # TODO: More smarts here
+                move_rating = pg.get_rating(colour)
                 max_rating = max(max_rating, move_rating)
 
             if max_rating >= 1:
