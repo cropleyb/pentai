@@ -125,6 +125,13 @@ class PlayersMgr():
             self.mark_recent_player(p_key)
         return self.convert_to_player(p)
 
+    def get_player_name(self, p_key):
+        try:
+            p = self.players[p_key]
+        except KeyError:
+            return None
+        return p.get_name()
+
     def convert_to_player(self, player):
         if type(player) == type(0):
             try:
