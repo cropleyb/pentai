@@ -63,16 +63,12 @@ class GamesScreen(Screen):
         self.clear_selected()
 
 
-def game_data(game):
+def game_data(game, players_mgr):
     data = {}
     data["id"] = str(game.game_id)
-    data["black"] = game.get_player_name(BLACK)
 
-    # TODO: This is a hack.
-    try:
-        data["white"] = game.get_player_name(WHITE)
-    except:
-        data["white"] = "Corrupted"
+    data["black"] = players_mgr.get_player_name(game.get_player_id(BLACK))
+    data["white"] = players_mgr.get_player_name(game.get_player_id(WHITE))
 
     data["date"] = str(game.get_date())
     #data["status_colour"] = [0,0,0,.5] #game.get_won_by()
@@ -81,8 +77,8 @@ def game_data(game):
         data["deselected_color"] = [0,0,0,.5] #game.get_won_by()
         data["selected_color"] = [0,0,0,.5] #game.get_won_by()
     data["height"] = 50
-    data["size"] = str(game.size())
-    data["rules"] = str(game.rules.get_type_name())
+    data["size"] = str(game.get_size())
+    data["rules"] = str(game.get_rules_type_name())
     data["is_selected"] = False
     # TODO: Winner
     return data
@@ -158,10 +154,11 @@ class GamesView(gl_m.GridLayout):
 
         # TODO: Another hack - parent.parent
         gm = self.parent.parent.gm
-        games = gm.get_all_unfinished()
+        pm = gm.get_players_mgr()
+        games = gm.get_all_unfinished_preserved()
 
         # TODO: The "if" is a hack
-        games_dict = { g.game_id: game_data(g) for g in games if g }
+        games_dict = { g.game_id: game_data(g, pm) for g in games if g }
 
         self.item_strings = ["{0}".format(g_id) for g_id in games_dict.iterkeys() ]
 

@@ -114,6 +114,9 @@ class GamesMgr(gso_m.GSObserver):
 
         return g
 
+    def get_players_mgr(self):
+        return self.players_mgr
+
     def save(self, g, game_db=None, update_cache=True):
         for p in g.get_all_players()[1:]:
             self.players_mgr.ensure_has_key(p)
@@ -151,11 +154,11 @@ class GamesMgr(gso_m.GSObserver):
             return None
         return self.get_game(g_id)
 
-    def get_all_unfinished(self):
+    def get_all_unfinished_preserved(self):
         ret = []
         for g_id in self.unfinished_db.iterkeys():
             print "get_all_unfinished: %s" % g_id
-            g = self.get_game(g_id, update_cache=False)
+            g = self.get_preserved_game(g_id, update_cache=False)
             ret.append(g)
         return ret
 
