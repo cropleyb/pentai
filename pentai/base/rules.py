@@ -1,5 +1,17 @@
 from pentai.base.pente_exceptions import *
 
+types = {'s': "Standard",
+         't': "Tournament",
+         'k': "Keryo-Pente",
+         'f': "Freestyle",
+         '5': "5-In-A-Row",
+         'n': "No Capture"
+         }
+
+def get_type_name(type_char):
+    return types[type_char]
+
+
 class Rules(object):
     def __init__(self, *args, **kwargs):
         self.set_all(*args, **kwargs)
@@ -88,16 +100,8 @@ class Rules(object):
     def __hash__(self):
         return hash(self.key())
      
-    types = {'s': "Standard",
-             't': "Tournament",
-             'k': "Keryo-Pente",
-             'f': "Freestyle",
-             '5': "5-In-A-Row",
-             'n': "No Capture"
-             }
-
     def get_type_name(self):
-        return self.types[self.type_char]
+        return get_type_name(self.type_char)
 
 '''
     Standard rules
