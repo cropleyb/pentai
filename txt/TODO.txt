@@ -18,13 +18,14 @@ http://www.inc.com/magazine/19830701/1772.html
 Update kivy version? or just hack?
 
 Fix broken ai_system_test
+Delete game is slow on iOS
 cythonize openings book, preserved game, openings mover (profile first)
 First AI move is __slow__, don't search move number 1, 2, 3?
 Reorder opening moves and games each time they are used.
 Add logging support
 GamesMgr constructor seems slow? ZODB init.
 Do pack in background / overnight? / separate thread?
-order the search by sorting multiple level of threats - bugs, do more unit tests for fukumi etc.
+order the search by sorting multiple levels of threats - bugs, do more unit tests for fukumi etc.?
 Trim iOS deployment size
 Move "opposite_colour()" (and cythonise it)
 profile app
