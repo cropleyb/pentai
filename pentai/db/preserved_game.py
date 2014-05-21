@@ -21,8 +21,23 @@ class PreservedGame():
     def key(self):
         return self.game_id
 
+    def get_date(self):
+        return self.date
+
+    def get_size(self):
+        return self.rules[0]
+
+    def get_rules_type_name(self):
+        return r_m.get_type_name(self.rules[1])
+
+    def get_won_by(self):
+        return self.won_by
+
     def __eq__(self, other):
         return self.key() == other.key()
+
+    def get_player_id(self, colour):
+        return self.players[colour]
 
     def get_rating(self, colour):
         try:
