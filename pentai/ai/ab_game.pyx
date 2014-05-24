@@ -16,10 +16,12 @@ class ABGame():
         s = self.current_state = ab_s_m.ABState(None, search_filter, utility_calculator)
         s.set_state(base_game.current_state)
         self.base_game = base_game
-        self.interrupted = False
         self.transposition_table = {} # TODO: extract class?
         #self.transposition_hits = 0
         self.sleep_count = 0
+
+    def get_base_game(self):
+        return self.base_game
 
     def get_rules(self):
         return self.base_game.get_rules()
@@ -44,7 +46,7 @@ class ABGame():
                 pass
 
         self.sleep_count += 1
-        if not self.sleep_count % 8:
+        if not self.sleep_count % 16:
             # Give other thread(s) some time too
             time.sleep(0.000001)
 
@@ -93,8 +95,11 @@ class ABGame():
         self.transposition_table[key] = utility_value
         state.clean_up()
 
+    def was_interrupted(self):
+        return not self.base_game.is_live()
+
     def terminal_test(self, state, depth):
-        if self.interrupted:
+        if self.was_interrupted():
             return True
         # Check if we have this position in the transposition table
         try:

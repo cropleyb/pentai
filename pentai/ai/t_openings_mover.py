@@ -29,10 +29,12 @@ class MockPreservedGame:
 class OpeningsMoverTest(unittest.TestCase):
     def setUp(self):
         self.mom = Mock() # Mock Openings Manager
-        self.msg = Mock() # Mock Search Game
-        self.msg.mockAddReturnValues(size=9)
+        self.mabg = Mock() # Mock ABGame
+        self.msg = Mock() # Mock Base Game
+        self.mabg.mockAddReturnValues(get_base_game=self.msg)
+        self.msg.mockAddReturnValues(size=9, is_live=True)
 
-        self.of = OpeningsMover(self.mom, self.msg)
+        self.of = OpeningsMover(self.mom, self.mabg)
         self.msg.mockAddReturnValues(to_move_colour=BLACK)
         self.player = MockPlayer()
 

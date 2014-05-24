@@ -30,7 +30,7 @@ class Player(object):
     def prompt_for_action(self, game, gui):
         pass
 
-    def get_action(self, game, gui):
+    def stop(self):
         pass
 
     def get_rating(self):
@@ -46,3 +46,7 @@ class Player(object):
     def attach_to_game(self, base_game):
         pass
 
+    '''
+    def set_interrupted(self):
+        pass
+    '''

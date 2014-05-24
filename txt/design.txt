@@ -730,3 +730,16 @@ For each candidate move at the current priority level,
 Maintain a list of the counts of priority levels it appears in
 Need to be able to traverse it with own moves before opponent moves at each level.
 
+Why is priority filter 2 better than this?
+Move new code to pf 3, try orig vs. 2
+Yep, orig was better.
+
+Interruption
+------------
+Due to button being pressed in pente screen: Menu, Review, Rematch (not settings as it returns to pente screen)
+
+AI Code could be in Openings Book, Openings Mover or AB search, in the search thread.
+Notify the search thread via a boolean accessor in Game (via ABGame)
+If the user goes to the menu then the game should be stopped and saved
+Rematch should stop and save the current game. If the game is not finished and it has a human player then it should be presumed won by the AI, or current player if there are two humans.
+What is the difference between live & not interrupted?

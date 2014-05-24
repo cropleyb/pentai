@@ -1,5 +1,6 @@
+from persistent import *
 
-class MRUCache():
+class MRUCache(Persistent):
     def __init__(self, size):
         self.cache = []
         self.size = size
@@ -21,3 +22,6 @@ class MRUCache():
         ret = self.cache[-num:]
         ret.reverse()
         return ret
+
+    def __repr__(self):
+        return str(self.cache[:self.size])

@@ -90,6 +90,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.calc_board_offset(screen_size)
 
         self.live = True
+        self.reviewing = False
 
         super(PenteScreen, self).__init__(*args, **kwargs)
 
@@ -135,8 +136,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
                         force=True)
 
     def rematch_confirmed(self, *ignored):
-        self.set_review_mode(False)
+        #st()
         og = self.game
+        og.set_live(False, self)
         rules = og.get_rules()
 
         o_winner = og.get_won_by()
@@ -169,7 +171,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def create_clocks(self):
         # TODO: Ugly
-        self.clocks = [None]
+        self.clocks[:] = [None]
         if self.game.get_total_time() > 0:
             # Time controls active.
             for colour, time_id in [
@@ -182,6 +184,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.clocks.append(mock.Mock())
 
     def set_game(self, game):
+        #st()
         self.clean_board()
         self.game = game
         if game.autosave_filename == None:
@@ -219,13 +222,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
         Clock.schedule_once(start_func, transition_time)
 
     def set_live(self, val):
+        print "pente_screen Set live: %s" % val
+        self.game.set_live(val, self)
         if val:
             if not self.live and not self.game.finished():
                 # Transitioning to live, so get things going
                 self.prompt_for_action()
+
+                if not self.reviewing:
+                    self.start_ticking()
         else:
             self.stop_ticking()
-        self.live = val
+            self.game.get_current_player().stop()
 
     # GuiPlayer?
     def make_first_move(self, dt):
@@ -279,13 +287,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def on_enter(self):
         self.refresh_all()
-        self.start_ticking()
+        if not self.game.finished():
+            self.set_review_mode(False)
         time.sleep(0.5)
 
     def on_pre_leave(self):
         self.set_live(False)
         if not self.app.in_demo_mode():
             try:
+                # TODO: Only finished games should be openingified
                 self.ob.add_game(self.game)
             except OpeningsBookDuplicateException:
                 pass
@@ -299,6 +309,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if self.game:
             colour = self.game.to_move_colour()
             self.clocks[colour].made_move() # TODO: "made_move"
+            opp_colour = opposite_colour(colour)
+            self.clocks[opp_colour].made_move() # TODO: "made_move"
 
     def perform(self, dt):
         if self.action_queue.empty():
@@ -314,7 +326,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.refresh_all()
             self.prompt_for_action()
         except Exception, e:
-            if self.game.was_interrupted():
+            if not self.game.is_live():
                 return
             self.display_error(e.message)
 
@@ -322,11 +334,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
         Clock.schedule_once(self.prompt_for_action_inner, 0.01)
 
     def prompt_for_action_inner(self, *ignored):
-        if self.live: # and not self.reviewing:
+        if self.live and not self.reviewing:
             # TODO: game.prompt_for_action if not finished?
             self.start_ticking()
-            game = self.game
-            game.prompt_for_action(self)
+            self.game.prompt_for_action(self)
 
     def board_size(self):
         return self.game.size()
@@ -845,27 +856,20 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return []
 
     def set_review_mode(self, val):
+        #st()
         self.reviewing = val
-
+        
         # TODO: Demo flag?
-        self.set_live(not val and \
-                not self.game.finished() and \
-                not self.app.in_demo_mode())
+        self.set_live(not val and not self.app.in_demo_mode())
+        
+        print "Reviewing: %s" % val
 
         if val:
             cls = ReviewButtons
-            self.stop_ticking()
         else:
             cls = PlayButtons
             self.go_to_the_end()
-            self.start_ticking()
-            '''
-            try:
-                self.go_to_the_end()
-                self.start_ticking()
-            except IllegalMoveException, e:
-                pass
-            '''
+
         panel_buttons = cls()
         self.panel_buttons = panel_buttons
         panel_buttons.ps = self

@@ -60,8 +60,30 @@ def add_game(openings_book, g):
     except pe_m.OpeningsBookDuplicateException:
         pass
 
+import pdb
 
 def build(openings_book, user_data_dir, section=None, start=None, count=100):
+    # TEMP
+    #print misc()["recent_ai_player_ids"]
+    #print misc()["recent_human_ids"]
+    #pdb.set_trace()
+    '''
+    from pentai.db.mru_cache import *
+    mca = MRUCache(30)
+    mca.cache = [211, 212, 213, 214, 215, 216, 217, 220, 221, 223, 224, 226, 227, 228, 229, 225, 222, 219, 218, 210]
+    misc()["recent_ai_player_ids"] = mca
+    mch = MRUCache(30)
+    mch.cache = [30574, 30575, 30576, 30577, 30579, 30580, 30581, 30582, 30584, 30585, 30586, 30587, 30589, 30590, 30591, 30592, 30594, 30595, 30596, 30597, 30599, 30600, 30601, 30602, 30604, 30605, 30606, 30607, 30617, 209]
+    misc()["recent_human_ids"] = mch
+    '''
+    '''
+    misc()["recent_ai_player_ids"] = None
+    misc()["recent_human_ids"] = None
+    del misc()["recent_ai_player_ids"]
+    del misc()["recent_human_ids"]
+    '''
+    z_m.sync()
+
     # Extend library
     if not section:
         try:

@@ -19,6 +19,7 @@ class Game(object):
         self.date = datetime.date.today() # TODO
         self.setup(*args, **kwargs)
         self.ratings = [None, None, None]
+        self.live = True
 
     def setup(self, rules=None, player1=None, player2=None):
         self.rules = rules
@@ -87,16 +88,27 @@ class Game(object):
     def to_move_colour(self):
         return self.current_state.to_move_colour()
 
+    def is_live(self):
+        return self.live
+
+    def set_live(self, val, gui): # TODO: Remove gui
+        if val:
+            if not self.live and not self.finished():
+                self.prompt_for_action(gui)
+        else:
+            gui.stop_ticking() # TODO!
+            #print "Stop game"
+            #self.game.stop()
+
+        self.live = val
+
     # TODO: Move this out of game, it seems to be gui stuff
     def prompt_for_action(self, gui):
-        if self.was_interrupted():
+        if not self.live:
             return
         if self.finished():
             return "Game was won by: %s" % self.winner_name()
         return self.get_current_player().prompt_for_action(self, gui)
-
-    def get_action(self, gui):
-        return self.get_current_player().get_action(self, gui)
 
     # Not sure if these should even delegate
     def get_move_number(self):
@@ -112,6 +124,8 @@ class Game(object):
         return self.current_state.set_captured(player_number, pieces)
 
     def make_move(self, move):
+        if move is None:
+            raise IllegalMoveException("Null move")
         # Record this, then save to a file if required
         if len(self.move_history) > 0:
             self.move_history = self.move_history[:self.get_move_number()-1]
@@ -136,15 +150,6 @@ class Game(object):
 
     def set_won_by(self, colour):
         self.current_state.set_won_by(colour)
-
-    def set_interrupted(self):
-        self.set_won_by(BLACK + WHITE)
-        self.players[BLACK].set_interrupted()
-        self.players[WHITE].set_interrupted()
-
-    def was_interrupted(self):
-        # TODO: Also using this combo for draws
-        return self.current_state.get_won_by() == BLACK + WHITE
 
     def finished(self):
         return self.current_state.get_won_by() > 0
@@ -175,6 +180,17 @@ class Game(object):
     def go_to_the_end(self):
         self.go_to_move(len(self.move_history)+1)
 
+    def replay_move(self, time_hist, i):
+        to_move_col = self.to_move_colour()
+        move = self.move_history[i]
+        if move:
+            self.current_state.make_move(self.move_history[i])
+            self.remaining_times[to_move_col] = time_hist[i]
+        else:
+            # A null move somehow got into the history, strip it out.
+            self.move_history[i:i] = []
+            # TODO fix times?
+
     def go_to_move(self, move_number):
         # TODO: All these +1 and -1 shifts look a bit dodgy.
         current_move = self.get_move_number()
@@ -192,18 +208,13 @@ class Game(object):
             self.remaining_times[WHITE] = total_time
 
             for i in range(move_number-1):
-                to_move_col = self.to_move_colour()
-                gs.make_move(self.move_history[i])
-
-                self.remaining_times[to_move_col] = time_hist[i]
+                self.replay_move(time_hist, i)
         else:
             gs = self.current_state
             for i in range(current_move-1, move_number-1):
                 if i > len(self.move_history) - 1:
                     return
-                to_move_col = self.to_move_colour()
-                gs.make_move(self.move_history[i])
-                self.remaining_times[to_move_col] = time_hist[i]
+                self.replay_move(time_hist, i)
 
         self.time_history = time_hist
         # If we go back to the beginning of the game,

@@ -135,6 +135,10 @@ class OpeningsBook(object):
         colour = search_game.to_move_colour()
 
         for pos, gids in pos_slot.iteritems():
+            if not search_game.is_live():
+                print "INTERRUPTED OPENING BOOK GET MOVE GAMES"
+                return
+
             # TODO: Some sort of LRU for pos_slot iteritems?!
             move = rev(*pos)
 
@@ -146,10 +150,12 @@ class OpeningsBook(object):
                 if pg:
                     if move_number == 3:
                         if self.filter_out_by_rules(search_game, move):
+                            print "Filter out by move 3 rules"
                             continue
 
                     if not self.safe_move(move, pg, search_game):
                         # Suggested move is too near an edge
+                        print "Unsafe move"
                         continue
 
                     move_rating = pg.get_rating(colour)

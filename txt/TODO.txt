@@ -17,8 +17,12 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
+Ticking and rematch broken
+Sound & review mode toggle
+Profile unit tests? AI subsystem tests?
+Zero music volume -> turn off music
+AI vs. AI continues after rematch and/or exit play screen.
 Fix broken ai_system_test
-Delete game is slow on iOS
 cythonize openings book, preserved game, openings mover (profile first)
 First AI move is __slow__, don't search move number 1, 2, 3?
 Reorder opening moves and games each time they are used.
@@ -131,3 +135,5 @@ Asked Hasbro (2nd time) 29/4/2014, deadline: 18/5/2014
 Apple Dev support 1300 068 387
 Apple support 1300 321 456
 
+Feature Suggestions
+http://pente.org/gameServer/forums/thread.jspa?forumID=1&threadID=229871&tstart=-1

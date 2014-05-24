@@ -141,11 +141,13 @@ class PentAIApp(App):
             filename=self.game_filename)
 
         self.pente_screen = root.get_screen("Pente")
-        self.pente_screen.set_live(not demo)
         self.game = game
 
         # load the game screen
         self.pente_screen.set_game(game)
+
+        # TODO
+        self.pente_screen.set_live(not demo)
 
         self.show_pente_screen()
 
@@ -232,8 +234,7 @@ class PentAIApp(App):
                 ab_m.debug = not ab_m.debug
                 self.debug = ab_m.debug
 
-                import ai_player as aip_m # hack for debugging
-                aip_m.set_skip_openings_book(ab_m.debug)
+                import pentai.ai.ai_player as aip_m # hack for debugging
                 print "Debug set to %s" % ab_m.debug
                 st() # Could help sometimes?
                 return True

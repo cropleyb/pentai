@@ -59,6 +59,13 @@ def sync():
 def pack(*args, **kwargs):
     db.pack(*args, **kwargs)
 
+'''
+# TODO?
+def pack_in_thread(*args, **kwargs):
+    import threading
+    db.pack(*args, **kwargs)
+'''
+
 def abort():
     transaction.abort()
 

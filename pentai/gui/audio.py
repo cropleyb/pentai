@@ -87,6 +87,8 @@ class Audio():
         self.play_sound(["beep", "beep"])
 
     def click(self):
+        #st()
+        print "CLICK"
         self.play_sound(["click", "click"])
 
     def music(self):

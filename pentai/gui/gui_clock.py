@@ -16,8 +16,11 @@ class GuiClock(object):
         self.show_remaining()
         self.ticking = False
         self.last_tick_time = None
+        #st()
 
     def start_ticking(self):
+        print "START TICKING %s" % id(self)
+        #st()
         if not self.ticking:
             self.tick_audio(0, self.colour)
             self.tick_video(0)
@@ -25,6 +28,7 @@ class GuiClock(object):
 
     def stop_ticking(self):
         # Stop both timers
+        print "STOP TICKING %s" % id(self)
         Clock.unschedule(self.tick_audio)
         Clock.unschedule(self.tick_video)
         self.ticking = False

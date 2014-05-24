@@ -3,9 +3,10 @@ import random
 from pentai.base.defines import *
 
 class OpeningsMover(object):
-    def __init__(self, o_book, game):
+    def __init__(self, o_book, ab_game):
         self.o_book = o_book
-        self.game = game
+        self.ab_game = ab_game
+        self.game = ab_game.get_base_game()
 
     def get_a_good_move(self, aip, seen=None):
         # TODO: shouldn't need to pass in aip each time, make it self.player?
@@ -23,6 +24,9 @@ class OpeningsMover(object):
         move_games = self.o_book.get_move_games(self.game)
 
         for mg in move_games:
+            if not self.game.is_live():
+                print "INTERRUPTED OPENING BOOK SEARCH"
+                return
             move, games = mg
             for pg in games:
 

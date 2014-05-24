@@ -120,7 +120,7 @@ class Match():
         #self.genome1.vision = 0.98
         #self.genome2.vision = 0.98
 
-        #self.genome2.filter2 = True
+        self.genome2.filter2 = True
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
@@ -147,8 +147,8 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        #for game_length in range(2,6):
-        for game_length in range(2,5):
+        for game_length in range(2,6):
+        #for game_length in range(2,5):
             #for board_size in [13]:
             for board_size in [13, 19]:
                 for first_player in [0, 1]:
@@ -186,6 +186,7 @@ if __name__ == "__main__":
     '''
     random.seed()
     # the code you want to memory-profile
+    '''
       
     #while True:
     m = Match()
@@ -196,11 +197,11 @@ if __name__ == "__main__":
     mem = memory_usage_resource()
     print mem
     '''
-    '''
     heap_data = h.heap()
     print heap_data
     print heap_data.more
     st()
+    '''
     '''
     m = Match()
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
@@ -208,3 +209,4 @@ if __name__ == "__main__":
     s = pstats.Stats("Profile.prof")
     #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
     s.strip_dirs().sort_stats("time").print_stats(20)
+    '''

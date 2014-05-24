@@ -69,9 +69,9 @@ class AIPlayer(p_m.Player):
         else:
             # TODO: platform dependent choice?
             try:
-                disable_process()
+                #disable_process()
                 self.do_search_process(gui)
-            except:
+            except ImportError: # For Multiprocessing
                 t = threading.Thread(target=self.search_thread, args=(gui,))
                 
                 # Allow the program to be exited quickly
@@ -84,11 +84,11 @@ class AIPlayer(p_m.Player):
     def get_type(self):
         return "Computer"
 
-    def do_search_process(self, gui):
+    def do_search_process(self, gui): # TODO: We shouldn't know about the gui
         from search_process import SearchProcess
         game = self.ab_game.base_game
-        self.search_process = SearchProcess()
-        self.search_process.create_process(game, gui)
+        self.search_process = SearchProcess(gui)
+        self.search_process.create_process(game)
 
     def search_thread(self, gui):
         action = self.do_the_search()
@@ -98,7 +98,7 @@ class AIPlayer(p_m.Player):
         if self.openings_mover is None:
             # ie first run through
             self.openings_mover = om_m.OpeningsMover(
-                    self.openings_book, self.ab_game.base_game)
+                    self.openings_book, self.ab_game)
         return self.openings_mover
 
     def make_opening_move(self, turn, seen):
@@ -141,9 +141,9 @@ class AIPlayer(p_m.Player):
         if len(seen) < 2:
             ab_ss.set_seen(seen)
 
-            move, value = ab_m.alphabeta_search(ab_ss, ab_game)
-            if self.ab_game.interrupted:
-                return
+        move, value = ab_m.alphabeta_search(ab_ss, ab_game)
+        if self.ab_game.was_interrupted():
+            return
 
         action = move[0]
 
@@ -155,7 +155,9 @@ class AIPlayer(p_m.Player):
         #print " => %s" % (action,)
         return action
 
-    def set_interrupted(self):
-        self.ab_game.interrupted = True
+    #def set_interrupted(self):
+    def stop(self):
         if self.search_process != None:
-            self.search_process.kill()
+            # TODO: Reset the queue, as it could be corrupted by this
+            self.search_process.terminate()
+            self.search_process = None

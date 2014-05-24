@@ -35,6 +35,8 @@ class PlayersMgr():
         return rpks
 
     def mark_recent_player(self, player):
+        print "IN MARK RECENT PLAYER"
+        #st()
         try:
             p_key = player.get_key()
         except AttributeError:
@@ -95,9 +97,6 @@ class PlayersMgr():
         self.players[p_key] = player
         if update_cache:
             self.mark_recent_player(p_key)
-        z_m.sync()
-
-    def sync(self):
         z_m.sync()
 
     def find_by_name(self, name, player_type=None, update_cache=True):

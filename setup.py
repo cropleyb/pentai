@@ -370,7 +370,6 @@ sources = {
     'base/game_state.pyx': base_flags,
     'base/bit_reverse.pyx': base_flags,
     'db/openings_book.pyx': base_flags,
-    'db/preserved_game.pyx': base_flags,
     'ai/length_lookup_table.pyx': base_flags,
     'ai/priority_filter.pyx': base_flags,
     'ai/priority_filter_2.pyx': base_flags,

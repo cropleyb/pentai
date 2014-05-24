@@ -5,6 +5,9 @@ from pentai.db.players_mgr import PlayersMgr
 from multiprocessing import *
 
 class SearchProcess(object):
+    def __init__(self, listener):
+        self.listener = listener
+        self.process = None
 
     def search(self, preserved_game):
         pm = PlayersMgr()
@@ -19,9 +22,8 @@ class SearchProcess(object):
         conn.send(move)
         conn.close()
 
-    def create_process(self, game, gui):
+    def create_process(self, game):
         pg = PreservedGame(game)
-        self.gui = gui
         self.parent_conn, child_conn = Pipe()
         self.process = Process(target=self.search_and_respond,
                 args=(child_conn, pg,))
@@ -39,7 +41,8 @@ class SearchProcess(object):
     def receive(self):
         answer = self.parent_conn.recv()
         self.process.join() # TODO: Reuse the process.
-        self.gui.enqueue_action(answer)
+        self.listener.enqueue_action(answer)
 
-    def kill(self):
-        self.process.kill()
+    def terminate(self):
+        if self.process:
+            self.process.terminate()
