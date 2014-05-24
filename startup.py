@@ -7,7 +7,8 @@ import kivy.core.window as w_m
 import os, sys
 
 def run():
-    Config.set('kivy', 'log_level', 'info')
+    #Config.set('kivy', 'log_level', 'info')
+    Config.set('kivy', 'log_level', 'debug')
     Config.set('kivy', 'log_enable', 1)
     Config.set('kivy', 'log_dir', 'logs')
     Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
