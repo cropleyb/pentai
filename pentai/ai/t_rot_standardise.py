@@ -139,7 +139,6 @@ class RotStandardiseTest(unittest.TestCase):
         std, fwd, rev = standardise(self.game.current_state)
 
         brd = std.get_board()
-        #print brd
         self.assertEqual(std.get_all_captured(), [0, 0, 0])
         self.assertEqual(brd.get_occ((0,8)), BLACK)
         self.assertEqual(brd.get_occ((4,8)), WHITE)

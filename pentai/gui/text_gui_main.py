@@ -16,7 +16,7 @@ if __name__ == "__main__":
         import psyco
         psyco.full()
     except ImportError:
-        print "(without psyco)"
+        log.info("(without psyco)")
     """
 
     rules = Rules(9, "standard")

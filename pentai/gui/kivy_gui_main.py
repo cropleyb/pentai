@@ -43,7 +43,7 @@ class PentAIApp(App):
         super(PentAIApp, self).__init__(*args, **kwargs)
         #if True:
         if not "db.fs" in os.listdir(self.user_data_dir):
-            print "Copying db"
+            log.info("Copying db")
             import shutil
             dest = self.user_data_dir
             for fn in ["db.fs", "db.fs.index", "db.fs.tmp"]:
@@ -54,7 +54,7 @@ class PentAIApp(App):
                 size_hint=(.9, .2),
                 timeout_val=4)
         self.popup.open()
-        print message
+        log.info(message)
 
     def return_screen(self, ignored=None):
         self.root.return_screen()
@@ -168,7 +168,7 @@ class PentAIApp(App):
 
     def hook_keyboard(self, window, key, *ignored_args):               
         # This keyboard control is just for my convenience, not on app.
-        print "KEY PRESSED: %s" % key
+        log.info("KEY PRESSED: %s" % key)
         typing_screens = ["Setup", "AI", "Human"]
         if key == 27:
             # Escape
@@ -235,7 +235,7 @@ class PentAIApp(App):
                 self.debug = ab_m.debug
 
                 import pentai.ai.ai_player as aip_m # hack for debugging
-                print "Debug set to %s" % ab_m.debug
+                log.info("Debug set to %s" % ab_m.debug)
                 st() # Could help sometimes?
                 return True
 
@@ -268,7 +268,7 @@ class PentAIApp(App):
         ini_file = "pentai.ini"
         ini_path = os.path.join(self.user_data_dir, ini_file)
         if not ini_file in os.listdir(self.user_data_dir):
-            print "Copying ini"
+            log.info("Copying ini")
             import shutil
             shutil.copy(ini_file, ini_path)
 
@@ -293,16 +293,16 @@ class PentAIApp(App):
         self.openings_builder_timeout = False
         Clock.schedule_once(self.ob_timeout, 10)
 
-        print "Create Games Mgr"
+        log.debug("Create Games Mgr")
         self.games_mgr = GamesMgr()
-        print "Create Openings Book"
+        log.debug("Create Openings Book")
         self.openings_book = ob_m.OpeningsBook(self.games_mgr)
-        print "Created Book"
+        log.debug("Created Book")
         
         Clock.schedule_once(self.load_games, 0.01)
 
     def ob_timeout(self, ignored):
-        print "Intro Time is up"
+        log.debug("Intro Time is up")
         self.openings_builder_timeout = True
 
     def load_games(self, ignored):
@@ -315,10 +315,10 @@ class PentAIApp(App):
             # We'll add some more, but give Kivy some CPU too.
             Clock.schedule_once(self.load_games, 0.1)
         else:
-            print "About to pack DB"
+            log.info("About to pack DB")
             # Finished loading openings games. Pack the DB to reclaim space 
             z_m.pack()
-            print "Done packing DB"
+            log.info("Done packing DB")
             # Don't need this variable any more
             del self.openings_builder_timeout
             Clock.schedule_once(self.create_screens, 0)
@@ -326,13 +326,13 @@ class PentAIApp(App):
     def create_screens(self, ignored):
         root = self.root
 
-        print "Creating screens"
+        log.debug("Creating screens")
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
                    (AIPlayerScreen, "AI"), (HumanPlayerScreen, "Human"),
                    ]
 
-        print "Adding screens to SM"
+        log.debug("Adding screens to SM")
         for scr_cls, scr_name in screens:
             self.add_screen(scr_cls, scr_name)
 
@@ -344,7 +344,7 @@ class PentAIApp(App):
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         self.popup = None
-        print "Showing menu"
+        log.debug("Showing menu")
 
         self.show_menu_screen()
 

@@ -105,16 +105,16 @@ class AIPlayer(p_m.Player):
         if turn > 8: # TODO: Use OPENINGS_DEPTH constant - but where should it live???
             return
         if self.use_openings_book():
-            print "Looking for an opening book move"
+            log.info("Looking for an opening book move")
             base_game = self.ab_game.base_game
 
             om = self.get_openings_mover()
             move = om.get_a_good_move(self, seen)
             if move:
-                print "Used an opening book move"
+                log.info("Used an opening book move")
                 return move
             else:
-                print "Didn't find an opening book move"
+                log.info("Didn't find an opening book move")
 
     def do_the_search(self):
         try:
@@ -132,7 +132,7 @@ class AIPlayer(p_m.Player):
 
         if move:
             if ab_game.base_game.get_board().get_occ(move) != EMPTY:
-                print "Corrupt opening %s suggestion ignored" % (move,)
+                log.info("Corrupt opening %s suggestion ignored" % (move,))
             else:
                 assert(turn != 3 or not rules.move_is_too_close(move))
                 return move
@@ -148,11 +148,11 @@ class AIPlayer(p_m.Player):
         action = move[0]
 
         '''
-        print "size of transposition table: %s" % len(ab_game.transposition_table)
+        log.info("size of transposition table: %s" % len(ab_game.transposition_table))
         '''
         ab_game.reset_transposition_table()
 
-        #print " => %s" % (action,)
+        #log.info(" => %s" % (action,))
         return action
 
     #def set_interrupted(self):

@@ -51,11 +51,10 @@ Enjoy,
 Bruce
 """
     def follow_link(self, inst, ref):
-        print "User clicked on: %s" % ref
+        log.debug("User clicked on: %s" % ref)
         if ref == "ww":
             link = "http://winning-moves.com"
         elif ref == "bc":
             link = "http://www.bruce-cropley.com/pentai"
-        print link
         webbrowser.open_new_tab(link)
 

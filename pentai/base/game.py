@@ -92,13 +92,12 @@ class Game(object):
         return self.live
 
     def set_live(self, val, gui): # TODO: Remove gui
+        log.debug("set_live %s" % val)
         if val:
             if not self.live and not self.finished():
                 self.prompt_for_action(gui)
         else:
             gui.stop_ticking() # TODO!
-            #print "Stop game"
-            #self.game.stop()
 
         self.live = val
 

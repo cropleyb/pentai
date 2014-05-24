@@ -23,7 +23,6 @@ class StandardiseTest(unittest.TestCase):
         self.game.load_moves("1. (%s,%s)" % (i,i))
         std, fwd, rev = standardise(self.game.current_state)
         std_ii = fwd(i, i)
-        print "STD_II: %s" % (std_ii,)
 
         if i < 5:
             self.assertEquals(std_ii, (18-i, i))
@@ -43,8 +42,8 @@ class StandardiseTest(unittest.TestCase):
         # Useful... don't cull everywhere
         #brd = self.game.get_board()
         #brd.d_strips[0] = ds
-        #print ds.strips
-        #print brd
+        #log.debug(ds.strips)
+        #log.debug(brd)
 
         self.assertEqual(ds.get_occ((5,7)), BLACK)
         self.assertEqual(ds.get_occ((9,5)), WHITE)

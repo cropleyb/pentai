@@ -222,7 +222,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         Clock.schedule_once(start_func, transition_time)
 
     def set_live(self, val):
-        print "pente_screen Set live: %s" % val
+        log.debug("pente_screen set_live: %s" % val)
         self.game.set_live(val, self)
         if val:
             if not self.live and not self.game.finished():
@@ -320,7 +320,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.action_queue.get()
         if not action:
             if self.game.get_won_by() == (BLACK+WHITE):
-                print "Draw detected"
+                log.info("Draw detected")
         try:
             self.game.make_move(action)
             self.refresh_all()
@@ -416,7 +416,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                         cw.append(new_piece)
                         self.add_widget(new_piece)
                     except Exception, e:
-                        print e
+                        log.error(e)
             if captured > 0:
                 audio = self.get_audio()
                 if not audio.muted:
@@ -448,7 +448,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         # TODO: Show draws somehow
         if self.game.get_won_by() == BLACK + WHITE:
-            print "TODO! Display draws as such!"
+            log.warn("TODO! Display draws as such!")
             return
 
         if self.game.finished():
@@ -862,7 +862,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         # TODO: Demo flag?
         self.set_live(not val and not self.app.in_demo_mode())
         
-        print "Reviewing: %s" % val
+        log.debug("Reviewing: %s" % val)
 
         if val:
             cls = ReviewButtons

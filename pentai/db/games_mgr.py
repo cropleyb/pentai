@@ -53,29 +53,24 @@ class GamesMgr(gso_m.GSObserver):
         game_db = self.get_db(key)
         if game_db is None:
             # No such game
-            print "No such game: %s" % key
+            log.warn("No such game: %s" % key)
             return
         
         try:
             del game_db[key]
         except KeyError:
             # Corrupt DB, ignore
-            print "No such game: %s" % key
-            pass
+            log.warn("No such game: %s" % key)
 
         try:
             del self.unfinished_db[key]
         except KeyError:
-            print "game not in unfinished_db: %s" % key
-            print type(key)
-            pass
+            log.warn("game not in unfinished_db: %s, type: %s" % (key, type(key)))
 
         try:
             del self.id_lookup[key]
         except KeyError:
-            print "game not in id_lookup: %s" % key
-            print key
-            pass
+            log.warn("game not in id_lookup: %s" % key)
         zd_m.sync()
 
     def get_db(self, key):
@@ -157,7 +152,7 @@ class GamesMgr(gso_m.GSObserver):
     def get_all_unfinished_preserved(self):
         ret = []
         for g_id in self.unfinished_db.iterkeys():
-            print "get_all_unfinished: %s" % g_id
+            log.debug("get_all_unfinished: %s" % g_id)
             g = self.get_preserved_game(g_id, update_cache=False)
             ret.append(g)
         return ret

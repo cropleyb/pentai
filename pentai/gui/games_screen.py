@@ -120,13 +120,13 @@ class GamesView(gl_m.GridLayout):
                 # For some reason this is not opening a selected game if it
                 # was selected through the other row for the same game
                 gid_str = da.selection[0].parent.children[-1].text
-                print "Selected: GID %s" % (gid_str)
+                log.debug("Selected: GID %s" % (gid_str))
                 self.parent.parent.set_selected_gid(int(gid_str))
             except AttributeError, e:
                 # It is selected already, load the game.
                 self.parent.parent.load_game()
         except IndexError:
-            print "Removed"
+            log.debug("Removed")
 
     def fill_er_up(self, unused=None):
         dc = "deselected_color"

@@ -35,8 +35,7 @@ class PlayersMgr():
         return rpks
 
     def mark_recent_player(self, player):
-        print "IN MARK RECENT PLAYER"
-        #st()
+        log.debug("in mark_recent_player")
         try:
             p_key = player.get_key()
         except AttributeError:

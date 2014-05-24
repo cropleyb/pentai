@@ -10,11 +10,13 @@ import openings_book as ob_m
 import games_mgr as gm_m
 import misc_db as m_m
 
+from pentai.base.defines import *
+
 def misc():
     return m_m.get_instance()
 
 def unzip_section(section, user_data_dir):
-    print "unzipping %s" % section
+    log.info("unzipping %s" % section)
     import zipfile as zf_m
     zip_path = os.path.join("openings", "%s.zip" % section)
     try:
@@ -44,17 +46,13 @@ def add_games(openings_book, section_dir, start, count=100):
             added += 1
             if added >= count:
                 break
-        except pe_m.IllegalMoveException, e:
-            print "%s: %s" % (gf, e.message)
-        except pe_m.ParseException, e:
-            print "%s: %s" % (gf, e.message)
         except Exception, e:
-            print "%s: %s" % (gf, e.message)
+            log.debug("%s: %s" % (gf, e.message))
     z_m.sync()
     return count - added
 
 def add_game(openings_book, g):
-    print "Adding: %s" % g.game_id
+    log.info("Adding: %s" % g.game_id)
     try:
         openings_book.add_game(g, update_cache=False, sync=False)
     except pe_m.OpeningsBookDuplicateException:
@@ -63,25 +61,6 @@ def add_game(openings_book, g):
 import pdb
 
 def build(openings_book, user_data_dir, section=None, start=None, count=100):
-    # TEMP
-    #print misc()["recent_ai_player_ids"]
-    #print misc()["recent_human_ids"]
-    #pdb.set_trace()
-    '''
-    from pentai.db.mru_cache import *
-    mca = MRUCache(30)
-    mca.cache = [211, 212, 213, 214, 215, 216, 217, 220, 221, 223, 224, 226, 227, 228, 229, 225, 222, 219, 218, 210]
-    misc()["recent_ai_player_ids"] = mca
-    mch = MRUCache(30)
-    mch.cache = [30574, 30575, 30576, 30577, 30579, 30580, 30581, 30582, 30584, 30585, 30586, 30587, 30589, 30590, 30591, 30592, 30594, 30595, 30596, 30597, 30599, 30600, 30601, 30602, 30604, 30605, 30606, 30607, 30617, 209]
-    misc()["recent_human_ids"] = mch
-    '''
-    '''
-    misc()["recent_ai_player_ids"] = None
-    misc()["recent_human_ids"] = None
-    del misc()["recent_ai_player_ids"]
-    del misc()["recent_human_ids"]
-    '''
     z_m.sync()
 
     # Extend library
@@ -131,11 +110,11 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
 def main():
     # TODO Move this to zodb_dict
     db_path = os.path.join(".", "db.fs")
-    print "Loading DB from %s" % db_path
+    log.info("Loading DB from %s" % db_path)
     lockfile_path = db_path + ".lock"
     if os.path.isfile(lockfile_path):
         os.unlink(lockfile_path)
-        print "Cleared DB lock"
+        log.info("Cleared DB lock")
 
     z_m.set_db(db_path)
 

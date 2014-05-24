@@ -106,16 +106,5 @@ def convert_game(game_str, key):
         if recorded_result[0] == "0":
             g.set_won_by(WHITE)
 
-    '''
-        for i in range(10):
-            stubby.prompt_for_action(g, None, test=True)
-            if g.get_won_by():
-                print "Finished by Stubby"
-                break
-        else:
-            print "Unfinished game: %s" % key
-            #raise ParseException("Unfinished game")
-    '''
-
     return g
 

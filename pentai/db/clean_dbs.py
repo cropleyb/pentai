@@ -23,13 +23,13 @@ def check_id(g_id, to_remove):
     except KeyError:
         pass
     if game is None:
-        print "Removing game %s" % g_id
+        log.debug("Removing game %s" % g_id)
         to_remove.append(g_id)
     
     dot()
 
 if __name__ == "__main__":
-    print "Cleaning Games"
+    log.debug("Cleaning Games")
     global gm
     gm = gm_m.GamesMgr()
     to_remove = []
