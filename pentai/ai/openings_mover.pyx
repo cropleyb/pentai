@@ -25,7 +25,7 @@ class OpeningsMover(object):
 
         for mg in move_games:
             if not self.game.is_live():
-                print "INTERRUPTED OPENING BOOK SEARCH"
+                log.info("Interrupted opening book search")
                 return
             move, games = mg
             for pg in games:
@@ -57,16 +57,16 @@ class OpeningsMover(object):
         rand_val = random.random() * total_score
 
         for move, score in move_scores:
-            #print "score: %s, rand_val: %s" % (score, rand_val)
+            log.debug("score: %s, rand_val: %s" % (score, rand_val))
             if score >= rand_val:
-                print "Chosen score: %s (out of %s)" % (score, total_score)
+                log.debug("Chosen score: %s (out of %s)" % (score, total_score))
                 return move
             rand_val -= score
 
         # Fall through to inner filter
         if len(totals) > 0:
-            print "Fall through despite opening option(s) %s" % total_score
+            log.info("Fall through despite opening option(s) %s" % total_score)
         else:
-            print "No options found"
+            log.info("No suitable opening options found")
         return None
 

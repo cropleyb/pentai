@@ -72,7 +72,7 @@ class OpeningsBook(object):
 
         # Get the appropriate section for positions of this rule type and size
         db = self.get_db(game)
-        print "Placing in %s" % (position_key,)
+        log.debug("add_position %s" % (position_key,))
         pos_slot = db.setdefault(position_key, ZM())
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
@@ -111,7 +111,7 @@ class OpeningsBook(object):
 
     def get_move_games(self, search_game):
         std_state, fwd, rev = st_m.standardise(search_game.current_state)
-        #print "Get: %s" % (std_state,)
+        log.debug("get_move_games: %s" % (std_state,))
 
         position_key = std_state
 
@@ -119,7 +119,7 @@ class OpeningsBook(object):
 
         options = {}
         try:
-            print "looking in %s" % (position_key,)
+            log.debug("looking in %s" % (position_key,))
             pos_slot = db[position_key]
         except KeyError, e:
             return
@@ -136,7 +136,7 @@ class OpeningsBook(object):
 
         for pos, gids in pos_slot.iteritems():
             if not search_game.is_live():
-                print "INTERRUPTED OPENING BOOK GET MOVE GAMES"
+                log.info("Interrupted opening book get move games")
                 return
 
             # TODO: Some sort of LRU for pos_slot iteritems?!
@@ -150,18 +150,18 @@ class OpeningsBook(object):
                 if pg:
                     if move_number == 3:
                         if self.filter_out_by_rules(search_game, move):
-                            print "Filter out by move 3 rules"
+                            log.info("Filter out by move 3 rules")
                             continue
 
                     if not self.safe_move(move, pg, search_game):
                         # Suggested move is too near an edge
-                        print "Unsafe move"
+                        log.debug("Unsafe move %s" % (move,))
                         continue
 
                     move_rating = pg.get_rating(colour)
                     if move_rating < (ai_rating - 300):
-                        print "Potential move rating %s is too low for AI %s" % \
-                                (move_rating, ai_rating)
+                        log.debug("Potential move rating %s is too low for AI %s" % 
+                                (move_rating, ai_rating))
                         continue
 
                     games.append(pg)
@@ -176,9 +176,8 @@ class OpeningsBook(object):
                 yield move, games
                 option_count += 1
                 if option_count > 6:
-                    print "Enough options"
+                    log.info("Enough opening options found")
                     return
-
 
     def after_game_won(self, game, colour):
         # Add the game to the openings library if req.
