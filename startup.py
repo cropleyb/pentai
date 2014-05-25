@@ -50,7 +50,7 @@ def run():
         traceback.print_exc()
         try:
             with open(err_fn, "w") as err_log:
-                print "logging traceback to %s" % err_fn
+                print "saving traceback to %s" % err_fn
                 traceback.print_exc(None, err_log)
         except:
             pass
