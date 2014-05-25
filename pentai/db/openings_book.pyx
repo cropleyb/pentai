@@ -144,14 +144,15 @@ class OpeningsBook(object):
 
             games = []
 
+            if move_number == 3:
+                if self.filter_out_by_rules(search_game, move):
+                    log.info("Filter out by move 3 rules")
+                    continue
+
             # Convert the game_ids to games
             for gid in gids:
                 pg = self.games_mgr.get_preserved_game(gid, update_cache=False)
                 if pg:
-                    if move_number == 3:
-                        if self.filter_out_by_rules(search_game, move):
-                            log.info("Filter out by move 3 rules")
-                            continue
 
                     if not self.safe_move(move, pg, search_game):
                         # Suggested move is too near an edge
