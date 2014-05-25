@@ -17,10 +17,10 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
+Separate move 3 positions by rule type for less filtering
 Ticking and rematch broken
-Sound & review mode toggle
+Ticking & review mode toggle
 Profile unit tests? AI subsystem tests?
-Zero music volume -> turn off music
 AI vs. AI continues after rematch and/or exit play screen.
 Fix broken ai_system_test
 cythonize openings book, preserved game, openings mover (profile first)
