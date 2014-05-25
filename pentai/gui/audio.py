@@ -5,8 +5,9 @@ from kivy.core.audio import SoundLoader
 from kivy.clock import Clock
 
 import glob as g_m
-from os.path import dirname, join, basename
 import random
+from os.path import dirname, join, basename
+
 from pentai.base.defines import *
 
 instance = None
@@ -62,7 +63,7 @@ class Audio():
         if sound.status != 'stop':
             sound.stop()
 
-        vol = float(self.config.get("PentAI", "effects_volume"))
+        vol = self.config.getfloat("PentAI", "effects_volume")
         sound.volume = self.demo_volume * vol
         sound.play()
 
@@ -112,15 +113,25 @@ class Audio():
         except: pass
         self.current_demo_sound = SoundLoader.load(fn_in_subdir)
 
-        vol = self.config.get("PentAI", "effects_volume")
-        self.current_demo_sound.volume = float(vol)
+        vol = self.config.getfloat("PentAI", "effects_volume")
+        self.current_demo_sound.volume = vol
         self.current_demo_sound.play()
-
+    
     def adjust_music_volume(self):
-        vol = self.config.get("PentAI", "music_volume")
+        vol = self.config.getfloat("PentAI", "music_volume")
+        log.debug("adjust_music_volume %s" % vol)
         if vol < .01:
-            vol = 0
-        self.current_music_sound.volume = float(vol) * self.demo_volume
+            log.debug("adjust_music_volume stopping track")
+            try:
+                self.current_music_sound.stop()
+                self.current_music_sound = None
+                Clock.unschedule(self.schedule_music)
+            except AttributeError:
+                pass
+        elif self.current_music_sound == None:
+            self.schedule_music()
+        if self.current_music_sound:
+            self.current_music_sound.volume = vol * self.demo_volume
 
     def inc_piece_number(self):
         try:
@@ -163,14 +174,18 @@ class Audio():
         self.current_music_sound = SoundLoader.load(filename)
 
         self.adjust_music_volume()
-        self.current_music_sound.play()
+        try:
+            self.current_music_sound.play()
+        except AttributeError:
+            pass
 
     def schedule_music(self, *ignored):
+        self.current_music_sound = None
         self.play_music()
-        Clock.schedule_interval(self.start_music_soon, 2.0)
-
-    def start_music_soon(self, *ignored):
-        Clock.schedule_once(self.play_music, 1.5)
+        if self.current_music_sound:
+            track_length = self.current_music_sound.length
+            log.debug("track_length: %s" % track_length)
+            Clock.schedule_once(self.schedule_music, track_length + 0.5)
 
     def get_current_track_name(self):
         return self.current_track_name
