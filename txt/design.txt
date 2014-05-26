@@ -743,3 +743,42 @@ Notify the search thread via a boolean accessor in Game (via ABGame)
 If the user goes to the menu then the game should be stopped and saved
 Rematch should stop and save the current game. If the game is not finished and it has a human player then it should be presumed won by the AI, or current player if there are two humans.
 What is the difference between live & not interrupted?
+
+Openings book board sizes
+-------------------------
+Need to filter out opening moves that are too near to the edge.
+So might as well separate these structurally in the DB.
+
+Opening book variety
+--------------------
+Want a mix of good moves that are chosen mainly from the same sized board positions, but from the other size(s) if necessary.
+Move 3 moves need to access the rules type as well.
+Can use the game id to help filter them appropriately: >100000 -> 19t
+Store moves for a position in order of success? Binary search?
+
+--- Position ----- Move ----- Game
+            \          \----- Game
+             \-----Move ----- Game
+                       \----- Game
+
+Choose most recent games per move? Random?
+
+random.sample(population, k)
+(for the games)
+Problem: there can be LOTS of games or only one.
+Use a large enough sample size e.g.: min(length(games), 60)
+Instead of storing the games, store summary info?
+E.g. wins, losses, average and/or max ratings (don't include draws?)
+Duplicate games could be a problem, but it would save time (+space?)
+Wouldn't need to store the Games or the Players either -> big win.
+
+Store moves per position in a sorted Persistent List, ordered by position.
+Then we can use random.sample to select move_games for the openings mover, and insert new moves using binary search.
+
+Or use a persistent dict for the moves and directly sample from d.items().
+Yep, done:
+op_pos: OpeningPosData and OpeningMoveData classes
+Now what?
+OpeningsBook mods for splitting out sections for rules type and board size
+Modify openings builder to create them?
+Do this on a branch.

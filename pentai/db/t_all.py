@@ -20,6 +20,7 @@ def suite():
     all_tests = unittest.TestSuite()
     iam("t_mru_cache")
     iam("t_misc_db")
+    iam("t_op_pos")
     iam("t_games_mgr")
     iam("t_ai_factory")
     iam("t_preserved_game")
