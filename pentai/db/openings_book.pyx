@@ -161,7 +161,7 @@ class OpeningsBook(object):
 
                     move_rating = pg.get_rating(colour)
                     if move_rating < (ai_rating - 300):
-                        log.debug("Potential move rating %s is too low for AI %s" % 
+                        log.debug("Potential move rating %d is too low for AI %d" % 
                                 (move_rating, ai_rating))
                         continue
 
