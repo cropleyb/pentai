@@ -17,6 +17,7 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
+Try without ZODB compression
 Separate Openings positions by size: use game id for most separation
 Speed up/disguise zodb packing
 Hybernate with PentAI running -> Heavy CPU?

@@ -16,7 +16,10 @@ class NoMovesException(Exception):
 class IncompatibleFileException(Exception):
     pass
 
-class UnknownRuleType(Exception):
+class UnknownRuleType(Exception): # TODO: Rename to UnknownRulesTypeException
+    pass
+
+class UnknownSizeException(Exception):
     pass
 
 class OpeningsBookDuplicateException(Exception):

@@ -4,7 +4,10 @@ import unittest
 
 from pentai.base.mock import Mock
 from pentai.base.board import *
-from pentai.ai.openings_mover import *
+from pentai.db.op_pos import *
+import pentai.ai.openings_mover as om_m
+
+om_m.OpeningsMover.get_a_good_move = om_m.OpeningsMover.get_a_good_move_new
 
 class MockPlayer:
     def get_rating(self):
@@ -28,18 +31,17 @@ class MockPreservedGame:
 
 class OpeningsMoverTest(unittest.TestCase):
     def setUp(self):
-        self.mom = Mock() # Mock Openings Manager
-        self.mabg = Mock() # Mock ABGame
-        self.msg = Mock() # Mock Base Game
-        self.mabg.mockAddReturnValues(get_base_game=self.msg)
-        self.msg.mockAddReturnValues(size=9, is_live=True)
-
-        self.of = OpeningsMover(self.mom, self.mabg)
-        self.msg.mockAddReturnValues(to_move_colour=BLACK)
+        self.mob = Mock() # Mock Openings Book
         self.player = MockPlayer()
+        self.msg = Mock() # Mock Base Game
+        self.msg.mockAddReturnValues(size=9, is_live=True)
+        self.msg.mockAddReturnValues(to_move_colour=BLACK)
+        self.mabg = Mock() # Mock ABGame
+        self.mabg.mockAddReturnValues(get_base_game=self.msg)
+        self.of = om_m.OpeningsMover(self.mob, self.mabg)
 
     def set_move_games(self, move_games):
-        self.mom.mockAddReturnValues(get_move_games=move_games)
+        self.mob.mockAddReturnValues(get_move_games=move_games)
 
     def test_no_moves_available_suggest_nothing(self):
         move_games = []
@@ -58,41 +60,36 @@ class OpeningsMoverTest(unittest.TestCase):
         return answers
 
     def test_one_favourable_game_mostly_doesnt_fall_through(self):
-        g1 = MockPreservedGame(BLACK, 1000)
-        move_games = [((4,4), (g1,))]
+        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000])]]
         self.set_move_games(move_games)
 
-        answers = self.multiple_tries(1000, self.player)
+        answers = self.multiple_tries(100, self.player)
 
-        self.assertGreater(answers[(4,4)], 600)
-        self.assertGreater(answers[None], 10)
+        self.assertGreater(answers[(4,4)], 60)
+        self.assertGreater(answers[None], 0)
 
     def test_one_move_equal_standings(self):
-        g1 = MockPreservedGame(BLACK, 1000)
-        g2 = MockPreservedGame(WHITE, 1000)
-        move_games = [((4,4), (g1,g2))]
+        move_games = [[(4,4), OpeningMoveGamesData([1,1,2000,1000])]]
         self.set_move_games(move_games)
-        answers = self.multiple_tries(1000, self.player)
+        answers = self.multiple_tries(100, self.player)
 
-        self.assertGreater(answers[(4,4)], 350)
-        self.assertGreater(answers[None], 10)
+        self.assertGreater(answers[(4,4)], 35)
+        self.assertGreater(answers[None], 0)
 
     def test_two_moves_one_good_one_bad(self):
-        g1 = MockPreservedGame(BLACK, 1000)
-        g2 = MockPreservedGame(WHITE, 1000)
-        move_games = [((4,4), (g1,)), ((3,4),(g2,))]
+        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000])],
+                      [(3,4), OpeningMoveGamesData([0,1,1000,1000])]]
         self.set_move_games(move_games)
-        answers = self.multiple_tries(1000, self.player)
+        answers = self.multiple_tries(100, self.player)
 
-        self.assertGreater(answers[(4,4)], 650)
-        self.assertGreater(answers[(3,4)], 50)
-        self.assertGreater(answers[None], 5)
+        self.assertGreater(answers[(4,4)], 65)
+        self.assertGreater(answers[(3,4)], 0)
+        self.assertGreater(answers[None], 0)
 
     #! python pentai/ai/t_openings_mover.py OpeningsMoverTest.test_add_to_previously_seen
     def test_add_to_previously_seen(self):
-        g1 = MockPreservedGame(BLACK, 1000)
-        g2 = MockPreservedGame(WHITE, 1000)
-        move_games = [((4,4), (g1,)), ((3,4),(g2,))]
+        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000])],
+                      [(3,4), OpeningMoveGamesData([0,1,1000,1000])]]
         self.set_move_games(move_games)
 
         seen = set()
