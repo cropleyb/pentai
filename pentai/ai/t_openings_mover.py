@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
 import unittest
+import random
 
 from pentai.base.mock import Mock
 from pentai.base.board import *
 from pentai.db.op_pos import *
 import pentai.ai.openings_mover as om_m
-
-om_m.OpeningsMover.get_a_good_move = om_m.OpeningsMover.get_a_good_move_new
 
 class MockPlayer:
     def get_rating(self):
@@ -39,6 +38,9 @@ class OpeningsMoverTest(unittest.TestCase):
         self.mabg = Mock() # Mock ABGame
         self.mabg.mockAddReturnValues(get_base_game=self.msg)
         self.of = om_m.OpeningsMover(self.mob, self.mabg)
+
+        # Make the random tests deterministic for testing
+        random.seed(1)
 
     def set_move_games(self, move_games):
         self.mob.mockAddReturnValues(get_move_games=move_games)
