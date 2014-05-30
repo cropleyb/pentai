@@ -8,6 +8,8 @@ import pentai.ai.standardise as st_m
 import pentai.db.preserved_game as pg_m
 import pentai.db.op_pos as op_m
 
+from BTrees.OOBTree import OOBTree
+
 ZM = z_m.ZM
 ZL = z_m.ZL
 
@@ -37,7 +39,10 @@ class OpeningsBook(object):
         try:
             td = self.turns_sections[ssn]
         except KeyError:
-            td = self.turns_sections[ssn] = ZM({})
+            if move_number < 3:
+                td = self.turns_sections[ssn] = ZM({})
+            else:
+                td = self.turns_sections[ssn] = OOBTree()
         pd = self.turns_sections[position] 
         return pd
 
@@ -72,6 +77,7 @@ class OpeningsBook(object):
         if standardised_move[0] < 0 or standardised_move[1] < 0:
             # Off the board - it's probably one of those suicide moves
             # to finish the game sooner
+            # TODO: Check far edges
             return
 
         # TODO: Cache this somehow?
