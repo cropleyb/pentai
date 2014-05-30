@@ -3,6 +3,7 @@
 import pentai.ai.ai_player as aip_m
 from pentai.ai.priority_filter import *
 from pentai.ai.priority_filter_2 import *
+from pentai.ai.priority_filter_3 import *
 
 import openings_book as ob_m
 import games_mgr
@@ -12,10 +13,15 @@ from pentai.ai.ai_genome import *
 class AIFactory: # TODO: These are just functions
 
     def create_player(self, genome):
-        if genome.filter2:
+        filter_num = genome.filter_num
+
+        if filter_num == 1:
+            sf = PriorityFilter()
+        elif filter_num == 2:
             sf = PriorityFilter2()
         else:
-            sf = PriorityFilter()
+            sf = PriorityFilter3()
+
         sf.set_max_moves_per_depth_level(mmpdl=genome.mmpdl, narrowing=genome.narrowing,
                 chokes=genome.chokes)
         try:

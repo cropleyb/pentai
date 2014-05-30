@@ -16,7 +16,8 @@ class AIGenome(object):
             "mmpdl": 9,
             "narrowing": 0,
             "chokes": [(4,5)],
-            "filter2": False,
+            #"filter2": False,
+            "filter_num": 1,
             "vision": 100,
             # Utility function
             "calc_mode": 1,

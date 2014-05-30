@@ -788,3 +788,8 @@ with at Completed: section: 40; start game: 462: -rw-r--r--  1 cropleyb  staff  
 [15:33:22.593][DEBUG][Completed: section: 40; start game: 448]
 -rw-r--r--  1 cropleyb  staff  1841236 30 May 15:33 db.fs
 i.e. Not much difference.
+
+Contender: Priority Filter 3 (Fukumi search order)
+B/W:[0, 10, 10] won: {'Defender': 14, 'Contender': 6} C/D avg. time: 1.30995589047
+38.3828125
+

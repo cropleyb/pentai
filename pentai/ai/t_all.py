@@ -24,6 +24,7 @@ def suite():
     iam("t_threat_counter")
     iam("t_priority_filter")
     iam("t_priority_filter_2")
+    iam("t_priority_filter_3")
     iam("t_ai_genome")
     iam("t_rot_standardise")
     iam("t_trans_standardise")

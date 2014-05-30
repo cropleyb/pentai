@@ -373,6 +373,7 @@ sources = {
     'ai/length_lookup_table.pyx': base_flags,
     'ai/priority_filter.pyx': base_flags,
     'ai/priority_filter_2.pyx': base_flags,
+    'ai/priority_filter_3.pyx': base_flags,
     'ai/alpha_beta.pyx': base_flags,
     'ai/utility_calculator.pyx': base_flags,
     'ai/utility_stats.pyx': base_flags,

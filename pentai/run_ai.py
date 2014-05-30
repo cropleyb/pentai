@@ -11,8 +11,6 @@ import pentai.base.game as game
 import time
 
 from pentai.ai.ai_player import *
-from pentai.ai.priority_filter import *
-from pentai.ai.priority_filter_2 import *
 #from pentai.db.evaluator import *
 from pentai.db.ai_factory import *
 from pentai.db.openings_book import *
@@ -64,8 +62,7 @@ class Match():
         self.genome2 = AIGenome("Contender")
         # We're not doing player lookups, so we don't need the players_mgr
         self.games_mgr = GamesMgr()
-        #self.openings_book = None
-        self.openings_book = OpeningsBook(self.games_mgr)
+        self.openings_book = OpeningsBook()
 
     def set_up(self, game_length):
         aif = AIFactory()
@@ -92,7 +89,7 @@ class Match():
         winner = self.game.get_won_by()
 
         if self.openings_book:
-            self.openings_book.add_game(self.game)
+            self.openings_book.add_game(self.game, winner)
         
         if p1.get_name() == "Contender":
             ratio = tt.totals[0] / tt.totals[1]
@@ -120,7 +117,7 @@ class Match():
         #self.genome1.vision = 0.98
         #self.genome2.vision = 0.98
 
-        self.genome2.filter2 = True
+        self.genome2.filter_num = 3
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
@@ -147,7 +144,7 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        for game_length in range(2,6):
+        for game_length in range(2,7):
         #for game_length in range(2,5):
             #for board_size in [13]:
             for board_size in [13, 19]:
