@@ -1,8 +1,9 @@
 from persistent import *
+from persistent.list import PersistentList as ZL
 
 class MRUCache(Persistent):
     def __init__(self, size):
-        self.cache = []
+        self.cache = ZL([])
         self.size = size
 
     def add(self, val):
