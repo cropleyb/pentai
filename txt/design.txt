@@ -782,3 +782,9 @@ Now what?
 OpeningsBook mods for splitting out sections for rules type and board size
 Modify openings builder to create them?
 Do this on a branch.
+
+Try without ZODB compression:
+with at Completed: section: 40; start game: 462: -rw-r--r--  1 cropleyb  staff  1485999 30 May 15:24 db.fs
+[15:33:22.593][DEBUG][Completed: section: 40; start game: 448]
+-rw-r--r--  1 cropleyb  staff  1841236 30 May 15:33 db.fs
+i.e. Not much difference.
