@@ -71,28 +71,16 @@ def parse_game(game_str):
 
     return metadata, ml2, result
 
-def create_ai_players():
-    """ To finish unfinished games """
-    genome = aig_m.AIGenome("")
-    p_dict = { "p_name": "StubbyGF", "use_openings_book": False, "max_depth": 4,
-        "judgement": 100, "vision": 100, "capture_score_base": 350 }
-    genome.__dict__.update(p_dict)
-    pm = pm_m.PlayersMgr()
-    pm.save(genome.clone(), update_cache=False)
-
-    global stubby
-    stubby = pm.find_by_name("StubbyGF", update_cache=False)
-
 def convert_game(game_str, key):
     metadata, moves, result = parse_game(game_str)
 
     g = g_m.Game()
     r = r_m.Rules(19, 's')
 
-    #p1 = stubby
-    #p2 = stubby
     p1 = h_m.HumanPlayer(metadata["Player 1 Name"])
     p2 = h_m.HumanPlayer(metadata["Player 2 Name"])
+    p1.set_rating(int(metadata["Player 1 Rating"]))
+    p2.set_rating(int(metadata["Player 2 Rating"]))
     g.setup(rules=r, player1=p1, player2=p2)
 
     for m in moves:

@@ -22,10 +22,9 @@ def circulate(a):
     return a
 
 class OpeningsBook(object):
-    def __init__(self, games_mgr):
-        self.games_mgr = games_mgr
-        self.positions_dbs = z_m.get_section("openings")
+    def __init__(self):
         self.turns_sections = z_m.get_section("openings")
+        self.opening_game_ids = z_m.get_section("openings_games")
 
         global instance
         instance = self
@@ -33,27 +32,22 @@ class OpeningsBook(object):
     def get_subsection_name(self, move_number):
         return "move%s" % move_number
 
-    def get_turn_data(self, move_number):
+    def get_position_data(self, move_number, position):
         ssn = self.get_subsection_name(move_number)
         try:
-            f = self.turns_sections[ssn]
+            td = self.turns_sections[ssn]
         except KeyError:
-            f = self.turns_sections[ssn] = op_m.OpeningPos()
-        return f
+            td = self.turns_sections[ssn] = ZM({})
+        pd = self.turns_sections[position] 
+        return pd
 
-    def get_db(self, g):
-        if g is None:
-            return None
-        fn = self.get_subsection_name(g)
-        try:
-            f = self.positions_dbs[fn]
-        except KeyError:
-            f = self.positions_dbs[fn] = z_m.get_section(fn)
-        return f
-
-    def add_game_new(self, g, won_by):
+    def add_game(self, g, won_by):
         if won_by == EMPTY:
             return
+
+        if g.key() in self.opening_game_ids:
+            raise OpeningsBookDuplicateException()
+        self.opening_game_ids[g.key()] = True
 
         # Set the game as unfinished to game_state from raising exceptions
         # when we try to replay the game?! (TODO: Why is this special?)
@@ -62,9 +56,9 @@ class OpeningsBook(object):
         max_moves = min(OPENINGS_DEPTH, len(g.move_history))
         for mn in range(1, 1+max_moves):
             # TODO: Limit the number of moves into the game.
-            self.add_position_new(g, mn, won_by)
+            self.add_position(g, mn, won_by)
 
-    def add_position_new(self, game, move_number, won_by):
+    def add_position(self, game, move_number, won_by):
         game.go_to_move(move_number)
 
         std_state, fwd, rev = st_m.standardise(game.current_state)
@@ -87,60 +81,12 @@ class OpeningsBook(object):
         colour = game.to_move_colour()
         move_rating = game.get_rating(colour)
 
-        turn_data = self.get_turn_data(move_number)
-        turn_data.add_move(rt, size, standardised_move, won_by, move_rating)
+        try:
+            pos_data = self.get_position_data(move_number, std_state)
+        except KeyError:
+            pos_data = self.turns_sections[std_state] = op_m.OpeningPos()
 
-    def add_game(self, g, update_cache=True, sync=True):
-        # Save the game first, before it is manipulated
-        self.games_mgr.save(g, update_cache=update_cache)
-
-        # Copy the game instance as this process munges the game.
-        pm = self.games_mgr.players_mgr
-        g = pg_m.PreservedGame(g).restore(pm)
-
-        if not g.finished():
-            # Only add finished games to the openings book
-            return
-
-        # Set the game as unfinished to game_state from raising exceptions
-        # when we try to replay the game?! (TODO: Why is this special?)
-        g.current_state._won_by = EMPTY
-
-        max_moves = min(OPENINGS_DEPTH, len(g.move_history))
-        for mn in range(1, 1+max_moves):
-            # TODO: Limit the number of moves into the game.
-            self.add_position(g, mn)
-        if sync:
-            z_m.sync()
-
-    def add_position(self, game, move_number, sync=False):
-        game.go_to_move(move_number)
-
-        std_state, fwd, rev = st_m.standardise(game.current_state)
-        position_key = std_state
-
-        # Get the appropriate section for positions of this rule type and size
-        db = self.get_db(game)
-        log.debug("add_position %s" % (position_key,))
-        pos_slot = db.setdefault(position_key, ZM())
-        next_move = game.move_history[move_number-1]
-        standardised_move = fwd(*next_move)
-        if standardised_move[0] < 0 or standardised_move[1] < 0:
-            # Off the board - it's probably one of those suicide moves
-            # to finish the game sooner, don't store it.
-            return
-
-        arr = pos_slot.setdefault(standardised_move, ZL())
-        if move_number == 1:
-            # Should only be in there once per id
-            if game.game_id in arr:
-                raise OpeningsBookDuplicateException()
-        arr.append(game.game_id)
-
-        if sync:
-            self.games_mgr.save(game)
-            z_m.sync()
-        return db
+        pos_data.add_move(rt, size, standardised_move, won_by, move_rating)
 
     def safe_move(self, pos, candidate_game, our_game):
         x, y = pos
@@ -159,7 +105,7 @@ class OpeningsBook(object):
         rules = search_game.get_rules()
         return not rules.ok_third_move(move)
 
-    def get_move_games_new(self, search_game):
+    def get_move_games(self, search_game):
         std_state, fwd, rev = st_m.standardise(search_game.current_state)
         log.debug("get_move_games: %s" % (std_state,))
 
@@ -168,7 +114,7 @@ class OpeningsBook(object):
         turn_number = search_game.get_move_number()
         try:
             log.debug("looking in %s" % (position_key,))
-            opening_pos = self.get_turn_data(turn_number)
+            opening_pos = self.get_position_data(turn_number, position_key)
         except KeyError:
             return
 
@@ -201,7 +147,7 @@ class OpeningsBook(object):
         for size in sizes:
             for rt in rules_types:
                 if not search_game.is_live():
-                    log.info("Interrupted openings book get_move_games_new")
+                    log.info("Interrupted openings book get_move_games")
                     return
 
                 # iterate over moves and their stored data
@@ -229,76 +175,6 @@ class OpeningsBook(object):
                     if option_count > 10:
                         log.info("Enough opening options found")
                         return
-
-
-    def get_move_games(self, search_game):
-        position_key, fwd, rev = st_m.standardise(search_game.current_state)
-        log.debug("get_move_games: %s" % (std_state,))
-
-        db = self.get_db(search_game)
-
-        options = {}
-        try:
-            log.debug("looking in %s" % (position_key,))
-            pos_slot = db[position_key]
-        except KeyError, e:
-            return
-
-        safe_min_size = 5
-        safe_max_size = search_game.size() - 5
-
-        option_count = 0
-
-        move_number = search_game.get_move_number()
-        aip = search_game.get_current_player()
-        ai_rating = aip.get_rating()
-        colour = search_game.to_move_colour()
-
-        for pos, gids in pos_slot.iteritems():
-            if not search_game.is_live():
-                log.info("Interrupted opening book get move games")
-                return
-
-            # TODO: Some sort of LRU for pos_slot iteritems?!
-            move = rev(*pos)
-
-            games = []
-
-            if move_number == 3:
-                if self.filter_out_by_rules(search_game, move):
-                    log.info("Filter out by move 3 rules")
-                    continue
-
-            # Convert the game_ids to games
-            for gid in gids:
-                pg = self.games_mgr.get_preserved_game(gid, update_cache=False)
-                if pg:
-
-                    if not self.safe_move(move, pg, search_game):
-                        # Suggested move is too near an edge
-                        log.debug("Unsafe move %s" % (move,))
-                        continue
-
-                    move_rating = pg.get_rating(colour)
-                    if move_rating < (ai_rating - 300):
-                        log.debug("Potential move rating %d is too low for AI %d" % 
-                                (move_rating, ai_rating))
-                        continue
-
-                    games.append(pg)
-                    if len(games) > 10:
-                        # That'll do
-                        break
-
-            # Use different saved games next time
-            circulate(gids)
-
-            if len(games):
-                yield move, games
-                option_count += 1
-                if option_count > 6:
-                    log.info("Enough opening options found")
-                    return
 
     def after_game_won(self, game, colour):
         # Add the game to the openings library if req.

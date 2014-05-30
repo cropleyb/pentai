@@ -12,11 +12,6 @@ from pentai.db.games_mgr import *
 from pentai.base.player import *
 import pentai.db.test_db as tdb_m
 
-# TEMP for testing new versions
-ob_m.OpeningsBook.add_position = ob_m.OpeningsBook.add_position_new
-ob_m.OpeningsBook.add_game = ob_m.OpeningsBook.add_game_new
-ob_m.OpeningsBook.get_move_games = ob_m.OpeningsBook.get_move_games_new
-
 def print_func():
     pass
     #print sys._getframe(1).f_code.co_name
@@ -25,11 +20,11 @@ class ATOTest(unittest.TestCase):
     def setUp(self):
         tdb_m.init()
         self.rules = Rules(19, "standard")
-        self.games_mgr = GamesMgr()
+        games_mgr = GamesMgr()
         p1 = Player("BC")
         p2 = Player("Whoever")
-        self.game = self.games_mgr.create_game(self.rules, p1, p2)
-        self.ob = ob_m.OpeningsBook(self.games_mgr)
+        self.game = games_mgr.create_game(self.rules, p1, p2)
+        self.ob = ob_m.OpeningsBook()
 
     def tearDown(self):
         tdb_m.clear_all()
@@ -52,13 +47,12 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(moves), 0)
 
     # ./t_openings_book.py ATOTest.test_add_initial_position
-    def atest_add_initial_position(self):
+    def test_add_initial_position(self):
         print_func()
         # This works when debugged?!
         #st()
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n3. (9,10)\n4. (11,10)")
-        self.ob.add_position(self.game, 1)
-        self.games_mgr.save(self.game)
+        self.ob.add_position(self.game, 1, BLACK)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
 
@@ -118,6 +112,7 @@ class ATOTest(unittest.TestCase):
         
         # Add a second historical game
         sg = Game(self.rules, Player("Shazam"), Player("Floff"))
+        sg.game_id = 13
         sg.load_moves("1. (1,3)\n2. (2,2)\n3. (6,4)") # etc.
         sg.current_state.set_won_by(WHITE)
         self.ob.add_game(sg, WHITE)
@@ -230,13 +225,12 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n3. (9,10)\n4. (11,10)")
         self.ob.add_position(self.game, 1, BLACK)
 
-        games_mgr = GamesMgr()
-        o_mgr2 = ob_m.OpeningsBook(games_mgr=games_mgr)
+        o_mgr2 = ob_m.OpeningsBook()
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))
         self.assertEquals(len(moves), 1)
-        self.assertEquals(moves[0][0], (10,10))
+        self.assertIn(moves[0][0], [(8,8), (8,10), (10,8), (10,10)])
         self.assertEquals(moves[0][1], [1, 0, 1000, 1000])
 
     def test_persist_position_lookup_different_size(self):
@@ -244,8 +238,7 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (9,9)\n2. (8,8)\n3. (8,9)\n4. (10,8)")
         self.ob.add_game(self.game, BLACK)
 
-        games_mgr = GamesMgr()
-        o_mgr2 = ob_m.OpeningsBook(games_mgr=games_mgr)
+        o_mgr2 = ob_m.OpeningsBook()
 
         rules2 = Rules(13, "standard")
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))
@@ -262,7 +255,7 @@ class ATOTest(unittest.TestCase):
         cand_rules = Rules(13, "standard")
         cand_game = Game(cand_rules, Player("Psycho"), Player("Smith"))
 
-        ob = ob_m.OpeningsBook(self.games_mgr)
+        ob = ob_m.OpeningsBook()
 
         self.assertTrue(ob.safe_move((0,0), cand_game, our_game))
         self.assertTrue(ob.safe_move((12,12), cand_game, our_game))
@@ -274,7 +267,7 @@ class ATOTest(unittest.TestCase):
         cand_rules = Rules(19, "standard")
         cand_game = Game(cand_rules, Player("Psycho"), Player("Smith"))
 
-        ob = ob_m.OpeningsBook(self.games_mgr)
+        ob = ob_m.OpeningsBook()
 
         self.assertTrue(ob.safe_move((0,0), cand_game, our_game))
         self.assertTrue(ob.safe_move((18,18), cand_game, our_game))
@@ -286,7 +279,7 @@ class ATOTest(unittest.TestCase):
         cand_rules = Rules(19, "standard")
         cand_game = Game(cand_rules, Player("Psycho"), Player("Smith"))
 
-        ob = ob_m.OpeningsBook(self.games_mgr)
+        ob = ob_m.OpeningsBook()
 
         self.assertTrue(ob.safe_move((4,4), cand_game, our_game))
         self.assertTrue(ob.safe_move((8,8), cand_game, our_game))
@@ -301,8 +294,7 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.ob.add_game(self.game, BLACK)
 
-        games_mgr = GamesMgr()
-        o_mgr2 = ob_m.OpeningsBook(games_mgr=games_mgr)
+        o_mgr2 = ob_m.OpeningsBook()
 
         rules2 = Rules(19, "5 in a row")
         g2 = Game(rules2, Player("Alpha"), Player("Beta"))
@@ -316,8 +308,7 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)", EMPTY)
         self.ob.add_game(self.game, EMPTY)
 
-        games_mgr = GamesMgr()
-        o_mgr2 = ob_m.OpeningsBook(games_mgr=games_mgr)
+        o_mgr2 = ob_m.OpeningsBook()
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         moves = list(o_mgr2.get_move_games(g2))
@@ -325,7 +316,7 @@ class ATOTest(unittest.TestCase):
 
     # Failing? Intermittently
     # python pentai/db/t_openings_book.py ATOTest.test_only_save_games_once
-    def atest_only_save_games_once(self):
+    def test_only_save_games_once(self):
         print_func()
         '''
         Second add:
@@ -374,11 +365,11 @@ class TranslationalSymmetryTest(unittest.TestCase):
     def setUp(self):
         tdb_m.init()
         self.rules = Rules(19, "5")
-        self.games_mgr = GamesMgr()
+        games_mgr = GamesMgr()
         p1 = Player("BC")
         p2 = Player("Whoever")
-        self.game = self.games_mgr.create_game(self.rules, p1, p2)
-        self.ob = ob_m.OpeningsBook(self.games_mgr)
+        self.game = games_mgr.create_game(self.rules, p1, p2)
+        self.ob = ob_m.OpeningsBook()
 
     def tearDown(self):
         tdb_m.clear_all()
@@ -389,6 +380,7 @@ class TranslationalSymmetryTest(unittest.TestCase):
     def load_moves_and_set_win(self, moves, winner=BLACK):
         self.game.load_moves(moves)
         self.game.current_state.set_won_by(winner)
+        self.game.game_id = random.randrange(10000)
 
     # ! kivy pentai/db/t_openings_book.py ATOTest.test_translation_away_from_edges
     def test_translation_away_from_edges(self):

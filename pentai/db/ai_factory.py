@@ -39,8 +39,7 @@ class AIFactory: # TODO: These are just functions
         if genome.use_openings_book:
             ob = ob_m.instance
             if not ob:
-                gm = games_mgr.GamesMgr()
-                ob = ob_m.OpeningsBook(gm)
+                ob = ob_m.OpeningsBook()
                 ob_m.instance = ob
             p.set_use_openings_book(ob)
 

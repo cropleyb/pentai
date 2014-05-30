@@ -22,11 +22,14 @@ def unzip_section(section, user_data_dir):
     try:
         zf = zf_m.ZipFile(zip_path)
     except IOError:
-        return False
+        # HACK!
+        return section != 48
+
     target_directory = os.path.join(user_data_dir, "openings")
     try:
         os.makedirs(target_directory)
     except OSError:
+        log.warn("OSError creating %s" % target_directory)
         pass
     zf.extractall(target_directory)
     return True
@@ -42,7 +45,7 @@ def add_games(openings_book, section_dir, start, count=100):
         gf_str = open(gf_path).readlines()
         try:
             g = par_m.convert_game(gf_str, int(gf))
-            add_game(openings_book, g)
+            add_game(openings_book, g, g.get_won_by())
             added += 1
             if added >= count:
                 break
@@ -51,39 +54,38 @@ def add_games(openings_book, section_dir, start, count=100):
     z_m.sync()
     return count - added
 
-def add_game(openings_book, g):
+def add_game(openings_book, g, won_by):
     log.info("Adding: %s" % g.game_id)
     try:
-        openings_book.add_game(g, update_cache=False, sync=False)
+        openings_book.add_game(g, won_by)
     except pe_m.OpeningsBookDuplicateException:
         pass
 
-import pdb
-
 def build(openings_book, user_data_dir, section=None, start=None, count=100):
-    z_m.sync()
-
     # Extend library
     if not section:
         try:
             section = misc()["opening_section"]
         except:
-            section = misc()["opening_section"] = 60
+            section = misc()["opening_section"] = 50
 
     openings_dir = os.path.join(user_data_dir, "openings")
     section_dir = os.path.join(openings_dir, str(section))
-
+    
     if not os.path.isdir(section_dir):
         # That will be enough startup time for now.
-        return unzip_section(section, user_data_dir)
-
+        if unzip_section(section, user_data_dir):
+            return True
+        else:
+            # No such file, try next one down
+            misc()["opening_section"] -= 1
+            return False
+    
     if not start:
         try:
             start = misc()["opening_start"]
         except:
             start = misc()["opening_start"] = 0
-
-    par_m.create_ai_players()
 
     remaining = count
     while remaining:
@@ -105,7 +107,7 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     misc()["opening_section"] = section
     misc()["opening_start"] = start
     z_m.sync()
-    return True
+    return False
 
 def main():
     # TODO Move this to zodb_dict

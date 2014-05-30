@@ -294,11 +294,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def on_pre_leave(self):
         self.set_live(False)
         if not self.app.in_demo_mode():
+            self.gm.save(self.game)
+            self.get_audio().mute()
             try:
-                # TODO: Only finished games should be openingified
-                self.ob.add_game(self.game)
+                won_by = self.game.get_won_by()
+                if won_by:
+                    self.ob.add_game(self.game, won_by)
             except OpeningsBookDuplicateException:
                 pass
+            self.get_audio().unmute()
 
     def start_ticking(self):
         if not self.game.finished():
