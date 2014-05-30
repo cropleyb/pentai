@@ -107,6 +107,7 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     misc()["opening_section"] = section
     misc()["opening_start"] = start
     z_m.sync()
+    log.debug("Completed: section: %s; start game: %s" % (section, start))
     return False
 
 def main():
