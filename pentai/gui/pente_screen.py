@@ -89,7 +89,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         self.calc_board_offset(screen_size)
 
-        self.live = True
         self.reviewing = False
 
         super(PenteScreen, self).__init__(*args, **kwargs)
@@ -221,11 +220,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         Clock.schedule_once(start_func, transition_time)
 
+    def is_live(self):
+        return self.game.is_live()
+
     def set_live(self, val):
         log.debug("pente_screen set_live: %s" % val)
+        was_live = self.is_live()
         self.game.set_live(val, self)
         if val:
-            if not self.live and not self.game.finished():
+            if not was_live and not self.game.finished():
                 # Transitioning to live, so get things going
                 self.prompt_for_action()
 
@@ -322,23 +325,25 @@ class PenteScreen(Screen, gso_m.GSObserver):
         action = self.action_queue.get()
         if not self.action_queue.empty():
             self.action_queue.get()
+        if not self.game.is_live():
+            return
         if not action:
             if self.game.get_won_by() == (BLACK+WHITE):
                 log.info("Draw detected")
+                # TODO: return? GUI feedback?
+
         try:
             self.game.make_move(action)
             self.refresh_all()
             self.prompt_for_action()
         except Exception, e:
-            if not self.game.is_live():
-                return
             self.display_error(e.message)
 
     def prompt_for_action(self, *ignored):
         Clock.schedule_once(self.prompt_for_action_inner, 0.01)
 
     def prompt_for_action_inner(self, *ignored):
-        if self.live and not self.reviewing:
+        if self.is_live() and not self.reviewing:
             # TODO: game.prompt_for_action if not finished?
             self.start_ticking()
             self.game.prompt_for_action(self)
@@ -860,14 +865,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return []
 
     def set_review_mode(self, val):
-        #st()
+        log.debug("Reviewing: %s" % val)
         self.reviewing = val
         
         # TODO: Demo flag?
         self.set_live(not val and not self.app.in_demo_mode())
         
-        log.debug("Reviewing: %s" % val)
-
         if val:
             cls = ReviewButtons
         else:
