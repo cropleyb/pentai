@@ -23,8 +23,6 @@ Hybernate with PentAI running -> Heavy CPU?
 Delete fs.db.old after pack() ? Disable index creation?
 iOS app size again?
 Start iOS deployment from scratch _again_?
-Ticking and rematch broken
-Ticking & review mode toggle
 Profile AI subsystem tests?
 AI vs. AI continues after rematch and/or exit play screen.
 Fix broken ai_system_test

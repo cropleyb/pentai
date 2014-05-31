@@ -319,7 +319,7 @@ class PentAIApp(App):
         else:
             log.info("About to pack DB")
             # Finished loading openings games. Pack the DB to reclaim space 
-            z_m.pack() # creates db.fs.old files as well
+            z_m.pack()
             log.info("Done packing DB")
             # Don't need this variable any more
             del self.openings_builder_timeout
