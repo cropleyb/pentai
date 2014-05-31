@@ -74,10 +74,11 @@ class OpeningsBook(object):
 
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
-        if standardised_move[0] < 0 or standardised_move[1] < 0:
+        size = game.get_size()
+        x, y = standardised_move
+        if x < 0 or y < 0 or x >= size or y >= size:
             # Off the board - it's probably one of those suicide moves
             # to finish the game sooner
-            # TODO: Check far edges
             return
 
         # TODO: Cache this somehow?

@@ -18,7 +18,6 @@ http://www.inc.com/magazine/19830701/1772.html
 Update kivy version? or just hack?
 
 Openings far edges
-Don't save Defender and Contender players or games
 Circulate openings moves after they are potentially used.
 Speed up/disguise zodb packing?
 Hybernate with PentAI running -> Heavy CPU?
