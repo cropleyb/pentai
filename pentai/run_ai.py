@@ -5,8 +5,8 @@ h = hpy()
 h.setref()
 '''
 
-import pentai.base.rules as rules
-import pentai.base.game as game
+import pentai.base.rules as r_m
+import pentai.base.game as g_m
 
 import time
 
@@ -72,7 +72,7 @@ class Match():
         self.p2 = aif.create_player(self.genome2)
 
     def play_one_game(self, board_size, p1, p2):
-        r = rules.Rules(board_size, "standard")
+        r = r_m.Rules(board_size, "standard")
         self.game = self.games_mgr.create_game(r, p1, p2)
         #self.evaluator = Evaluator(self.game.current_state)
 
@@ -105,7 +105,7 @@ class Match():
     def play_some_games(self):
 
         self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = False
+        #self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
@@ -144,8 +144,8 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        for game_length in range(2,7):
-        #for game_length in range(2,5):
+        #for game_length in range(2,7):
+        for game_length in range(2,5):
             #for board_size in [13]:
             for board_size in [13, 19]:
                 for first_player in [0, 1]:

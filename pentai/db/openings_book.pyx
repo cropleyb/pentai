@@ -94,10 +94,10 @@ class OpeningsBook(object):
 
         pos_data.add_move(rt, size, standardised_move, won_by, move_rating)
 
-    def safe_move(self, pos, candidate_game, our_game):
+    def safe_move(self, pos, our_game, size):
         x, y = pos
 
-        if candidate_game.get_size() <= our_game.size():
+        if size <= our_game.size():
             return True
 
         safe_min_size = 4
@@ -174,6 +174,8 @@ class OpeningsBook(object):
                     if move_rating < (ai_rating - 100):
                         log.debug("Potential move max rating %d is too low for AI %d" % 
                                 (move_rating, ai_rating))
+                        continue
+                    if not self.safe_move(suggested_move, search_game, size):
                         continue
 
                     yield suggested_move, data

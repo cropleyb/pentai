@@ -257,8 +257,8 @@ class ATOTest(unittest.TestCase):
 
         ob = ob_m.OpeningsBook()
 
-        self.assertTrue(ob.safe_move((0,0), cand_game, our_game))
-        self.assertTrue(ob.safe_move((12,12), cand_game, our_game))
+        self.assertTrue(ob.safe_move((0,0), our_game, 13))
+        self.assertTrue(ob.safe_move((12,12), our_game, 13))
 
     def test_safe_size_candidate_board_same(self):
         print_func()
@@ -269,8 +269,8 @@ class ATOTest(unittest.TestCase):
 
         ob = ob_m.OpeningsBook()
 
-        self.assertTrue(ob.safe_move((0,0), cand_game, our_game))
-        self.assertTrue(ob.safe_move((18,18), cand_game, our_game))
+        self.assertTrue(ob.safe_move((0,0), our_game, 19))
+        self.assertTrue(ob.safe_move((18,18), our_game, 19))
 
     def test_safe_size_candidate_board_bigger(self):
         print_func()
@@ -281,13 +281,13 @@ class ATOTest(unittest.TestCase):
 
         ob = ob_m.OpeningsBook()
 
-        self.assertTrue(ob.safe_move((4,4), cand_game, our_game))
-        self.assertTrue(ob.safe_move((8,8), cand_game, our_game))
+        self.assertTrue(ob.safe_move((4,4), our_game, 19))
+        self.assertTrue(ob.safe_move((8,8), our_game, 19))
 
-        self.assertFalse(ob.safe_move((3,4), cand_game, our_game))
-        self.assertFalse(ob.safe_move((4,3), cand_game, our_game))
-        self.assertFalse(ob.safe_move((9,8), cand_game, our_game))
-        self.assertFalse(ob.safe_move((8,9), cand_game, our_game))
+        self.assertFalse(ob.safe_move((3,4), our_game, 19))
+        self.assertFalse(ob.safe_move((4,3), our_game, 19))
+        self.assertFalse(ob.safe_move((9,8), our_game, 19))
+        self.assertFalse(ob.safe_move((8,9), our_game, 19))
 
     def test_persist_position_lookup_different_rules_type(self):
         print_func()
