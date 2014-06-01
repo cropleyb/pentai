@@ -6,7 +6,14 @@ cd $TMPROOT
 
 mkdir -p bciosbuild bcinst
 
+curl https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -o - |    $HOSTPYTHON
+
+unzip setuptools-*.zip
+
 PKGS="transaction BTrees persistent zc.lockfile ZConfig zdaemon zope.event zope.interface zope.proxy zope.testing six zodb zc.zlibstorage"
+
+OLD_PYTHONPATH=$PYTHONPATH
+export PYTHONPATH=$PYTHONPATH:./bcinst
 
 # Download (build, install, clean)
 # bypass download
@@ -17,11 +24,13 @@ do
     # Use easy_install to download and build all ZODB dependencies, then clean
     # them so they can be built for iOS
     #echo "Processing $p"
-    python ./setuptools-3.4.4/easy_install.py --build-directory ./bciosbuild --always-copy --install-dir ./bcinst $p 
+    python ./setuptools-3.6/easy_install.py --build-directory ./bciosbuild --always-copy --install-dir ./bcinst $p 
     pushd bciosbuild/$p
     python ./setup.py clean
     popd
 done
+
+PYTHONPATH=$OLD_PYTHONPATH:./bcinst
 
 # Ignore errors from patches
 patch -d $TMPROOT/bciosbuild/btrees/BTrees -p1 < $KIVYIOSROOT/tools/patches/btree.patch || true
