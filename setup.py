@@ -369,6 +369,7 @@ sources = {
     'base/board.pyx': base_flags,
     'base/game_state.pyx': base_flags,
     'base/bit_reverse.pyx': base_flags,
+    'base/defines.pyx': base_flags,
     'db/openings_book.pyx': base_flags,
     'ai/length_lookup_table.pyx': base_flags,
     'ai/priority_filter.pyx': base_flags,
@@ -378,6 +379,8 @@ sources = {
     'ai/utility_calculator.pyx': base_flags,
     'ai/utility_stats.pyx': base_flags,
     'ai/openings_mover.pyx': base_flags,
+    'ai/trans_standardise.pyx': base_flags,
+    'ai/rot_standardise.pyx': base_flags,
     'ai/ab_state.pyx': base_flags,
     'ai/ab_game.pyx': base_flags,
     }
