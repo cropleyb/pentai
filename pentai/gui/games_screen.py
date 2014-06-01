@@ -1,13 +1,11 @@
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ListProperty
-
-from kivy.adapters.dictadapter import DictAdapter
-from kivy.uix.listview import ListItemButton, ListItemLabel, \
-        CompositeListItem, ListView
+from kivy.uix.listview import ListView
 import kivy.uix.gridlayout as gl_m
+from kivy.adapters.dictadapter import DictAdapter
 
 import popup as p_m
 import audio as a_m
+import gl_cli as cli_m
 
 from pentai.base.defines import *
 
@@ -83,7 +81,7 @@ def game_data(game, players_mgr):
     # TODO: Winner
     return data
 
-class MyCompositeListItem(CompositeListItem):
+class TwoLevelCompositeListItem(cli_m.CompositeListItem):
     pass
 
 class GamesView(gl_m.GridLayout):
@@ -166,7 +164,7 @@ class GamesView(gl_m.GridLayout):
                                    args_converter=args_converter,
                                    selection_mode="single",
                                    allow_empty_selection=False, # Not working?
-                                   cls=MyCompositeListItem)
+                                   cls=TwoLevelCompositeListItem)
 
         dict_adapter.bind(
             on_selection_change=self.changed_selection)
@@ -179,7 +177,7 @@ class GamesView(gl_m.GridLayout):
         self.add_widget(list_view)
         self.view = list_view
 
-class MyListItemButton(ListItemButton):
+class MyListItemButton(cli_m.ListItemButton):
     """ Add click sound """
     def on_touch_down(self, touch):
         # TODO: Check Scroll
