@@ -17,7 +17,8 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-Openings far edges
+"Density"?
+Improve openings selection: sort then use top moves?
 Circulate openings moves after they are potentially used.
 Speed up/disguise zodb packing?
 Hybernate with PentAI running -> Heavy CPU?
@@ -25,7 +26,6 @@ iOS app size again?
 Start iOS deployment from scratch _again_?
 Profile AI subsystem tests?
 Fix broken ai_system_test
-cythonize openings book, preserved game, openings mover (profile first)
 First AI move is __slow__, don't search move number 1, 2, 3?
 Reorder opening moves and games each time they are used.
 Add logging support
