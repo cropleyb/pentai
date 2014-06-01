@@ -60,8 +60,8 @@ def pack(*args, **kwargs):
     delete_extra_files(db_path)
 
 def delete_extra_files(base_path):
-    for ext in ["tmp", "old", "index", "lock"]:
-        # Not currently using indexing...
+    for ext in ["tmp", "old", "lock"]:
+        # Not currently using indexing?
         extra_file_path = ".".join([base_path, ext])
         try:
             os.unlink(extra_file_path)
