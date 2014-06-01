@@ -4,7 +4,6 @@ import kivy.uix.label as l_m
 import kivy.uix.progressbar as pb_m
 from kivy.clock import Clock
 
-from pentai.base.defines import *
 import scale as my
 import random
 
