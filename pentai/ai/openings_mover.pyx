@@ -18,11 +18,13 @@ class OpeningsMover(object):
 
         total_score = .1 # For fall through to default search
 
-        move_scores = []
-        for move, data in move_games:
+        score_moves = []
+        for move, data, secondary in move_games:
             if not self.game.is_live():
                 log.info("Interrupted opening book search")
                 return
+
+            # Note that duplicate moves are possible from the different rules.
             seen.add(move)
 
             # TODO: Store scores in the DB? retain flexibility for now
@@ -31,12 +33,22 @@ class OpeningsMover(object):
             losses = data.get_wins(other_colour)
             score = (mr_factor * (wins or .3))/(losses or .2)
 
-            move_scores.append((move, score))
+            if secondary:
+                # Moves from games with different rules are not likely to be
+                # as good
+                score *= .01
+
+            score_moves.append((score, move))
             total_score += score
+
+        score_moves.sort(reverse=True)
+        lsm = len(score_moves)
+        if lsm > 5:
+            del score_moves[lsm//2:]
         
         rand_val = random.random() * total_score
 
-        for move, score in move_scores:
+        for score, move in score_moves:
             log.debug("score: %s, rand_val: %s" % (score, rand_val))
             if score >= rand_val:
                 log.debug("Chose %s, score: %s (out of %s)" % (move, score, total_score))
@@ -44,7 +56,7 @@ class OpeningsMover(object):
             rand_val -= score
 
         # Fall through to inner filter
-        if len(move_scores) > 0:
+        if len(score_moves) > 0:
             log.info("Fall through despite opening option(s) %s" % total_score)
         else:
             log.info("No suitable opening options found")

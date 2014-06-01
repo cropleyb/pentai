@@ -62,7 +62,7 @@ class OpeningsMoverTest(unittest.TestCase):
         return answers
 
     def test_one_favourable_game_mostly_doesnt_fall_through(self):
-        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000])]]
+        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000]),False]]
         self.set_move_games(move_games)
 
         answers = self.multiple_tries(100, self.player)
@@ -71,7 +71,7 @@ class OpeningsMoverTest(unittest.TestCase):
         self.assertGreater(answers[None], 0)
 
     def test_one_move_equal_standings(self):
-        move_games = [[(4,4), OpeningMoveGamesData([1,1,2000,1000])]]
+        move_games = [[(4,4), OpeningMoveGamesData([1,1,2000,1000]),False]]
         self.set_move_games(move_games)
         answers = self.multiple_tries(100, self.player)
 
@@ -79,8 +79,8 @@ class OpeningsMoverTest(unittest.TestCase):
         self.assertGreater(answers[None], 0)
 
     def test_two_moves_one_good_one_bad(self):
-        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000])],
-                      [(3,4), OpeningMoveGamesData([0,1,1000,1000])]]
+        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000]),False],
+                      [(3,4), OpeningMoveGamesData([0,1,1000,1000]),False]]
         self.set_move_games(move_games)
         answers = self.multiple_tries(100, self.player)
 
@@ -90,8 +90,8 @@ class OpeningsMoverTest(unittest.TestCase):
 
     #! python pentai/ai/t_openings_mover.py OpeningsMoverTest.test_add_to_previously_seen
     def test_add_to_previously_seen(self):
-        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000])],
-                      [(3,4), OpeningMoveGamesData([0,1,1000,1000])]]
+        move_games = [[(4,4), OpeningMoveGamesData([1,0,1000,1000]),False],
+                      [(3,4), OpeningMoveGamesData([0,1,1000,1000]),False]]
         self.set_move_games(move_games)
 
         seen = set()

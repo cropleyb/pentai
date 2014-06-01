@@ -131,11 +131,9 @@ class OpeningsBook(object):
         ai_rating = aip.get_rating()
         search_rules = search_game.get_rules()
 
-        # Iterate over size first (same, other)
-        sizes = [13, 19]
+        # Don't use other sizes for now, they seem to give dodgy results
         search_size = search_rules.size
-        sizes.remove(search_size) # Move to front
-        sizes[:0] = [search_size]
+        sizes = [search_size]
 
         # Iterate over rules_type next (same, others)
         rules_types = ['s', 't', '5']
@@ -179,7 +177,10 @@ class OpeningsBook(object):
                     if not self.safe_move(suggested_move, search_game, size):
                         continue
 
-                    yield suggested_move, data
+                    secondary = (search_rules_type != rt)
+
+                    log.debug("secondary: %s" % secondary)
+                    yield (suggested_move, data, secondary)
                     option_count += 1
                     if option_count > 10:
                         log.info("Enough opening options found")
