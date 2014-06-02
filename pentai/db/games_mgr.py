@@ -6,6 +6,7 @@ import os
 import pentai.base.gs_observer as gso_m
 
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 class GamesMgr(gso_m.GSObserver):
     # TODO: Borg pattern?

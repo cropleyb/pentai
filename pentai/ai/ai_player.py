@@ -1,5 +1,6 @@
 from pentai.base.pente_exceptions import *
 from pentai.base.defines import *
+import pentai.base.logger as log
 import pentai.ai.ab_game as abg_m
 import pentai.ai.alpha_beta as ab_m
 import pentai.ai.openings_mover as om_m

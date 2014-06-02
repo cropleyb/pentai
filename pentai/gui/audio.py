@@ -8,7 +8,7 @@ import glob as g_m
 import random
 from os.path import dirname, join, basename
 
-from pentai.base.defines import *
+import pentai.base.logger as log
 
 instance = None
 

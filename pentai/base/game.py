@@ -5,6 +5,7 @@ import pentai.base.game_state as gs_m
 import pentai.base.player as p_m # TODO: Shouldn't be necessary
 import pentai.base.rules as r_m
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 import datetime
 

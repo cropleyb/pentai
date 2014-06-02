@@ -7,6 +7,7 @@ import pentai.db.zodb_dict as z_m
 import pentai.ai.standardise as st_m
 import pentai.db.preserved_game as pg_m
 import pentai.db.op_pos as op_m
+import pentai.base.logger as log
 
 from BTrees.OOBTree import OOBTree
 

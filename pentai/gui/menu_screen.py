@@ -4,6 +4,7 @@ from kivy.properties import StringProperty
 import webbrowser
 
 from scrollable_label import *
+import pentai.base.logger as log
 
 class MenuScreen(Screen):
     """ This is more of a travel agency or a directory than a menu """

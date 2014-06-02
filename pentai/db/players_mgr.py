@@ -4,6 +4,7 @@ import misc_db as m_m
 import mru_cache as mru_m
 
 from pentai.base.defines import *
+import pentai.base.logger as log
 import zodb_dict as z_m
 
 import os

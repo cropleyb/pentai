@@ -5,6 +5,7 @@ import openings_book as ol_m
 import player as p_m
 import players_mgr as pm_m
 from defines import *
+import pentai.base.logger as log
 
 import sys
 import os

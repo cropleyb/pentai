@@ -2,9 +2,10 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
 from kivy.clock import Clock
-
 from kivy.properties import *
+
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 class ClickLabel(Label):
     def __init__(self, *args, **kwargs):

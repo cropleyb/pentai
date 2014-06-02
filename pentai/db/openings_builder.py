@@ -11,6 +11,7 @@ import games_mgr as gm_m
 import misc_db as m_m
 
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 def misc():
     return m_m.get_instance()

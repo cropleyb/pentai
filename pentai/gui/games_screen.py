@@ -8,6 +8,7 @@ import audio as a_m
 import gl_cli as cli_m
 
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 class GamesScreen(Screen):
     def __init__(self, *args, **kwargs):

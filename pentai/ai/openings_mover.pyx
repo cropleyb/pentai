@@ -1,6 +1,7 @@
 import random
 
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 class OpeningsMover(object):
     def __init__(self, o_book, ab_game):

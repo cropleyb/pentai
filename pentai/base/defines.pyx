@@ -17,7 +17,6 @@ def opposite_colour(col):
 
 from pdb import set_trace as st
 
-import logger as log
 '''
 def print_func():
     pass

@@ -11,6 +11,7 @@ from pentai.base.pente_exceptions import *
 
 import audio as a_m
 from pentai.base.defines import *
+import pentai.base.logger as log
 import pentai.base.mock as mock
 import pentai.gui.popup as popup
 import gui_clock as gc_m

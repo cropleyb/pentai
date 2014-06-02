@@ -71,8 +71,8 @@ class Match():
         self.p1 = aif.create_player(self.genome1)
         self.p2 = aif.create_player(self.genome2)
 
-    def play_one_game(self, board_size, p1, p2):
-        r = r_m.Rules(board_size, "standard")
+    def play_one_game(self, board_size, rules_type, p1, p2):
+        r = r_m.Rules(board_size, rules_type)
         self.game = self.games_mgr.create_game(r, p1, p2)
         #self.evaluator = Evaluator(self.game.current_state)
 
@@ -117,7 +117,7 @@ class Match():
         #self.genome1.vision = 0.98
         #self.genome2.vision = 0.98
 
-        self.genome2.filter_num = 3
+        #self.genome2.filter_num = 3
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
@@ -144,20 +144,22 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        #for game_length in range(2,7):
-        for game_length in range(2,5):
+        for game_length in range(2,7):
+        #for game_length in range(2,5):
+        #for game_length in range(2,4):
             #for board_size in [13]:
             for board_size in [13, 19]:
                 for first_player in [0, 1]:
-                    self.set_up(game_length)
-                    players = [self.p1, self.p2]
-                    second_player = 1 - first_player
-                    res = self.play_one_game(board_size,
-                                             players[first_player],
-                                             players[second_player])
-                    #hits = [players[i].ab_game.transposition_hits for i in [0,1]]
-                    #print "Hits: %s" % hits
-                    results.add(res)
+                    for rules_type in ['s', 't']:
+                        self.set_up(game_length)
+                        players = [self.p1, self.p2]
+                        second_player = 1 - first_player
+                        res = self.play_one_game(board_size, rules_type,
+                                                 players[first_player],
+                                                 players[second_player])
+                        #hits = [players[i].ab_game.transposition_hits for i in [0,1]]
+                        #print "Hits: %s" % hits
+                        results.add(res)
 
         print results
 
@@ -185,6 +187,7 @@ if __name__ == "__main__":
     # the code you want to memory-profile
     '''
       
+    '''
     #while True:
     m = Match()
     m.play_some_games()
@@ -194,11 +197,11 @@ if __name__ == "__main__":
     mem = memory_usage_resource()
     print mem
     '''
+    '''
     heap_data = h.heap()
     print heap_data
     print heap_data.more
     st()
-    '''
     '''
     m = Match()
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
@@ -206,4 +209,3 @@ if __name__ == "__main__":
     s = pstats.Stats("Profile.prof")
     #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
     s.strip_dirs().sort_stats("time").print_stats(20)
-    '''

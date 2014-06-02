@@ -4,6 +4,7 @@ from kivy.clock import Clock
 import time
 import audio as a_m
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 class GuiClock(object):
     def __init__(self, colour, widget, game):
