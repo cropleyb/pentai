@@ -69,17 +69,37 @@ XCode:
 When you get to building the app in XCode, add kivy-ios/build/lib/libPente.a
 to the link under "Build Phases/Link Binary With Libraries" "+" "Add Other" "kivy-ios/build/lib/libYourExtensions.a" - without this none of the cythonized modules will be linked in.
 
+
+"<string>", line 32, in load_module]
+[18:56:26.795][WARNING][stderr: ImportError: dynamic module does not define init function (initdefines)]
+2014-06-01 18:56:26.795 paic[461:60b] Application quit abnormally!
+
 If you see: ImportError: dynamic module does not define init function (initWhateverModuleName)
 it means that the module referred to does not appear in any of the static libraries that XCode is linking with to create your iOS app binary
 This could be because:
 - you haven't added a static library for your app to the XCode build yet
-- the static library does not contain that module
+- the static library does not contain that module (last lines of build-whatever.sh: may not contain that directory)
 - somehow a .so file from your OS X build found its way into the static library
 - the kivy-ios hierarchy or XCode project has gotten into an unclean state. I have found that creating a new project with create-xcode-project.sh usually fixes this. Sometimes you need to start again from scratch.
+- That module is trying to import another from the same "package" without fully specifying it.
+E.g. pentai/base/defines.pyx: "import logger" (where logger is pentai/base/logger.py)
+This works on OS X somehow, but in iOS it doesn't. The fix is to use
+"import pentai.base.logger" from defines.pyx
 
 Thanks to all the Kivy team and others who have helped me to get this far!
 
 Well good luck, and I hope that saves you some time :)
 Bruce
+
+
+Where is it coming from?
+
+Something must be wrong with pentai source - reinstall of kivy-ios didn't work
+
+Where should it be? if it is cythonised, it should be in libpentai.a
+   00000000 T _initpentai_base_defines
+- looks good?
+
+
 
 PS: If you are interested in my Pente playing app (strategic abstract board game), see http://www.bruce-cropley.com/pentai
