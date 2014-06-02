@@ -7,6 +7,7 @@ from kivy.config import ConfigParser
 
 from kivy.uix.screenmanager import * # TODO: Remove
 
+import pentai.base.logger as log
 import pentai.db.zodb_dict as z_m
 import p_screen_manager as ps_m
 
@@ -46,7 +47,7 @@ class PentAIApp(App):
             log.info("Copying db")
             import shutil
             dest = self.user_data_dir
-            for fn in ["db.fs", "db.fs.index", "db.fs.tmp"]:
+            for fn in ["db.fs", "db.fs.index"]:
                 shutil.copy(fn, dest)
 
     def display_error(self, message):
