@@ -17,42 +17,31 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-"Density"?
-Improve openings selection: sort then use top moves?
-Circulate openings moves after they are potentially used.
-Speed up/disguise zodb packing?
 Hybernate with PentAI running -> Heavy CPU?
 iOS app size again?
 Start iOS deployment from scratch _again_?
-Profile AI subsystem tests?
-Fix broken ai_system_test
-First AI move is __slow__, don't search move number 1, 2, 3?
-Reorder opening moves and games each time they are used.
-Add logging support
-GamesMgr constructor seems slow? ZODB init.
-Do pack in background / overnight? / separate thread?
-order the search by sorting multiple levels of threats - bugs, do more unit tests for fukumi etc.?
-Trim iOS deployment size
-Move "opposite_colour()" (and cythonise it)
-profile app
-Opening book ratings factor
-Donate to pente.org
-Opening position viewer/editor?
 radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC?
-Load games invisibly - don't alter recent players (or recent game for prod.)
-Delete human player
-Delete computer player
 Hang when finishing with Escape? Don't use escape?!
-Build openings DB (and the rest of the db) after deployment.
-Load lots of top games from pente.org (python downloading script)
-Test how long opening move selection is taking with prints
 BadPickleGet: Try to reproduce with an ai sub-system test?
-Use ZODB on iPad... clean up and put on a branch. Include test
 Get pentai onto Lachie's iPad
-# Add libpente.a to the link line from tools scripts?
-Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 
 Beta release
+Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
+Delete human player
+Delete computer player
+Add libpente.a and libzodb.a onto the link line from tools scripts? Grep tools source for how it does it for kivy etc.
+Use ZODB on iPad... clean up and put on a branch. Include test
+Profile AI subsystem tests?
+Trim iOS deployment size
+Move "opposite_colour()"?
+profile app
+Opening position viewer/editor?
+Reorder opening moves and games each time they are used.
+"Density"?
+order the search by sorting multiple levels of threats - bugs, do more unit tests for fukumi etc.?
+Donate to pente.org?
+Speed up/disguise zodb packing?  Do pack in background / overnight? / separate thread?
+Circulate openings moves after they are potentially used.
 OS X packaging
 Music/Effects settings from games screen?
 Openings editor?
