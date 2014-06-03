@@ -34,12 +34,13 @@ $HOSTPYTHON -OO -m compileall $YOURAPPDIR
 echo "-> Remove unused files (pyc, py)"
 find $YOURAPPDIR -iname '*.py' -exec rm {} \;
 find $YOURAPPDIR -iname '*.pyc' -exec rm {} \;
-find $YOURAPPDIR -iname 'tags' -exec rm {} \;
 find $YOURAPPDIR -iname 'media.bak' -exec rm {} \;
 find $YOURAPPDIR -iname 'games' -exec rm -r {} \;
 find $YOURAPPDIR -iname '*.c' -exec rm -r {} \;
-find $YOURAPPDIR -iname 'web' -exec rm -r {} \;
 find $YOURAPPDIR -iname 'media.bak' -exec rm -r {} \;
-find $YOURAPPDIR -iname '.git' -exec rm -r {} \;
+
+pushd $YOURAPPDIR
+rm -rf web .git bak* tags
+popd
 
 echo "-> Source code of $APPNAME updated."
