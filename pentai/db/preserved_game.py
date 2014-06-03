@@ -1,8 +1,11 @@
 from pentai.base.game import *
 import pentai.base.rules as r_m
 
-class PreservedGame():
-    def __init__(self, game=None):
+from persistent import Persistent
+
+class PreservedGame(Persistent):
+    def __init__(self, game=None, *args, **kwargs):
+        super(PreservedGame, self).__init__(*args, **kwargs)
         if game:
             self.game_id = game.game_id
             self.rules = game.rules.key()

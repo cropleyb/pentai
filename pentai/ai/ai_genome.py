@@ -1,10 +1,12 @@
 import copy as c_m
+from persistent import Persistent
 
 class AIGenomeException(Exception):
     pass
 
-class AIGenome(object):
-    def __init__(self, name):
+class AIGenome(Persistent):
+    def __init__(self, name, *args, **kwargs):
+        super(AIGenome, self).__init__(*args, **kwargs)
         defaults = {
             "override": False,
             "p_name": name,
@@ -15,7 +17,7 @@ class AIGenome(object):
             "max_depth_boost": 0,
             "mmpdl": 9,
             "narrowing": 0,
-            "chokes": [(4,5)],
+            "chokes": ((4,5),),
             #"filter2": False,
             "filter_num": 1,
             "vision": 100,
@@ -26,8 +28,8 @@ class AIGenome(object):
             "threat_score_base": 20,
             "enclosed_four_base": 400,
             "use_net_captures": True,
-            "captures_scale": [1, 1, 1, 2, 4, 8],
-            "length_scale": [1, 1, 1, 1, 1, 1],
+            "captures_scale": (1, 1, 1, 2, 4, 8),
+            "length_scale": (1, 1, 1, 1, 1, 1),
             "length_factor": 35,
             "move_factor": 45,
             "scale_pob": False,

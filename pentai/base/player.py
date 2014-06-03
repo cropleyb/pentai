@@ -2,11 +2,15 @@
 # This is just be a base class / interface to be filled out by 
 # human and AI players.
 
+from persistent import Persistent
+
 # TODO: Undo support?
 # TODO: Resign?
 
-class Player(object):
-    def __init__(self, p_name):
+#class Player(object):
+class Player(Persistent):
+    def __init__(self, p_name, *args, **kwargs):
+        super(Player, self).__init__(*args, **kwargs)
         self.p_name = p_name
 
     def __repr__(self):
