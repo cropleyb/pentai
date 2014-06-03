@@ -17,15 +17,13 @@ http://www.inc.com/magazine/19830701/1772.html
 
 Update kivy version? or just hack?
 
-Hybernate with PentAI running -> Heavy CPU?
+iPad serial number number for insurance DMPMC0GHFK13 128GB iPad Air
+Hibernate with PentAI running -> Heavy CPU?
 iOS app size again?
-Start iOS deployment from scratch _again_?
-radio buttons for Human/Computer occasionally showing both?! - report to kivy IRC?
-Hang when finishing with Escape? Don't use escape?!
-BadPickleGet: Try to reproduce with an ai sub-system test?
 Get pentai onto Lachie's iPad
 
 Beta release
+Hang when finishing with Escape? Don't use escape?!
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 Delete human player
 Delete computer player
