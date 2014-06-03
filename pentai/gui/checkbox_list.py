@@ -24,7 +24,7 @@ class ClickLabel(Label):
 class CheckBoxList(GridLayout):
     text = StringProperty("")
     group = StringProperty("")
-    values = ListProperty([])
+    values = ListProperty([""])
     val = StringProperty("")
 
     def __init__(self, *args, **kwargs):
@@ -33,7 +33,7 @@ class CheckBoxList(GridLayout):
         super(CheckBoxList, self).__init__(*args, **kwargs)
 
         # The properties haven't been initialised yet
-        Clock.schedule_once(self.setup, 0)
+        Clock.schedule_once(self.setup, 0.5)
 
     def setup(self, ignored):
         vals_gl = GridLayout(cols=3)
@@ -50,7 +50,7 @@ class CheckBoxList(GridLayout):
             cb.bind(active=self.on_checkbox_active)
             cb.val = v
             if first:
-                self.on_checkbox_active(cb, None)
+                first_cb = cb
             vals_gl.add_widget(cb)
             self.widgets_by_val[v] = cb
 
@@ -59,6 +59,8 @@ class CheckBoxList(GridLayout):
             vals_gl.add_widget(l2)
 
             first = False
+
+        self.on_checkbox_active(first_cb, None)
 
     def label_clicked(self, l):
         log.debug("CheckBoxList: label_clicked")
