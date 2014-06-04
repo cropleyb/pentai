@@ -105,7 +105,9 @@ class AIPlayerScreen(Screen):
         self.refresh_names()
 
     def show_help(self):
-        help_text = """You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
+        help_text = """
+You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
+
 There are several settings that can be adjusted for a given Artificial Intelligence (AI) player profile:
     Depth: Controls how many turns the AI looks ahead for each move.
     Vision: How often does the AI see the better move possibilities?

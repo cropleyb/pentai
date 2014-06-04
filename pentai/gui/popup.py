@@ -40,7 +40,8 @@ class BasePopup(Popup):
         BasePopup.my_active = self 
 
 class MessagePopup(BasePopup):
-    """ Message Popup is for errors so far. Click anywhere to dismiss. """
+    """ Message Popup is for errors and help so far.
+        Click anywhere to dismiss. """
 
     def __init__(self, timeout_val=None, *args, **kwargs):
         self.auto_dismiss = True

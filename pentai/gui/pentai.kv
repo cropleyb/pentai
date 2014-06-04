@@ -94,10 +94,22 @@
     markup: True
 
 <ScrollableLabel>:
+    size_hint_y: 1.0
+    GridLayout:
+        id: gl_id
+        cols: 1
+        size_hint_x: 1
+        height: self.minimum_height
+        size_hint_y: None
+        SLPart:
+            text: root.text
+            id: label1_id
+
+<MenuScrollableLabel>:
     size_hint_y: .8
     GridLayout:
 	    # This GridLayout and its children are due to an issue with
-        # Kivy textures that are cannot be allocated because they are too big:
+        # Kivy textures that cannot be allocated because they are too big:
         # https://github.com/kivy/kivy/issues/2119
         id: gl_id
         cols: 1
@@ -129,7 +141,7 @@
 
         SettingSpacer:
     
-        ScrollableLabel:
+        MenuScrollableLabel:
             id: gl_id
             size_hint_x: 1
             text1: root.about_text1

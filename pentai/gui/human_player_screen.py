@@ -78,7 +78,10 @@ class HumanPlayerScreen(Screen):
         self.refresh_names()
 
     def show_help(self):
-        help_text = """You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below). At the moment there is nothing else to change about a human player besides their name.
+        help_text = """
+You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
+
+At the moment there is nothing else to change about a human player besides their name.
 """
         st = ScrollableLabel(text=help_text)
         MessagePopup(title='Help', content=st).open()
