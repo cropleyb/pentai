@@ -2,14 +2,12 @@ from pentai.base.defines import *
 from pentai.base.pente_exceptions import *
 from pentai.db.zodb_dict import *
 
-import array
-
 class OpeningMoveGamesData(ZL):
     """ For efficiently storing openings stats for a particular move. """
     # Yes this is ugly, mapping different concepts to the same array.
     # BLACK wins: 0
     # WHITE wins: 1
-    # total rt:   2
+    # total rat.: 2
     # max rating: 3
     def __init__(self, initial_values=None):
         """ Using a persistent list wrapping around a python array.
