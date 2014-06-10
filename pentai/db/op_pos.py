@@ -18,8 +18,7 @@ class OpeningMoveGamesData(ZL):
         if not initial_values:
             initial_values = [0,0,0,0]
 
-        a = array.array('i', initial_values)
-        ZL.__init__(self, a)
+        ZL.__init__(self, initial_values)
 
     def get_wins(self, colour):
         if colour == BLACK:

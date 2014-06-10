@@ -2,6 +2,8 @@ import pentai.base.board_strip as bs_m
 import pentai.ai.length_lookup_table as llt_m
 from pentai.base.defines import *
 
+from libc.stdint cimport uint64_t as U64
+
 # TODO: move this to test code?
 def pass_through_func(a, ignored):
     """ This is just a stub, shouldn't be called in production code. """
@@ -69,7 +71,7 @@ class UtilityStats(object):
     
     # Slowish
     def set_or_reset_occs(self, brd, rules, pos, inc):
-        cdef unsigned long bs
+        cdef U64 bs
 
         # update substrips
         ccp = rules.can_capture_pairs

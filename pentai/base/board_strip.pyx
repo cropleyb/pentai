@@ -2,67 +2,68 @@ cimport cython
 
 from pentai.base.defines import *
 
+from libc.stdint cimport uint64_t as U64
+
 '''
 cdef:
-    unsigned long FOUR_OCCS_MASK
-    unsigned long BLACK_CAPTURE_LEFT_PATTERN
-    unsigned long WHITE_CAPTURE_LEFT_PATTERN
-    unsigned long BLACK_CAPTURE_RIGHT_PATTERN
-    unsigned long WHITE_CAPTURE_RIGHT_PATTERN
-    unsigned long BLACK_THREAT_LEFT_PATTERN
-    unsigned long WHITE_THREAT_LEFT_PATTERN
-    unsigned long BLACK_THREAT_RIGHT_PATTERN
-    unsigned long WHITE_THREAT_RIGHT_PATTERN
+    U64 FOUR_OCCS_MASK
+    U64 BLACK_CAPTURE_LEFT_PATTERN
+    U64 WHITE_CAPTURE_LEFT_PATTERN
+    U64 BLACK_CAPTURE_RIGHT_PATTERN
+    U64 WHITE_CAPTURE_RIGHT_PATTERN
+    U64 BLACK_THREAT_LEFT_PATTERN
+    U64 WHITE_THREAT_LEFT_PATTERN
+    U64 BLACK_THREAT_RIGHT_PATTERN
+    U64 WHITE_THREAT_RIGHT_PATTERN
 '''
 
-
 # We separate out numbers representing groups of 4 occupancies
-cdef unsigned long FOUR_OCCS_MASK = (4 ** 4 - 1)
+cdef U64 FOUR_OCCS_MASK = (4 ** 4 - 1)
 
-cdef unsigned long FIVE_OCCS_MASK = (4 ** 5 - 1)
+cdef U64 FIVE_OCCS_MASK = (4 ** 5 - 1)
 
-cdef unsigned long SIX_OCCS_MASK = (4 ** 6 - 1)
+cdef U64 SIX_OCCS_MASK = (4 ** 6 - 1)
 
 # These patterns are matched against to detect captures
 
 # BWWx
-cdef unsigned long BLACK_CAPTURE_LEFT_PATTERN = BLACK + (4 * WHITE) + (16 * WHITE) # + 64 * 0
+cdef U64 BLACK_CAPTURE_LEFT_PATTERN = BLACK + (4 * WHITE) + (16 * WHITE) # + 64 * 0
 # WBBx
-cdef unsigned long WHITE_CAPTURE_LEFT_PATTERN = WHITE + (4 * BLACK) + (16 * BLACK) # + 64 * 0
+cdef U64 WHITE_CAPTURE_LEFT_PATTERN = WHITE + (4 * BLACK) + (16 * BLACK) # + 64 * 0
 # xWWB
-cdef unsigned long BLACK_CAPTURE_RIGHT_PATTERN = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
+cdef U64 BLACK_CAPTURE_RIGHT_PATTERN = (WHITE + (4 * WHITE) + (16 * BLACK)) * 4
 # xBBW
-cdef unsigned long WHITE_CAPTURE_RIGHT_PATTERN = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
+cdef U64 WHITE_CAPTURE_RIGHT_PATTERN = (BLACK + (4 * BLACK) + (16 * WHITE)) * 4
 
 # These patterns are matched against to detect threats
 
 # EWWx
-cdef unsigned long BLACK_THREAT_LEFT_PATTERN =         (4 * WHITE) + ((4**2) * WHITE) # + 4**3 * 0
+cdef U64 BLACK_THREAT_LEFT_PATTERN =         (4 * WHITE) + ((4**2) * WHITE) # + 4**3 * 0
 # EBBx
-cdef unsigned long WHITE_THREAT_LEFT_PATTERN =         (4 * BLACK) + ((4**2) * BLACK) # + 4**3 * 0
+cdef U64 WHITE_THREAT_LEFT_PATTERN =         (4 * BLACK) + ((4**2) * BLACK) # + 4**3 * 0
 # EWWB
-cdef unsigned long BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
+cdef U64 BLACK_THREAT_RIGHT_PATTERN = (WHITE + (4 * WHITE) ) * 4
 # EBBW
-cdef unsigned long WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
+cdef U64 WHITE_THREAT_RIGHT_PATTERN = (BLACK + (4 * BLACK) ) * 4
 
 # BBBBB
-cdef unsigned long BLACK_FIVE_PATTERN = BLACK + 4 * BLACK + (4**2) * BLACK + (4**3) * BLACK + (4**4) * BLACK
+cdef U64 BLACK_FIVE_PATTERN = BLACK + 4 * BLACK + (4**2) * BLACK + (4**3) * BLACK + (4**4) * BLACK
 # WWWWW
-cdef unsigned long WHITE_FIVE_PATTERN = WHITE + 4 * WHITE + (4**2) * WHITE + (4**3) * WHITE + (4**4) * WHITE
+cdef U64 WHITE_FIVE_PATTERN = WHITE + 4 * WHITE + (4**2) * WHITE + (4**3) * WHITE + (4**4) * WHITE
 # WBBBBW
-cdef unsigned long BLACK_ENCLOSED_PATTERN = WHITE + 4 * BLACK + (4**2) * BLACK + (4**3) * BLACK + (4**4) * BLACK + (4**5) * WHITE
+cdef U64 BLACK_ENCLOSED_PATTERN = WHITE + 4 * BLACK + (4**2) * BLACK + (4**3) * BLACK + (4**4) * BLACK + (4**5) * WHITE
 # BWWWWB
-cdef unsigned long WHITE_ENCLOSED_PATTERN = BLACK + 4 * WHITE + (4**2) * WHITE + (4**3) * WHITE + (4**4) * WHITE + (4**5) * BLACK
+cdef U64 WHITE_ENCLOSED_PATTERN = BLACK + 4 * WHITE + (4**2) * WHITE + (4**3) * WHITE + (4**4) * WHITE + (4**5) * BLACK
 
-cpdef unsigned long get_occ(unsigned long bs, int ind):
-    ret = bs >> (ind * 2)
-    return ret & 3
+cpdef U64 get_occ(U64 bs, U64 ind):
+    ret = bs >> (ind * 2UL)
+    return ret & 3UL
 
-cpdef unsigned long set_occ(unsigned long bs, int ind, unsigned long occ):
-    cdef unsigned long shift
-    shift = 4 ** ind
+cpdef U64 set_occ(U64 bs, U64 ind, U64 occ):
+    cdef U64 shift
+    shift = 4UL ** ind
     #shift = 1 << (ind * 2) # Type conversion issues in C
-    bs &= ~(shift + (shift << 1))
+    bs &= ~(shift + (shift << 1UL))
     bs |= (occ * shift)
     return bs
 
@@ -72,7 +73,7 @@ def get_occ_list(bs, min_ind, max_ind):
     return ol
 
 
-cpdef int match_five_in_a_row(unsigned long bs, int move_ind, int colour):
+cpdef int match_five_in_a_row(U64 bs, U64 move_ind, int colour):
     if colour == BLACK:
         pattern = BLACK_FIVE_PATTERN
     else:
@@ -80,27 +81,27 @@ cpdef int match_five_in_a_row(unsigned long bs, int move_ind, int colour):
     return match_five_inner(bs, move_ind, pattern)
     
 
-cdef int match_five_inner(unsigned long bs, int move_ind, unsigned long pattern):
+cdef int match_five_inner(U64 bs, U64 move_ind, U64 pattern):
     cdef int l
-    cdef int to_right
-    cdef unsigned long occs
+    cdef U64 to_right
+    cdef U64 occs
 
-    l = move_ind - 4
+    l = move_ind - 4UL
     if l < 0:
         l = 0
 
-    to_right = bs >> (l << 1)
+    to_right = bs >> (l << 1UL)
     while l <= move_ind:
         occs = to_right & FIVE_OCCS_MASK
         if occs == pattern:
             return True
-        to_right >>= 2
-        l += 1
+        to_right >>= 2UL
+        l += 1UL
     return False
 
 ######################################################################
 
-cpdef int match_enclosed_four(unsigned long bs, int move_ind, int colour):
+cpdef int match_enclosed_four(U64 bs, U64 move_ind, int colour):
     if colour == BLACK:
         pattern = BLACK_ENCLOSED_PATTERN
     else:
@@ -109,77 +110,77 @@ cpdef int match_enclosed_four(unsigned long bs, int move_ind, int colour):
     
 # This probably misses an extremely rare pattern of two enclosed 4s
 # but I'd be astonished if this has ever occurred.
-cdef int match_six_inner(unsigned long bs, int move_ind, unsigned long pattern):
+cdef int match_six_inner(U64 bs, U64 move_ind, U64 pattern):
     cdef int l
-    cdef int to_right
-    cdef unsigned long occs
+    cdef U64 to_right
+    cdef U64 occs
 
-    l = move_ind - 5
+    l = move_ind - 5UL
     if l < 0:
         l = 0
 
-    to_right = bs >> (l << 1)
+    to_right = bs >> (l << 1UL)
     while l <= move_ind:
         occs = to_right & SIX_OCCS_MASK
         if occs == pattern:
             return True
-        to_right >>= 2
-        l += 1
+        to_right >>= 2UL
+        l += 1UL
     return False
 
 ######################################################################
 
-cpdef match_capture_left(unsigned long bs, int ind, int colour):
+cpdef match_capture_left(U64 bs, U64 ind, int colour):
     if colour == BLACK:
         return match_black_capture_left(bs, ind)
     else:
         return match_white_capture_left(bs, ind)
 
-cpdef match_capture_right(unsigned long bs, int ind, int colour):
+cpdef match_capture_right(U64 bs, U64 ind, int colour):
     if colour == BLACK:
         return match_black_capture_right(bs, ind)
     else:
         return match_white_capture_right(bs, ind)
 
 @cython.profile(False)
-cdef inline match_pattern_left(unsigned long bs, int ind, unsigned long pattern):
-    cdef int shift
-    cdef unsigned long occs
+cdef inline match_pattern_left(U64 bs, U64 ind, U64 pattern):
+    cdef U64 shift
+    cdef U64 occs
 
-    if ind < 3:
+    if ind < 3UL:
         # Cannot place to the left - off the board
         return ()
-    shift = (ind-3) << 1
+    shift = (ind-3UL) << 1UL
     occs = (bs >> shift) & FOUR_OCCS_MASK
     if occs == pattern:
-        return (ind-1, ind-2)
+        return (ind-1UL, ind-2UL)
     return ()
 
 @cython.profile(False)
-cdef inline match_pattern_right(unsigned long bs, int ind, unsigned long pattern):
-    cdef int shift
-    cdef unsigned long occs
+cdef inline match_pattern_right(U64 bs, U64 ind, U64 pattern):
+    cdef U64 shift
+    cdef U64 occs
 
-    shift = ind << 1
+    shift = ind << 1UL
     occs = (bs >> shift) & FOUR_OCCS_MASK
     if occs == pattern:
-        return (ind+1, ind+2)
+        return (ind+1UL, ind+2UL)
     return ()
 
 @cython.profile(False)
-cdef match_black_capture_left(unsigned long bs, int ind):
+cdef match_black_capture_left(U64 bs, U64 ind):
     # BWWx
     return match_pattern_left(bs, ind, BLACK_CAPTURE_LEFT_PATTERN)
 
-cdef match_white_capture_left(unsigned long bs, int ind):
+cdef match_white_capture_left(U64 bs, U64 ind):
     # WBBx
     return match_pattern_left(bs, ind, WHITE_CAPTURE_LEFT_PATTERN )
 
-cdef match_black_capture_right(unsigned long bs, int ind):
+cdef match_black_capture_right(U64 bs, U64 ind):
     # xWWB
     return match_pattern_right(bs, ind, BLACK_CAPTURE_RIGHT_PATTERN)
 
-cdef match_white_capture_right(unsigned long bs, int ind):
+cdef match_white_capture_right(U64 bs, U64 ind):
     # xBBW
     return match_pattern_right(bs, ind, WHITE_CAPTURE_RIGHT_PATTERN)
 
@@ -282,7 +283,7 @@ def process_threats(bs, ind, strip_min, strip_max, us, inc):
 
 #######################################
 
-def process_enclosed_four(unsigned long bs, int move_ind, int colour, us, inc):
+def process_enclosed_four(U64 bs, U64 move_ind, int colour, us, inc):
     if match_enclosed_four(bs, move_ind, colour):
         us.report_enclosed_four(colour, inc)
 	# TODO: Report ends indices?

@@ -166,16 +166,21 @@ class GameStateTest(unittest.TestCase):
         self.move(4,0,True) # B
         self.aE(self.gs.get_won_by(), B)
 
+    # !./pentai/base/t_game_state.py GameStateTest.test_SE_5_in_a_row_detected
     def test_SE_5_in_a_row_detected(self):
-        self.move(0,4,False) # B
-        self.move(2,1,False) # W
-        self.move(1,3,False) # B
-        self.move(1,2,False) # W
-        self.move(2,2,False) # B
-        self.move(4,3,False) # W
-        self.move(3,1,False) # B
-        self.move(1,4,False) # W
-        self.move(4,0,True) # B
+        self.setUpWithOverrides(
+                size=19,
+                player1=HumanPlayer("Me"),
+                player2=HumanPlayer("Myself"))
+        self.move(14,14,False) # B
+        self.move(16,17,False) # W
+        self.move(15,15,False) # B
+        self.move(15,16,False) # W
+        self.move(16,16,False) # B
+        self.move(18,15,False) # W
+        self.move(17,17,False) # B
+        self.move(15,14,False) # W
+        self.move(18,18,True) # B
         self.aE(self.gs.get_won_by(), B)
 
     def test_S_5_in_a_row_detected(self):

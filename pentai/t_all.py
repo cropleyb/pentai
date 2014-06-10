@@ -19,7 +19,7 @@ def suite():
 
 def main():
     unittest.TextTestRunner().run(suite())
+    tdb_m.delete_test_db()
 
 if __name__ == "__main__":
     main()
-    tdb_m.delete_test_db()

@@ -41,6 +41,12 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.rules.get_type_name(), "Standard")
         self.assertEquals(the_rest, "More Stuff\n")
 
+    def test_load_finished_game(self):
+        rules = Rules(19, "tournament")
+        game = Game(rules, Player("Kelvin"), Player("Bruce"))
+        game.load_moves("1. (9,9)\n2. (10, 8)\n3. (12,9)\n4. (12,10)\n5. (11,9)\n6. (10,9)\n7. (10,10)\n8. (13,9)\n9. (11,11)\n10. (12,12)\n11. (8,8)\n12. (7,7)\n13. (11,8)\n14. (12,11)\n15. (12,13)\n16. (14,8)\n17. (11,9)\n18. (12,8)\n19. (12,9)\n20. (9,11)\n21. (10,7)\n22. (13,10)\n23. (11,12)\n24. (15,7)\n25. (11,13)\n26. (16,6)\n")
+        self.assertEquals(game.get_won_by(), WHITE)
+
     def test_go_to_move_back(self):
         rules = Rules(9, "standard")
         g = Game(rules, Player("BC"), Player("Whoever"))

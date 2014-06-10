@@ -1,3 +1,9 @@
+'''
+import pentai.t_all as t_m
+t_m.main()
+import sys
+sys.exit(0)
+'''
 
 def main():
     import startup
