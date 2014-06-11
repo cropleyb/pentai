@@ -34,7 +34,6 @@ import time
 import copy as c_m
 
 import demo as d_m
-import pentai.db.misc_db as misc_db
 
 class PentAIApp(App):
     game_filename = StringProperty("")
