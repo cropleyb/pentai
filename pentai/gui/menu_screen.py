@@ -42,9 +42,11 @@ class MenuScreen(Screen):
 """- Alan Morris for the wonderful voiceover
 - Marion and Noel Lodge for their constant support and feedback
 - Thad Spreg for his expert Pente insights
+- Mark Mammel for helpful discussions about implementing Pente strategy
 - Annette Campbell for inspiring me to write this in the first place
 - Sascha, Jespah and Arwen for their comments on "The Sod"
 - The Kivy team for lots of help with their excellent toolset
+- Liam Routt for games development advice
 - Lots of other people for their support and feedback"""
         self.about_text6 = \
 """
