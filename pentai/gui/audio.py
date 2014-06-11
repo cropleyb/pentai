@@ -12,8 +12,6 @@ import pentai.base.logger as log
 
 instance = None
 
-PN_KEY = "piece_number"
-
 class Audio():
     """ Sound effects: place, capture, tick, win, loss, music """
     def __init__(self, config):
