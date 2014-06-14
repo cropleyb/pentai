@@ -148,5 +148,6 @@ class SetupScreen(Screen):
         self.ids.white_type_id.set_active(wpt)
         self.ids.bs_id.text = str(g.get_size())
         self.ids.rules_id.text = g.get_rules_type_name()
-        # TODO: Timer?
+        self.time_control = g.get_total_time()
+        self.ids.time_control_id.value = self.time_control
 

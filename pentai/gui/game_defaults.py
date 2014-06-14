@@ -30,6 +30,9 @@ class GameDefaults(Persistent):
     def get_rules_type_name(self):
         return self.rules.get_type_name()
 
+    def get_total_time(self):
+        return self.rules.get_time_control()
+
     def get_player_name(self, colour):
         ret = self.get_player_name_inner(colour)
         return ret

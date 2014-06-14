@@ -302,7 +302,7 @@ class Game(object):
             self.make_move(move) # TODO Maybe skip this?
 
     def get_total_time(self):
-        return self.rules.time_control
+        return self.rules.get_time_control()
 
     def tick(self, colour, seconds):
         if self.get_won_by():

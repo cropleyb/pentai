@@ -94,6 +94,9 @@ class Rules(object):
             return not near_centre
         return near_centre
 
+    def get_time_control(self):
+        return self.time_control / 60
+
     def key(self):
         return (self.size, self.type_char, self.time_control/60)
 
