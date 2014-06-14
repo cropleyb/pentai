@@ -42,13 +42,13 @@ class TestGameDefaults(unittest.TestCase):
 
     def test_rules(self):
         self.assertEquals(self.gd.get_size(), 19)
-        self.assertEquals(self.gd.get_rules_type(), "Standard")
+        self.assertEquals(self.gd.get_rules_type_name(), "Standard")
 
         new_rules = Rules(13, "Tournament")
         self.play_game(("AI", "Samuel"), ("Human", "Bruce"), new_rules)
 
         self.assertEquals(self.gd.get_size(), 13)
-        self.assertEquals(self.gd.get_rules_type(), "Tournament")
+        self.assertEquals(self.gd.get_rules_type_name(), "Tournament")
 
     def test_change_p1_type_to_same(self):
         self.play_game(("Human", "BC"), ("AI", "Whoever"))

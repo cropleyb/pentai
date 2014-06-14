@@ -66,7 +66,7 @@ class Game(object):
         return self.rules.size
 
     def get_rules_type_name(self):
-        return self.rules.get_rules_type_name()
+        return self.rules.get_type_name()
 
     def get_current_state(self):
         return self.current_state
@@ -81,7 +81,10 @@ class Game(object):
         return self.players[player_number]
     
     def get_player_type(self, player_number):
-        return self.players[player_number].get_type()
+        ret = self.players[player_number].get_type()
+        if ret == "AI":
+            ret = "Computer"
+        return ret
     
     def get_all_players(self):
         return self.players

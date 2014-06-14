@@ -13,7 +13,6 @@ class GameDefaults(Persistent):
 
         self.types = ZL([None, None, None])
         self.rules = Rules(19, "Standard")
-        self.last_set_type_colour = None
         self.last_name_set_of_type_was_colour = ZL([None, None])
 
     def play_game(self, p1, p2, rules):
@@ -28,7 +27,7 @@ class GameDefaults(Persistent):
     def get_size(self):
         return self.rules.size
 
-    def get_rules_type(self):
+    def get_rules_type_name(self):
         return self.rules.get_type_name()
 
     def get_player_name(self, colour):
@@ -61,6 +60,12 @@ class GameDefaults(Persistent):
     def get_type(self, colour):
         return self.types[colour]
 
+    def get_player_type(self, colour):
+        pt = self.types[colour]
+        if pt == "AI":
+            pt = "Computer"
+        return pt
+
     def set_name(self, colour, name):
         self.last_game_names[colour] = name
         self.last_game_types[colour] = self.types[colour]
@@ -84,4 +89,3 @@ class GameDefaults(Persistent):
     def set_type(self, colour, new_type):
         if self.types[colour] != new_type:
             self.types[colour] = new_type
-            self.last_set_type_colour = colour

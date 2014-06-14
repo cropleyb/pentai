@@ -20,8 +20,10 @@ class SetupScreen(Screen):
 
         self.game = None
         self.repop = False
+        self.initialised = False
         self.defaults = misc().setdefault("game_defaults", GameDefaults())
-
+        #self.defaults = misc()["game_defaults"] = GameDefaults()
+            
         # Updating a player name triggers set_player_name
         func = lambda v,dt: self.set_player_name(BLACK, v.text)
         self.ids.bpl_id.bind(text=func)
@@ -34,7 +36,12 @@ class SetupScreen(Screen):
         func = lambda v,dt: self.set_player_type(WHITE, v.val)
         self.ids.white_type_id.bind(val=func)
 
+        # TODO: Timer default
+
     def on_pre_enter(self):
+        if not self.initialised:
+            self.initialised = True
+
         self.set_GUI_from_game(self.defaults)
         self.populate_all_players()
 
@@ -44,10 +51,11 @@ class SetupScreen(Screen):
             self.populate_all_players()
 
     def set_player_type(self, colour, player_type):
-        if player_type == "Computer":
-            player_type = "AI"
-        self.defaults.set_type(colour, player_type)
-        self.populate_all_players()
+        if self.initialised:
+            if player_type == "Computer":
+                player_type = "AI"
+            self.defaults.set_type(colour, player_type)
+            self.populate_all_players()
 
     def populate_all_players(self):
         self.repop = True
@@ -89,6 +97,9 @@ class SetupScreen(Screen):
     def alter_game(self, game):
         self.game = game
         self.set_GUI_from_game(self.game)
+
+        # TODO - set defaults
+
         self.ids.start_game_id.text = "Resume Game"
 
     def set_up_game_from_GUI(self):
@@ -131,7 +142,11 @@ class SetupScreen(Screen):
     def set_GUI_from_game(self, g):
         self.ids.bpl_id.text = g.get_player_name(BLACK)
         self.ids.wpl_id.text = g.get_player_name(WHITE)
+        bpt = g.get_player_type(BLACK)
+        wpt = g.get_player_type(WHITE)
+        self.ids.black_type_id.set_active(bpt)
+        self.ids.white_type_id.set_active(wpt)
         self.ids.bs_id.text = str(g.get_size())
-        self.ids.rules_id.text = g.get_rules_type()
-        # TODO: Player type, AI Parameters?
+        self.ids.rules_id.text = g.get_rules_type_name()
+        # TODO: Timer?
 
