@@ -33,7 +33,7 @@ if __name__ == "__main__":
         dot()
         pm.save(h)
 
-    print "Creating Computer Players"
+    print "Creating AI Players"
     genome = aig_m.AIGenome("")
     
     players = [
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     for p in players:
         genome.__dict__.update(p)
         dot()
-        p = pm.find_by_name(genome.p_name, "Computer")
+        p = pm.find_by_name(genome.p_name, "AI")
         if p:
             genome.p_key = p.p_key
         else:

@@ -15,22 +15,30 @@ Liam feedback?
 Gary Gabrel:
 http://www.inc.com/magazine/19830701/1772.html
 
-Update kivy version? or just hack?
+list of testers
+FB ask for volunteers publicly, or privately?
+Who has an iPad?
+bionoid? inclement? mmammel?
 
-iPad serial number number for insurance DMPMC0GHFK13 128GB iPad Air
-Hibernate with PentAI running -> Heavy CPU?
-iOS app size again?
-Get pentai onto Lachie's iPad
+Great :) You have an iPad? I will need your email address to send a TestFlight invite. Once you get that and register your device, I need to load that into a "profile" and then build a version of my app with that profile in it, and upload it to TestFlight again.
 
 Beta release
-Hang when finishing with Escape? Don't use escape?!
+Update Acknowledgements: Mark Mammel
+Version string in GUI
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
+opening move candidate iterators for variety
+unittest on iOS
+Hibernate with PentAI running -> Heavy CPU?
+Hang when finishing with Escape? Don't use escape?!
 Delete human player
+Order computer players alphabetically
+Repopulate other player list
+iPhone/iPod version
 Delete computer player
 Add libpente.a and libzodb.a onto the link line from tools scripts? Grep tools source for how it does it for kivy etc.
 Use ZODB on iPad... clean up and put on a branch. Include test
 Profile AI subsystem tests?
-Trim iOS deployment size
+iOS app size again?  Trim iOS deployment size? Delete processed unzip dirs?
 Move "opposite_colour()"?
 profile app
 Opening position viewer/editor?

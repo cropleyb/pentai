@@ -2,13 +2,14 @@ from kivy.properties import *
 from kivy.uix.screenmanager import Screen
 
 import pentai.base.rules as r_m
-#import game
-#import human_player
-#import ai_genome
-#import ai_factory
-
 from pentai.base.defines import *
 from pentai.base.pente_exceptions import *
+
+import pentai.db.misc_db as m_m
+from pentai.gui.game_defaults import *
+
+def misc():
+    return m_m.get_instance()
 
 class SetupScreen(Screen):
     player_names = ListProperty([[], [], []])
@@ -17,32 +18,57 @@ class SetupScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
 
-        self.ids.black_type_id.bind(val=self.populate_black_players)
-        self.ids.white_type_id.bind(val=self.populate_white_players)
+        self.game = None
+        self.repop = False
+        self.defaults = misc().setdefault("game_defaults", GameDefaults())
 
-    def on_enter(self):
-        self.populate_black_players()
-        self.populate_white_players()
+        # Updating a player name triggers set_player_name
+        func = lambda v,dt: self.set_player_name(BLACK, v.text)
+        self.ids.bpl_id.bind(text=func)
+        func = lambda v,dt: self.set_player_name(WHITE, v.text)
+        self.ids.wpl_id.bind(text=func)
 
-    def populate_black_players(self, *args):
-        ptb = self.ids.black_type_id
-        white_player = self.ids.wpl_id.text
-        self.populate_players(ptb.val, BLACK, exclude=white_player)
-        self.ids.bpl_id.text = self.player_names[BLACK][0]
+        # Updating the player type triggers set_player_type
+        func = lambda v,dt: self.set_player_type(BLACK, v.val)
+        self.ids.black_type_id.bind(val=func)
+        func = lambda v,dt: self.set_player_type(WHITE, v.val)
+        self.ids.white_type_id.bind(val=func)
 
-    def populate_white_players(self, *args):
-        ptw = self.ids.white_type_id
-        black_player = self.ids.bpl_id.text
-        self.populate_players(ptw.val, WHITE, exclude=black_player)
-        self.ids.wpl_id.text = self.player_names[WHITE][0]
+    def on_pre_enter(self):
+        self.set_GUI_from_game(self.defaults)
+        self.populate_all_players()
 
-    def populate_players(self, pt, colour, exclude):
+    def set_player_name(self, colour, player_name):
+        if not self.repop:
+            self.defaults.set_name(colour, player_name)
+            self.populate_all_players()
+
+    def set_player_type(self, colour, player_type):
+        if player_type == "Computer":
+            player_type = "AI"
+        self.defaults.set_type(colour, player_type)
+        self.populate_all_players()
+
+    def populate_all_players(self):
+        self.repop = True
+        self.ids.bpl_id.text = self.defaults.get_player_name(BLACK)
+        self.ids.wpl_id.text = self.defaults.get_player_name(WHITE)
+        self.repop = False
+
+        self.populate_black_player_list()
+        self.populate_white_player_list()
+
+    def populate_black_player_list(self, *args):
+        ptb = self.defaults.get_type(BLACK)
+        self.populate_player_list(ptb, BLACK)
+
+    def populate_white_player_list(self, *args):
+        ptw = self.defaults.get_type(WHITE)
+        self.populate_player_list(ptw, WHITE)
+
+    def populate_player_list(self, pt, colour):
         rpl = self.pm.get_recent_player_names(pt, 30)
-        try:
-            rpl.remove(exclude)
-        except:
-            pass
-        self.player_names[colour] = rpl
+        self.player_names[colour] = sorted(rpl)
 
     def time_control_text(self, tc):
         if tc == 0:
@@ -81,25 +107,31 @@ class SetupScreen(Screen):
             return
 
         # TODO: pass in player type
+        # TODO: Copy & paste
         p1_t = self.ids.black_type_id.val
-        player1 = self.pm.find_by_name(self.ids.bpl_id.text, p1_t)
-        if not player1:
+        if p1_t == "Computer":
+            p1_t = "AI"
+        p1 = self.pm.find_by_name(self.ids.bpl_id.text, p1_t)
+        if not p1:
             self.app.display_error("Select a player for Black")
             return
 
         p2_t = self.ids.white_type_id.val
-        player2 = self.pm.find_by_name(self.ids.wpl_id.text, p2_t)
-        if not player2:
+        if p2_t == "Computer":
+            p2_t = "AI"
+        p2 = self.pm.find_by_name(self.ids.wpl_id.text, p2_t)
+        if not p2:
             self.app.display_error("Select a player for White")
             return
 
-        self.game.setup(r, player1, player2)
+        self.game.setup(r, p1, p2)
+        self.defaults.play_game((p1_t,p1.get_name()), (p2_t, p2.get_name()), self.game.get_rules())
         return self.game
-
+    
     def set_GUI_from_game(self, g):
         self.ids.bpl_id.text = g.get_player_name(BLACK)
         self.ids.wpl_id.text = g.get_player_name(WHITE)
-        self.ids.bs_id.text = str(g.rules.size)
-        self.ids.rules_id.text = g.rules.get_type_name()
+        self.ids.bs_id.text = str(g.get_size())
+        self.ids.rules_id.text = g.get_rules_type()
         # TODO: Player type, AI Parameters?
 

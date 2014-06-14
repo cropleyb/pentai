@@ -65,6 +65,9 @@ class Game(object):
     def get_size(self):
         return self.rules.size
 
+    def get_rules_type_name(self):
+        return self.rules.get_rules_type_name()
+
     def get_current_state(self):
         return self.current_state
 
@@ -76,6 +79,9 @@ class Game(object):
 
     def get_player(self, player_number):
         return self.players[player_number]
+    
+    def get_player_type(self, player_number):
+        return self.players[player_number].get_type()
     
     def get_all_players(self):
         return self.players

@@ -53,7 +53,7 @@ class AIGenome(Persistent):
         return name
 
     def get_type(self):
-        return "Computer"
+        return "AI"
 
     def get_key(self):
         return self.p_key

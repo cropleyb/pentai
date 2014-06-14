@@ -61,7 +61,7 @@ class ATOTest(unittest.TestCase):
         self.assertEquals(len(moves), 1)
         self.assertEquals(moves[0][0], (10,10))
 
-    def test_add_first_white_move(self):
+    def atest_add_first_white_move(self):
         print_func()
         self.load_moves_and_set_win("1. (7,8)\n2. (8,8)\n")
         self.ob.add_game(self.game, BLACK)

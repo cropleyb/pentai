@@ -28,7 +28,7 @@ class PlayersMgr():
         return player.p_key
 
     def get_rpks(self, player_type):
-        if player_type == "Computer":
+        if player_type == "AI" or player_type == "Computer": # Computer is temp
             key = "recent_ai_player_ids"
         else:
             key = "recent_human_ids"
@@ -61,7 +61,7 @@ class PlayersMgr():
         return rpns
 
     def get_ai_player_names(self):
-        return self.get_recent_player_names("Computer", 30)
+        return self.get_recent_player_names("AI", 30)
 
     def get_human_player_names(self):
         return self.get_recent_player_names("Human", 30)

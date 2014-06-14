@@ -83,7 +83,7 @@ class AIPlayer(p_m.Player):
         return "%s is thinking" % self.get_name()
 
     def get_type(self):
-        return "Computer"
+        return "AI"
 
     def do_search_process(self, gui): # TODO: We shouldn't know about the gui
         from search_process import SearchProcess

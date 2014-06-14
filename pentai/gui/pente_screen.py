@@ -187,10 +187,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
         #st()
         self.clean_board()
         self.game = game
+        p1 = game.get_player_name(BLACK)
+        p2 = game.get_player_name(WHITE)
         if game.autosave_filename == None:
             filename = "games/%s_%s_%s.txt" % \
-                (game.get_player_name(BLACK),
-                 game.get_player_name(WHITE),
+                (p1,
+                 p2,
                  str(datetime.date.today()))
             game.autosave_filename = filename
 

@@ -95,9 +95,9 @@ class Demo():
 
         ss = app.setup_screen
         # TODO: Select white player type
-        ss.ids.white_type_id.val = "Computer"
+        ss.ids.white_type_id.val = "AI"
         # TODO: Select computer player somehow?
-        ss.ids.wpl_id.val = "PentAI"
+        ss.ids.wpl_id.val = "Killer"
         yield(2)
 
         sim_press(ss.ids.start_game_id)
