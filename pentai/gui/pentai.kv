@@ -233,6 +233,7 @@
                 rows: 1
                 Slider:
                     id: time_control_id
+                    padding: my.dp(30)
                     min: 0
                     max: 10
                     step: .5
@@ -340,7 +341,6 @@
                 id: depth_id
                 min: 1
                 max: 10
-                # TODO: Test odd levels play ok
                 step: 1
                 value: root.genome.max_depth
                 on_value: root.genome.max_depth = self.value
@@ -411,25 +411,7 @@
             height: my.dp(48)
 
             Label:
-                text: 'Lines / Captures'
-
-            Slider:
-                id: captures_id
-                min: 200
-                max: 400
-                step: 1
-                value: root.genome.capture_score_base
-                on_value: root.genome.capture_score_base = self.value
-
-            Label:
-                size_hint_x: .3
-                text: '{}'.format(int(captures_id.value))
-
-        BoxLayout:
-            size_hint_y: None
-            height: my.dp(48)
-
-            Label:
+                size_hint_x: .7
                 text: 'Judgement'
                 halign: 'left'
 
