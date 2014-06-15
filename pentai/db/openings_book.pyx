@@ -51,6 +51,9 @@ class OpeningsBook(object):
         if won_by == EMPTY:
             return
 
+        if not g.get_size() in (13, 19):
+            return
+
         if g.key() in self.opening_game_ids:
             raise OpeningsBookDuplicateException()
         self.opening_game_ids[g.key()] = True

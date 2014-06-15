@@ -11,6 +11,11 @@ For Alpha release
 Call copyright lawyer: ?
 Kristel contacts?
 Liam feedback?
+Crash saving 9x9 game
+AI screen ditch length/captures. Replace with?
+Game Screen time controller slider left edge is off screen
+Edit game defaults overridding .
+More Colour? Background animation?
 
 Gary Gabrel:
 http://www.inc.com/magazine/19830701/1772.html
