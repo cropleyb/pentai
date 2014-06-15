@@ -96,11 +96,20 @@ class SetupScreen(Screen):
 
     def alter_game(self, game):
         self.game = game
+        self.set_defaults_from_game(game)
         self.set_GUI_from_game(self.game)
 
         # TODO - set defaults
 
         self.ids.start_game_id.text = "Resume Game"
+
+    def set_defaults_from_game(self, g):
+        p1_t = g.get_player_type(BLACK)
+        p1_n = g.get_player_name(BLACK)
+        p2_t = g.get_player_type(WHITE)
+        p2_n = g.get_player_name(WHITE)
+
+        self.defaults.play_game((p1_t,p1_n), (p2_t, p2_n), g.get_rules())
 
     def set_up_game_from_GUI(self):
         try:
@@ -136,7 +145,7 @@ class SetupScreen(Screen):
             return
 
         self.game.setup(r, p1, p2)
-        self.defaults.play_game((p1_t,p1.get_name()), (p2_t, p2.get_name()), self.game.get_rules())
+        self.set_defaults_from_game(self.game)
         return self.game
     
     def set_GUI_from_game(self, g):
