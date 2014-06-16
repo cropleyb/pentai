@@ -97,6 +97,9 @@ class Rules(object):
     def get_time_control(self):
         return self.time_control / 60
 
+    def get_time_control_s(self):
+        return self.time_control
+
     def key(self):
         return (self.size, self.type_char, self.time_control/60)
 

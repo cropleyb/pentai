@@ -12,8 +12,7 @@ class GuiClock(object):
         self.player = game.get_player(colour)
         self.widget = widget
         self.game = game
-        total_time = game.get_total_time()
-        self.total_time = total_time
+        self.total_time_s = game.get_total_time_s()
         self.show_remaining()
         self.ticking = False
         self.last_tick_time = None
@@ -50,7 +49,10 @@ class GuiClock(object):
             # Make tick sound
             a_m.instance.tick(colour)
 
-        tt = self.total_time
+        # tt should be in seconds
+        tt = self.total_time_s
+
+        # Remaining seconds
         rem = self.game.remaining_time(self.colour)
 
         if rem > 0:

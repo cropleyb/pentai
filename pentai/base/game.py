@@ -304,6 +304,9 @@ class Game(object):
     def get_total_time(self):
         return self.rules.get_time_control()
 
+    def get_total_time_s(self):
+        return self.rules.get_time_control_s()
+
     def tick(self, colour, seconds):
         if self.get_won_by():
             return

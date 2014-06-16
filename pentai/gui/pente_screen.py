@@ -136,7 +136,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
                         force=True)
 
     def rematch_confirmed(self, *ignored):
-        #st()
         og = self.game
         og.set_live(False, self)
         rules = og.get_rules()
@@ -184,7 +183,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.clocks.append(mock.Mock())
 
     def set_game(self, game):
-        #st()
         self.clean_board()
         self.game = game
         p1 = game.get_player_name(BLACK)
@@ -232,8 +230,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.game.set_live(val, self)
         if val:
             if not was_live and not self.game.finished():
-                # Transitioning to live, so get things going
-                self.prompt_for_action()
+                if self.game.get_move_number() > 1:
+                    # Transitioning to live, so get things going
+                    self.prompt_for_action()
 
                 if not self.reviewing:
                     self.start_ticking()
@@ -334,6 +333,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if self.game.get_won_by() == (BLACK+WHITE):
                 log.info("Draw detected")
                 # TODO: return? GUI feedback?
+            return
 
         try:
             self.game.make_move(action)
@@ -868,7 +868,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return []
 
     def set_review_mode(self, val):
-        log.debug("Reviewing: %s" % val)
+        log.debug("set_review_mode to: %s" % val)
         self.reviewing = val
         
         # TODO: Demo flag?

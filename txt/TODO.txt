@@ -11,9 +11,6 @@ For Alpha release
 Call copyright lawyer: ?
 Kristel contacts?
 Liam feedback?
-Crash saving 9x9 game
-AI screen ditch length/captures. Replace with?
-Game Screen time controller slider left edge is off screen
 Edit game defaults overridding .
 More Colour? Background animation?
 
@@ -28,8 +25,9 @@ bionoid? inclement? mmammel?
 Great :) You have an iPad? I will need your email address to send a TestFlight invite. Once you get that and register your device, I need to load that into a "profile" and then build a version of my app with that profile in it, and upload it to TestFlight again.
 
 Beta release
-Update Acknowledgements: Mark Mammel
+Resume timed game: use time history
 Version string in GUI
+Bigger tickbox image for iOS
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 opening move candidate iterators for variety
 unittest on iOS
