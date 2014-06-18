@@ -24,6 +24,18 @@ bionoid? inclement? mmammel?
 
 Great :) You have an iPad? I will need your email address to send a TestFlight invite. Once you get that and register your device, I need to load that into a "profile" and then build a version of my app with that profile in it, and upload it to TestFlight again.
 
+Improve strength:
+Openings book
+optimise
+search alg.
+- iterative deepening
+- chokes: study move number chosen
+- killer heuristic?
+utility function
+- fukumi
+- diagonal versus straight weighting?
+
+
 Beta release
 Resume timed game: use time history
 Version string in GUI
