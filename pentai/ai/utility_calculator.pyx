@@ -112,11 +112,13 @@ class UtilityCalculator(object):
             else:
                 ret = their_score - our_score
         elif self.calc_mode == 2:
+            # Unused
             if search_colour == turn_colour:
                 ret = float(our_score) / (their_score or 1)
             else:
                 ret = float(their_score) / (our_score or 1)
         else:
+            # Unused
             assert self.calc_mode == 3
             both_scores = our_score + their_score
             if search_colour == turn_colour:
