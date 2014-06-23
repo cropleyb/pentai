@@ -34,6 +34,9 @@ class MockGame:
     def save_utility(self, state, depth, utility_value):
         pass
 
+    def report_short_circuit(self, *args):
+        pass
+
 class AlphaBetaTest(unittest.TestCase):
     '''
     # TODO: Resurrect

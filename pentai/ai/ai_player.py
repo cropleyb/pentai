@@ -142,6 +142,8 @@ class AIPlayer(p_m.Player):
         if len(seen) < 2:
             ab_ss.set_seen(seen)
 
+        ab_game.reset_heuristic()
+
         move, value = ab_m.alphabeta_search(ab_ss, ab_game)
         if self.ab_game.was_interrupted():
             return

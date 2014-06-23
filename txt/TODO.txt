@@ -37,6 +37,7 @@ utility function
 
 
 Beta release
+Audio not looping on iOS?
 Resume timed game: use time history
 Version string in GUI
 Bigger tickbox image for iOS

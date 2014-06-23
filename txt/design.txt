@@ -793,3 +793,9 @@ Contender: Priority Filter 3 (Fukumi search order)
 B/W:[0, 10, 10] won: {'Defender': 14, 'Contender': 6} C/D avg. time: 1.30995589047
 38.3828125
 
+Killer/History heuristic research
+---------------------------------
+average priority of chosen move (relative to best priority)
+number of moves at each priority level
+% chosen moves that match the killer heuristic (1 move saved per depth level of the search)
+% chosen moves that match the history heuristic (count of short circuits per move)

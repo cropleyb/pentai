@@ -6,3 +6,5 @@ rm utility_calculator.py
 rm priority_filter.py
 rm priority_filter_2.py
 rm priority_filter_3.py
+rm heuristic_filter.py
+rm killer_filter.py

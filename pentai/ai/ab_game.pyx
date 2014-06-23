@@ -3,6 +3,8 @@
 import pentai.ai.ab_state as ab_s_m
 from pentai.base.pente_exceptions import *
 
+#import history_heuristic as hh_m
+import killer_heuristic as kh_m
 import time
 
 class ABGame():
@@ -12,6 +14,16 @@ class ABGame():
         utility_calculator = player.utility_calculator
         self.max_depth = player.max_depth
         self.force_depth = player.force_depth
+        # Another failed experiment or two...
+        #self.heuristic_stats = hh_m.HistoryHeuristicStats()
+        self.heuristic_stats = kh_m.KillerHeuristicStats()
+        try:
+            #print "ABGame setting heuristic to self.heuristic_stats %s" % \
+            #        self.heuristic_stats
+            search_filter.set_heuristic(self.heuristic_stats)
+        except AttributeError, e:
+            #print e
+            pass
 
         s = self.current_state = ab_s_m.ABState(None, search_filter, utility_calculator)
         s.set_state(base_game.current_state)
@@ -36,6 +48,12 @@ class ABGame():
 
     def reset_transposition_table(self):
         self.transposition_table = {}
+
+    def reset_heuristic(self):
+        self.heuristic_stats.reset()
+
+    def report_short_circuit(self, move, depth):
+        self.heuristic_stats.report_short_circuit(move, depth)
 
     def utility(self, state, depth):
         if depth >= 3:
