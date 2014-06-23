@@ -22,6 +22,7 @@ class Audio():
         self.muted = False
         self.demo_volume = 1.0
         self.current_music_sound = None
+        self.game_over_sound = None
 
         global instance
         instance = self
@@ -64,6 +65,7 @@ class Audio():
         vol = self.config.getfloat("PentAI", "effects_volume")
         sound.volume = self.demo_volume * vol
         sound.play()
+        return sound
 
     def place(self):
         self.play_sound(["stones", "place"])
@@ -77,10 +79,17 @@ class Audio():
             self.play_sound(["tick", fn])
 
     def win(self):
-        self.play_sound(["win", "win"])
+        self.game_over_sound = self.play_sound(["win", "win"])
 
     def lose(self):
-        self.play_sound(["lose", "lose"])
+        self.game_over_sound = self.play_sound(["lose", "lose"])
+
+    def hush_game_over_sound(self):
+        try:
+            self.game_over_sound.stop()
+        except AttributeError:
+            pass
+        self.game_over_sound = None
 
     def beep(self):
         self.play_sound(["beep", "beep"])

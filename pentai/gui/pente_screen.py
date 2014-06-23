@@ -124,6 +124,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.turn_markers.append(tm)
 
     def rematch(self):
+        self.get_audio().hush_game_over_sound()
         cs = self.game.get_current_state()
         if not self.reviewing:
             self.rematch_confirmed()
