@@ -799,3 +799,26 @@ average priority of chosen move (relative to best priority)
 number of moves at each priority level
 % chosen moves that match the killer heuristic (1 move saved per depth level of the search)
 % chosen moves that match the history heuristic (count of short circuits per move)
+
+ZODB packing
+------------
+Options:
+1. In the background as the process is running.
+2. In the background after the process finishes, using Apple specific background code.
+3. In the foreground at startup.
+4. Split out read-only openings DB, pack it to another file in another thread
+
+1:
+Pros:
+- Easily adaptable to Android
+
+Cons:
+- Need to get the transactions across to the packed DB
+
+2:
+Pros:
+- Usually painless for the user
+- Less complex logic
+
+Cons:
+- Apple specific and painful coding
