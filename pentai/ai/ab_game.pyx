@@ -4,7 +4,7 @@ import pentai.ai.ab_state as ab_s_m
 from pentai.base.pente_exceptions import *
 
 #import history_heuristic as hh_m
-import killer_heuristic as kh_m
+import pentai.ai.killer_heuristic as kh_m
 import time
 
 class ABGame():
