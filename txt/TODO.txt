@@ -30,13 +30,26 @@ optimise
 search alg.
 - iterative deepening
 - chokes: study move number chosen
-- killer heuristic?
+#- killer heuristic? history heuristic? Not helping.
 utility function
-- fukumi
+- fukami
 - diagonal versus straight weighting?
 
+Show Levels of AI players
+Win/Lose tally for that play session
+International player names
+take back bug - allows you to play for AI player sometimes
+rematch shows intro screen (toasted marshmellos)
+daily ratings
+overall chess ratings
+better graphics (theme) - ask on kivy forum
+rules type a separate screen with explanation
+win/loss sound options
+rematch swap or same option: always swap / loser first / don't swap
+white/black/either first option
 
 Beta release
+
 Audio not looping on iOS?
 Resume timed game: use time history
 Version string in GUI
