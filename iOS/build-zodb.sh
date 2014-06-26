@@ -24,7 +24,7 @@ do
     # Use easy_install to download and build all ZODB dependencies, then clean
     # them so they can be built for iOS
     #echo "Processing $p"
-    python ./setuptools-3.6/easy_install.py --build-directory ./bciosbuild --always-copy --install-dir ./bcinst $p 
+    python ./setuptools-5.2/easy_install.py --build-directory ./bciosbuild --always-copy --install-dir ./bcinst $p 
     pushd bciosbuild/$p
     python ./setup.py clean
     popd
