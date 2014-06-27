@@ -35,6 +35,7 @@ utility function
 - fukami
 - diagonal versus straight weighting?
 
+Intro screen update in separate thread?
 Show Levels of AI players
 Win/Lose tally for that play session
 International player names
