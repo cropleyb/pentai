@@ -139,35 +139,52 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def rematch_confirmed(self, *ignored):
         og = self.game
         og.set_live(False, self)
+
         rules = og.get_rules()
 
-        o_winner = og.get_won_by()
-        if o_winner != EMPTY:
-            # Last game was finished - Loser goes first
-            p1 = og.get_player(opposite_colour(o_winner))
-            p2 = og.get_player(o_winner)
-
-        # The game was unfinished
-        else:
-            # old game players
-            o_p1 = og.get_player(BLACK)
-            o_p2 = og.get_player(WHITE)
-
-            if o_p1.get_type() == o_p2.get_type():
-                # H vs. H, or C vs. C - Always swap who goes first
-                p1 = o_p2
-                p2 = o_p1
-            else:
-                # HvC - Assume computer won, Human first
-                if o_p1.get_type() == "Human":
-                    p1 = o_p1
-                    p2 = o_p2
-                else:
-                    p1 = o_p2
-                    p2 = o_p1
+        p1, p2 = self.calculate_rematch_players(og)
 
         g = self.gm.create_game(rules, p1, p2)
         self.app.start_game(g, self.size)
+
+    def calculate_rematch_players(self, orig_game):
+        rfp = self.config.get("PentAI", "rematch_first_player")
+        og = orig_game
+
+        # old game players
+        o_p1 = og.get_player(BLACK)
+        o_p2 = og.get_player(WHITE)
+
+        if rfp == "Don't swap":
+            p1 = o_p1
+            p2 = o_p2
+        elif rfp == "Always swap":
+            p1 = o_p2
+            p2 = o_p1
+        else:
+            # "Loser first"
+            o_winner = og.get_won_by()
+
+            if o_winner != EMPTY:
+                # Last game was finished - Loser goes first
+                p1 = og.get_player(opposite_colour(o_winner))
+                p2 = og.get_player(o_winner)
+
+            # The game was unfinished
+            else:
+                if o_p1.get_type() == o_p2.get_type():
+                    # H vs. H, or C vs. C - Always swap who goes first
+                    p1 = o_p2
+                    p2 = o_p1
+                else:
+                    # HvC - Assume computer won, Human first
+                    if o_p1.get_type() == "Human":
+                        p1 = o_p1
+                        p2 = o_p2
+                    else:
+                        p1 = o_p2
+                        p2 = o_p1
+        return p1, p2
 
     def create_clocks(self):
         # TODO: Ugly
