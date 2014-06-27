@@ -46,7 +46,6 @@ overall chess ratings
 better graphics (theme) - ask on kivy forum
 rules type a separate screen with explanation
 win/loss sound options
-rematch swap or same option: always swap / loser first / don't swap
 white/black/either first option
 
 Beta release
