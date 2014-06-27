@@ -632,98 +632,139 @@
 <SettingsScreen>:
     GridLayout:
         cols: 1
-
+        size_hint_y: 1.0
         Label:
             text: "PentAI Settings"
-            size_hint_y: .15
+            size_hint_y: .08
 
-        SettingSpacer:
+        ScrollView:
+            size_hint_y: .8
+            #size_hint_y: 1.2
+            GridLayout:
+                id: gl_id
+                cols: 1
+                size_hint_x: 1
+                height: self.minimum_height
+                #size_hint_y: 1.0
+                size_hint_y: 1.23
 
-        SectionLabel:
-            text: "User Interface"
-            size_hint_y: .15
+                SettingSpacer:
 
-        SettingSpacer:
+                SectionLabel:
+                    text: "User Interface"
+                    size_hint_y: .15
 
-        SwitchSetting:
-            text: "Mark Moves"
-            desc: "Mark the last two moves, each with a dot in the centre"
-            key: "mark_moves"
+                SettingSpacer:
 
-        SettingSpacer:
+                SwitchSetting:
+                    text: "Mark Moves"
+                    desc: "Mark the last two moves, each with a dot in the centre"
+                    key: "mark_moves"
 
-        SwitchSetting:
-            text: "Show Captures"
-            desc: "Show pieces that were captured last move as transparent ghost pieces"
-            key: "mark_captures"
+                SettingSpacer:
 
-        SettingSpacer:
+                SwitchSetting:
+                    text: "Show Captures"
+                    desc: "Show pieces that were captured last move as transparent ghost pieces"
+                    key: "mark_captures"
 
-        OptionsSetting:
-            text: "Move Confirmation"
-            values: ("None Required", "Off Board", "On Piece")
-            desc: "For small screens or while travelling"
-            key: "move_confirmation"
+                SettingSpacer:
 
-        SettingSpacer:
+                OptionsSetting:
+                    text: "Move Confirmation"
+                    values: ("None Required", "Off Board", "On Piece")
+                    desc: "For small screens or while travelling"
+                    key: "move_confirmation"
 
-        SliderSetting:
-            text: "Minimum Wait Time"
-            desc: "Minimum time to wait for the AI to play (secs)"
-            min: 0
-            max: 2
-            step: .1
-            key: "minimum_wait"
-                    #text: "%.1f" % s_id.value
+                SettingSpacer:
 
-        SettingSpacer:
+                SliderSetting:
+                    text: "Minimum Wait Time"
+                    desc: "Minimum time to wait for the AI to play (secs)"
+                    min: 0
+                    max: 2
+                    step: .1
+                    key: "minimum_wait"
+                            #text: "%.1f" % s_id.value
 
-        SwitchSetting:
-            text: "Show Confirmation Popups"
-            desc: "For major actions such as exiting"
-            key: "confirm_popups"
-            on_value: root.set_confirmation_popups()
+                SettingSpacer:
 
-        SettingSpacer:
+                SwitchSetting:
+                    text: "Show Confirmation Popups"
+                    desc: "For major actions such as exiting"
+                    key: "confirm_popups"
+                    on_value: root.set_confirmation_popups()
 
-        SectionLabel:
-            text: "Sound"
-            size_hint_y: .15
+                SettingSpacer:
 
-        SettingSpacer:
+                SectionLabel:
+                    text: "Players"
+                    size_hint_y: .15
 
-        SliderSetting:
-            text: "Effects Volume"
-            desc: "How loud should the sound effects be?"
-            min: 0
-            max: 1
-            key: "effects_volume"
-            display_factor: 100
-            on_value: root.adjust_volumes()
+                SettingSpacer:
 
-        SettingSpacer:
+                OptionsSetting:
+                    text: "Rematch first player"
+                    values: ("Don't swap", "Always swap", "Loser first")
+                    desc: "Who goes first in a rematch?"
+                    key: "rematch_first_player"
 
-        SwitchSetting:
-            text: "Tick"
-            desc: "Should the clock make a ticking sound?"
-            key: "tick"
+                SettingSpacer:
 
-        SettingSpacer:
+                OptionsSetting:
+                    text: "First player colour"
+                    values: ("Always White", "Always Black", "Keep the same")
+                    desc: "Which colour goes first"
+                    key: "first_player_colour"
 
-        SliderSetting:
-            text: "Music Volume"
-            desc: "How loud should the music be?"
-            min: 0
-            max: 1
-            key: "music_volume"
-            display_factor: 100
-            on_value: root.adjust_volumes()
+                SettingSpacer:
+
+                SectionLabel:
+                    text: "Sound"
+                    size_hint_y: .15
+
+                SettingSpacer:
+
+                SliderSetting:
+                    text: "Effects Volume"
+                    desc: "How loud should the sound effects be?"
+                    min: 0
+                    max: 1
+                    key: "effects_volume"
+                    display_factor: 100
+                    on_value: root.adjust_volumes()
+
+                SettingSpacer:
+
+                SwitchSetting:
+                    text: "Tick"
+                    desc: "Should the clock make a ticking sound?"
+                    key: "tick"
+
+                SettingSpacer:
+
+                SwitchSetting:
+                    text: "Play win/loss sounds"
+                    desc: "Should the end of a game play music?"
+                    key: "win_loss_sound"
+
+                SettingSpacer:
+
+                SliderSetting:
+                    text: "Music Volume"
+                    desc: "How loud should the music be?"
+                    min: 0
+                    max: 1
+                    key: "music_volume"
+                    display_factor: 100
+                    on_value: root.adjust_volumes()
+
+                SettingSpacer:
 
         Button:
-            size_hint_y: .2
+            size_hint_y: .06
             text: "Return"
             on_press: root.app.return_screen()
-
 
 <Piece>:
     Image:

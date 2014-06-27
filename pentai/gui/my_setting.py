@@ -33,7 +33,7 @@ class MySetting(GridLayout):
 
     def get_config(self):
         # TODO: Eliminate Hack
-        return self.parent.parent.config
+        return self.parent.parent.parent.parent.config
 
 class SwitchSetting(MySetting):
     value = BooleanProperty(False)
