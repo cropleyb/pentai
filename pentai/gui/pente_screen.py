@@ -178,7 +178,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                         p1 = o_p2
                         p2 = o_p1
         if p1 != o_p1:
-            print "Swapping colours due to rematch"
+            #print "Swapping colours due to rematch"
             #st()
             self.swap_colours_due_to_rematch ^= True
         return p1, p2
@@ -248,6 +248,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if not was_live and not self.game.finished():
                 if self.game.get_move_number() > 1:
                     # Transitioning to live, so get things going
+                    #print "set_live prompt_for_action"
                     self.prompt_for_action()
 
                 if not self.reviewing:
@@ -268,6 +269,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.game.make_move((bs/2, bs/2))
             self.refresh_all()
             self.clocks[P1].made_move()
+        #print "make_first_move prompt_for_action"
         self.prompt_for_action()
 
     # GuiPlayer
@@ -323,6 +325,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_grid()
         self.game_filename = None
         self.refresh_all()
+        #print "load_file prompt_for_action"
         self.prompt_for_action()
 
     def load_moves(self, dt=None):
@@ -331,11 +334,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.game_filename = None
         self.refresh_all()
         self.get_audio().unmute()
+        #print "load_moves prompt_for_action"
         self.prompt_for_action()
 
     def on_enter(self):
-        self.go_to_the_beginning()
-        self.load_moves()
+        if self.game.get_move_number() > 1:
+            self.go_to_the_beginning()
+            self.load_moves()
 
         self.refresh_all()
         if not self.game.finished():
