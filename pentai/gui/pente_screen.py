@@ -31,14 +31,6 @@ ghost_filename = (None, \
 confirm_filename = (None, \
     "./media/b_confirm.png",
     "./media/w_confirm.png")
-'''
-black_filename = "./media/black_transparent.png"
-white_filename = "./media/white_transparent.png"
-black_ghost_filename = "./media/black_ghost.png"
-white_ghost_filename = "./media/white_ghost.png"
-black_confirm_filename = "./media/b_confirm.png"
-white_confirm_filename = "./media/w_confirm.png"
-'''
 win_filename = "./media/winning_flag.png"
 turn_filename = "./media/turn_marker.png"
 computer_filename = "./media/DT.png"
@@ -46,28 +38,9 @@ x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
 
-# HACK to play on BrainKing.com
-def reverse_colours():
-    # TODO?
-    '''
-    global black_filename
-    global white_filename
-    global black_ghost_filename
-    global white_ghost_filename
-    global black_confirm_filename
-    global white_confirm_filename
-    black_filename = "./media/white_transparent.png"
-    white_filename = "./media/black_transparent.png"
-    black_ghost_filename = "./media/white_ghost.png"
-    white_ghost_filename = "./media/black_ghost.png"
-    black_confirm_filename = "./media/w_confirm.png"
-    white_confirm_filename = "./media/b_confirm.png"
-    '''
-
 class PenteScreen(Screen, gso_m.GSObserver):
     # GuiPlayer
     player_name = ListProperty([None, "Black", "White"])
-    #player_colour = ListProperty([None, (0,0,0,1), (1,1,1,1)])
     player_time = ListProperty([None, "0:00", "0:00"])
     captured_widgets = ListProperty([None, [], []])
     clocks = ListProperty([None])
@@ -313,21 +286,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def get_player_colour(self, player_num):
         COL_COLS = (None, (0,0,0,1), (1,1,1,1))
         pc = COL_COLS[self.get_player_colour_index(player_num)]
-        #st()
-        #self.player_colour[player_num] = pc
         return pc
 
     def get_player_colour_index(self, player_num):
-        #st()
-        '''
-        try:
-            fpc = self.config.get("PentAI", "first_player_colour")
-        except AttributeError:
-            fpc = "Always Black"
-        '''
         fpc = cf_m.config_instance().get("PentAI", "first_player_colour")
 
-        #values: ("Always White", "Always Black", "Keep the same")
         ret = player_num
 
         if fpc == "Always White":
@@ -335,27 +298,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         elif fpc == "Keep the same":
             if self.swap_colours_due_to_rematch:
-                print "Swapped"
                 ret = opposite_colour(ret)
 
         return ret
-
-        '''
-        if fpc == "Always Black":
-
-            if player_num == P1:
-                return 1
-            else:
-                return 2
-        elif fpc == "Always White":
-            if player_num == P1:
-                return 2
-            else:
-                return 1
-        else:
-            assert fpc == "Keep the same"
-        '''
-
 
     def display_error(self, message):
         #st()
@@ -381,7 +326,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.prompt_for_action()
 
     def load_moves(self, dt=None):
-        #self.resume()
         self.get_audio().mute()
         self.game.resume()
         self.game_filename = None
@@ -389,26 +333,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.get_audio().unmute()
         self.prompt_for_action()
 
-    '''
-    def resume(self, dt=None):
-        self.get_audio().mute()
-        self.game.resume()
-        self.game_filename = None
-        self.refresh_all()
-        #self.prompt_for_action()
-        self.get_audio().unmute()
-    '''
-
     def on_enter(self):
         self.go_to_the_beginning()
-        #self.resume()
         self.load_moves()
 
         self.refresh_all()
         if not self.game.finished():
             self.set_review_mode(False)
         time.sleep(0.5)
-        #time.sleep(0.1)
 
     def on_pre_leave(self):
         self.set_live(False)
@@ -520,7 +452,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.remove_captured_widgets(colour)
 
             # We capture pieces of the opposite colour
-            #filename = ["", black_filename, white_filename] \
             filename = piece_filename[
                     self.get_player_colour_index(opposite_colour(colour))]
             size_x, size_y = self.size
@@ -529,10 +460,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
             level = colour
 
             base_y = self.board_offset[1] * .5 * (2.2-level)
-            centre = [2, 1, 3, 0, 4, -1, 5] # Could capture more than one pair for the win
+            # Could capture more than one pair for the win, prevent crash
+            centre = [2, 1, 3, 0, 4, -1, 5]
 
             for i in range(captured / 2):
-                i_centred = centre[i]
+                try:
+                    i_centred = centre[i]
+                except IndexError:
+                    i_centred = 0
                 for j in range(2): # TODO Use triples for keryo
                     try:
                         # load and place the appropriate stone image

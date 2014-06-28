@@ -2,8 +2,6 @@ from kivy.app import App
 from kivy.clock import *
 from kivy.base import *
 
-#from kivy.config import Config
-#from kivy.config import ConfigParser
 import pentai.gui.config as cf_m
 
 from kivy.uix.screenmanager import * # TODO: Remove
@@ -192,12 +190,6 @@ class PentAIApp(App):
                 self.prompt_quit()
             return True
 
-        elif key == 114:
-            # 'r'
-            if not self.root.current in typing_screens:
-                pente_screen.reverse_colours()
-            return True
-
         elif key == 13:
             # Enter
             if ConfirmPopup.is_active():
@@ -266,18 +258,6 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
-        '''
-        ini_file = "pentai.ini"
-        ini_path = os.path.join(self.user_data_dir, ini_file)
-        if not ini_file in os.listdir(self.user_data_dir):
-            log.info("Copying ini")
-            import shutil
-            shutil.copy(ini_file, ini_path)
-
-        # Assign to self.config so all screens can get at it.
-        self.config = ConfigParser()
-        self.config.read(ini_path)
-        '''
         ini_file = "pentai.ini"
         self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
 
