@@ -15,28 +15,28 @@ class BoardTest(unittest.TestCase):
 
     def test_empty_board_place_one_black_piece(self):
         board = Board(size = 13)
-        board.set_occ((0, 1), BLACK)
-        self.assertEquals(board.get_occ((0, 1)), BLACK)
+        board.set_occ((0, 1), P1)
+        self.assertEquals(board.get_occ((0, 1)), P1)
 
     def test_empty_board_place_one_white_piece(self):
         board = Board(size = 7)
-        board.set_occ((2, 3), WHITE)
-        self.assertEquals(board.get_occ((2, 3)), WHITE)
+        board.set_occ((2, 3), P2)
+        self.assertEquals(board.get_occ((2, 3)), P2)
 
     def test_empty_board_place_one_piece_in_zero_corner(self):
         board = Board(size = 7)
-        board.set_occ((0, 0), BLACK)
-        self.assertEquals(board.get_occ((0, 0)), BLACK)
+        board.set_occ((0, 0), P1)
+        self.assertEquals(board.get_occ((0, 0)), P1)
 
     def test_empty_board_place_one_piece_in_big_corner(self):
         board = Board(size = 7)
-        board.set_occ((6, 6), WHITE)
-        self.assertEquals(board.get_occ((6, 6)), WHITE)
+        board.set_occ((6, 6), P2)
+        self.assertEquals(board.get_occ((6, 6)), P2)
 
     def test_place_off_board_raises_exception(self):
         board = Board(size = 7)
         try:
-            board.set_occ((7,7), WHITE)
+            board.set_occ((7,7), P2)
         except OffBoardException:
             return
         self.fail()

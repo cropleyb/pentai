@@ -19,7 +19,7 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 5)
         self.assertEqual(y, 5)
-        self.assertEqual(brd.get_occ((5,5)), BLACK)
+        self.assertEqual(brd.get_occ((5,5)), P1)
 
     def test_dont_shift(self):
         self.game.load_moves("1. (5, 5)\n")
@@ -28,7 +28,7 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 0)
         self.assertEqual(y, 0)
-        self.assertEqual(brd.get_occ((5,5)), BLACK)
+        self.assertEqual(brd.get_occ((5,5)), P1)
 
     def test_only_shift_x(self):
         self.game.load_moves("1. (7, 5)\n")
@@ -37,7 +37,7 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 2)
         self.assertEqual(y, 0)
-        self.assertEqual(brd.get_occ((5,5)), BLACK)
+        self.assertEqual(brd.get_occ((5,5)), P1)
 
     def test_only_shift_y(self):
         self.game.load_moves("1. (5, 7)\n")
@@ -46,7 +46,7 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 0)
         self.assertEqual(y, 2)
-        self.assertEqual(brd.get_occ((5,5)), BLACK)
+        self.assertEqual(brd.get_occ((5,5)), P1)
 
     def test_only_shift_y_because_of_right_edge(self):
         self.game.load_moves("1. (7, 7)\n2. (14, 7)")
@@ -55,8 +55,8 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 0)
         self.assertEqual(y, 2)
-        self.assertEqual(brd.get_occ((7,5)), BLACK)
-        self.assertEqual(brd.get_occ((14,5)), WHITE)
+        self.assertEqual(brd.get_occ((7,5)), P1)
+        self.assertEqual(brd.get_occ((14,5)), P2)
 
     def test_only_shift_x_because_of_top_edge(self):
         self.game.load_moves("1. (7, 7)\n2. (7, 14)")
@@ -65,8 +65,8 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 2)
         self.assertEqual(y, 0)
-        self.assertEqual(brd.get_occ((5,7)), BLACK)
-        self.assertEqual(brd.get_occ((5,14)), WHITE)
+        self.assertEqual(brd.get_occ((5,7)), P1)
+        self.assertEqual(brd.get_occ((5,14)), P2)
 
     def test_shift_a_few_both_ways(self):
         self.game.load_moves("1. (8, 7)\n2. (8, 10)\n3. (9, 11)")
@@ -75,9 +75,9 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 3)
         self.assertEqual(y, 2)
-        self.assertEqual(brd.get_occ((5,5)), BLACK)
-        self.assertEqual(brd.get_occ((5,8)), WHITE)
-        self.assertEqual(brd.get_occ((6,9)), BLACK)
+        self.assertEqual(brd.get_occ((5,5)), P1)
+        self.assertEqual(brd.get_occ((5,8)), P2)
+        self.assertEqual(brd.get_occ((6,9)), P1)
 
     def test_shift_left_in_spite_of_right_edge(self):
         self.game.load_moves("1. (7, 5)\n2. (13, 5)")
@@ -86,8 +86,8 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 2)
         self.assertEqual(y, 0)
-        self.assertEqual(brd.get_occ((5,5)), BLACK)
-        self.assertEqual(brd.get_occ((11,5)), WHITE)
+        self.assertEqual(brd.get_occ((5,5)), P1)
+        self.assertEqual(brd.get_occ((11,5)), P2)
 
     def test_shift_down_in_spite_of_top_edge(self):
         self.game.load_moves("1. (5, 9)\n2. (5, 13)")
@@ -96,8 +96,8 @@ class TransStandardiseTest(unittest.TestCase):
         brd = std.get_board()
         self.assertEqual(x, 0)
         self.assertEqual(y, 4)
-        self.assertEqual(brd.get_occ((5,5)), BLACK)
-        self.assertEqual(brd.get_occ((5,9)), WHITE)
+        self.assertEqual(brd.get_occ((5,5)), P1)
+        self.assertEqual(brd.get_occ((5,9)), P2)
 
     ################################################################
     # Corner tests

@@ -11,9 +11,9 @@ import pentai.ai.utility_calculator as uc_m
 from pentai.ai.ab_state import *
 
 def get_black_line_counts(ab_game_state):
-    return ab_game_state.get_utility_stats().lines[BLACK]
+    return ab_game_state.get_utility_stats().lines[P1]
 def get_white_line_counts(ab_game_state):
-    return ab_game_state.get_utility_stats().lines[WHITE]
+    return ab_game_state.get_utility_stats().lines[P2]
 
 class AlphaBetaBridgeTest(unittest.TestCase):
 
@@ -27,12 +27,12 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         self.util_calc = uc_m.UtilityCalculator()
         self.s = ABState(search_filter=self.search_filter,
                 utility_calculator=self.util_calc)
-        self.bl = self.s.utility_stats.lines[BLACK]
-        self.wl = self.s.utility_stats.lines[WHITE]
+        self.bl = self.s.utility_stats.lines[P1]
+        self.wl = self.s.utility_stats.lines[P2]
         self.s.set_state(self.gs)
 
     def test_update_substrips_middle_of_board(self):
-        self.gs.set_occ((7,7), BLACK)
+        self.gs.set_occ((7,7), P1)
 
 """
         self.assertEquals(self.bl, [20, 0, 0, 0, 0])
@@ -43,57 +43,57 @@ class AlphaBetaBridgeTest(unittest.TestCase):
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_SW_corner(self):
-        self.gs.set_occ((0,0), BLACK)
+        self.gs.set_occ((0,0), P1)
 
         self.assertEquals(self.bl, [3, 0, 0, 0, 0])
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_near_SW_corner(self):
-        self.gs.set_occ((1,0), BLACK)
+        self.gs.set_occ((1,0), P1)
 
         self.assertEquals(self.bl, [4, 0, 0, 0, 0])
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_NE_corner(self):
-        self.gs.set_occ((12,12), BLACK)
+        self.gs.set_occ((12,12), P1)
 
         self.assertEquals(self.bl, [3, 0, 0, 0, 0])
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_remove_single_stone(self):
-        self.gs.set_occ((0,0), BLACK)
+        self.gs.set_occ((0,0), P1)
         self.gs.set_occ((0,0), EMPTY)
 
         self.assertEquals(self.bl, [0, 0, 0, 0, 0])
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_two_blacks_SW(self):
-        self.gs.set_occ((0,0), BLACK)
-        self.gs.set_occ((1,1), BLACK)
+        self.gs.set_occ((0,0), P1)
+        self.gs.set_occ((1,1), P1)
 
         self.assertEquals(self.bl, [7, 1, 0, 0, 0])
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_2_opp_colour_pieces(self):
-        self.gs.set_occ((0,0), BLACK)
-        self.gs.set_occ((0,1), WHITE)
+        self.gs.set_occ((0,0), P1)
+        self.gs.set_occ((0,1), P2)
 
         self.assertEquals(self.bl, [2, 0, 0, 0, 0])
         self.assertEquals(self.wl, [3, 0, 0, 0, 0])
 
     def test_update_substrips_2_pieces(self):
-        self.gs.set_occ((0,0), BLACK)
-        self.gs.set_occ((0,1), BLACK)
+        self.gs.set_occ((0,0), P1)
+        self.gs.set_occ((0,1), P1)
 
         self.assertEquals(self.bl, [5, 1, 0, 0, 0])
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
 
     def test_update_substrips_5_in_a_row(self):
-        self.gs.set_occ((0,0), BLACK)
-        self.gs.set_occ((0,1), BLACK)
-        self.gs.set_occ((0,2), BLACK)
-        self.gs.set_occ((0,3), BLACK)
-        self.gs.set_occ((0,4), BLACK)
+        self.gs.set_occ((0,0), P1)
+        self.gs.set_occ((0,1), P1)
+        self.gs.set_occ((0,2), P1)
+        self.gs.set_occ((0,3), P1)
+        self.gs.set_occ((0,4), P1)
 
         self.assertEquals(self.bl, [12, 1, 1, 1, 1])
         self.assertEquals(self.wl, [0, 0, 0, 0, 0])
@@ -110,41 +110,41 @@ class LengthCountingTest(unittest.TestCase):
         self.util_calc = uc_m.UtilityCalculator()
         self.s = ABState(search_filter=self.search_filter,
                 utility_calculator=self.util_calc)
-        self.bl = self.s.utility_stats.lines[BLACK]
-        self.wl = self.s.utility_stats.lines[WHITE]
+        self.bl = self.s.utility_stats.lines[P1]
+        self.wl = self.s.utility_stats.lines[P2]
         self.s.set_state(self.gs)
 
     def test_middle_for_black_diag_2_for_white(self):
-        self.gs.set_occ((4,4), BLACK)
-        self.gs.set_occ((2,2), WHITE)
+        self.gs.set_occ((4,4), P1)
+        self.gs.set_occ((2,2), P2)
 
         self.assertEquals(self.bl, [17, 0, 0, 0, 0])
         self.assertEquals(self.wl, [7, 0, 0, 0, 0])
         
     def test_middle_for_black_left_1_for_white(self):
-        self.gs.set_occ((4,4), BLACK)
-        self.gs.set_occ((3,4), WHITE)
+        self.gs.set_occ((4,4), P1)
+        self.gs.set_occ((3,4), P2)
 
         self.assertEquals(self.bl, [16, 0, 0, 0, 0])
         self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
 
     def test_middle_for_black_right_1_for_white(self):
-        self.gs.set_occ((4,4), BLACK)
-        self.gs.set_occ((5,4), WHITE)
+        self.gs.set_occ((4,4), P1)
+        self.gs.set_occ((5,4), P2)
 
         self.assertEquals(self.bl, [16, 0, 0, 0, 0])
         self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
 
     def test_middle_for_black_up_1_for_white(self):
-        self.gs.set_occ((4,4), BLACK)
-        self.gs.set_occ((4,5), WHITE)
+        self.gs.set_occ((4,4), P1)
+        self.gs.set_occ((4,5), P2)
 
         self.assertEquals(self.bl, [16, 0, 0, 0, 0])
         self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
 
     def test_middle_for_black_down_1_for_white(self):
-        self.gs.set_occ((4,4), BLACK)
-        self.gs.set_occ((4,3), WHITE)
+        self.gs.set_occ((4,4), P1)
+        self.gs.set_occ((4,3), P2)
 
         self.assertEquals(self.bl, [16, 0, 0, 0, 0])
         self.assertEquals(self.wl, [5+4+4, 0, 0, 0, 0])
@@ -162,19 +162,19 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         self.util_calc = uc_m.UtilityCalculator()
         self.s = ABState(search_filter=self.search_filter,
                 utility_calculator=self.util_calc)
-        self.bl = self.s.utility_stats.lines[BLACK]
-        self.wl = self.s.utility_stats.lines[WHITE]
+        self.bl = self.s.utility_stats.lines[P1]
+        self.wl = self.s.utility_stats.lines[P2]
         self.s.set_state(self.gs)
 
     def test_initial_state_black_to_move(self):
-        self.assertEquals(self.s.to_move_colour(), BLACK)
+        self.assertEquals(self.s.to_move_colour(), P1)
 
     def test_create_state(self):
         child = self.s.create_state((2,2))
-        self.assertEquals(child.to_move_colour(), WHITE)
+        self.assertEquals(child.to_move_colour(), P2)
         self.assertEquals(child.terminal(), False)
         board = child.board()
-        self.assertEquals(board.get_occ((2,2)), BLACK)
+        self.assertEquals(board.get_occ((2,2)), P1)
         self.assertEquals(board.get_occ((3,3)), EMPTY)
         self.assertEquals(board.get_occ((1,1)), EMPTY)
 
@@ -240,12 +240,12 @@ class MoreAlphaBetaBridgeTests(unittest.TestCase):
         g3 =     g2.create_state((1,3)) # B
         g4 =     g3.create_state((2,3)) # W
         g5 =     g4.create_state((3,4)) # B
-        self.assertEquals(g5.to_move_colour(), WHITE)
+        self.assertEquals(g5.to_move_colour(), P2)
         self.assertEquals(g5.terminal(), False)
         board = g5.board()
-        self.assertEquals(board.get_occ((0,1)), BLACK)
-        self.assertEquals(board.get_occ((1,3)), BLACK)
-        self.assertEquals(board.get_occ((3,4)), BLACK)
+        self.assertEquals(board.get_occ((0,1)), P1)
+        self.assertEquals(board.get_occ((1,3)), P1)
+        self.assertEquals(board.get_occ((3,4)), P1)
         self.assertEquals(board.get_occ((1,2)), EMPTY)
         self.assertEquals(board.get_occ((2,3)), EMPTY)
 
@@ -261,8 +261,8 @@ class ThreatTest(unittest.TestCase):
         self.util_calc = uc_m.UtilityCalculator()
         self.s = ABState(search_filter=self.search_filter,
                 utility_calculator=self.util_calc)
-        self.bl = self.s.utility_stats.lines[BLACK]
-        self.wl = self.s.utility_stats.lines[WHITE]
+        self.bl = self.s.utility_stats.lines[P1]
+        self.wl = self.s.utility_stats.lines[P2]
         self.s.set_state(self.gs)
 
     def test_add_one_take_for_white(self):

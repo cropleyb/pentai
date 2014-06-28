@@ -44,8 +44,8 @@ class UtilityTest(unittest.TestCase):
             "get_rules":self.rules}) 
         self.gs.board = b_m.Board(13)
         self.gs.game = self.game
-        self.set_turn_player_colour(BLACK)
-        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(P1)
+        self.set_search_player_colour(P1)
         self.s.set_state(self.gs)
 
     def utility(self):
@@ -54,10 +54,10 @@ class UtilityTest(unittest.TestCase):
         return util
 
     def set_black_lines(self, lines):
-        self.s.utility_stats.lines[BLACK] = lines
+        self.s.utility_stats.lines[P1] = lines
 
     def set_white_lines(self, lines):
-        self.s.utility_stats.lines[WHITE] = lines
+        self.s.utility_stats.lines[P2] = lines
 
     def set_takes(self, black_takes, white_takes):
         self.s.utility_stats.takes = [0, black_takes, white_takes]
@@ -66,8 +66,8 @@ class UtilityTest(unittest.TestCase):
         self.s.utility_stats.threats = [0, black_threats, white_threats]
 
     def set_captured(self, black_captures, white_captures):
-        self.captured[BLACK] = black_captures
-        self.captured[WHITE] = white_captures
+        self.captured[P1] = black_captures
+        self.captured[P2] = white_captures
 
     def set_turn_player_colour(self, turn_player_colour):
         """ Set whose move it is at the leaf state """
@@ -81,8 +81,8 @@ class UtilityTest(unittest.TestCase):
         self.gs.mockAddReturnValues(get_move_number=mn)
         
     def test_won_game_shortening(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
         self.set_black_lines([0,0,0,4,0])
 
         self.set_move_number(10)
@@ -93,8 +93,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u1, u2)
 
     def test_lost_game_lengthening(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
         self.set_white_lines([0,0,0,4,0])
 
         self.set_move_number(10)
@@ -192,7 +192,7 @@ class UtilityTest(unittest.TestCase):
     def test_one_capture_worth_less_than_a_four(self):
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,1,0])
-        self.set_turn_player_colour(WHITE)
+        self.set_turn_player_colour(P2)
         self.set_captured(2, 0)
         u = self.utility()
         self.assertLessEqual(u, 0)
@@ -201,7 +201,7 @@ class UtilityTest(unittest.TestCase):
 
     def test_white_search(self):
         """ Search by white """
-        self.set_search_player_colour(WHITE)
+        self.set_search_player_colour(P2)
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
         u = self.utility()
@@ -209,7 +209,7 @@ class UtilityTest(unittest.TestCase):
 
     def test_white_capture(self):
         """ Search by white """
-        self.set_search_player_colour(WHITE)
+        self.set_search_player_colour(P2)
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])
         self.set_captured(0, 2)
@@ -218,8 +218,8 @@ class UtilityTest(unittest.TestCase):
 
     def test_black_to_move_advantage(self):
         """ Search by white """
-        self.set_turn_player_colour(BLACK)
-        self.set_search_player_colour(WHITE)
+        self.set_turn_player_colour(P1)
+        self.set_search_player_colour(P2)
         self.set_black_lines([1,0,0,0,0])
         self.set_white_lines([1,0,0,0,0])
         u = self.utility()
@@ -229,15 +229,15 @@ class UtilityTest(unittest.TestCase):
 
     def test_white_having_the_move_gets_a_higher_util(self):
         """ Search by white """
-        self.set_search_player_colour(WHITE)
+        self.set_search_player_colour(P2)
 
         self.set_black_lines([1,0,0,0,0])
         self.set_white_lines([2,0,0,0,0])
 
-        self.set_turn_player_colour(WHITE)
+        self.set_turn_player_colour(P2)
         u_with_move = self.utility()
 
-        self.set_turn_player_colour(BLACK)
+        self.set_turn_player_colour(P1)
         u_not_to_move = self.utility()
 
         self.assertGreater(u_with_move, u_not_to_move)
@@ -247,19 +247,19 @@ class UtilityTest(unittest.TestCase):
         self.set_black_lines([1,0,0,0,0])
         self.set_white_lines([2,0,0,0,0])
 
-        self.set_turn_player_colour(BLACK)
+        self.set_turn_player_colour(P1)
         u_with_move = self.utility()
 
-        self.set_turn_player_colour(WHITE)
-        self.set_search_player_colour(BLACK)
+        self.set_turn_player_colour(P2)
+        self.set_search_player_colour(P1)
         u_not_to_move = self.utility()
 
         self.assertGreater(u_with_move, u_not_to_move)
 
     def test_next_to_middle_is_better(self):
         """ Search by white """
-        self.set_turn_player_colour(BLACK)
-        self.set_search_player_colour(WHITE)
+        self.set_turn_player_colour(P1)
+        self.set_search_player_colour(P2)
 
         # (-783, [16, 0, 0, 0, 0][11, 0, 0, 0, 0] - (3, 3) next to 4,4
         self.set_black_lines([16,0,0,0,0])
@@ -276,8 +276,8 @@ class UtilityTest(unittest.TestCase):
     ##############
 
     def test_one_take_is_worth_more_than_a_few_pairs(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([11,3,0,0,0])
@@ -287,8 +287,8 @@ class UtilityTest(unittest.TestCase):
 
     def test_one_take_is_worth_more_than_two_threes(self):
         # I'm not sure about this one
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,2,0,0])
@@ -297,8 +297,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, 0)
 
     def atest_one_take_is_worth_less_than_three_threes(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,3,0,0])
@@ -307,8 +307,8 @@ class UtilityTest(unittest.TestCase):
         self.assertLess(u, 0)
 
     def test_one_take_with_the_move_is_worth_more_than_one_three(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
@@ -317,8 +317,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, 0)
 
     def test_one_three_with_the_move_is_worth_more_than_one_take(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,1,0,0])
@@ -327,8 +327,8 @@ class UtilityTest(unittest.TestCase):
         self.assertLess(u, 0)
 
     def test_four_captures_worth_more_than_3_threes(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,3,0,0])
@@ -337,8 +337,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, 0)
 
     def test_four_in_a_row_with_the_move_is_a_win(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_black_lines([0,0,0,1,0])
         self.set_white_lines([0,0,0,0,0])
@@ -346,8 +346,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, inf)
 
     def test_four_in_a_row_without_the_move_is_not_won(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_black_lines([0,0,0,1,0])
         self.set_white_lines([0,0,0,0,0])
@@ -355,8 +355,8 @@ class UtilityTest(unittest.TestCase):
         self.assertLess(u, inf)
 
     def test_four_in_a_row_for_opposition_with_the_move_is_a_loss(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_black_lines([0,0,0,0,0])
         self.set_white_lines([0,0,0,1,0])
@@ -364,8 +364,8 @@ class UtilityTest(unittest.TestCase):
         self.assertLess(u, -inf)
 
     def test_four_captures_and_a_threat_with_the_move_is_a_win(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_captured(8, 0)
         self.set_takes(1, 0)
@@ -373,8 +373,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, inf)
 
     def test_four_captures_with_no_threats_with_the_move_is_not_a_win(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_captured(8, 0)
         self.set_takes(0, 0)
@@ -382,8 +382,8 @@ class UtilityTest(unittest.TestCase):
         self.assertLess(u, inf)
 
     def test_four_captures_and_a_threat_for_oppenent_with_the_move_is_a_loss(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_captured(0, 8)
         self.set_takes(0, 1)
@@ -391,8 +391,8 @@ class UtilityTest(unittest.TestCase):
         self.assertLess(u, -inf)
 
     def test_three_captures_and_a_threat_for_oppenent_with_the_move_is_not_a_loss(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_captured(0, 6)
         self.set_takes(0, 1)
@@ -400,24 +400,24 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, -inf)
 
     def test_take_has_a_value(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_takes(1, 0)
         u = self.utility()
         self.assertGreater(u, 0)
 
     def test_threat_has_a_value(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_threats(1, 0)
         u = self.utility()
         self.assertGreater(u, 0)
 
     def test_two_fours_with_no_danger_of_being_captured_is_a_win(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_black_lines([0,0,0,2,0])
         self.set_takes(0, 0)
@@ -425,8 +425,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, inf)
 
     def test_four_pairs_captured_and_three_takes_will_win(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_captured(8, 0)
         self.set_takes(3, 0)
@@ -434,8 +434,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u, inf)
 
     def atest_four_pairs_captured_and_three_takes_will_win(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_black_lines([0,0,3,0,0])
         self.set_white_lines([0,0,0,0,0])
@@ -448,8 +448,8 @@ class UtilityTest(unittest.TestCase):
     ######################################################
 
     def test_tricky_pos_1(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P2)
 
         self.set_captured(4, 4)
         self.set_takes(0, 0)
@@ -468,8 +468,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u1, u2)
 
     def test_tricky_pos_2(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_captured(0, 0)
         self.set_takes(0, 1)
@@ -488,8 +488,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u1, u2)
 
     def test_strange(self):
-        self.set_search_player_colour(WHITE)
-        self.set_turn_player_colour(WHITE)
+        self.set_search_player_colour(P2)
+        self.set_turn_player_colour(P2)
 
         self.set_captured(2, 2)
         self.set_takes(0, 0)
@@ -509,8 +509,8 @@ class UtilityTest(unittest.TestCase):
 
     def atest_tricky_pos_2b(self):
         # TODO
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         self.set_captured(2, 2)
         self.set_takes(0, 0)
@@ -529,8 +529,8 @@ class UtilityTest(unittest.TestCase):
         self.assertGreater(u1, u2)
 
     def test_yet_another(self):
-        self.set_search_player_colour(BLACK)
-        self.set_turn_player_colour(BLACK)
+        self.set_search_player_colour(P1)
+        self.set_turn_player_colour(P1)
 
         '''
 This should have got the highest score

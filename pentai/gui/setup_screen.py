@@ -25,15 +25,15 @@ class SetupScreen(Screen):
         #self.defaults = misc()["game_defaults"] = GameDefaults()
             
         # Updating a player name triggers set_player_name
-        func = lambda v,dt: self.set_player_name(BLACK, v.text)
+        func = lambda v,dt: self.set_player_name(P1, v.text)
         self.ids.bpl_id.bind(text=func)
-        func = lambda v,dt: self.set_player_name(WHITE, v.text)
+        func = lambda v,dt: self.set_player_name(P2, v.text)
         self.ids.wpl_id.bind(text=func)
 
         # Updating the player type triggers set_player_type
-        func = lambda v,dt: self.set_player_type(BLACK, v.val)
+        func = lambda v,dt: self.set_player_type(P1, v.val)
         self.ids.black_type_id.bind(val=func)
-        func = lambda v,dt: self.set_player_type(WHITE, v.val)
+        func = lambda v,dt: self.set_player_type(P2, v.val)
         self.ids.white_type_id.bind(val=func)
 
         # TODO: Timer default
@@ -59,20 +59,20 @@ class SetupScreen(Screen):
 
     def populate_all_players(self):
         self.repop = True
-        self.ids.bpl_id.text = self.defaults.get_player_name(BLACK)
-        self.ids.wpl_id.text = self.defaults.get_player_name(WHITE)
+        self.ids.bpl_id.text = self.defaults.get_player_name(P1)
+        self.ids.wpl_id.text = self.defaults.get_player_name(P2)
         self.repop = False
 
         self.populate_black_player_list()
         self.populate_white_player_list()
 
     def populate_black_player_list(self, *args):
-        ptb = self.defaults.get_type(BLACK)
-        self.populate_player_list(ptb, BLACK)
+        ptb = self.defaults.get_type(P1)
+        self.populate_player_list(ptb, P1)
 
     def populate_white_player_list(self, *args):
-        ptw = self.defaults.get_type(WHITE)
-        self.populate_player_list(ptw, WHITE)
+        ptw = self.defaults.get_type(P2)
+        self.populate_player_list(ptw, P2)
 
     def populate_player_list(self, pt, colour):
         rpl = self.pm.get_recent_player_names(pt, 30)
@@ -104,10 +104,10 @@ class SetupScreen(Screen):
         self.ids.start_game_id.text = "Resume Game"
 
     def set_defaults_from_game(self, g):
-        p1_t = g.get_player_type(BLACK)
-        p1_n = g.get_player_name(BLACK)
-        p2_t = g.get_player_type(WHITE)
-        p2_n = g.get_player_name(WHITE)
+        p1_t = g.get_player_type(P1)
+        p1_n = g.get_player_name(P1)
+        p2_t = g.get_player_type(P2)
+        p2_n = g.get_player_name(P2)
 
         self.defaults.play_game((p1_t,p1_n), (p2_t, p2_n), g.get_rules())
 
@@ -149,10 +149,10 @@ class SetupScreen(Screen):
         return self.game
     
     def set_GUI_from_game(self, g):
-        self.ids.bpl_id.text = g.get_player_name(BLACK)
-        self.ids.wpl_id.text = g.get_player_name(WHITE)
-        bpt = g.get_player_type(BLACK)
-        wpt = g.get_player_type(WHITE)
+        self.ids.bpl_id.text = g.get_player_name(P1)
+        self.ids.wpl_id.text = g.get_player_name(P2)
+        bpt = g.get_player_type(P1)
+        wpt = g.get_player_type(P2)
         self.ids.black_type_id.set_active(bpt)
         self.ids.white_type_id.set_active(wpt)
         self.ids.bs_id.text = str(g.get_size())

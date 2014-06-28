@@ -151,9 +151,9 @@ class GameState(object):
         return self._won_by
 
     def to_move_colour(self):
-        return (self.move_number + 1) % 2 + 1 # BLACK is first on move 1
+        return (self.move_number + 1) % 2 + 1 # P1 is first on move 1
     
     def to_move_player(self):
-        pn = (self.move_number + 1) % 2 + 1 # Player 1 is BLACK, 2 WHITE
+        pn = (self.move_number + 1) % 2 + 1 # Player 1 is P1, 2 P2
         return self.game.get_player(pn)
 

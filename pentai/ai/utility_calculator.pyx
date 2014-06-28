@@ -77,7 +77,7 @@ class UtilityCalculator(object):
         if utility_stats.lines == [None, [0,0,0,0,0], [0,0,0,0,0]] and \
                 state.get_takes() == [0, 0, 0] and move_number > 30:
             # Draw
-            state.set_won_by(BLACK + WHITE)
+            state.set_won_by(P1 + P2)
             return 0
 
         # No forceable win has been found, so fudge up a score

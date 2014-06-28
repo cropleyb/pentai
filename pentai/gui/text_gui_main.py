@@ -20,11 +20,11 @@ if __name__ == "__main__":
     """
 
     rules = Rules(9, "standard")
-    player1 = HumanPlayer("Bruce", BLACK)
+    player1 = HumanPlayer("Bruce", P1)
     '''
-    player2 = HumanPlayer("B2", WHITE)
+    player2 = HumanPlayer("B2", P2)
     '''
-    player2 = AIPlayer(2, "Deep Thunk", WHITE)
+    player2 = AIPlayer(2, "Deep Thunk", P2)
     game = Game(rules, player1, player2)
     player2.attach_to_game(game)
 

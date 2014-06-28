@@ -32,7 +32,7 @@ class ATOTest(unittest.TestCase):
         ob_m.instance = None
         m_m.the_instance = None
 
-    def load_moves_and_set_win(self, moves, winner=BLACK, game=None):
+    def load_moves_and_set_win(self, moves, winner=P1, game=None):
         if not game:
             game = self.game
         game.load_moves(moves)
@@ -52,7 +52,7 @@ class ATOTest(unittest.TestCase):
         # This works when debugged?!
         #st()
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n3. (9,10)\n4. (11,10)")
-        self.ob.add_position(self.game, 1, BLACK)
+        self.ob.add_position(self.game, 1, P1)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
 
@@ -64,7 +64,7 @@ class ATOTest(unittest.TestCase):
     def atest_add_first_white_move(self):
         print_func()
         self.load_moves_and_set_win("1. (7,8)\n2. (8,8)\n")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         g2.load_moves("1. (7,8)")
@@ -79,7 +79,7 @@ class ATOTest(unittest.TestCase):
         print_func()
         self.load_moves_and_set_win(
                 "1. (9,9)\n2. (10,8)\n3. (11,9)\n4. (13,9)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         g2.load_moves("1. (9,9)\n2. (10,8)")
@@ -94,7 +94,7 @@ class ATOTest(unittest.TestCase):
     def test_add_second_white_move(self):
         print_func()
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         g2.load_moves("1. (4, 4)\n2. (3, 3)\n3. (3, 4)")
@@ -108,14 +108,14 @@ class ATOTest(unittest.TestCase):
     def test_find_two_alternatives(self):
         print_func()
         self.load_moves_and_set_win("1. (1,3)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
         
         # Add a second historical game
         sg = Game(self.rules, Player("Shazam"), Player("Floff"))
         sg.game_id = 13
         sg.load_moves("1. (1,3)\n2. (2,2)\n3. (6,4)") # etc.
-        sg.current_state.set_won_by(WHITE)
-        self.ob.add_game(sg, WHITE)
+        sg.current_state.set_won_by(P2)
+        self.ob.add_game(sg, P2)
         
         load_game = Game(self.rules, Player("Now1"), Player("Now2"))
         game_str = '1. (1,3)'
@@ -138,7 +138,7 @@ class ATOTest(unittest.TestCase):
         # Shifted one to the right
         self.load_moves_and_set_win(
                 "1. (6,7)\n2. (10,10)\n3. (8,9)\n4. (6,5)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         lg = Game(self.rules, Player("Now1"), Player("Now2"))
         lg.load_moves("1. (7,7)\n2. (11,10)\n3. (9,9)")
@@ -154,7 +154,7 @@ class ATOTest(unittest.TestCase):
         print_func()
         self.load_moves_and_set_win(
                 "1. (6,7)\n2. (7,8)\n3. (6,10)\n4. (10,9)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         lg = Game(self.rules, Player("Now1"), Player("Now2"))
         lg.load_moves("1. (12, 7)\n2. (11, 8)\n3. (12, 10)")
@@ -169,8 +169,8 @@ class ATOTest(unittest.TestCase):
         self.game.rules.type_char = 't'
         self.game.load_moves(moves_str)
         self.game.make_move(last_move_pos)
-        self.game.current_state.set_won_by(BLACK)
-        self.ob.add_game(self.game, BLACK)
+        self.game.current_state.set_won_by(P1)
+        self.ob.add_game(self.game, P1)
 
         lg = Game(self.rules, Player("Now1"), Player("Now2"))
         lg.load_moves(moves_str)
@@ -223,7 +223,7 @@ class ATOTest(unittest.TestCase):
     def test_persist_position(self):
         print_func()
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n3. (9,10)\n4. (11,10)")
-        self.ob.add_position(self.game, 1, BLACK)
+        self.ob.add_position(self.game, 1, P1)
 
         o_mgr2 = ob_m.OpeningsBook()
 
@@ -237,7 +237,7 @@ class ATOTest(unittest.TestCase):
         # Don't use different sized game lookups for now
         print_func()
         self.load_moves_and_set_win("1. (9,9)\n2. (8,8)\n3. (8,9)\n4. (10,8)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         o_mgr2 = ob_m.OpeningsBook()
 
@@ -293,7 +293,7 @@ class ATOTest(unittest.TestCase):
     def test_persist_position_lookup_different_rules_type(self):
         print_func()
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         o_mgr2 = ob_m.OpeningsBook()
 
@@ -335,9 +335,9 @@ class ATOTest(unittest.TestCase):
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
 
         #st()
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
         try:
-            self.ob.add_game(self.game, BLACK)
+            self.ob.add_game(self.game, P1)
         except OpeningsBookDuplicateException:
             return
         self.fail()
@@ -347,12 +347,12 @@ class ATOTest(unittest.TestCase):
         # This is failing because the current position is what is standardised,
         # not the position after the suggested moves.
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))
         g2.load_moves("1. (4,4)\n2. (5,5)\n3. (3,4)\n4. (5,4)")
-        g2.current_state.set_won_by(BLACK)
-        self.ob.add_game(g2, BLACK)
+        g2.current_state.set_won_by(P1)
+        self.ob.add_game(g2, P1)
 
         g3 = Game(self.rules, Player("Alpha"), Player("Beta"))
         g3.load_moves("1. (4, 4)\n")
@@ -378,7 +378,7 @@ class TranslationalSymmetryTest(unittest.TestCase):
         ob_m.instance = None
         m_m.the_instance = None
 
-    def load_moves_and_set_win(self, moves, winner=BLACK):
+    def load_moves_and_set_win(self, moves, winner=P1):
         self.game.load_moves(moves)
         self.game.current_state.set_won_by(winner)
         self.game.game_id = random.randrange(10000)
@@ -386,7 +386,7 @@ class TranslationalSymmetryTest(unittest.TestCase):
     # ! kivy pentai/db/t_openings_book.py ATOTest.test_translation_away_from_edges
     def test_translation_away_from_edges(self):
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n")
-        self.ob.add_game(self.game, BLACK)
+        self.ob.add_game(self.game, P1)
 
         # Pick a spot slightly away from the centre
         g2 = Game(self.rules, Player("Alpha"), Player("Beta"))

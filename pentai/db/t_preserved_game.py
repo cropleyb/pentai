@@ -35,9 +35,9 @@ class PreservedGameTest(unittest.TestCase):
         pg = PreservedGame(orig_game)
         self.assertEquals(pg.rules, (13, 's', 0))
 
-        black_player = pg.players[BLACK]
+        black_player = pg.players[P1]
         self.assertEquals(black_player, genome1.p_key)
-        white_player = pg.players[WHITE]
+        white_player = pg.players[P2]
         self.assertEquals(white_player, genome2.p_key)
 
         today = datetime.date.today()
@@ -68,7 +68,7 @@ class PreservedGameTest(unittest.TestCase):
         pg.game_id = ((9, 'f', 0), 1)
 
         pg.moves = [(8,1)]
-        pg.won_by = BLACK
+        pg.won_by = P1
         pg.resume_move_number = 1
 
         today = datetime.date.today()
@@ -84,14 +84,14 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(len(orig_game.move_history), 1)
         self.assertEquals(orig_game.move_history[0], (8,1))
 
-        self.assertEquals(orig_game.get_won_by(), BLACK)
+        self.assertEquals(orig_game.get_won_by(), P1)
 
         self.assertEquals(orig_game.resume_move_number, 1)
 
-        black_player = orig_game.get_player(BLACK)
+        black_player = orig_game.get_player(P1)
         self.assertEquals(black_player, p1)
 
-        white_player = orig_game.get_player(WHITE)
+        white_player = orig_game.get_player(P2)
         self.assertEquals(white_player, p2)
 
     # TODO: Test restore of human player

@@ -93,7 +93,7 @@ class GamesMgrTest(unittest.TestCase):
         rules = Rules(9, "Standard")
         g1 = self.gm.create_game(rules, HumanPlayer("Glacier"), HumanPlayer("Slug"))
         g1.make_move((5,3))
-        g1.set_won_by(BLACK)
+        g1.set_won_by(P1)
         self.gm.save(g1)
 
         fg1 = self.gm.get_unfinished_game(g1.key())
@@ -105,7 +105,7 @@ class GamesMgrTest(unittest.TestCase):
         g1.make_move((5,3))
         self.gm.save(g1)
         g1.make_move((6,3))
-        g1.set_won_by(BLACK)
+        g1.set_won_by(P1)
         self.gm.save(g1)
 
         fg1 = self.gm.get_unfinished_game(g1.key())
@@ -221,14 +221,14 @@ class GamesMgrTest(unittest.TestCase):
 
         g1 = self.gm.create_game(rules, p1, p2)
         g1.make_move((6,3))
-        g1.set_rating(WHITE, 1800)
+        g1.set_rating(P2, 1800)
         self.gm.save(g1)
 
         fpg = self.gm.get_preserved_game(g1.key())
         self.assertEquals(fpg.key(), g1.key())
 
-        self.assertEquals(fpg.get_rating(BLACK), 1500)
-        self.assertEquals(fpg.get_rating(WHITE), 1800)
+        self.assertEquals(fpg.get_rating(P1), 1500)
+        self.assertEquals(fpg.get_rating(P2), 1800)
 
 
 if __name__ == "__main__":

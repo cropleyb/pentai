@@ -1,9 +1,10 @@
 from kivy.app import App
-from kivy.config import Config
 from kivy.clock import *
 from kivy.base import *
 
-from kivy.config import ConfigParser
+#from kivy.config import Config
+#from kivy.config import ConfigParser
+import pentai.gui.config as cf_m
 
 from kivy.uix.screenmanager import * # TODO: Remove
 
@@ -126,7 +127,7 @@ class PentAIApp(App):
         # TODO production app should start game here.
         self.root.current = "Setup"
 
-    def start_game(self, game, screen_size, demo=False):
+    def start_game(self, game, screen_size, swap_colours=False, demo=False):
         # TODO: Move this?
         root = self.root
         try:
@@ -144,7 +145,7 @@ class PentAIApp(App):
         self.game = game
 
         # load the game screen
-        self.pente_screen.set_game(game)
+        self.pente_screen.set_game(game, swap_colours=swap_colours)
 
         # TODO
         self.pente_screen.set_live(not demo)
@@ -258,13 +259,14 @@ class PentAIApp(App):
     def add_screen(self, scr_cls, scr_name, **kwargs):
         scr = scr_cls(name=scr_name, **kwargs)
         scr.app = self
-        scr.config = self.config
+        scr.config = self.config # TODO: only use singleton accessor
         scr.gm = self.games_mgr
         scr.ob = self.openings_book
         scr.pm = self.games_mgr.players_mgr
         self.root.add_widget(scr)
 
     def build(self):
+        '''
         ini_file = "pentai.ini"
         ini_path = os.path.join(self.user_data_dir, ini_file)
         if not ini_file in os.listdir(self.user_data_dir):
@@ -275,6 +277,9 @@ class PentAIApp(App):
         # Assign to self.config so all screens can get at it.
         self.config = ConfigParser()
         self.config.read(ini_path)
+        '''
+        ini_file = "pentai.ini"
+        self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
 
         root = ps_m.PScreenManager()
         root.show_intro_screen()

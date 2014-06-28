@@ -5,8 +5,8 @@ from pentai.db.zodb_dict import *
 class OpeningMoveGamesData(ZL):
     """ For efficiently storing openings stats for a particular move. """
     # Yes this is ugly, mapping different concepts to the same array.
-    # BLACK wins: 0
-    # WHITE wins: 1
+    # P1 wins: 0
+    # P2 wins: 1
     # total rat.: 2
     # max rating: 3
     def __init__(self, initial_values=None):
@@ -19,7 +19,7 @@ class OpeningMoveGamesData(ZL):
         ZL.__init__(self, initial_values)
 
     def get_wins(self, colour):
-        if colour == BLACK:
+        if colour == P1:
             return self[0]
         else:
             return self[1]
@@ -31,7 +31,7 @@ class OpeningMoveGamesData(ZL):
         return self[3]
 
     def add_game(self, colour, rating):
-        if colour == BLACK:
+        if colour == P1:
             self[0] += 1
         else:
             self[1] += 1

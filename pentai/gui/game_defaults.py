@@ -21,8 +21,8 @@ class GameDefaults(Persistent):
         self.last_game_names[:] = [None, p1[1], p2[1]]
         self.types = self.last_game_types[:]
 
-        self.set_name(BLACK, p1[1])
-        self.set_name(WHITE, p2[1])
+        self.set_name(P1, p1[1])
+        self.set_name(P2, p2[1])
 
     def get_size(self):
         return self.rules.size

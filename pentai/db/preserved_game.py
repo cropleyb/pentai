@@ -14,8 +14,8 @@ class PreservedGame(Persistent):
             p2 = game.get_player(2)
             self.players = (None, p1.get_key(), p2.get_key())
             #self.ratings = (None, p1.get_rating(), p2.get_rating())
-            self.ratings = (None, game.get_rating(BLACK),
-                                  game.get_rating(WHITE))
+            self.ratings = (None, game.get_rating(P1),
+                                  game.get_rating(P2))
             self.won_by = game.get_won_by()
             self.moves = tuple(game.move_history)
             self.times = tuple(game.time_history)

@@ -260,11 +260,11 @@
             size_hint_y: .75
 
             MyCategoryLabel:
-                text: "Black Player"
+                text: "First Player"
                 height: my.dp(48)
 
             MyCategoryLabel:
-                text: "White Player"
+                text: "Second Player"
                 height: my.dp(48)
 
             CheckBoxList:
@@ -598,26 +598,28 @@
                 # TODO: duplication
                 MyBigLabel:
                     id: black_time_id
-                    #text: root.player_time[1]
-                    #text: root.players[1].video_remaining_time
-                    #text: root.get_remaining_time(1) # TODO: kivy import syntax for BLACK
                     text: ""
-                    color: (0,0,0,1)
+                    #color: root.get_player_colour(1)
+                    #color: root.player_colour[1]
                 MyBigLabel:
                 MyBigLabel:
+                    id: p1_id
                     text: root.player_name[1]
-                    color: (0,0,0,1)
+                    #color: root.get_player_colour(1)
+                    #color: root.player_colour[1]
                 MyBigLabel:
 
                 MyBigLabel:
                     id: white_time_id
                     text: ""
-                    #text: root.player_time[2]
-                    color: (1,1,1,1)
+                    #color: root.get_player_colour(2)
+                    #color: root.player_colour[2]
                 MyBigLabel:
                 MyBigLabel:
+                    id: p2_id
                     text: root.player_name[2]
-                    color: (1,1,1,1)
+                    #color: root.get_player_colour(2)
+                    #color: root.player_colour[2]
                 MyBigLabel:
 
     RelativeLayout:

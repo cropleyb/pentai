@@ -121,7 +121,7 @@ class AIPlayer(p_m.Player):
         try:
             return self.do_the_search_inner()
         except NoMovesException:
-            self.ab_game.base_game.set_won_by(BLACK+WHITE)
+            self.ab_game.base_game.set_won_by(P1+P2)
 
     def do_the_search_inner(self):
         ab_game = self.ab_game

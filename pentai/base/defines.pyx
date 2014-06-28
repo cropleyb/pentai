@@ -5,14 +5,14 @@ DIRECTIONS = ((-1,-1),(-1,0),(-1,1),
                (1,-1), (1,0), (1,1))
 
 EMPTY = 0
-BLACK = 1
-WHITE = 2
+P1 = 1
+P2 = 2
 
 def opposite_colour(col):
-    if col == BLACK:
-        return WHITE
-    elif col == WHITE:
-        return BLACK
+    if col == P1:
+        return P2
+    elif col == P2:
+        return P1
     return EMPTY
 
 from pdb import set_trace as st

@@ -90,9 +90,9 @@ def convert_game(game_str, key):
     if not won_by:
         recorded_result = metadata["Result"]
         if recorded_result[0] == "1":
-            g.set_won_by(BLACK)
+            g.set_won_by(P1)
         if recorded_result[0] == "0":
-            g.set_won_by(WHITE)
+            g.set_won_by(P2)
 
     return g
 

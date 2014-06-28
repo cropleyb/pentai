@@ -62,8 +62,8 @@ class TextGui(Gui):
         return ret
 
     def aux_to_string(self):
-        return self.player_detail(BLACK) + " vs. " \
-             + self.player_detail(WHITE) + "\n"
+        return self.player_detail(P1) + " vs. " \
+             + self.player_detail(P2) + "\n"
 
     def request_move(self, name):
         ret = [self.board_to_string()]

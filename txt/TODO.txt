@@ -50,6 +50,7 @@ white/black/either first option
 
 Beta release
 
+Change first player settings - redraw whole screen
 Audio not looping on iOS?
 Resume timed game: use time history
 Version string in GUI

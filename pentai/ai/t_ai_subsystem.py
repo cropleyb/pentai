@@ -304,7 +304,7 @@ standard rules
         self.game.load_game(game_str)
         m = self.p1.do_the_search()
         self.assertEquals(self.game.finished(), True)
-        self.assertEquals(self.game.get_won_by(), BLACK+WHITE)
+        self.assertEquals(self.game.get_won_by(), P1+P2)
 
     def test_missed_win(self): # TODO
         self.p1.set_max_depth(2)

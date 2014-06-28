@@ -48,7 +48,7 @@ if __name__ == "__main__":
             print "Removing game %s" % g_id
             to_remove.append(g_id)
             continue
-        for colour in (BLACK,WHITE):
+        for colour in (P1,P2):
             pid = game.players[colour]
             if pid is None:
                 pid = unknown

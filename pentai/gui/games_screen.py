@@ -66,13 +66,13 @@ def game_data(game, players_mgr):
     data = {}
     data["id"] = str(game.game_id)
 
-    data["black"] = players_mgr.get_player_name(game.get_player_id(BLACK))
-    data["white"] = players_mgr.get_player_name(game.get_player_id(WHITE))
+    data["black"] = players_mgr.get_player_name(game.get_player_id(P1))
+    data["white"] = players_mgr.get_player_name(game.get_player_id(P2))
 
     data["date"] = str(game.get_date())
     #data["status_colour"] = [0,0,0,.5] #game.get_won_by()
     wb = game.get_won_by()
-    if wb == BLACK:
+    if wb == P1:
         data["deselected_color"] = [0,0,0,.5] #game.get_won_by()
         data["selected_color"] = [0,0,0,.5] #game.get_won_by()
     data["height"] = 50

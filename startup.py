@@ -3,6 +3,7 @@ import pentai.db.zodb_dict as z_m
 import pentai.gui.scale as sc_m
 
 import kivy.core.window as w_m
+from kivy.config import Config
 
 import os, sys
 

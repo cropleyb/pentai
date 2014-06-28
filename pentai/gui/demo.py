@@ -95,7 +95,10 @@ class Demo():
 
         ss = app.setup_screen
         # TODO: Select white player type
-        ss.ids.white_type_id.val = "AI"
+        ss.ids.black_type_id.val = "Human"
+        ss.ids.bpl_id.val = "You"
+        #ss.ids.white_type_id.val = "AI"
+        ss.ids.white_type_id.val = "Computer"
         # TODO: Select computer player somehow?
         ss.ids.wpl_id.val = "Killer"
         yield(2)
@@ -130,8 +133,9 @@ class Demo():
         s.ps = s.app.pente_screen
         yield(1.2) # Compensating for .7 wait at start?!
 
-        play_speech("black_first")
-        yield(2)
+        #play_speech("black_first")
+        #yield(2)
+        #yield(.3)
 
         play_speech("centre_first")
         yield(1.5)

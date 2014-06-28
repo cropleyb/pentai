@@ -1,5 +1,5 @@
 from kivy.uix.screenmanager import Screen
-from kivy.properties import *
+#from kivy.properties import *
 from kivy.uix.settings import SettingSpacer
 
 from my_setting import *

@@ -22,7 +22,7 @@ class UtilityStats(object):
         else:
             # Manual deep copy
             pl = parent.lines
-            self.lines = [None, pl[BLACK][:], pl[WHITE][:]]
+            self.lines = [None, pl[P1][:], pl[P2][:]]
             self.takes = parent.takes[:]
             self.threats = parent.threats[:]
             self.enclosed_four = parent.enclosed_four[:]
@@ -102,6 +102,6 @@ class UtilityStats(object):
                 bs_m.process_takes(bs, ind, strip_min, strip_max, self, inc)
                 bs_m.process_threats(bs, ind, strip_min, strip_max, self, inc)
 
-            bs_m.process_enclosed_four(bs, ind, BLACK, self, inc)
-            bs_m.process_enclosed_four(bs, ind, WHITE, self, inc)
+            bs_m.process_enclosed_four(bs, ind, P1, self, inc)
+            bs_m.process_enclosed_four(bs, ind, P2, self, inc)
 

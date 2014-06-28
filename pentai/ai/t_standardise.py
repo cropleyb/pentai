@@ -45,8 +45,8 @@ class StandardiseTest(unittest.TestCase):
         #log.debug(ds.strips)
         #log.debug(brd)
 
-        self.assertEqual(ds.get_occ((5,7)), BLACK)
-        self.assertEqual(ds.get_occ((9,5)), WHITE)
+        self.assertEqual(ds.get_occ((5,7)), P1)
+        self.assertEqual(ds.get_occ((9,5)), P2)
 
     def test_standardisation_trims_array(self):
         self.game.load_moves("1. (8,7)")

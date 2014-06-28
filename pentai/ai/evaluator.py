@@ -45,7 +45,7 @@ class Evaluator(gso_m.GSObserver):
             player's perspective
             TODO: first AI Player?
         """
-        return BLACK
+        return P1
 
     def to_move_colour(self):
         return self.state.to_move_colour()

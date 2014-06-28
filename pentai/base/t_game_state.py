@@ -10,8 +10,8 @@ from pentai.base.game import *
 
 from pentai.base.mock import *
 
-B = BLACK
-W = WHITE
+B = P1
+W = P2
 
 class GameStateTest(unittest.TestCase):
     def setUp(self):
@@ -294,11 +294,11 @@ class ObserverTest(unittest.TestCase):
     def test_set_won_by_observed(self):
         m = Mock()
         self.gs.add_observer(m)
-        self.gs.set_won_by(WHITE)
+        self.gs.set_won_by(P2)
 
         all_calls = m.mockGetAllCalls()
         self.assertEquals(len(all_calls), 1)
-        m.mockCheckCall(0, 'after_game_won', self.game, WHITE)
+        m.mockCheckCall(0, 'after_game_won', self.game, P2)
 
 
 if __name__ == "__main__":

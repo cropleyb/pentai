@@ -30,8 +30,8 @@ class Game(object):
             total_time = rules.time_control
             if total_time:
                 # B/W
-                self.remaining_times[BLACK] = total_time
-                self.remaining_times[WHITE] = total_time
+                self.remaining_times[P1] = total_time
+                self.remaining_times[P2] = total_time
 
         self.players = [None, player1, player2]
         if player1 != None:
@@ -213,8 +213,8 @@ class Game(object):
             gs.reset(self)
 
             total_time = self.rules.time_control
-            self.remaining_times[BLACK] = total_time
-            self.remaining_times[WHITE] = total_time
+            self.remaining_times[P1] = total_time
+            self.remaining_times[P2] = total_time
 
             for i in range(move_number-1):
                 self.replay_move(time_hist, i)
@@ -255,7 +255,7 @@ class Game(object):
         player_line, size_line, rules_line, the_rest = s.split('\n', 3)
 
         # TODO: This is ugly - these values will be replaced shortly
-        if self.players[BLACK] is None:
+        if self.players[P1] is None:
             self.players = [None, p_m.Player("Black"), p_m.Player("White")]
         if self.rules is None:
             self.rules = rules.Rules(5,"standard")

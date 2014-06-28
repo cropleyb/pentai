@@ -33,7 +33,7 @@ class TextGuiTest(unittest.TestCase):
 "   a b c d e\n")
 
     def test_place_one_stone(self):
-        self.gui.after_set_occ((3,1), BLACK)
+        self.gui.after_set_occ((3,1), P1)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e\n"
@@ -45,7 +45,7 @@ class TextGuiTest(unittest.TestCase):
 "   a b c d e\n")
 
     def test_place_and_remove_stone(self):
-        self.gui.after_set_occ((4,2),BLACK)
+        self.gui.after_set_occ((4,2),P1)
         self.gui.after_set_occ((4,2),EMPTY)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
@@ -59,7 +59,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_place_one_stone_different_size(self):
         self.setUpWithOverrides(7)
-        self.gui.after_set_occ((3,1),BLACK)
+        self.gui.after_set_occ((3,1),P1)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e f g\n"
@@ -74,7 +74,7 @@ class TextGuiTest(unittest.TestCase):
 
     def test_place_and_remove_one_stone_different_size(self):
         self.setUpWithOverrides(7)
-        self.gui.after_set_occ((4,2),BLACK)
+        self.gui.after_set_occ((4,2),P1)
         self.gui.after_set_occ((4,2),EMPTY)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
@@ -109,8 +109,8 @@ class TextGuiTest(unittest.TestCase):
 "   a b c d e f g h j k l m n\n")
 
     def test_place_two_stones(self):
-        self.gui.after_set_occ((4,2),BLACK)
-        self.gui.after_set_occ((4,3),WHITE)
+        self.gui.after_set_occ((4,2),P1)
+        self.gui.after_set_occ((4,3),P2)
         game_string = self.gui.board_to_string()
         self.assertEquals(game_string,
 "   a b c d e\n"
@@ -138,7 +138,7 @@ class TextGuiTest(unittest.TestCase):
         self.setUpWithOverrides(player1=HumanPlayer("Bruce"),
                                 player2=HumanPlayer("DeepThunk"))
         self.game.set_move_number(6)
-        self.game.set_captured(BLACK, 2)
+        self.game.set_captured(P1, 2)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "Bruce (1p) vs. * DeepThunk (0p)\n")
 
@@ -147,12 +147,12 @@ class TextGuiTest(unittest.TestCase):
                                 player2=HumanPlayer("DeepThunk"),
                                 rules_str="keryo")
         self.game.set_move_number(3)
-        self.game.set_captured(BLACK, 3)
+        self.game.set_captured(P1, 3)
         game_aux_string = self.gui.aux_to_string()
         self.assertEquals(game_aux_string, "* Bruce (3) vs. DeepThunk (0)\n")
 
     def test_player_move_prompt(self):
-        p = self.game.get_player(BLACK)
+        p = self.game.get_player(P1)
         promptStr = p.prompt_for_action(self.game, self.gui)
         self.assertEquals(promptStr,
 '   a b c d e\n'

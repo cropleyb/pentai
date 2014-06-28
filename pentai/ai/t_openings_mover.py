@@ -34,7 +34,7 @@ class OpeningsMoverTest(unittest.TestCase):
         self.player = MockPlayer()
         self.msg = Mock() # Mock Base Game
         self.msg.mockAddReturnValues(size=9, is_live=True)
-        self.msg.mockAddReturnValues(to_move_colour=BLACK)
+        self.msg.mockAddReturnValues(to_move_colour=P1)
         self.mabg = Mock() # Mock ABGame
         self.mabg.mockAddReturnValues(get_base_game=self.msg)
         self.of = om_m.OpeningsMover(self.mob, self.mabg)

@@ -68,8 +68,8 @@ def build_and_store_values(depth, occ_val, length, colour, empty_list, rep_str=N
 def prepare_length_lookups():
     """ Build the entire lookup table """
     # We only care about stretches of 5 with one colour and empties in it.
-    build_and_store_values(4, 0, 0, BLACK, [])
-    build_and_store_values(4, 0, 0, WHITE, [])
+    build_and_store_values(4, 0, 0, P1, [])
+    build_and_store_values(4, 0, 0, P2, [])
 
 # TODO: Something better than a global
 prepare_length_lookups()
@@ -91,7 +91,7 @@ cpdef process_substrips(U64 bs, int min_ind, int max_ind, us, int inc):
 
     for ind in range(min_ind, max_ind+1-4):
         # Extract just the 5 * 2 bits that we're currently interested in.
-        shift = ind << 1 # x 2 for 2 bits each occ - EMPTY:0, BLACK:1 or WHITE:2
+        shift = ind << 1 # x 2 for 2 bits each occ - EMPTY:0, P1:1 or P2:2
         occs = (bs >> shift) & FIVE_OCCS_MASK
 
         # Now see if it's in our lookup table
