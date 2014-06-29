@@ -32,6 +32,7 @@ class Game(object):
                 # B/W
                 self.remaining_times[P1] = total_time
                 self.remaining_times[P2] = total_time
+                #self.time_history = [total_time, total_time]
 
         self.players = [None, player1, player2]
         if player1 != None:
@@ -137,8 +138,8 @@ class Game(object):
             raise IllegalMoveException("Null move")
         # Record this, then save to a file if required
         if len(self.move_history) > 0:
-            self.move_history = self.move_history[:self.get_move_number()-1]
-            self.time_history = self.time_history[:self.get_move_number()-1]
+            del self.move_history[self.get_move_number()-1:]
+            del self.time_history[self.get_move_number()-1:]
         self.move_history.append(move)
         colour = self.to_move_colour()
         self.time_history.append(self.remaining_time(colour))
@@ -148,7 +149,7 @@ class Game(object):
             self.current_state.make_move(move)
         except IllegalMoveException, e:
             # Wipe that one off.
-            self.move_history = self.move_history[:-1]
+            del self.move_history[-1]
             raise e
 
         '''
@@ -322,6 +323,7 @@ class Game(object):
         return self.remaining_times[colour]
 
     def set_remaining_time(self, colour, t):
+        print "set_remaining_time to %s" % t
         self.remaining_times[colour] = t
 
     def get_rating(self, colour):
