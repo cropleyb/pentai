@@ -101,7 +101,7 @@ class GameTest(unittest.TestCase):
         g.tick(P1, 1)
         g.make_move((0,0))
         g.go_backwards_one()
-        self.assertEquals(g.remaining_time(P1), 180)
+        self.assertEquals(g.remaining_time(P1), 179)
 
     def test_take_back_1_from_2_returns_first_move(self):
         rules = Rules(9, "standard", time_control=3)
@@ -120,7 +120,7 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.remaining_time(P2), 178)
         g.go_backwards_one()
         self.assertEquals(g.remaining_time(P1), 179)
-        self.assertEquals(g.remaining_time(P2), 180)
+        self.assertEquals(g.remaining_time(P2), 178)
 
     def test_tick_before_first_move(self):
         rules = Rules(9, "standard", time_control=3)
@@ -145,7 +145,7 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.remaining_time(P1), 179)
         self.assertEquals(g.remaining_time(P2), 180)
 
-    def test_tick_then_first_move(self):
+    def test_tick_move_tick(self):
         rules = Rules(9, "standard", time_control=3)
         g = Game(rules, Player("BC"), Player("Whoever"))
         g.tick(P1, 1)
@@ -157,11 +157,12 @@ class GameTest(unittest.TestCase):
     def test_take_back_first_move(self):
         rules = Rules(9, "standard", time_control=3)
         g = Game(rules, Player("BC"), Player("Whoever"))
+        #st()
         g.tick(P1, 1)
         g.make_move((0,0))
         g.tick(P2, 1)
         g.go_backwards_one()
-        self.assertEquals(g.remaining_time(P1), 180)
+        self.assertEquals(g.remaining_time(P1), 179)
         self.assertEquals(g.remaining_time(P2), 180)
 
     def test_take_back_first_move_then_redo_it(self):
@@ -174,7 +175,7 @@ class GameTest(unittest.TestCase):
         g.go_forwards_one()
 
         self.assertEquals(g.remaining_time(P1), 179)
-        self.assertEquals(g.remaining_time(P2), 180)
+        self.assertEquals(g.remaining_time(P2), 179.5)
 
     def test_take_back_1_then_forwards_1_should_recall_start_of_current_move(self):
         rules = Rules(9, "standard", time_control=3)
@@ -189,10 +190,10 @@ class GameTest(unittest.TestCase):
 
         g.go_backwards_one()
         self.assertEquals(g.remaining_time(P1), 179)
-        self.assertEquals(g.remaining_time(P2), 180)
+        self.assertEquals(g.remaining_time(P2), 179)
 
         g.go_forwards_one()
-        self.assertEquals(g.remaining_time(P1), 179)
+        self.assertEquals(g.remaining_time(P1), 178)
         self.assertEquals(g.remaining_time(P2), 179)
 
     def test_get_rating_from_player(self):

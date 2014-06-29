@@ -14,8 +14,7 @@ class Game(object):
     def __init__(self, *args, **kwargs):
         self.game_id = None
         self.move_history = []
-        self.time_history = []
-        self.remaining_times = [None, 0, 0]
+        self.time_history = [0, 0]
         self.resume_move_number = None
         self.date = datetime.date.today() # TODO
         self.setup(*args, **kwargs)
@@ -30,9 +29,7 @@ class Game(object):
             total_time = rules.time_control
             if total_time:
                 # B/W
-                self.remaining_times[P1] = total_time
-                self.remaining_times[P2] = total_time
-                #self.time_history = [total_time, total_time]
+                self.time_history = [total_time, total_time, total_time]
 
         self.players = [None, player1, player2]
         if player1 != None:
@@ -139,10 +136,10 @@ class Game(object):
         # Record this, then save to a file if required
         if len(self.move_history) > 0:
             del self.move_history[self.get_move_number()-1:]
-            del self.time_history[self.get_move_number()-1:]
+            del self.time_history[self.get_move_number()+1:]
         self.move_history.append(move)
         colour = self.to_move_colour()
-        self.time_history.append(self.remaining_time(colour))
+        self.time_history.append(self.remaining_time(opposite_colour(colour)))
         self.resume_move_number = len(self.move_history) + 1
 
         try:
@@ -195,7 +192,6 @@ class Game(object):
         move = self.move_history[i]
         if move:
             self.current_state.make_move(self.move_history[i])
-            self.remaining_times[to_move_col] = time_hist[i]
         else:
             # A null move somehow got into the history, strip it out.
             self.move_history[i:i] = []
@@ -214,8 +210,6 @@ class Game(object):
             gs.reset(self)
 
             total_time = self.rules.time_control
-            self.remaining_times[P1] = total_time
-            self.remaining_times[P2] = total_time
 
             for i in range(move_number-1):
                 self.replay_move(time_hist, i)
@@ -311,20 +305,33 @@ class Game(object):
     def tick(self, colour, seconds):
         if self.get_won_by():
             return
-        self.remaining_times[colour] -= seconds
-        remaining = self.remaining_times[colour]
+
+        ind = self._remaining_times_ind(colour)
+        self.time_history[ind] -= seconds
+        remaining = self.time_history[ind]
 
         if remaining <= 0:
             self.set_won_by(opposite_colour(colour))
             remaining = 0
         return remaining
 
+    def _remaining_times_ind(self, colour):
+        rem_times = self.time_history
+        mn = self.get_move_number()
+
+        if self.to_move_colour() == colour:
+            return mn
+        else:
+            return mn - 1
+
     def remaining_time(self, colour): # TODO: get_
-        return self.remaining_times[colour]
+        ind = self._remaining_times_ind(colour)
+        return self.time_history[ind]
 
     def set_remaining_time(self, colour, t):
         print "set_remaining_time to %s" % t
-        self.remaining_times[colour] = t
+        ind = self._remaining_times_ind(colour)
+        self.time_history[ind] = t
 
     def get_rating(self, colour):
         game_rating = self.ratings[colour]
