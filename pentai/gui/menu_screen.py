@@ -8,6 +8,7 @@ import pentai.base.logger as log
 
 class MenuScreen(Screen):
     """ This is more of a travel agency or a directory than a menu """
+    version_str = StringProperty("")
     about_text1 = StringProperty("")
     about_text2 = StringProperty("")
     about_text3 = StringProperty("")
@@ -17,6 +18,8 @@ class MenuScreen(Screen):
 
     def __init__(self, *args, **kwargs):
         super(MenuScreen, self).__init__(*args, **kwargs)
+
+        self.version_str = "0.9.1"
 
         self.ids.gl_id.ids.label1_id.bind(on_ref_press=self.follow_link)
         self.ids.gl_id.ids.label2_id.bind(on_ref_press=self.follow_link)
