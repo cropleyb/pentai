@@ -192,6 +192,10 @@ class Audio():
         if self.current_music_sound:
             track_length = self.current_music_sound.length
             log.debug("track_length: %s" % track_length)
+            if track_length > 10000:
+                # Work around for Kivy problem.
+                track_length /= 10980
+                log.debug("Adjusted track_length: %s" % track_length)
             Clock.schedule_once(self.schedule_music, track_length + 0.5)
 
     def get_current_track_name(self):
