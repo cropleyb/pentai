@@ -51,15 +51,16 @@ white/black/either first option
 Beta release
 
 Audio not looping on iOS?
-Resume timed game: use time history
-Version string in GUI
-Bigger tickbox image for iOS
+Crash on iOS
+Players showing up on both sides of setup screen.
+Split openings pack into a separate thread
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 opening move candidate iterators for variety
 unittest on iOS
 Hibernate with PentAI running -> Heavy CPU?
 Hang when finishing with Escape? Don't use escape?!
 Delete human player
+Delete finished games?
 Order computer players alphabetically
 Repopulate other player list
 iPhone/iPod version
