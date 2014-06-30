@@ -75,10 +75,16 @@ class CheckBoxList(GridLayout):
     def set_active(self, val):
         """ Set the active value from other python code. """
         log.debug("CheckBoxList: set_active")
-        old = self.widgets_by_val[str(self.val)]
-        old.active = False
+        try:
+            old = self.widgets_by_val[str(self.val)]
+            old.active = False
+        except KeyError:
+            pass
 
-        w = self.widgets_by_val[str(val)]
-        w.active = True
+        try:
+            w = self.widgets_by_val[str(val)]
+            w.active = True
+        except KeyError:
+            pass
         self.val = str(val)
 
