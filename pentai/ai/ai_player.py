@@ -70,7 +70,7 @@ class AIPlayer(p_m.Player):
         else:
             # TODO: platform dependent choice?
             try:
-                #disable_process()
+                #import disable_process
                 self.do_search_process(gui)
             except ImportError: # For Multiprocessing
                 t = threading.Thread(target=self.search_thread, args=(gui,))
@@ -128,6 +128,7 @@ class AIPlayer(p_m.Player):
 
         seen = set()
         turn = ab_game.get_move_number()
+        prev_move = ab_game.get_last_move()
         move = self.make_opening_move(turn, seen)
         rules = ab_game.get_rules()
 
@@ -136,7 +137,7 @@ class AIPlayer(p_m.Player):
                 log.info("Corrupt opening %s suggestion ignored" % (move,))
             else:
                 assert(turn != 3 or not rules.move_is_too_close(move))
-                return move
+                return turn, prev_move, move
 
         ab_ss = ab_game.current_state
         if len(seen) < 2:
@@ -146,7 +147,7 @@ class AIPlayer(p_m.Player):
 
         move, value = ab_m.alphabeta_search(ab_ss, ab_game)
         if self.ab_game.was_interrupted():
-            return
+            return None
 
         action = move[0]
 
@@ -156,7 +157,7 @@ class AIPlayer(p_m.Player):
         ab_game.reset_transposition_table()
 
         #log.info(" => %s" % (action,))
-        return action
+        return turn, prev_move, action
 
     #def set_interrupted(self):
     def stop(self):

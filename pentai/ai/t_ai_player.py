@@ -31,21 +31,21 @@ class AIPlayerTest(unittest.TestCase):
 
     def test_find_one_move(self):
         p = self.p1
-        ma = p.prompt_for_action(self.game, self.gui, test=True)
+        turn, prev, ma = p.prompt_for_action(self.game, self.gui, test=True)
         self.assertEquals(ma, (4,4))
 
     def test_respond_to_corner_start(self):
         self.game.make_move((0,0))
 
         p = self.p2
-        ma = p.prompt_for_action(self.game, self.gui, test=True)
+        turn, prev, ma = p.prompt_for_action(self.game, self.gui, test=True)
         self.assertEquals(ma, (4,4))
 
     def test_respond_to_centre_start(self):
         self.game.make_move((4,4))
 
         p = self.p2
-        ma = p.prompt_for_action(self.game, self.gui, test=True)
+        turn, prev, ma = p.prompt_for_action(self.game, self.gui, test=True)
         self.assertIn(ma, [(5,5),(3,3),(5,4)])
 
 if __name__ == "__main__":

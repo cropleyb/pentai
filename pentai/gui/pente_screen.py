@@ -318,6 +318,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
         mw = self.config.getfloat("PentAI", "minimum_wait")
         Clock.schedule_once(self.trig, mw)
 
+    def enqueue_move(self, move):
+        game = self.game
+        turn = game.get_move_number()
+        prev_move = game.get_last_move()
+        action = turn, prev_move, move
+        self.enqueue_action(action)
+
     def load_file(self, dt):
         f = open(self.game_filename)
         self.game.autosave_filename = self.game_filename[:]
@@ -373,21 +380,31 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.clocks[opp_colour].made_move() # TODO: "made_move"
 
     def perform(self, dt):
-        if self.action_queue.empty():
-            return
-        action = self.action_queue.get()
-        if not self.action_queue.empty():
-            self.action_queue.get()
-        if not self.game.is_live():
-            return
-        if not action:
-            if self.game.get_won_by() == (P1+P2):
-                log.info("Draw detected")
-                # TODO: return? GUI feedback?
+        game = self.game
+        while not self.action_queue.empty():
+            action = self.action_queue.get()
+            if not game.is_live():
+                return
+            if not action:
+                if self.game.get_won_by() == (P1+P2):
+                    log.info("Draw detected")
+                    # TODO: return? GUI feedback?
+                return
+            turn, prev_move, move = action
+            if turn != game.get_move_number():
+                log.warn("Turn number %s != expected %s" % (turn, game.get_move_number()))
+                move = None
+                continue
+            if prev_move != game.get_last_move():
+                log.warn("prev_move %s != expected %s" % (prev_move, game.get_last_move()))
+                move = None
+                continue
+
+        if not move:
             return
 
         try:
-            self.game.make_move(action)
+            self.game.make_move(move)
             self.refresh_all()
             self.prompt_for_action()
         except Exception, e:
@@ -713,7 +730,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def confirm_move(self):
         if self.confirmation_in_progress != None:
             widget, board_pos = self.confirmation_in_progress
-            self.enqueue_action(board_pos)
+            self.enqueue_move(board_pos)
             self.cancel_confirmation()
 
     def confirm_mode(self):
@@ -837,7 +854,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 else:
                     # Queue the move, this will place the
                     # new piece widget appropriately
-                    self.enqueue_action(board_pos)
+                    self.enqueue_move(board_pos)
 
     def refresh_ghosts(self):
         for g in self.ghosts:
