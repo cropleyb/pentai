@@ -276,6 +276,7 @@ class PentAIApp(App):
         self.game = None
 
         self.openings_builder_timeout = False
+        #self.openings_builder_timeout = True # TEMP for faster testing
         Clock.schedule_once(self.ob_timeout, 10)
 
         log.debug("Create Games Mgr")
