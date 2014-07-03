@@ -14,8 +14,8 @@ class SearchProcess(object):
         game = preserved_game.restore(pm, update_cache=False)
         game.resume()
         p = game.get_current_player()
-        m = p.do_the_search()
-        return m
+        a = p.do_the_search()
+        return a
 
     def search_and_respond(self, conn, preserved_game):
         move = self.search(preserved_game)
