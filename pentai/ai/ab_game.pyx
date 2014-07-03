@@ -41,6 +41,9 @@ class ABGame():
     def get_move_number(self):
         return self.base_game.get_move_number()
 
+    def get_last_move(self):
+        return self.base_game.get_last_move()
+
     def to_move(self, state=None):
         if state is None:
             state = self.current_state

@@ -173,7 +173,13 @@ class Game(object):
         return self.players[self.current_state.get_won_by()]
 
     def get_move(self, move_number):
-        return self.move_history[move_number-1]
+        try:
+            return self.move_history[move_number-1]
+        except IndexError:
+            return None
+
+    def get_last_move(self):
+        return self.get_move(self.get_move_number())
 
     def go_to_the_beginning(self):
         self.go_to_move(1)
