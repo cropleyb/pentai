@@ -38,7 +38,8 @@ def main():
     unittest.TextTestRunner().run(suite())
     
     m_m.delete("test_")
-    os.unlink("test.db")
+    os.unlink("test.db.most")
+    os.unlink("test.db.openings")
 
 if __name__ == "__main__":
     main()
