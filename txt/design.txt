@@ -823,5 +823,25 @@ Pros:
 Cons:
 - Apple specific and painful coding
 
-Colour swapping
----------------
+option 4
+--------
+startup
+
+copy existing ob_db -> ob_db_new (file copy)
+load both dbs (db + ob_db)
+start thread for building openings book
+
+ob thread:
+build several games into openings positions
+add games played so far
+commit
+pack
+lock access to odb
+mv ob_db_new to ob_db
+switch global ob_db reference
+unlock access to odb
+
+main thread:
+accesses to ob_db must go through a lock
+finished games must go through a Queue before being added to the ob_db
+
