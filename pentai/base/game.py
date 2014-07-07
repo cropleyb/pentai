@@ -179,7 +179,7 @@ class Game(object):
             return None
 
     def get_last_move(self):
-        return self.get_move(self.get_move_number())
+        return self.get_move(self.get_move_number()-1)
 
     def go_to_the_beginning(self):
         self.go_to_move(1)

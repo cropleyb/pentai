@@ -31,6 +31,7 @@ def suite():
     iam("t_trans_standardise")
     iam("t_standardise")
     iam("t_openings_mover")
+    iam("t_choice_stats")
 
     return all_tests
 

@@ -17,6 +17,8 @@ from pentai.db.openings_book import *
 from pentai.db.games_mgr import *
 import pentai.db.zodb_dict as z_m
 
+import pentai.ai.ab_game as abg_m
+
 class TwoTimer:
     def __init__(self):
         self.totals = [0.0, 0.0]
@@ -81,7 +83,7 @@ class Match():
         while not self.game.finished():
             p = self.game.get_current_player()
             with tt:
-                m = p.do_the_search()
+                turn, prev_move, m = p.do_the_search()
                 self.game.make_move(m)
                 #print self.evaluator.utility()
 
@@ -104,8 +106,8 @@ class Match():
 
     def play_some_games(self):
 
-        self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = False
+        #self.genome1.use_openings_book = False
+        #self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
@@ -118,7 +120,7 @@ class Match():
         #self.genome2.vision = 0.98
 
         #self.genome1.filter_num = 4
-        self.genome2.filter_num = 5
+        #self.genome2.filter_num = 5
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome2.mmpdl = 15
@@ -145,9 +147,9 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        #for game_length in range(2,7):
+        for game_length in range(2,7):
         #for game_length in range(2,5):
-        for game_length in range(2,4):
+        #for game_length in range(2,4):
             #for board_size in [13]:
             for board_size in [13, 19]:
                 for first_player in [0, 1]:
@@ -163,6 +165,7 @@ class Match():
                         results.add(res)
 
         print results
+        print abg_m.choice_stats
 
 import sys
 

@@ -41,7 +41,7 @@ class UtilityCalculator(object):
             mj = self.misjudgement = 100 - self.judgement
         if mj > 0:
             val = 4 ** (random.random() * mj) * val
-        return val, 0
+        return val
 
     def utility_inner(self, state, utility_stats):
         # The search_colour is the colour of the

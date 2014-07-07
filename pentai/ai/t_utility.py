@@ -49,8 +49,7 @@ class UtilityTest(unittest.TestCase):
         self.s.set_state(self.gs)
 
     def utility(self):
-        util = self.s.utility()[0]
-        #util = self.s.utility()
+        util = self.s.utility()
         return util
 
     def set_black_lines(self, lines):

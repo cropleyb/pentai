@@ -50,8 +50,8 @@ white/black/either first option
 
 Beta release
 
-Audio not looping on iOS?
-Crash on iOS
+# Crash on iOS
+Game defaults should be updated from loading a game.
 Players showing up on both sides of setup screen.
 Split openings pack into a separate thread
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html

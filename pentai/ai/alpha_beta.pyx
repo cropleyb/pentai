@@ -1,15 +1,14 @@
 from pentai.base.defines import INFINITY
 from pentai.base.pente_exceptions import *
 
-INF = INFINITY, 0
-NEGINF = -INFINITY, 0
+INF = INFINITY
+NEGINF = -INFINITY
 
 debug=False
 
 def argmax(aspi, fn):
-    """ aspl: action state pair list
+    """ aspi: action state pair iterator
     """
-    best = -INFINITY, None
     try:
         curr_state = aspi.next()
     except StopIteration:
@@ -47,16 +46,20 @@ def alphabeta_search(state, game):
         if cutoff_test(state, depth):
             return game.utility(state, depth)
         v = NEGINF
+        save_vs = []
         for (a, s) in game.successors(state, depth):
-            v = max(v, min_value(s, alpha, beta, depth+1))
+            curr_v = min_value(s, alpha, beta, depth+1)
+            save_vs.append(curr_v)
+            v = max(v, curr_v)
             if v >= beta:
                 game.report_short_circuit(a, depth)
                 break
-            if v > (INFINITY/100.0, 0):
+            if v > INFINITY/100.0:
                 # Game won, can't get better
                 game.report_short_circuit(a, depth)
                 break
             alpha = max(alpha, v)
+        game.report_vals(depth, save_vs)
         game.save_utility(state, depth, v)
         return v
 
@@ -64,16 +67,20 @@ def alphabeta_search(state, game):
         if cutoff_test(state, depth):
             return game.utility(state, depth)
         v = INF
+        save_vs = []
         for (a, s) in game.successors(state, depth):
-            v = min(v, max_value(s, alpha, beta, depth+1))
+            curr_v = max_value(s, alpha, beta, depth+1)
+            save_vs.append(curr_v)
+            v = min(v, curr_v)
             if v <= alpha:
                 game.report_short_circuit(a, depth)
                 break
-            if v < (-INFINITY/100.0, 0):
+            if v < -INFINITY/100.0:
                 # Game lost, can't get worse
                 game.report_short_circuit(a, depth)
                 break
             beta = min(beta, v)
+        game.report_vals(depth, save_vs)
         game.save_utility(state, depth, v)
         return v
 

@@ -37,6 +37,9 @@ class MockGame:
     def report_short_circuit(self, *args):
         pass
 
+    def report_vals(self, *args):
+        pass
+
 class AlphaBetaTest(unittest.TestCase):
     '''
     # TODO: Resurrect
@@ -101,14 +104,15 @@ class AlphaBetaTest(unittest.TestCase):
         action, value = alphabeta_search(state="S0", game=game)
         self.assertEquals(value, 2)
 
+    # !python pentai/ai/t_alpha_beta.py AlphaBetaTest.test_terminal_state
     def test_terminal_state(self):
         game = MockGame([
-            MockState("S0", (0,0), [(0,"S1"),(0,"S1")]),
-            MockState("S1", (1,0), [(0,"S2")]),
-            MockState("S2", (2,0), [(0,"S3")]),
-            MockState("S3", (3,0), [])], max_depth=4)
+            MockState("S0", 0, [(0,"S1"),(0,"S1")]),
+            MockState("S1", 1, [(0,"S2")]),
+            MockState("S2", 2, [(0,"S3")]),
+            MockState("S3", 3, [])], max_depth=4)
         action, value = alphabeta_search(state="S0", game=game)
-        self.assertEquals(value[0], 3)
+        self.assertEquals(value, 3.0)
 
 if __name__ == "__main__":
     unittest.main()

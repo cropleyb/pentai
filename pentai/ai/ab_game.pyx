@@ -2,10 +2,15 @@
 
 import pentai.ai.ab_state as ab_s_m
 from pentai.base.pente_exceptions import *
+from pentai.base.defines import *
 
 #import history_heuristic as hh_m
 import pentai.ai.killer_heuristic as kh_m
 import time
+
+import pentai.ai.choice_stats as cs_m
+
+choice_stats = cs_m.ChoiceStats()
 
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
@@ -57,6 +62,9 @@ class ABGame():
 
     def report_short_circuit(self, move, depth):
         self.heuristic_stats.report_short_circuit(move, depth)
+
+    def report_vals(self, depth, save_values):
+        choice_stats.report_vals(depth, save_values)
 
     def utility(self, state, depth):
         if depth >= 3:

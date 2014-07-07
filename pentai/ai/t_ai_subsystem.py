@@ -50,7 +50,7 @@ standard rules
 17. (5, 7)
 """
         self.game.load_game(game_str)
-        m = self.p2.do_the_search()
+        turn, prev_move, m = self.p2.do_the_search()
         self.assertEquals(m, (6,7))
 
     # !./t_ai_player.py AIPlayerSubsystemTest.test_dont_waste_a_pair
@@ -72,7 +72,7 @@ standard rules
 10. (5, 8)
 """
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertNotEquals(m, (6,5))
 
     def test_dodgy_move(self):
@@ -92,7 +92,7 @@ standard rules
 9. (6, 7)
 """
         self.game.load_game(game_str)
-        m = self.p2.do_the_search()
+        turn, prev_move, m = self.p2.do_the_search()
         self.assertNotEquals(m, (7,5))
         # Why not 9,7? i.e. why does 7,5 have a high score?
 
@@ -142,7 +142,7 @@ standard rules
 10. (7, 5)
 """
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertEquals(m, (9,7))
         """
 Black should respond 9,7
@@ -189,7 +189,7 @@ standard rules
 12. (10, 8)
 """
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertEquals(m, (8,7))
 
     # !./t_ai_subsystem.py AIPlayerSubsystemTest.test_strange
@@ -208,7 +208,7 @@ standard rules
 7. (4, 9)
 """
         self.game.load_game(game_str)
-        m = self.p2.do_the_search()
+        turn, prev_move, m = self.p2.do_the_search()
         self.assertEquals(m, (8,6))
 
     def test_draw(self): # TODO
@@ -302,7 +302,7 @@ standard rules
 80. (3, 1)
 """
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        ret = self.p1.do_the_search()
         self.assertEquals(self.game.finished(), True)
         self.assertEquals(self.game.get_won_by(), P1+P2)
 
@@ -345,9 +345,10 @@ standard rules
 31. (8, 0)
 """
         self.game.load_game(game_str)
-        m = self.p2.do_the_search()
+        turn, prev_move, m = self.p2.do_the_search()
         self.assertEquals(m, (8,1))
 
+    # !python pentai/ai/t_ai_subsystem.py AIPlayerSubsystemTest.test_pacifist
     def test_pacifist(self):
         self.p1.set_max_depth(4)
         game_str = \
@@ -372,7 +373,7 @@ standard rules
 16. (4, 6)
 """
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertEquals(m, (4,7))
 
     def test_another(self):
@@ -393,7 +394,7 @@ standard rules
 10. (6, 4)
 """
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertNotEquals(m, (4,6))
 
     def test_bother(self):
@@ -413,7 +414,7 @@ standard rules
 9. (6, 7)
 10. (6, 5)"""
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertNotIn(m, ((7,8),(5,8)))
 
     def test_block_one_end(self):
@@ -430,7 +431,7 @@ Standard rules
 6. (9, 3)
 7. (9, 6)"""
         self.game.load_game(game_str)
-        m = self.p2.do_the_search()
+        turn, prev_move, m = self.p2.do_the_search()
         self.assertIn(m, ((10,6),(5,6)))
 
     def atest_think_in_opponents_move(self):
@@ -441,7 +442,7 @@ Standard rules
 Standard rules
 1. (6, 6)"""
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertIsNone(m)
 
     # TODO
@@ -458,7 +459,7 @@ Standard rules
 5. (8, 9)
 6. (7, 9)"""
         self.game.load_game(game_str)
-        m = self.p1.do_the_search()
+        turn, prev_move, m = self.p1.do_the_search()
         self.assertNotEquals(m, (10,9))
 
 if __name__ == "__main__":

@@ -845,3 +845,36 @@ main thread:
 accesses to ob_db must go through a lock
 finished games must go through a Queue before being added to the ob_db
 
+Choice stats
+------------
+(to attempt to optimise search width & depth)
+
+Want:
+Best value was at:
+Depth v1  v2  v3  v4  v5  v6  v7  v8  v9
+  1   40  30  20   5   5
+
+And:
+Relative value to best:
+Depth v1  v2  v3  v4  v5  v6  v7  v8  v9
+  1   
+
+This is tricky because utility values can be -ve.
+Best value can be negative.
+
+We want to filter out moves that come later in the search order, if they are unlikely to improve the result.
+e.g. (in AB search):
+   if v < filter_threshold:
+       stop searching this branch
+(where filter_threshold is calculated with respect to the best move for this branch so far)
+
+filter_threshold = f(best move so far, unscaled filter threshold
+
+BV CV Ratio
+ 5  1   .2
+ 5  -1  -.2  OK
+
+BV: Best Value
+CV: Current Value
+(2 ** CV) / (2 ** BV)
+
