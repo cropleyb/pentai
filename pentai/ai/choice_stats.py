@@ -7,6 +7,8 @@ from pentai.base.defines import *
 MAX_MOVE_NUM = 30
 MAX_DEPTH = 30
 
+EXP_BASE = 1.01
+
 class ChoiceStats(object):
     def __init__(self):
         self.reset()
@@ -31,7 +33,7 @@ class ChoiceStats(object):
                 pass
 
         best_ind, best_val = self.save_best_ind(depth, save_values)
-        #self.save_rel_val(depth, save_values, best_ind, best_val)
+        self.save_rel_val(depth, save_values, best_ind, best_val)
 
     def save_best_ind(self, depth, save_values):
         for i, val in enumerate(save_values):
@@ -53,7 +55,8 @@ class ChoiceStats(object):
         min_val_before_best = min(save_values[:best_ind])
 
         try:
-            rv = (2.0 ** min_val_before_best) / (2.0 ** best_val)
+            #rv = (EXP_BASE ** min_val_before_best) / (EXP_BASE ** best_val)
+            rv = EXP_BASE ** (min_val_before_best - best_val)
         
             self.rel_val_to_best_val[depth].append(rv)
         except ZeroDivisionError:

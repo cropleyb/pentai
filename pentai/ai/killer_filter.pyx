@@ -20,8 +20,6 @@ class KillerFilter(object):
         self.vision = val
 
     def set_heuristic(self, heuristic):
-        print "in set_heuristic, %s" % heuristic
-        #st()
         self.heuristic = heuristic
 
     def set_max_moves_per_depth_level(self, mmpdl, narrowing, chokes=[]):

@@ -14,16 +14,12 @@ class HeuristicFilter(object):
         self.vision = 100
 
         self.heuristic = None
-        #print "in __init__"
-        #st()
         self.reset(orig, min_priority)
 
     def set_vision(self, val):
         self.vision = val
 
     def set_heuristic(self, heuristic):
-        print "in set_heuristic, %s" % heuristic
-        #st()
         self.heuristic = heuristic
 
     def set_max_moves_per_depth_level(self, mmpdl, narrowing, chokes=[]):
