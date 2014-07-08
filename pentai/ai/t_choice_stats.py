@@ -48,6 +48,7 @@ class ChoiceStatsTest(unittest.TestCase):
         bva3 = cs.get_best_vals_at(depth=3)
         self.assertEquals(bva3, [0,0,1,0,0,0])
 
+    '''
     def test_rel_val_list(self):
         cs = ChoiceStats()
         cs.report_vals(depth=0, save_values=[1,2,3,4,3,2,0])
@@ -78,18 +79,55 @@ class ChoiceStatsTest(unittest.TestCase):
         expected1 = (EXP_BASE ** 1) / (EXP_BASE ** 4)
         expected2 = (EXP_BASE ** 0) / (EXP_BASE ** 4)
         self.assert_almost_equals(rvl, [expected1, expected2])
+    '''
 
     # TODO: Neg vals, big vals
 
-    '''
-    # TODO
-    def test_report_safe_threshold(self):
+    def test_filtered_out_correctly(self):
         cs = ChoiceStats()
-        cs.report_vals(depth=2, save_values=[2,4,1,3,0])
-        cs.report_vals(depth=2, save_values=[1,2,3,2,2])
-        s_t = cs.safe_threshold(depth=2, best=3)
-        self.assertEquals(s_t, 1.0)
-    '''
+        cs.report_vals(depth=2, save_values=[2,4,1,3,2,3])
+        cs.report_vals(depth=2, save_values=[1,4,2,0,2])
+        fo_r = cs.filtered_ok_relative_to_best_n_worst(depth=2)
+        # vals: 3,2,3 from top list (from after 1)
+        # 2 from second (from after 0)
+        # i.e. 4 from 11
+        expected = 4.0 / 11.0
+        self.assertAlmostEquals(fo_r, expected)
 
+    def test_none_filtered_out_incorrectly(self):
+        cs = ChoiceStats()
+        cs.report_vals(depth=2, save_values=[2,4,1,3,2,3])
+        cs.report_vals(depth=2, save_values=[1,4,2,0,2])
+        fb_r = cs.filtered_bad_relative_to_best_n_worst(depth=2)
+        # vals: none from top list (from after 1)
+        # none from second (from after 0)
+        # i.e. 0 from 11
+        expected = 0.0 / 11.0
+        self.assertAlmostEquals(fb_r, expected)
+
+    def test_some_filtered_out_incorrectly(self):
+        cs = ChoiceStats()
+        cs.report_vals(depth=2, save_values=[2,4,1,3,5,3])
+        cs.report_vals(depth=2, save_values=[1,4,2,0,6,1])
+        fb_r = cs.filtered_bad_relative_to_best_n_worst(depth=2)
+        # vals: '1' from top list (from after 1)
+        # '6' from second (from after 0)
+        # i.e. 2 from 12
+        expected = 2.0 / 12.0
+        self.assertAlmostEquals(fb_r, expected)
+        #st()
+        #print cs
+
+    def test_filtered_thresh(self):
+        cs = ChoiceStats()
+        cs.report_vals(depth=2, save_values=[2,4,1,3,5])
+        cs.set_threshold(0.98)
+
+        #st()
+        ok, bad = cs.filtered_thresh(depth=2)
+        self.assertAlmostEquals(ok, 0.2)
+        self.assertAlmostEquals(bad, 0.2)
+        #print cs.f_t_disp()
+        
 if __name__ == "__main__":
     unittest.main()

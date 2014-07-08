@@ -106,8 +106,8 @@ class Match():
 
     def play_some_games(self):
 
-        #self.genome1.use_openings_book = False
-        #self.genome2.use_openings_book = False
+        self.genome1.use_openings_book = False
+        self.genome2.use_openings_book = False
         #self.genome2.use_net_captures = False
 
         #self.genome2.length_factor = 35
@@ -123,8 +123,10 @@ class Match():
         #self.genome2.filter_num = 5
         #self.genome2.narrowing = 3
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
-        #self.genome2.mmpdl = 15
-        #self.genome1.chokes = []
+        self.genome1.mmpdl = 15
+        self.genome2.mmpdl = 15
+        self.genome1.chokes = []
+        self.genome2.chokes = []
         #self.genome2.chokes = [(4,5)]
         #self.genome2.chokes = [(4,3)]
         #self.genome2.chokes = [(2,2)]
@@ -149,7 +151,7 @@ class Match():
         results = MatchResults()
         for game_length in range(2,7):
         #for game_length in range(2,5):
-        #for game_length in range(2,4):
+        #for game_length in range(2,3):
             #for board_size in [13]:
             for board_size in [13, 19]:
                 for first_player in [0, 1]:
@@ -165,7 +167,13 @@ class Match():
                         results.add(res)
 
         print results
-        print abg_m.choice_stats
+        cs = abg_m.choice_stats
+        print cs
+        cs.set_threshold(0.98)
+        print cs.f_t_disp()
+        st()
+
+#cs.filtered_bad_relative_to_best_n_worst(depth=2)
 
 import sys
 
@@ -182,6 +190,7 @@ import random
 import pstats, cProfile
 
 import gc
+
 
 if __name__ == "__main__":
     z_m.set_db("db.fs")

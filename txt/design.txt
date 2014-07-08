@@ -876,5 +876,40 @@ BV CV Ratio
 
 BV: Best Value
 CV: Current Value
-(2 ** CV) / (2 ** BV)
+(F ** CV) / (F ** BV)
+
+FT == EXP_BASE ** (CV - BV)
+...and where EXP_BASE is a constant very slightly above 1 to reduce overflow
+
+We want to find a value of FT that filters many bad moves out, but doesn't filter out many good moves that occur late in the ordering.
+
+It would be nice to have a table of these:
+
+filtered out correctly %
+    
+    ^
+    |
+    |
+    |
+    |
+    -------------> FT
+
+and:
+
+wrongly filtered out %
+    
+    ^
+    |
+    |
+    |
+    |
+    -------------> FT
+
+and maybe even chosen utility vs. best std. dev.
+
+There are (at least) two ways of filtering:
+- relative to the current best and worst value (yeah, ok, but not perfect)
+- relative to the current best and a chosen threshold
+  choose the threshold using knowledge of the actual best value
+
 
