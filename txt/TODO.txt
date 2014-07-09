@@ -51,8 +51,6 @@ white/black/either first option
 Beta release
 
 # Crash on iOS
-Try adding width 1 levels (* n) and see how it plays
-Game defaults should be updated from loading a game.
 Players showing up on both sides of setup screen.
 Split openings pack into a separate thread
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
