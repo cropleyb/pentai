@@ -66,10 +66,10 @@ class Match():
         self.games_mgr = GamesMgr()
         self.openings_book = OpeningsBook()
 
-    def set_up(self, game_length):
+    def set_up(self, game_length, p2_depth_boost=0):
         aif = AIFactory()
         self.genome1.max_depth = game_length
-        self.genome2.max_depth = game_length
+        self.genome2.max_depth = game_length + p2_depth_boost
         self.p1 = aif.create_player(self.genome1)
         self.p2 = aif.create_player(self.genome2)
 
@@ -125,9 +125,10 @@ class Match():
         #self.genome2.max_depth += 2 # Setting max_depth here doesn't work
         #self.genome1.mmpdl = 15
         #self.genome1.chokes = []
-        self.genome2.mmpdl = 15
-        self.genome2.chokes = []
-        self.genome2.bl_cutoff = True
+        #self.genome2.mmpdl = 15
+        #self.genome2.chokes = [(4,2),(6,1)]
+        self.genome2.chokes = [(3,1)]
+        #self.genome2.bl_cutoff = True
         #self.genome2.chokes = [(4,5)]
         #self.genome2.chokes = [(4,3)]
         #self.genome2.chokes = [(2,2)]
@@ -150,14 +151,15 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        #for game_length in range(2,7):
+        for game_length in range(6,7):
         #for game_length in range(2,5):
-        for game_length in range(2,3):
+        #for game_length in range(2,3):
+        #for game_length in range(3,4):
             #for board_size in [13]:
             for board_size in [13, 19]:
                 for first_player in [0, 1]:
                     for rules_type in ['s', 't']:
-                        self.set_up(game_length)
+                        self.set_up(game_length) #, 3)
                         players = [self.p1, self.p2]
                         second_player = 1 - first_player
                         res = self.play_one_game(board_size, rules_type,
