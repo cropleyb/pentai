@@ -47,7 +47,7 @@ def alphabeta_search(state, game):
             return game.utility(state, depth)
         v = NEGINF
         save_vs = []
-        for (a, s) in game.successors(state, depth):
+        for i, (a, s) in enumerate(game.successors(state, depth)):
             curr_v = min_value(s, alpha, beta, depth+1)
             save_vs.append(curr_v)
             v = max(v, curr_v)
@@ -59,8 +59,20 @@ def alphabeta_search(state, game):
                 game.report_short_circuit(a, depth)
                 break
             alpha = max(alpha, v)
-        game.report_vals(depth, save_vs)
+
+            if game.use_bl_cutoff():
+                if i == 0:
+                    best_val = v
+                    worst_val = v
+                else:
+                    if v > best_val:
+                        best_val = v
+                    elif v < worst_val:
+                        v = best_val
+                        break
+
         game.save_utility(state, depth, v)
+        game.report_vals(depth, save_vs) # Stats only
         return v
 
     def min_value(state, alpha, beta, depth):
@@ -68,7 +80,7 @@ def alphabeta_search(state, game):
             return game.utility(state, depth)
         v = INF
         save_vs = []
-        for (a, s) in game.successors(state, depth):
+        for i, (a, s) in enumerate(game.successors(state, depth)):
             curr_v = max_value(s, alpha, beta, depth+1)
             save_vs.append(curr_v)
             v = min(v, curr_v)
@@ -80,8 +92,20 @@ def alphabeta_search(state, game):
                 game.report_short_circuit(a, depth)
                 break
             beta = min(beta, v)
-        game.report_vals(depth, save_vs)
+
+            if game.use_bl_cutoff():
+                if i == 0:
+                    best_val = v
+                    worst_val = v
+                else:
+                    if v < best_val:
+                        best_val = v
+                    elif v > worst_val:
+                        v = best_val
+                        break
+
         game.save_utility(state, depth, v)
+        game.report_vals(depth, save_vs) # Stats only
         return v
 
     def cutoff_test(state, depth):

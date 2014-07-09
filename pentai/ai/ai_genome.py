@@ -18,6 +18,7 @@ class AIGenome(Persistent):
             "mmpdl": 9,
             "narrowing": 0,
             "chokes": ((4,5),),
+            "bl_cutoff": False,
             #"filter2": False,
             "filter_num": 1,
             "vision": 100,

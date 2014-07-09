@@ -58,29 +58,6 @@ class ChoiceStats(object):
     def save_all_vals(self, depth, save_values):
         self.all_vals[depth].append(save_values[:])
 
-    '''
-    # Need to save all values relative to the current best
-    def save_rel_vals(self, depth, save_values):
-
-        rvs_for_turn = []
-        for i, val in enumerate(save_values):
-            if i == 0:
-                best_val = val
-            else:
-                best_val = max(best_val, val)
-
-            try:
-                rv = EXP_BASE ** (val - best_val)
-                rvs_for_turn.append(rv)
-            except ZeroDivisionError:
-                pass
-        rvs_for_d = self.rel_val_to_best_val[depth]
-        rvs_for_d.append(rvs_for_turn)
-
-    def get_rel_vals(self, depth):
-        return self.rel_val_to_best_val[depth]
-    '''
-
     def save_best_last_filtered(self, depth, save_values):
         triggered = False
         for i, val in enumerate(save_values):

@@ -47,6 +47,11 @@ class AIFactory: # TODO: These are just functions
         except AttributeError:
             p_key = genome.key
         p.p_key = p_key
+
+        try:
+            p.bl_cutoff = genome.bl_cutoff
+        except AttributeError:
+            p.bl_cutoff = False
         
         if genome.use_openings_book:
             ob = ob_m.instance

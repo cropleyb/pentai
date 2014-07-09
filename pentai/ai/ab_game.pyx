@@ -19,6 +19,7 @@ class ABGame():
         utility_calculator = player.utility_calculator
         self.max_depth = player.max_depth
         self.force_depth = player.force_depth
+        self.bl_cutoff = player.bl_cutoff
         # Another failed experiment or two...
         #self.heuristic_stats = hh_m.HistoryHeuristicStats()
         self.heuristic_stats = kh_m.KillerHeuristicStats()
@@ -65,6 +66,9 @@ class ABGame():
 
     def report_vals(self, depth, save_values):
         choice_stats.report_vals(depth, save_values)
+
+    def use_bl_cutoff(self):
+        return self.bl_cutoff
 
     def utility(self, state, depth):
         if depth >= 3:

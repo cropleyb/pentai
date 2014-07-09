@@ -40,6 +40,9 @@ class MockGame:
     def report_vals(self, *args):
         pass
 
+    def use_bl_cutoff(self):
+        return False
+
 class AlphaBetaTest(unittest.TestCase):
     '''
     # TODO: Resurrect
