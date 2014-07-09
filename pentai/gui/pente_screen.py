@@ -381,6 +381,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def perform(self, dt):
         game = self.game
+        move = None
         while not self.action_queue.empty():
             action = self.action_queue.get()
             if not game.is_live():
