@@ -40,6 +40,7 @@ class PentAIApp(App):
     def __init__(self, *args, **kwargs):
         self.debug = False
         super(PentAIApp, self).__init__(*args, **kwargs)
+        self.defaults = None
         #if True:
         if not "db.fs" in os.listdir(self.user_data_dir):
             log.info("Copying db")
@@ -114,6 +115,11 @@ class PentAIApp(App):
             self.game = game
         self.setup_screen.alter_game(self.game)
         self.root.current = "Setup"
+
+    def get_game_defaults(self):
+        if not self.defaults:
+            self.defaults = misc().setdefault("game_defaults", GameDefaults())
+        return self.defaults
 
     def load_game_file(self, full_path=None):
         if full_path != None:

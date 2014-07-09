@@ -34,6 +34,9 @@ class GamesScreen(Screen):
             # Ignore it
             return
         game = self.gm.get_game(self.selected_gid)
+
+        self.app.get_game_defaults().add_game(game)
+
         self.clear_selected()
         self.app.start_game(game, self.size)
 
