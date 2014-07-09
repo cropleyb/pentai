@@ -4,6 +4,7 @@ from kivy.uix.screenmanager import Screen
 import pentai.base.rules as r_m
 from pentai.base.defines import *
 from pentai.base.pente_exceptions import *
+import pentai.base.logger as log
 
 import pentai.db.misc_db as m_m
 from pentai.gui.game_defaults import *
@@ -21,8 +22,6 @@ class SetupScreen(Screen):
         self.game = None
         self.repop = False
         self.initialised = False
-        self.defaults = misc().setdefault("game_defaults", GameDefaults())
-        #self.defaults = misc()["game_defaults"] = GameDefaults()
             
         # Updating a player name triggers set_player_name
         func = lambda v,dt: self.set_player_name(P1, v.text)
@@ -42,6 +41,7 @@ class SetupScreen(Screen):
         if not self.initialised:
             self.initialised = True
 
+        self.defaults = self.app.get_game_defaults()
         self.set_GUI_from_game(self.defaults)
         self.populate_all_players()
 
@@ -98,18 +98,10 @@ class SetupScreen(Screen):
         self.game = game
         self.set_defaults_from_game(game)
         self.set_GUI_from_game(self.game)
-
-        # TODO - set defaults
-
         self.ids.start_game_id.text = "Resume Game"
 
-    def set_defaults_from_game(self, g):
-        p1_t = g.get_player_type(P1)
-        p1_n = g.get_player_name(P1)
-        p2_t = g.get_player_type(P2)
-        p2_n = g.get_player_name(P2)
-
-        self.defaults.play_game((p1_t,p1_n), (p2_t, p2_n), g.get_rules())
+    def set_defaults_from_game(self, game):
+        self.defaults.add_game(game)
 
     def set_up_game_from_GUI(self):
         try:
