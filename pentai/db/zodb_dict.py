@@ -21,11 +21,13 @@ class DBConn(object):
         if self.zdbroot:
             return
         fp = self.get_filepath()
-        lock_file_path = fp + ".lock"
-        try:
-            os.unlink(lock_file_path)
-        except OSError:
-            pass
+        for ext in (".lock", ".index"):
+            # Don't need index yet, and lock file it a pain if we crashed
+            lock_file_path = fp + ext
+            try:
+                os.unlink(lock_file_path)
+            except OSError:
+                pass
         storage = FileStorage.FileStorage(fp)
         self.db = DB(storage, cache_size=1000)
         self.conn = self.db.open()

@@ -18,28 +18,19 @@ def iam(m_str):
 def suite():
     global all_tests
     all_tests = unittest.TestSuite()
-    iam("t_mru_cache")
     iam("t_misc_db")
-    iam("t_op_pos")
-    iam("t_games_mgr")
+    iam("t_mru_cache")
     iam("t_ai_factory")
     iam("t_preserved_game")
     iam("t_players_mgr")
+    iam("t_op_pos")
+    iam("t_games_mgr")
     iam("t_openings_book")
 
     return all_tests
 
 def main():
-    st()
-
-    m_m.get_instance("test_")
-    z_m.set_db("test.db")
-
     unittest.TextTestRunner().run(suite())
-    
-    m_m.delete("test_")
-    os.unlink("test.db.most")
-    os.unlink("test.db.openings")
 
 if __name__ == "__main__":
     main()
