@@ -35,12 +35,17 @@ class SetupScreen(Screen):
         func = lambda v,dt: self.set_player_type(P2, v.val)
         self.ids.white_type_id.bind(val=func)
 
+        # Update the rules explanation text
+        func = lambda v,dt: self.show_rules_explanation()
+        self.ids.rules_id.bind(text=func)
+
         # TODO: Timer default
 
     def on_pre_enter(self):
         if not self.initialised:
             self.initialised = True
 
+        self.show_rules_explanation()
         self.defaults = self.app.get_game_defaults()
         self.set_GUI_from_game(self.defaults)
         self.populate_all_players()
@@ -77,6 +82,18 @@ class SetupScreen(Screen):
     def populate_player_list(self, pt, colour):
         rpl = self.pm.get_recent_player_names(pt, 30)
         self.player_names[colour] = sorted(rpl)
+
+    def show_rules_explanation(self):
+        text = self.ids.rules_id.text
+        re_id = self.ids.rules_explanation_id
+        if text == "Standard":
+            re_id.text = "Games can be won by capturing 5 pairs"
+        elif text == "Tournament":
+            re_id.text = "Same as Standard rules, but the 2nd move by the 1st player cannot be close to the centre"
+        elif text == "5-In-A-Row":
+            re_id.text = "Games can only be won with 5 in a row"
+        else:
+            assert(text == "Unknown Rules type")
 
     def time_control_text(self, tc):
         if tc == 0:

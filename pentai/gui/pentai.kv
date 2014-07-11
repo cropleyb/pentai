@@ -125,7 +125,7 @@
 <MenuScrollableLabel>:
     size_hint_y: .8
     GridLayout:
-	    # This GridLayout and its children are due to an issue with
+        # This GridLayout and its children are due to an issue with
         # Kivy textures that cannot be allocated because they are too big:
         # https://github.com/kivy/kivy/issues/2119
         id: gl_id
@@ -236,6 +236,10 @@
                 values: ['9', '13', '19']
                 size_hint: (1, None)
                 id: bs_id
+
+        SmallLabel:
+            size_hint: (1, .15)
+            id: rules_explanation_id
             
         GridLayout:
             cols: 1
