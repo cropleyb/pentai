@@ -1,5 +1,5 @@
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.switch import Switch
+from kivy.uix.checkbox import CheckBox
 from kivy.uix.slider import Slider
 from kivy.uix.label import Label
 from kivy.clock import Clock
@@ -14,7 +14,8 @@ class SmallLabel(Label):
     pass
 class TinyLabel(Label):
     pass
-
+class BigCheckBox(CheckBox):
+    pass
 
 class MySetting(GridLayout):
     text = StringProperty("Unset Text")
@@ -45,7 +46,7 @@ class SwitchSetting(MySetting):
         sl = SmallLabel(text=self.text)
         gl.add_widget(sl)
 
-        self.sw = Switch()
+        self.sw = BigCheckBox()
         self.sw.size_hint_x = .35
         self.sw.align = "center"
         gl.add_widget(self.sw)

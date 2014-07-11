@@ -31,6 +31,23 @@
     font_size: my.dp(30)
     bold: True
 
+<BigCheckBox@CheckBox>:
+
+    canvas:
+        Clear:
+        Color:
+            # Grey background
+            rgba: .6, .6, .6, .5
+        Rectangle:
+            size: my.dp(25), my.dp(25)
+            pos: int(self.center_x - my.dp(13)), int(self.center_y - my.dp(13))
+        Color:
+            rgba: .443, 0.848, 0.926, 1
+        Rectangle:
+            source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
+            size: my.dp(40), my.dp(40)
+            pos: int(self.center_x - my.dp(20)), int(self.center_y - my.dp(20))
+
 <CheckBoxList>:
     cols: 2
 
@@ -377,27 +394,10 @@
                 size_hint_x: .75
                 text: 'Openings Book'
 
-            CheckBox:
-                # TODO: Turn this into a BigCheckBox class
+            BigCheckBox:
                 id: openings_id
                 active: root.genome.use_openings_book
                 on_active: root.genome.use_openings_book = self.active
-
-                canvas:
-                    Clear:
-                    Color:
-                        # Grey background
-                        rgba: .6, .6, .6, .5
-                    Rectangle:
-                        size: my.dp(25), my.dp(25)
-                        pos: int(self.center_x - my.dp(13)), int(self.center_y - my.dp(13))
-                    Color:
-                        rgba: .443, 0.848, 0.926, 1
-                    Rectangle:
-                        # TODO: Is this a local file?
-                        source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
-                        size: my.dp(40), my.dp(40)
-                        pos: int(self.center_x - my.dp(20)), int(self.center_y - my.dp(20))
 
         SettingSpacer:
 
