@@ -16,7 +16,7 @@ ZL = z_m.ZL
 
 instance = None
 
-OPENINGS_DEPTH = 8
+OPENINGS_DEPTH = 10
 
 def circulate(a):
     if len(a) > 10:
