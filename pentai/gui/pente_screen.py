@@ -362,7 +362,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
             try:
                 won_by = self.game.get_won_by()
                 if won_by:
-                    self.ob.add_game(self.game, won_by)
+                    add_to_ob = self.config.get("PentAI", "add_games_to_ob")
+                    log.debug("Add games to openings book: %s" % add_to_ob)
+                    if add_to_ob:
+                        self.ob.add_game(self.game, won_by)
             except OpeningsBookDuplicateException:
                 pass
             self.get_audio().unmute()

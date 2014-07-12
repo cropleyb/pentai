@@ -912,4 +912,7 @@ There are (at least) two ways of filtering:
 - relative to the current best and a chosen threshold
   choose the threshold using knowledge of the actual best value
 
-
+Openings book building time
+---------------------------
+Button to build it now? How much? One part? All, but interruptable? Specifiable?
+Make them both specifiable in settings screen.

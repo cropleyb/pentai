@@ -119,8 +119,11 @@
         height: self.minimum_height
         size_hint_y: None
         SLPart:
-            text: root.text
+            text: root.text1
             id: label1_id
+        SLPart:
+            text: root.text2
+            id: label2_id
 
 <MenuScrollableLabel>:
     size_hint_y: .8
@@ -643,9 +646,6 @@
             text: "PentAI Settings"
             size_hint_y: .08
 
-        #GridLayout:
-        #    cols: 1
-        #    size_hint_x: 1
         ScrollView:
             size_hint_y: .8
             GridLayout:
@@ -653,8 +653,7 @@
                 cols: 1
                 size_hint_x: 1
                 height: self.minimum_height
-                #size_hint_y: 1.0
-                size_hint_y: 1.23
+                size_hint_y: 1.7
 
                 SettingSpacer:
 
@@ -724,6 +723,32 @@
                     values: ("Always White", "Always Black", "Keep the same")
                     desc: "Which colour goes first"
                     key: "first_player_colour"
+
+                SettingSpacer:
+
+                SectionLabel:
+                    text: "Openings Book"
+                    size_hint_y: .15
+
+                SettingSpacer:
+
+                SwitchSetting:
+                    text: "Add games"
+                    desc: "Add my completed games to the openings book"
+                    key: "add_games_to_ob"
+
+                Label:
+                    size_hint_y: .1
+
+                GridLayout:
+                    rows: 1
+                    size_hint_y: .15
+                    SmallLabel:
+                        text: "Build now:"
+                    Button:
+                        text: "Some"
+                    Button:
+                        text: "The rest"
 
                 SettingSpacer:
 
