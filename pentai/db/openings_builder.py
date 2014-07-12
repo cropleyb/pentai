@@ -111,32 +111,3 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     log.debug("Completed: section: %s; start game: %s" % (section, start))
     return False
 
-def main():
-    # TODO Move this to zodb_dict
-    db_path = os.path.join(".", "db.fs")
-    log.info("Loading DB from %s" % db_path)
-    lockfile_path = db_path + ".lock"
-    if os.path.isfile(lockfile_path):
-        os.unlink(lockfile_path)
-        log.info("Cleared DB lock")
-
-    z_m.set_db(db_path)
-
-    import sys
-
-    section = sys.argv[1]
-    start = sys.argv[2]
-
-    # HACK HACK HACK
-    user_data_dir = "/Users/cropleyb/Library/Application Support/pentai"
-
-    par_m.create_ai_players()
-
-    games_mgr = gm_m.GamesMgr()
-    openings_book = ob_m.OpeningsBook(games_mgr)
-
-    build(openings_book, user_data_dir, section, start, 100)
-
-if __name__ == "__main__":
-    main()
-
