@@ -36,23 +36,23 @@ utility function
 - diagonal versus straight weighting?
 
 Intro screen update in separate thread?
+Build openings book through explicit button
 Show Levels of AI players
 Win/Lose tally for that play session
 International player names
-take back bug - allows you to play for AI player sometimes
+# take back bug - allows you to play for AI player sometimes (Fixed?)
 rematch shows intro screen (toasted marshmellos)
 daily ratings
 overall chess ratings
 better graphics (theme) - ask on kivy forum
-rules type a separate screen with explanation
-win/loss sound options
-white/black/either first option
+AI player help screen isn't scrolling on iOS: popup intercepting scroll?
+AI player help screen dark grey background instead of black
 
 Beta release
 
 # Crash on iOS
 Players showing up on both sides of setup screen.
-Split openings pack into a separate thread
+#Split openings pack into a separate thread
 Icon for the app: game screen with PentAI sideways on the left: https://developer.apple.com/library/ios/documentation/userexperience/conceptual/mobilehig/IconMatrix.html
 opening move candidate iterators for variety
 unittest on iOS
@@ -60,8 +60,6 @@ Hibernate with PentAI running -> Heavy CPU?
 Hang when finishing with Escape? Don't use escape?!
 Delete human player
 Delete finished games?
-Order computer players alphabetically
-Repopulate other player list
 iPhone/iPod version
 Delete computer player
 Add libpente.a and libzodb.a onto the link line from tools scripts? Grep tools source for how it does it for kivy etc.
