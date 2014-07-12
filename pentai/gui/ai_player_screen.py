@@ -105,7 +105,7 @@ class AIPlayerScreen(Screen):
         self.refresh_names()
 
     def show_help(self):
-        help_text = """
+        help_text1 = """
 You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
 
 There are several settings that can be adjusted for a given Artificial Intelligence (AI) player profile:
@@ -113,13 +113,14 @@ There are several settings that can be adjusted for a given Artificial Intellige
     Vision: How often does the AI see the better move possibilities?
     Openings book: Should the AI be able to refer to previous games?
     Lines/Captures: How much value should the AI place on lines versus captures?
-    Judgement: How well should the AI judge the value of positions?
+    Judgement: How well should the AI judge the value of positions?"""
 
+        help_text2 = """
 When you have finished editing, click on the Save button.
 
 Several profiles are included, have a look at and experiment with their configurations, or create your own. The AI players starting with a capital letter increase in difficulty alphabetically. The players in *Asterisks* are special.
 
 """
-        st = ScrollableLabel(text=help_text)
+        st = ScrollableLabel(text1=help_text1, text2=help_text2)
         MessagePopup(title='Help', content=st).open()
 		
