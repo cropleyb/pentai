@@ -46,7 +46,7 @@ class MenuScreen(Screen):
         self.about_text5 = \
 """- Alan Morris for the wonderful voiceover
 - Marion and Noel Lodge for their constant support and feedback
-- Thad Spreg for his expert Pente insights
+- Thad Spreg, Lupolo and del, for their expert Pente insights
 - Mark Mammel for helpful discussions about implementing Pente strategy
 - Annette Campbell for inspiring me to write this in the first place
 - Sascha, Jespah and Arwen for their comments on "The Sod"
