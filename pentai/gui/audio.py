@@ -79,10 +79,12 @@ class Audio():
             self.play_sound(["tick", fn])
 
     def win(self):
-        self.game_over_sound = self.play_sound(["win", "win"])
+        if self.config.getint("PentAI", "win_loss_sound"):
+            self.game_over_sound = self.play_sound(["win", "win"])
 
     def lose(self):
-        self.game_over_sound = self.play_sound(["lose", "lose"])
+        if self.config.getint("PentAI", "win_loss_sound"):
+            self.game_over_sound = self.play_sound(["lose", "lose"])
 
     def hush_game_over_sound(self):
         try:
