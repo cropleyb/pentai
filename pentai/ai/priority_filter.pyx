@@ -87,13 +87,15 @@ class PriorityFilter(object):
         return "%s" % self.candidates_by_priority_and_colour[5]
 
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
-        if length == 5:
+        if length < 3:
+            # allow space for threat priority
+            length -= 1
+        elif length == 4:
+            # allow space for capture priority
+            length = 5
+        elif length == 5:
             # won already, ignore
             return
-        if length == 4: # allow space for capture priority
-            length = 5
-        if length < 3:  # allow space for threat priority
-            length -= 1
         slot = self.candidates_by_priority_and_colour[length][colour]
         for pos in pos_list:
             assert pos[0] >= 0
