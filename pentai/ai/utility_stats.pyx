@@ -23,6 +23,8 @@ class UtilityStats(object):
             # Manual deep copy
             pl = parent.lines
             self.lines = [None, pl[P1][:], pl[P2][:]]
+            pstl = parent.sub_type_lines
+            self.sub_type_lines = [None, pstl[P1][:], pstl[P2][:]]
             self.takes = parent.takes[:]
             self.threats = parent.threats[:]
             self.enclosed_four = parent.enclosed_four[:]
@@ -32,6 +34,7 @@ class UtilityStats(object):
 
     def reset(self):
         self.lines = [None, [0] * 5, [0] * 5]
+        self.sub_type_lines = [None, [0] * 15, [0] * 15]
         self.takes = [0, 0, 0]
         self.threats = [0, 0, 0]
         self.enclosed_four = [0, 0, 0]
@@ -39,12 +42,14 @@ class UtilityStats(object):
             self.search_filter.reset()
 
     def __repr__(self):
-        return "Lines: %s, Takes: %s, Threats: %s, Best: %s" % \
-                (self.lines, self.takes, self.threats, self.search_filter)
+        return "Lines: %s, SubTypes: %s, Takes: %s, Threats: %s, Best: %s" % \
+                (self.lines, self.sub_type_lines, self.takes, self.threats, self.search_filter)
 
     # This is called LOTS of times
-    def report_length_candidate(self, colour, length, ind_list, inc):
+    def report_length_candidate(self, colour, length, sub_type, ind_list, inc):
         self.lines[colour][length-1] += inc
+        stl_ind = (length-1)*3 + sub_type
+        self.sub_type_lines[colour][stl_ind] += inc
 
         pos_list = [self.i_to_p(i, self.s_num) for i in ind_list]
 
