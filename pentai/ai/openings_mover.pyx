@@ -15,12 +15,14 @@ class OpeningsMover(object):
 
         search_colour = self.game.to_move_colour()
         other_colour = opposite_colour(search_colour)
-        move_games = self.o_book.get_move_games(self.game)
+        move_games = list(self.o_book.get_move_games(self.game))
+        ri = random.randint(0,len(move_games))
+        mg2 = move_games[ri:] + move_games[:ri]
 
         total_score = .1 # For fall through to default search
 
         score_moves = []
-        for move, data, secondary in move_games:
+        for move, data, secondary in mg2:
             if not self.game.is_live():
                 log.info("Interrupted opening book search")
                 return
