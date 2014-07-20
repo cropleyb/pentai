@@ -25,7 +25,7 @@ bionoid? inclement? mmammel?
 Great :) You have an iPad? I will need your email address to send a TestFlight invite. Once you get that and register your device, I need to load that into a "profile" and then build a version of my app with that profile in it, and upload it to TestFlight again.
 
 Improve strength:
-Openings book
+Openings book - Manual Tweak? Filter out worst moves
 optimise
 search alg.
 - iterative deepening
@@ -34,6 +34,9 @@ search alg.
 utility function
 - fukami
 - diagonal versus straight weighting?
+- different utility for different spacings of same length lines
+- centeredness
+- hammer formation
 
 Intro screen update in separate thread?
 Build openings book through explicit button

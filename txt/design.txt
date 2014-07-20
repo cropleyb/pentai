@@ -916,3 +916,70 @@ Openings book building time
 ---------------------------
 Button to build it now? How much? One part? All, but interruptable? Specifiable?
 Make them both specifiable in settings screen.
+
+New AI model
+------------
+Need to distinguish between different ways of getting n pieces out of 5:
+e.g.: 2 in a row: ...XX or ..X.X or .X..X or X...X
+Hmmm. ..XXX.. is much more valuable than ..XXXO + OXXX.. How to code this?
+The current code matches blocks of 5 for line counts, 4 for captures
+
+Also, the suggested moves (empty points) should be suggested in a better order, not just L to R.
+e.g. cbXaX not abXcX
+If there are a couple of these, the overall search order should be:
+ecXaX    fdXbX
+
+Is .X.X. worth more than ..X.X ?
+It depends on what is past the end of that block.
+
+How about 2D features, such as the Hammer or parallel lines?
+Nearness to the centre, initiative/momentum,...
+Add a high level feature class?
+
+Length lookup table is currently storing:
+            colour, length, empty_list
+Rather than storing a length, we need to store a pattern id, e.g.:
+11 for XX
+101 for X.X
+1001 for X..X
+10001 for X...X
+or perhaps the distances between the pieces?
+0 XX
+1 X.X
+2 X..X
+3 X...X
+
+00 XXX
+10 X.XX or X.XX
+20 X..XX or XX..X
+11 X.X.X
+
+Best to get them into priority order first?
+(utility function will map these to values)
+
+X.X   21
+XX    22
+X..X  23
+X...X 24
+XOO.X
+XXOO.
+
+XXX..   31
+.XXX.   31
+..XXX   31
+We could combine these 3 into a different priority level - higher level feature?
+
+X.XX or X.XX 32
+X.X.X 33
+X..XX or XX..X 34
+
+.XXXX. 41
+XXXX. or .XXXX 42
+.O.XXX.
+.OO.XXX.
+
+How to match for different length 1D patterns?
+Or should I just make some special code for X.X and XXX?
+
+View old gid
+------------
