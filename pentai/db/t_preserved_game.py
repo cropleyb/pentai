@@ -48,8 +48,6 @@ class PreservedGameTest(unittest.TestCase):
         self.assertEquals(len(pg.moves), 1)
         self.assertEquals(pg.moves[0], (7,3))
 
-        self.assertEquals(pg.won_by, 0)
-
     def test_restore_game(self):
         genome1 = AIGenome("Marjory")
         genome1.chokes = [(4,3),(5,1)]
@@ -83,8 +81,6 @@ class PreservedGameTest(unittest.TestCase):
 
         self.assertEquals(len(orig_game.move_history), 1)
         self.assertEquals(orig_game.move_history[0], (8,1))
-
-        self.assertEquals(orig_game.get_won_by(), P1)
 
         self.assertEquals(orig_game.resume_move_number, 1)
 

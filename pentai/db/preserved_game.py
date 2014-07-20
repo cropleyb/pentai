@@ -16,7 +16,6 @@ class PreservedGame(Persistent):
             #self.ratings = (None, p1.get_rating(), p2.get_rating())
             self.ratings = (None, game.get_rating(P1),
                                   game.get_rating(P2))
-            self.won_by = game.get_won_by()
             self.moves = tuple(game.move_history)
             self.times = tuple(game.time_history)
             self.resume_move_number = game.resume_move_number
@@ -63,12 +62,7 @@ class PreservedGame(Persistent):
         orig_game = Game(r_m.Rules(*self.rules), p1, p2)
         orig_game.game_id = self.game_id
         orig_game.date = self.date
-        try:
-            won_by = self.won_by
-        except AttributeError:
-            # Backward compatibility
-            won_by = self.winner
-        orig_game.set_won_by(won_by)
+
         orig_game.move_history = list(self.moves)
         try:
             orig_game.time_history = list(self.times)
