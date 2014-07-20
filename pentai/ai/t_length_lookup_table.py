@@ -403,7 +403,7 @@ class CandidateReportingTest(unittest.TestCase):
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),2)
         ca.mockCheckCall(0, 'report_length_candidate', P1, 3, 1, [1,3], 1)
-        ca.mockCheckCall(1, 'report_length_candidate', P1, 2, 2, [1,3,5], 1)
+        ca.mockCheckCall(1, 'report_length_candidate', P1, 2, 2, [3,1,5], 1)
 
     def test_report_a_white_four(self):
         self.process_substrips_for_str("WW WW")
@@ -431,19 +431,19 @@ class CandidateReportingTest(unittest.TestCase):
         ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),2)
-        ca.mockCheckCall(0, 'report_length_candidate', P2, 1, 0, [0,2,3,4], 1)
-        ca.mockCheckCall(1, 'report_length_candidate', P2, 1, 0, [2,3,4,5], 1)
+        ca.mockCheckCall(0, 'report_length_candidate', P2, 1, 0, [2,3,0,4], 1)
+        ca.mockCheckCall(1, 'report_length_candidate', P2, 1, 0, [3,2,4,5], 1)
 
     def test_report_five_ones(self):
         self.process_substrips_for_str("    B    ")
         ca = self.util_stats
         calls = ca.mockGetAllCalls()
         self.assertEquals(len(calls),5)
-        ca.mockCheckCall(0, 'report_length_candidate', P1, 1, 0, [0,1,2,3], 1)
-        ca.mockCheckCall(1, 'report_length_candidate', P1, 1, 0, [1,2,3,5], 1)
-        ca.mockCheckCall(2, 'report_length_candidate', P1, 1, 0, [2,3,5,6], 1)
-        ca.mockCheckCall(3, 'report_length_candidate', P1, 1, 0, [3,5,6,7], 1)
-        ca.mockCheckCall(4, 'report_length_candidate', P1, 1, 0, [5,6,7,8], 1)
+        ca.mockCheckCall(0, 'report_length_candidate', P1, 1, 0, [2,1,3,0], 1)
+        ca.mockCheckCall(1, 'report_length_candidate', P1, 1, 0, [3,2,1,5], 1)
+        ca.mockCheckCall(2, 'report_length_candidate', P1, 1, 0, [3,5,2,6], 1)
+        ca.mockCheckCall(3, 'report_length_candidate', P1, 1, 0, [5,6,3,7], 1)
+        ca.mockCheckCall(4, 'report_length_candidate', P1, 1, 0, [6,5,7,8], 1)
 
 if __name__ == "__main__":
     unittest.main()

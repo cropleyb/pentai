@@ -36,6 +36,8 @@ class AIGenome(Persistent):
             "scale_pob": False,
             "force_depth": 0,
             "judgement": 100,
+            "length_boosts": [], # length, boost
+            "sub_type_boosts": [], # length, sub_type, boost):
         }
         super(AIGenome, self).__setattr__("__dict__", defaults)
 

@@ -15,6 +15,8 @@ import pentai.ai.priority_filter as pf_m # TODO: NullFilter
 import pentai.ai.ai_genome as aig_m
 import pentai.db.ai_factory as aif_m # Hmmm. Shouldn't need to use this here
 
+import itertools
+
 inf = INFINITY / 1000
 
 class UtilityTest(unittest.TestCase):
@@ -52,11 +54,18 @@ class UtilityTest(unittest.TestCase):
         util = self.s.utility()
         return util
 
+    def set_lines(self, pn, lines):
+        us = self.s.utility_stats
+        us.lines[pn] = lines
+        st_lines = [[l, 0, 0] for l in lines]
+        st_lines = list(itertools.chain.from_iterable(st_lines))
+        us.sub_type_lines[pn] = st_lines
+
     def set_black_lines(self, lines):
-        self.s.utility_stats.lines[P1] = lines
+        self.set_lines(P1, lines)
 
     def set_white_lines(self, lines):
-        self.s.utility_stats.lines[P2] = lines
+        self.set_lines(P2, lines)
 
     def set_takes(self, black_takes, white_takes):
         self.s.utility_stats.takes = [0, black_takes, white_takes]
@@ -103,6 +112,7 @@ class UtilityTest(unittest.TestCase):
         u2 = self.utility()
         self.assertGreater(u2, u1)
 
+    # !python ./pentai/ai/t_utility.py UtilityTest.test_utility_single_stone_better_than_none
     def test_utility_single_stone_better_than_none(self):
         self.set_black_lines([20,0,0,0,0])
         self.set_white_lines([0,0,0,0,0])

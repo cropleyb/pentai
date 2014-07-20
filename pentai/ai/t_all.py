@@ -18,6 +18,7 @@ def suite():
     iam("t_alpha_beta")
     iam("t_ab_state")
     iam("t_length_lookup_table")
+    iam("t_length_factor")
     iam("t_utility")
     iam("t_ai_player")
     iam("t_take_counter")

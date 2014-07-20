@@ -20,6 +20,8 @@ FIVE_OCCS_MASK = (4 ** 5 - 1)
 global length_lookup
 length_lookup = {}
 
+candidate_lookup = [3,1,0,2,4]
+
 def extend_and_store_lookups(occ, depth, occ_val, length, colour, empty_list, rep_str):
     """
     occ is the colour of the stone (or EMPTY) that we are extending by
@@ -48,7 +50,10 @@ def extend_and_store_lookups(occ, depth, occ_val, length, colour, empty_list, re
             assert length <= 5
             rep_str = rep_str + ">"
             sub_type = calc_subtype_from_empty_list(empty_list)
-            length_lookup[occ_val] = colour, length, sub_type, sorted(empty_list), rep_str
+            candidates = [(candidate_lookup[i], i) for i in empty_list]
+            candidates.sort()
+            candidates = [i for o,i in candidates]
+            length_lookup[occ_val] = colour, length, sub_type, candidates, rep_str
     else:
         # Recursively add to the stretch
         build_and_store_values(depth-1, occ_val, length, colour, empty_list[:], rep_str)
