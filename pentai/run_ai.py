@@ -90,6 +90,9 @@ class Match():
         winner_name = self.game.winner_name()
         winner = self.game.get_won_by()
 
+        if self.games_mgr:
+            self.games_mgr.save(self.game)
+            self.games_mgr.sync_all()
         if self.openings_book:
             self.openings_book.add_game(self.game, winner)
         
@@ -105,17 +108,62 @@ class Match():
                 board_size, board_size, p1.max_depth, tt), winner, winner_name, ratio
 
     def play_some_games(self):
-
         self.genome1.use_openings_book = False
         self.genome2.use_openings_book = False
-        #self.genome2.use_net_captures = False
 
-        #self.genome2.length_factor = 35
-        #self.genome2.take_score_base = 70
-        #self.genome2.capture_score_base = 350 # Try this again for high depth
-        #self.genome2.threat_score_base = 25 # Wins more for shallower depth
+        #self.genome1.move_factor = 5
+        #self.genome2.use_net_captures = False
+        #self.genome1.move_factor = 5
+
+        l_boosts = []
+        l_boosts.append((2,1.15))
+        #l_boosts.append((3,1.05))
+        #l_boosts.append((4,1.1))
+        l_b1 = l_boosts[:]
+        self.genome1.length_boosts = l_b1
+        l_boosts.append((3,1.05))
+        #l_boosts.append((4,1.05))
+        self.genome2.length_boosts = l_boosts
+        '''
+        #self.genome2.move_factor = 5
+
+        # All round config:
+        # self.genome1.take_score_base = 72
+        self.genome2.take_score_base = 72
+        # self.genome1.length_factor = 32
+        self.genome2.length_factor = 32
+        #self.genome2.threat_score_base = 20 # OK as is.
+        # self.genome1.capture_score_base = 350 # Try this again for high depth
+        self.genome2.capture_score_base = 350 # Try this again for high depth
+        # self.genome1.enclosed_four_base = 315
+        self.genome2.enclosed_four_base = 315
+
+        l_boosts = []
+        l_boosts.append((2,1.15))
+        l_boosts.append((3,1.05))
+        l_boosts.append((4,1.1))
+        l_b1 = l_boosts[:]
+        # self.genome1.length_boosts = l_b1
+        #l_boosts.append((4,1.05))
+        self.genome2.length_boosts = l_boosts
+
+        st_boosts = []
+        st_boosts.append((2,0,0.95))
+        st_boosts.append((2,2,1.1))
+        st_boosts.append((3,0,1.1))
+        st_boosts.append((3,2,1.1))
+        st_boosts.append((4,0,1.1))
+        st_boosts.append((4,2,.75))
+        st_b1 = st_boosts[:]
+        # self.genome1.sub_type_boosts = st_b1
+        #st_b1.append((2,0,0.95))
+        self.genome2.sub_type_boosts = st_boosts
+        '''
+
+        #"length_boosts": [], # length, boost
+        #"sub_type_boosts": [], # length, sub_type, boost):
+
         #self.genome1.enclosed_four_base = 300
-        #self.genome2.enclosed_four_base = 500
         #self.genome1.vision = 0.98
         #self.genome2.vision = 0.98
 
@@ -127,7 +175,7 @@ class Match():
         #self.genome1.chokes = []
         #self.genome2.mmpdl = 15
         #self.genome2.chokes = [(4,2),(6,1)]
-        self.genome2.chokes = [(3,1)]
+        #self.genome2.chokes = [(3,1)]
         #self.genome2.bl_cutoff = True
         #self.genome2.chokes = [(4,5)]
         #self.genome2.chokes = [(4,3)]
@@ -146,19 +194,22 @@ class Match():
         #self.genome2.scale_pob = True
         #self.genome2.move_factor = 50
         #self.genome2.move_factor = 45
-        #self.genome2.move_factor = 5
+        #self.genome2.move_factor = 8
+        #self.genome2.move_factor = 10
         #self.genome2.force_depth = 4 FAIL ;)
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        for game_length in range(6,7):
-        #for game_length in range(2,5):
-        #for game_length in range(2,3):
+        #for game_length in range(6,8):
+        #for game_length in range(2,6):
+        #for game_length in range(2,8):
+        for game_length in range(2,3):
         #for game_length in range(3,4):
-            #for board_size in [13]:
-            for board_size in [13, 19]:
+            for board_size in [19]:
+            #for board_size in [13, 19]:
                 for first_player in [0, 1]:
-                    for rules_type in ['s', 't']:
+                    #for rules_type in ['s', 't']:
+                    for rules_type in ['t']:
                         self.set_up(game_length) #, 3)
                         players = [self.p1, self.p2]
                         second_player = 1 - first_player
@@ -174,7 +225,7 @@ class Match():
         print cs
         cs.set_threshold(0.98)
         print cs.f_t_disp()
-        st()
+        #st()
 
 #cs.filtered_bad_relative_to_best_n_worst(depth=2)
 

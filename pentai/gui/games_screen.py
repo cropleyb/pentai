@@ -15,11 +15,21 @@ class GamesScreen(Screen):
         super(GamesScreen, self).__init__(*args, **kwargs)
 
         self.clear_selected()
+        self.show_finished = False
+
+    def set_show_finished(self, val):
+        self.show_finished = val
+        title_str = "In Progress"
+        if val:
+            title_str = "Recently Finished"
+        self.ids.title_id.text = title_str
+        # TODO: Set title.
 
     def games_view(self):
         return self.ids.games_view
 
     def on_enter(self):
+        self.games_view().set_screen(self)
         self.games_view().refresh()
         self.clear_selected()
 
@@ -104,7 +114,10 @@ class GamesView(gl_m.GridLayout):
         Rules type
         """
 
-    def on_enter(self):
+    def set_screen(self, s):
+        self.screen = s
+
+    def on_pre_enter(self):
         self.fill_er_up()
 
     def refresh(self):
@@ -157,7 +170,10 @@ class GamesView(gl_m.GridLayout):
         # TODO: Another hack - parent.parent
         gm = self.parent.parent.gm
         pm = gm.get_players_mgr()
-        games = gm.get_all_unfinished_preserved()
+        if self.screen.show_finished:
+            games = gm.get_recently_finished()
+        else:
+            games = gm.get_all_unfinished_preserved()
 
         # TODO: The "if" is a hack
         games_dict = { g.game_id: game_data(g, pm) for g in games if g }

@@ -65,7 +65,8 @@ class PentAIApp(App):
     def show_pente_screen(self):
         self.root.set_current("Pente")
 
-    def show_games_screen(self, ignored=None):
+    def show_games_screen(self, ignored=None, finished=False):
+        self.games_screen.set_show_finished(finished)
         self.root.set_current("Games")
 
     def show_ai_screen(self, ignored=None):
@@ -264,15 +265,27 @@ class PentAIApp(App):
         self.root.add_widget(scr)
 
     def build(self):
+        log.debug("app build 1")
         ini_file = "pentai.ini"
+        #if True:
+        if False:
+            # Keep this for developing new config items
+            log.info("Copying init")
+            import shutil
+            dest = self.user_data_dir
+            shutil.copy(ini_file, dest)
+        log.debug("app build 2")
         self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
 
         root = ps_m.PScreenManager()
+        log.debug("app build 3")
         root.show_intro_screen()
         self.root = root
 
         self.audio = a_m.Audio(self.config)
+        log.debug("app build 4")
         self.audio.schedule_music()
+        log.debug("app build 5")
         
         Clock.schedule_once(self.build_more, 0.1)
 
@@ -291,7 +304,8 @@ class PentAIApp(App):
         self.openings_book = ob_m.OpeningsBook()
         log.debug("Created Book")
         
-        Clock.schedule_once(self.load_games, 0.01)
+        #Clock.schedule_once(self.load_games, 0.01)
+        Clock.schedule_once(self.create_screens, 0.01)
 
     def ob_timeout(self, ignored):
         log.debug("Intro Time is up")
@@ -311,10 +325,12 @@ class PentAIApp(App):
         else:
             log.info("About to pack DB")
             # Finished loading openings games. Pack the DB to reclaim space 
-            z_m.pack()
+            #z_m.pack()
+            # TODO
+            z_m.most.pack()
+            z_m.openings.pack()
             log.info("Done packing DB")
-            # Don't need this variable any more
-            del self.openings_builder_timeout
+            self.openings_builder_timeout = False
             Clock.schedule_once(self.create_screens, 0)
 
     def create_screens(self, ignored):

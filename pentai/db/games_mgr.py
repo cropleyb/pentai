@@ -2,11 +2,16 @@ import pentai.base.game as g_m
 import players_mgr
 import preserved_game as pg_m
 import zodb_dict as zd_m
+import misc_db as m_m
+import mru_cache as mru_m
 import os
 import pentai.base.gs_observer as gso_m
 
 from pentai.base.defines import *
 import pentai.base.logger as log
+
+def misc():
+    return m_m.get_instance()
 
 class GamesMgr(gso_m.GSObserver):
     # TODO: Borg pattern?
@@ -17,6 +22,8 @@ class GamesMgr(gso_m.GSObserver):
         self.id_lookup = zd_m.get_section(id_section)
         u_s = "unfinished"
         self.unfinished_db = zd_m.get_section(u_s)
+        f_k = "recently_finished"
+        self.finished_db = misc().setdefault(f_k, mru_m.MRUCache(30))
 
     def get_filename(self, key):
         if key.__class__ is g_m.Game:
@@ -130,11 +137,13 @@ class GamesMgr(gso_m.GSObserver):
         gid = g.key()
 
         if g.finished():
+            self.finished_db.add(gid)
             try:
                 del self.unfinished_db[gid]
             except KeyError:
                 pass
         else:
+            self.finished_db.delete(gid)
             self.unfinished_db[gid] = gid
         zd_m.sync()
 
@@ -154,6 +163,14 @@ class GamesMgr(gso_m.GSObserver):
         ret = []
         for g_id in self.unfinished_db.iterkeys():
             log.debug("get_all_unfinished: %s" % g_id)
+            g = self.get_preserved_game(g_id, update_cache=False)
+            ret.append(g)
+        return ret
+
+    def get_recently_finished(self):
+        ret = []
+        for g_id in self.finished_db.top(30):
+            log.debug("get_recently_finished: %s" % g_id)
             g = self.get_preserved_game(g_id, update_cache=False)
             ret.append(g)
         return ret

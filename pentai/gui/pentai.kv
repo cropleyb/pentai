@@ -81,7 +81,8 @@
     GridLayout:
         cols: 1
         Label:
-            text: "Unfinished Games"
+            #text: "Unfinished Games"
+            id: title_id
             size_hint_y: .10
 
         GamesView:
@@ -183,6 +184,10 @@
             MyButton:
                 text: "In Progress"
                 on_release: root.app.show_games_screen()
+
+            MyButton:
+                text: "Recently Finished"
+                on_release: root.app.show_games_screen(finished=True)
     
             MyButton:
                 text: "Edit Human Players"
@@ -738,7 +743,7 @@
                     key: "add_games_to_ob"
 
                 Label:
-                    size_hint_y: .1
+                    size_hint_y: .07
 
                 GridLayout:
                     rows: 1
@@ -747,8 +752,10 @@
                         text: "Build now:"
                     Button:
                         text: "Some"
+                        on_press: root.app.load_games("ignored")
                     Button:
                         text: "The rest"
+                        on_press: print "The rest"
 
                 SettingSpacer:
 
