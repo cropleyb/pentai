@@ -10,6 +10,7 @@ class PreservedGame(Persistent):
             self.game_id = game.game_id
             self.rules = game.rules.key()
             self.date = game.get_date()
+            self.won_by = game.get_won_by()
             p1 = game.get_player(1)
             p2 = game.get_player(2)
             self.players = (None, p1.get_key(), p2.get_key())
@@ -33,7 +34,10 @@ class PreservedGame(Persistent):
         return r_m.get_type_name(self.rules[1])
 
     def get_won_by(self):
-        return self.won_by
+        try:
+            return self.won_by
+        except AttributeError:
+            return
 
     def __eq__(self, other):
         return self.key() == other.key()

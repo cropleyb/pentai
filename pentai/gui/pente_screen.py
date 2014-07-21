@@ -13,6 +13,7 @@ import audio as a_m
 from pentai.base.defines import *
 import pentai.base.logger as log
 import pentai.base.mock as mock
+import pentai.ai.assessor as as_m
 import pentai.gui.popup as popup
 import pentai.gui.config as cf_m
 import gui_clock as gc_m
@@ -775,6 +776,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.get_audio().mute()
         self.game.go_to_the_end()
         self.get_audio().unmute()
+
+    def assess(self):
+        # TODO: only in review mode
+        assessor = as_m.Assessor(self.game)
+        log.debug("calculating best move")
+        answer = assessor.calc_best_move(gui=self)
+        print answer
 
     def on_touch_down(self, touch):
         if touch.is_double_tap or touch.is_triple_tap:

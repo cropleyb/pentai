@@ -21,6 +21,12 @@ class Game(object):
         self.ratings = [None, None, None]
         self.live = True
 
+    def clone(self):
+        import copy
+        new_one = copy.copy(self)
+        new_one.current_state = gs_m.GameState(self)
+        return new_one
+
     def setup(self, rules=None, player1=None, player2=None):
         self.rules = rules
         if rules != None:

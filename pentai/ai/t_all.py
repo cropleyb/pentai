@@ -33,6 +33,7 @@ def suite():
     iam("t_standardise")
     iam("t_openings_mover")
     iam("t_choice_stats")
+    iam("t_assessor")
 
     return all_tests
 

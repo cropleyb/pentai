@@ -244,14 +244,18 @@ class PentAIApp(App):
                 self.games_screen.delete_game()
             return True
 
-        else:
-            if key == 115:
+        elif key == 115:
                 # 's' for setup
                 if self.root.current == "Pente":
                     # Go to setup page
                     # Probably not for production?
                     self.edit_game()
                     return True
+
+        elif key == 97: # 'a' for Assess
+            if self.root.current == "Pente":
+                self.pente_screen.assess()
+            return True
 
         return False
 

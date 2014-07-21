@@ -981,5 +981,19 @@ XXXX. or .XXXX 42
 How to match for different length 1D patterns?
 Or should I just make some special code for X.X and XXX?
 
-View old gid
+Evaluator II
 ------------
+
+1. show what the best move was (in review mode)
+2. on the screen
+- show which moves were clearly mistakes
+- show the line of moves that should have led to that best move evaluation. 
+  (forwards, backwards, choose line: best/actual)
+- the line of moves that led to the bad decision and the "best" move.
+- show components for the utility calculation
+- The "best" move should be calculated using a very high spec. player.
+
+UI
+- Select the position to evaluate using review mode.
+- Use keyboard to trigger the evaluation
+
