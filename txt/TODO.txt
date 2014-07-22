@@ -38,6 +38,7 @@ utility function
 - centeredness
 - hammer formation
 
+Assessor - use current position in review mode
 Intro screen update in separate thread?
 Build openings book through explicit button
 Show Levels of AI players
