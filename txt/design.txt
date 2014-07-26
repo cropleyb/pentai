@@ -997,3 +997,45 @@ UI
 - Select the position to evaluate using review mode.
 - Use keyboard to trigger the evaluation
 
+Annotation/Post-game analysis? Genetic Alg. for tuning?
+Tune genome to pick better values for given position utility stats?
+Target would be based on a deeper search
+
+"Bad moves" can be identified by a stronger AI, or by strong players.
+When a bad move is identified, I need to figure out why the actual move was
+given a better score than the best move. This (usually?) depends on the utility
+values that determined the chosen and best moves (from the AB search)
+Do a search for each of those two moves, and show the utility stats for each
+position. The Game State needs to be bubbled back to the top for each and printed, along with the move history
+
+NEW SEARCH
+Ideally, it should have an appropriate width to the search per position.
+The player who is behind must usually choose from less options (blocking/capturing/threatening).
+New priority filter
+When can we stop a search? PX has a threat at level n. If we 
+Budget search. Always search to even (or odd) depth level - if we run out of credit on an odd depth node, evaluate the first child.
+
+Open 3s must be blocked (solid and one-gap) as they can turn into a solid open 4; blocked 3s and spread 3s (type 0) don't need to be blocked as they can't.
+
+How to incrementally maintain length 5 and length 6/7 matches?
+..XXX.. 
+..XX.X..
+..X.XX..
+..XXX...
+...XXX..
+..XXXX..
+Special length 7 features?
+
+Extended Fukami
+
+Opponent Min response
+biggest  length
+threat
+2+x 4    win or take
+1 x 4    win, block or take
+take     3 type 1 or 2 (3)
+3+ x 3   block or threaten (adjust 3?)
+1|2 x 3  block or threaten, or attack with 2->3
+threat   defend
+2        
+1

@@ -3,6 +3,7 @@ from pentai.base.defines import *
 def max_moves_sample_func(depth):
     return 9
 
+
 class PriorityFilter2(object):
     def __init__(self, orig=None):
         self.reset(orig)
@@ -60,20 +61,37 @@ class PriorityFilter2(object):
     def priority_level(self, level, colour):
         return self.candidates_by_priority_and_colour[level][colour]
 
+    '''
+    # TODO?
+    Opponent Min response
+    biggest  length
+    threat
+	------------------------
+    2+x 4    win or take
+    1 x 4    win, block or take
+    take     create 3 type 1 or 2 (3), block 3?
+    3+ x 3   block or threaten (adjust 3+ threshold?)
+    1|2 x 3  block or threaten, or attack with 2->3
+    threat   defend
+    2        
+    1
+    n        n-1? for opponent?
+    '''
+
     def get_priority_levels(self, our_colour):
         their_colour = opposite_colour(our_colour)
 
         our_fours = self.priority_level(5, our_colour)
         if len(our_fours) > 0:
             # This will win
-            return [our_fours]
+            return [our_fours], True
 
         our_captures = self.get_captured(our_colour)
         our_takes = self.priority_level(4, our_colour)
 
         if our_captures >= 8 and len(our_takes) > 0:
             # This will win too
-            return [our_takes]
+            return [our_takes], True
 
         their_captures = self.get_captured(their_colour)
         their_takes = self.priority_level(4, their_colour)
@@ -81,7 +99,7 @@ class PriorityFilter2(object):
         if their_captures >= 8 and len(their_takes) > 0:
             # Block their takes, or capture one of the ends of an
             # attacker, or lose
-            return [our_takes, their_takes]
+            return [our_takes, their_takes], False
 
         their_fours = self.priority_level(5, their_colour)
 
@@ -89,22 +107,43 @@ class PriorityFilter2(object):
             if len(their_fours) > 1:
                 if len(our_takes) > 0:
                     # We will lose unless we capture
-                    return [our_takes]
+                    return [our_takes], False
                 else:
-                    # Might as well block one of them
-                    return [their_fours]
+                    # Might as well block one of them, can't stop 'em all
+                    return [their_fours], True
+
             # We will lose unless we block or capture 
-            return [their_fours, our_takes]
+            return [their_fours, our_takes], False
+
+        # if len(their_takes) > 0:
+        our_threes = self.priority_level(3, our_colour)
+        their_threes = self.priority_level(3, their_colour)
+        our_threats = self.priority_level(2, our_colour)
+        their_threats = self.priority_level(2, their_colour)
+
+        ret = [our_takes, their_takes, our_threes, their_threes, our_threats, their_threats]
+
+        #if len(their_threes) > 3 or len(their_threats) > 2 or len(our_threes) > 1 or len(our_threats) > 2:
+        if len(their_threes) > 3 or len(their_takes) > 1 or len(our_threes) > 2 or len(our_takes) > 1:
+            return ret, False
+
+        our_twos = self.priority_level(1, our_colour)
+        their_twos = self.priority_level(1, their_colour)
+
+        ret.extend([our_twos, their_twos])
+
+        if len(their_twos) > 3 or len(their_threats) > 1 or len(our_twos) > 2 or len(our_threats) > 1:
+            return ret, False
 
         ret = []
         for level in range(4, -1, -1):
             for colour in [our_colour, their_colour]:
                 ret.append(self.priority_level(level, colour))
-        return ret
+        return ret, False
 
     def get_iter(self, our_colour, depth=0, min_priority=0, tried={}): # min_priority is ignored
         their_colour = opposite_colour(our_colour)
-        candidate_slots = self.get_priority_levels(our_colour)
+        candidate_slots, one_poss = self.get_priority_levels(our_colour)
         
         tried = set()
         for slot in candidate_slots:
@@ -116,6 +155,8 @@ class PriorityFilter2(object):
                     if not pos in tried:
                         tried.add(pos)
                         yield pos
+                        if one_poss:
+                            return
                         if len(tried) >= self.max_moves_func(depth):
                             return
 

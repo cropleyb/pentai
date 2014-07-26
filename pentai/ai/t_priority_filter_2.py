@@ -58,10 +58,11 @@ class PriorityFilter2Test(unittest.TestCase):
         self.assertEquals(l[0],(3,2))
 
     def test_two_of_their_fours_no_take(self):
+        #st()
         self.arc(P2, 4, ((1,2),))
         self.arc(P2, 4, ((3,4),))
         l = list(self.pf2.get_iter(P1))
-        self.assertEquals(len(l), 2)
+        self.assertEquals(len(l), 1)
         # It doesn't matter which one we choose, we're lost
         # Evaluating this node should give the result
         # But we need to choose one or the other
@@ -219,7 +220,7 @@ class PriorityFilter2Test(unittest.TestCase):
         self.arc(P2, 2, ((8,8),(10,8),(12,8)), inc=1)
         self.arc(P2, 2, ((10,8),(12,8),(13,8)), inc=1)
         l = list(self.pf2.get_iter(P1))
-        self.assertGreater(len(l), 5)
+        self.assertEquals(len(l), 4)
         first_pair = ((5,6), (9,6))
         self.assertIn(l[0], first_pair)
         self.assertIn(l[1], first_pair)
