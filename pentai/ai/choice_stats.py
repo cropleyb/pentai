@@ -42,6 +42,8 @@ class ChoiceStats(object):
         self.save_all_vals(depth, save_values)
 
     def save_best_ind(self, depth, save_values):
+        best_val = 0
+        best_ind = 0
         for i, val in enumerate(save_values):
             if i == 0:
                 best_val = val
