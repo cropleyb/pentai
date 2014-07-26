@@ -38,7 +38,8 @@ utility function
 - centeredness
 - hammer formation
 
-Assessor - use current position in review mode
+Assessor - show best move on screen. Forward/Back through best history?
+Transition to review should copy game and make it the active game (temp)
 Intro screen update in separate thread?
 Build openings book through explicit button
 Show Levels of AI players
