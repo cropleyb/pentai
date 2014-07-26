@@ -27,3 +27,20 @@ class Assessor(object):
         # TODO Ignore result in production - multithread
         turn, prev_move, move = answer
         return move
+
+class ValueWrapper(object):
+    def __init__(self, v):
+        self._val = v
+
+    def __lt__(self, other):
+        return self._val < other
+
+'''
+"Bad moves" can be identified by a stronger AI, or by strong players.
+When a bad move is identified, I need to figure out why the actual move was
+given a better score than the best move. This (usually?) depends on the utility
+values that determined the chosen and best moves (from the AB search)
+Do a search for each of those two moves, and show the utility stats for each
+position. The Game State needs to be bubbled back to the top for each and printed, along with the move history
+UI: Click to move in review mode, to show a search by the current player, with utility stats and move history of the deep minimax path leading to that move.
+'''

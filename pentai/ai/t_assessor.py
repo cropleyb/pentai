@@ -10,6 +10,18 @@ from pentai.ai.assessor import *
 import pentai.db.ai_factory as aif_m
 import pentai.ai.ai_genome as aig_m
 
+class ValueWrapperTest(unittest.TestCase):
+    def test_value_wrapper_comparison(self):
+        vw1 = ValueWrapper(10.3)
+        vw2 = ValueWrapper(9.1)
+        self.assertGreater(vw1, vw2)
+    
+    def test_value_wrapper_copy(self):
+        vw = ValueWrapper(10.3)
+        vw.foo = "bar"
+        self.assertEquals(vw.foo, "bar")
+
+
 class AssessorTest(unittest.TestCase):
     def create_player(self):
         aif = aif_m.AIFactory()
@@ -43,11 +55,11 @@ standard rules
 
         a = Assessor(self.game)
         a.set_turn_number(9)
-        best = a.calc_best_move(gui=None)
-        turn, prev_move, best_move = best
+        best_move = a.calc_best_move(gui=None)
+        #turn, prev_move, best_move = best
 
-        self.assertEquals(turn, 9)
-        self.assertEquals(prev_move, (9,5))
+        #self.assertEquals(turn, 9)
+        #self.assertEquals(prev_move, (9,5))
         self.assertEquals(best_move, (6,10))
 
     # TODO
