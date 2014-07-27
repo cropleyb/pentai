@@ -37,6 +37,7 @@ class DirectionStrips(object):
 
 class EDirectionStrips(DirectionStrips):
     '''
+    Diagram:
     Strip numbers:        Indices in each strip:
     00000                 01234
     11111                 01234
@@ -83,6 +84,7 @@ class EDirectionStrips(DirectionStrips):
 
 class SWDirectionStrips(DirectionStrips):
     '''
+    Diagram:
     Strip numbers:        Indices in each strip:
     01234                 01234
     12345                 01234
@@ -140,6 +142,7 @@ class SWDirectionStrips(DirectionStrips):
 
 class SDirectionStrips(DirectionStrips):
     '''
+    Diagram:
     Strip numbers:        Indices in each strip:
     01234                 00000
     01234                 11111
@@ -163,9 +166,6 @@ class SDirectionStrips(DirectionStrips):
         s_num = pos[0]
         return self.strips[s_num], s_num
     
-    def get_bounds(self, s_num, board_size):
-        return 0, board_size-1
-
     def get_index(self, pos):
         """ Get the index of pos in the strip returned by get_strip """
         return pos[1]
@@ -184,6 +184,7 @@ class SDirectionStrips(DirectionStrips):
 
 class SEDirectionStrips(DirectionStrips):
     '''
+    Diagram:
     Strip numbers:        Indices in each strip:
     45678                 01234
     34567                 01234

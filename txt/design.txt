@@ -1039,3 +1039,10 @@ take     3 type 1 or 2 (3)
 threat   defend
 2        
 1
+
+Parallel lines
+--------------
+
+Diagonal weighting
+------------------
+
