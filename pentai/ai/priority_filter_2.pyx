@@ -116,11 +116,21 @@ class PriorityFilter2(object):
             return [their_fours, our_takes], False
 
         '''
-        # if len(their_takes) > 0:
+        # This works and has the same result as PF1, but it's slower
         our_threes = self.priority_level(3, our_colour)
         their_threes = self.priority_level(3, their_colour)
         our_threats = self.priority_level(2, our_colour)
         their_threats = self.priority_level(2, their_colour)
+        our_twos = self.priority_level(1, our_colour)
+
+        if len(their_threes) > 2 and len(our_threes) == 0:
+            return [their_threes, our_takes, our_threats, their_takes, our_twos], False
+        '''
+
+        '''
+
+        their_twos = self.priority_level(1, their_colour)
+        # if len(their_takes) > 0:
 
         ret = [our_takes, their_takes, our_threes, their_threes, our_threats, their_threats]
 
