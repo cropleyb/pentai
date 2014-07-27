@@ -6,6 +6,7 @@ from pentai.ai.priority_filter_2 import *
 from pentai.ai.priority_filter_3 import *
 from pentai.ai.heuristic_filter import *
 from pentai.ai.killer_filter import *
+from pentai.ai.utility_filter import *
 
 import pentai.ai.length_factor as lf_m
 
@@ -29,6 +30,14 @@ class AIFactory: # TODO: These are just functions
             sf = HeuristicFilter()
         else:
             sf = KillerFilter()
+
+        try:
+            if genome.utility_filter:
+                sf = UtilityFilter(sf, 10)
+        except AttributeError:
+            genome.set_override(True)
+            genome.utility_filter = False
+            genome.set_override(False)
 
         sf.set_max_moves_per_depth_level(mmpdl=genome.mmpdl, narrowing=genome.narrowing,
                 chokes=genome.chokes)

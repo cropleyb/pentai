@@ -62,6 +62,9 @@ class AIPlayer(p_m.Player):
         #super(AIPlayer, self).attach_to_game(base_game)
         p_m.Player.attach_to_game(self, base_game)
         self.ab_game = abg_m.ABGame(self, base_game)
+        if self.genome.utility_filter:
+            self.search_filter.set_game(self.ab_game)
+
         self.openings_mover = None
 
     def prompt_for_action(self, base_game, gui, test=False):

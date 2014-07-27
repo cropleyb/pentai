@@ -57,7 +57,7 @@ class PriorityFilter(object):
     def copy(self, min_priority=0):
         return PriorityFilter(orig=self, min_priority=min_priority)
 
-    def get_iter(self, our_colour, depth=0, min_priority=0, tried=None):
+    def get_iter(self, our_colour, state=None, depth=0, min_priority=0, tried=None):
         if tried is None:
             tried = set()
         other_colour = opposite_colour(our_colour)

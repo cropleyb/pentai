@@ -19,6 +19,7 @@ class AIGenome(Persistent):
             "narrowing": 0,
             "chokes": ((4,5),),
             "bl_cutoff": False,
+            "utility_filter": False,
             #"filter2": False,
             "filter_num": 1,
             "vision": 100,

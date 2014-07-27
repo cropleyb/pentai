@@ -62,6 +62,9 @@ class ABState(gso_m.GSObserver):
         game = self.game()
         return game.to_move_colour()
 
+    def is_our_turn(self):
+        return (self.to_move_colour() == self.search_player_colour())
+
     def __repr__(self):
         ret = "%s. %s Captures: %s" % \
                 (self.get_move_number(),

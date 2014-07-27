@@ -16,6 +16,10 @@ class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
     def __init__(self, player, base_game):
         search_filter = player.search_filter
+        '''
+        if genome.utility_filter:
+            search_filter.set_game(self)
+        '''
         utility_calculator = player.utility_calculator
         self.max_depth = player.max_depth
         self.force_depth = player.force_depth
@@ -106,7 +110,7 @@ class ABGame():
                         min_priority = 3
                         if depth % 2:
                             min_priority = 5
-                    p_i = pos_iter.get_iter(state.to_move_colour(),
+                    p_i = pos_iter.get_iter(state.to_move_colour(), state,
                             depth, min_priority, tried=state.get_seen())
                 for pos in p_i:
                     # create an ABState for each possible move from state

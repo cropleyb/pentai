@@ -34,7 +34,9 @@ search alg.
 utility function
 - fukami
 - diagonal versus straight weighting?
-- different utility for different spacings of same length lines
+#- different utility for different spacings of same length lines
+- search order inc line subtype knowledge
+- parallel lines
 - centeredness
 - hammer formation
 
