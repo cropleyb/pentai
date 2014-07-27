@@ -66,7 +66,7 @@ class PriorityFilter2(object):
     Opponent Min response
     biggest  length
     threat
-	------------------------
+    ------------------------
     2+x 4    win or take
     1 x 4    win, block or take
     take     create 3 type 1 or 2 (3), block 3?
@@ -115,6 +115,7 @@ class PriorityFilter2(object):
             # We will lose unless we block or capture 
             return [their_fours, our_takes], False
 
+        '''
         # if len(their_takes) > 0:
         our_threes = self.priority_level(3, our_colour)
         their_threes = self.priority_level(3, their_colour)
@@ -132,8 +133,12 @@ class PriorityFilter2(object):
 
         ret.extend([our_twos, their_twos])
 
+        if len(their_threes) > 0 or len(their_takes) > 0 or len(our_threes) > 0 or len(our_takes) > 0:
+            return ret, False
+
         if len(their_twos) > 3 or len(their_threats) > 1 or len(our_twos) > 2 or len(our_threats) > 1:
             return ret, False
+        '''
 
         ret = []
         for level in range(4, -1, -1):
