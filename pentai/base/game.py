@@ -137,6 +137,9 @@ class Game(object):
     def set_captured(self, player_number, pieces):
         return self.current_state.set_captured(player_number, pieces)
 
+    def get_last_move(self):
+        return self.move_history[-1]
+
     def make_move(self, move):
         if move is None:
             raise IllegalMoveException("Null move")

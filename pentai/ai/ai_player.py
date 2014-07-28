@@ -119,6 +119,20 @@ class AIPlayer(p_m.Player):
                 return move
             else:
                 log.info("Didn't find an opening book move")
+        if turn == 3:
+            return self.get_legal_2nd_P1_move()
+
+    def get_legal_2nd_P1_move(self):
+        base_game = self.ab_game.base_game
+        p2_move = base_game.get_last_move()
+        rules = self.ab_game.get_rules()
+        while True:
+            p2_x, p2_y = p2_move
+            rand_x = random.randrange(p2_x-2, p2_x+3)
+            rand_y = random.randrange(p2_y-2, p2_y+3)
+            p3_move = rand_x, rand_y
+            if rules.ok_third_move(p3_move):
+                return p3_move
 
     def do_the_search(self):
         try:
