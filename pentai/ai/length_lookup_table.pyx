@@ -100,6 +100,11 @@ def calc_subtype_from_empty_list(empty_list):
     # else lel == 4, no structure to report
     return 0
 
+def calc_subtype_2(empty_list,e):
+    el2 = empty_list[:]
+    el2.remove(e)
+    return calc_subtype_from_empty_list(el2)
+
 def build_and_store_values(depth, occ_val, length, colour, empty_list, rep_str=None):
     """ Add one stone or empty place """
     # For debugging.
@@ -149,6 +154,6 @@ cpdef process_substrips(U64 bs, int min_ind, int max_ind, us, int inc):
             continue
 
         # Report it
-        shifted_empties = [e+ind for e in empty_list]
+        shifted_empties = [(e+ind, calc_subtype_2(empty_list, e)) for e in empty_list]
         us.report_length_candidate(colour, length, sub_type, shifted_empties, inc)
 
