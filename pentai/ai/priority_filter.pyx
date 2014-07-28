@@ -97,7 +97,7 @@ class PriorityFilter(object):
             # won already, ignore
             return
         slot = self.candidates_by_priority_and_colour[length][colour]
-        for pos in pos_list:
+        for pos, subtype in pos_list:
             assert pos[0] >= 0
             assert pos[1] >= 0
             slot[pos] = slot.setdefault(pos, 0) + inc

@@ -192,7 +192,7 @@ class PriorityFilter2(object):
         if length < 3:  # allow space for threat priority
             length -= 1
         slot = self.candidates_by_priority_and_colour[length][colour]
-        for pos in pos_list:
+        for pos, subtype in pos_list:
             assert pos[0] >= 0
             assert pos[1] >= 0
             self.adjust_slot(slot, pos, inc)

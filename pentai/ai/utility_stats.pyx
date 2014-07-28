@@ -51,7 +51,7 @@ class UtilityStats(object):
         stl_ind = (length-1)*3 + sub_type
         self.sub_type_lines[colour][stl_ind] += inc
 
-        pos_list = [self.i_to_p(i[0], self.s_num) for i in ind_list]
+        pos_list = [(self.i_to_p(i[0], self.s_num),i[1]) for i in ind_list]
 
         self.search_filter.add_or_remove_candidates(
                 colour, length, pos_list, inc)
