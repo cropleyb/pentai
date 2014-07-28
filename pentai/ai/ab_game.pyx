@@ -99,7 +99,7 @@ class ABGame():
             while tried_count == 0 and mn < 70:
                 # TODO: First move constraints are associated with the rules
                 if mn == 1:
-                    # The first black move is always in the centre
+                    # The first P1 move is always in the centre
                     brd_size = self.base_game.get_board().get_size()
                     centre_pos = (brd_size/2, brd_size/2)
                     p_i = [centre_pos]
