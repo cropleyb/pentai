@@ -101,29 +101,37 @@ class Match():
         else:
             ratio = tt.totals[1] / tt.totals[0]
 
-        print "Game was won by: %s %s" % (["?", "B", "W"][winner], winner_name)
+        print "Game %s %s %s was won by: %s %s" % (board_size, p1.max_depth, rules_type, ["?", "B", "W"][winner], winner_name)
         print tt
  
-        return "%s vs. %s: %s (%sx%s %s) %s" % (p1.get_name(), p2.get_name(), winner_name,
+        ret = "%s vs. %s: %s (%sx%s %s) %s" % (p1.get_name(), p2.get_name(), winner_name,
                 board_size, board_size, p1.max_depth, tt), winner, winner_name, ratio
+        return ret
 
     def play_some_games(self):
-        self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = False
+        #self.genome1.use_openings_book = False
+        #self.genome2.use_openings_book = False
+
+        #self.genome1.utility_filter = True
+
+        self.genome2.filter_num = 2
+        self.genome2.chokes = [(3,5)]
+        self.genome2.mmpdl = 10
+        #self.genome2.utility_filter = True
 
         #self.genome1.move_factor = 5
         #self.genome2.use_net_captures = False
         #self.genome1.move_factor = 5
 
-        l_boosts = []
-        l_boosts.append((2,1.15))
+        #l_boosts = []
+        #l_boosts.append((2,1.15))
         #l_boosts.append((3,1.05))
         #l_boosts.append((4,1.1))
-        l_b1 = l_boosts[:]
-        self.genome1.length_boosts = l_b1
-        l_boosts.append((3,1.05))
+        #l_b1 = l_boosts[:]
+        #self.genome1.length_boosts = l_b1
+        #l_boosts.append((3,1.05))
         #l_boosts.append((4,1.05))
-        self.genome2.length_boosts = l_boosts
+        #self.genome2.length_boosts = l_boosts
         '''
         #self.genome2.move_factor = 5
 
@@ -200,17 +208,18 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        #for game_length in range(6,8):
-        #for game_length in range(2,6):
         #for game_length in range(2,8):
-        for game_length in range(2,3):
+        for game_length in range(2,6):
+        #for game_length in range(2,8):
+        #for game_length in range(2,3):
         #for game_length in range(3,4):
-            for board_size in [19]:
-            #for board_size in [13, 19]:
+            #for board_size in [19]:
+            for board_size in [13, 19]:
                 for first_player in [0, 1]:
                     #for rules_type in ['s', 't']:
-                    for rules_type in ['t']:
-                        self.set_up(game_length) #, 3)
+                    #for rules_type in ['t']:
+                    for rules_type in ['s']:
+                        self.set_up(game_length, 1)
                         players = [self.p1, self.p2]
                         second_player = 1 - first_player
                         res = self.play_one_game(board_size, rules_type,
