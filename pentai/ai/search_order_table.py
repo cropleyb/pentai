@@ -44,25 +44,25 @@ def create_psi_table():
     add_to_psi_table(True, 3,1,0) # XX.Xa Two threats to us when it is blocked
     next_psi_ind() 
 
+    add_to_psi_table(False, 3,1,2) # .OOaO OOaO. Threat + block
+    next_psi_ind() 
+
+    add_to_psi_table(False, 3,1,1) # aOO.O Threat + block, but prob X 4 response
+    next_psi_ind() 
+
+    add_to_psi_table(False, 3,2,2) # aOOOa .aOOO
+    next_psi_ind() 
+
+    add_to_psi_table(False, 3,0,1) # OaOaO
+    next_psi_ind() 
+
+    add_to_psi_table(False, 3,1,0) # OO.Oa
+    next_psi_ind() 
+
+    add_to_psi_table(False, 3,2,1) # a.OOO Rarely wise
+    next_psi_ind() 
+
     '''
-    add_to_psi_table(3,1,2           .OOaO OOaO. Threat + block
-    next_psi_ind() 
-
-    add_to_psi_table(3,1,1           aOO.O Threat + block, but prob X 4 response
-    next_psi_ind() 
-
-    add_to_psi_table(3,2,2           aOOOa .aOOO
-    next_psi_ind() 
-
-    add_to_psi_table( 3,0,1           OaOaO
-    next_psi_ind() 
-
-    add_to_psi_table( 3,1,0           OO.Oa
-    next_psi_ind() 
-
-    add_to_psi_table( 3,2,1           a.OOO Rarely wise
-    next_psi_ind() 
-
     add_to_psi_table(True,
     2,2,2           .aXX. This blocks a potential threat
     next_psi_ind() 

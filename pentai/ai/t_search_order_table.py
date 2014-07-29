@@ -50,6 +50,26 @@ class SearchOrderTableTest(unittest.TestCase):
         psi = get_priority_slot_index(True, 3, 1, 0)
         self.assertEquals(psi, 6)
 
+    def testSOT_3_them(self):
+        psi = get_priority_slot_index(False, 3, 1, 2) # .OOaO OOaO. Threat + block
+        self.assertEquals(psi, 7)
+
+        psi = get_priority_slot_index(False, 3, 1, 1) # aOO.O Threat + block, but prob X 4 response
+        self.assertEquals(psi, 8)
+
+        psi = get_priority_slot_index(False, 3, 2, 2) # aOOOa .aOOO
+        self.assertEquals(psi, 9)
+
+        psi = get_priority_slot_index(False, 3, 0, 1) # OaOaO
+        self.assertEquals(psi, 10)
+
+        psi = get_priority_slot_index(False, 3, 1, 0) # OO.Oa
+        self.assertEquals(psi, 11)
+
+        psi = get_priority_slot_index(False, 3, 2, 1) # a.OOO Rarely wise
+        self.assertEquals(psi, 12)
+
+
 
 
 """
