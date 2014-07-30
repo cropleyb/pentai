@@ -97,31 +97,23 @@ def create_psi_table():
     add_to_psi_table(False, 2,1,1) # .OO.a
     next_psi_ind() 
 
-    '''
-    add_to_psi_table(True,
-X   1       0       2           .a.X.
+    add_to_psi_table(True, 1, 0, 2) # .a.X.
     next_psi_ind() 
 
-    add_to_psi_table(True,
-X   1       0       1           ..aX.
+    add_to_psi_table(True, 1, 0, 1) # ..aX.
     next_psi_ind() 
 
-    add_to_psi_table(True,
-X   1       0       0           a..X.
+    add_to_psi_table(True, 1, 0, 0) # a..X.
     next_psi_ind() 
 
-    add_to_psi_table(
-O   1       0       1           ..aO.
+    add_to_psi_table(False, 1, 0, 1) # ..aO.
     next_psi_ind() 
 
-    add_to_psi_table(
-O   1       0       2           .a.O.
+    add_to_psi_table(False, 1, 0, 2) # .a.O.
     next_psi_ind() 
 
-    add_to_psi_table(
-O   1       0       0           a..O.
+    add_to_psi_table(False, 1, 0, 0) # a..O.
     next_psi_ind() 
-    '''
 
 create_psi_table()
 

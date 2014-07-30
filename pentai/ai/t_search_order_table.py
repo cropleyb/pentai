@@ -99,6 +99,25 @@ class SearchOrderTableTest(unittest.TestCase):
         psi = get_priority_slot_index(False, 2, 1, 1) # .OO.a
         self.assertEquals(psi, 23)
 
+    def testSOT_1_us(self):
+        psi = get_priority_slot_index(True, 1, 0, 2) # .a.X.
+        self.assertEquals(psi, 24)
+
+        psi = get_priority_slot_index(True, 1, 0, 1) # ..aX.
+        self.assertEquals(psi, 25)
+
+        psi = get_priority_slot_index(True, 1, 0, 0) # a..X.
+        self.assertEquals(psi, 26)
+
+    def testSOT_1_them(self):
+        psi = get_priority_slot_index(False, 1, 0, 1) # ..aO.
+        self.assertEquals(psi, 27)
+
+        psi = get_priority_slot_index(False, 1, 0, 2) # .a.O.
+        self.assertEquals(psi, 28)
+
+        psi = get_priority_slot_index(False, 1, 0, 0) # a..O.
+        self.assertEquals(psi, 29)
 
 """
   Length    PS      NS    Order  Rep
@@ -116,8 +135,9 @@ X   3       1       2       2   .XXaX These ones first because they
 X   3       2       2           aXXXa These can often form an open four.
 
 X   3       1       1           aXX.X Not so good
-X   3       0       1           XXa.X Same resultant structure as below,
-                                      but stops a threat to us
+
+# Can't separate this yet
+# X   3       0       1           XXa.X Same resultant structure as below, but stops a threat to us
 
 X   3       0       1           XaXaX Same resultant structure, but no threat stopped
 
