@@ -12,11 +12,6 @@ from pentai.ai.search_order_table import *
 #from pentai.ai.utility_stats import *
 
 class SearchOrderTableTest(unittest.TestCase):
-    '''
-    def setUp(self):
-        pass
-    '''
-
     def testSOT_4_Us(self):
         #get_priority_slot_index(our_turn, length, ps, ns) -> i
         psi = get_priority_slot_index(True, 4, 0, 0)
@@ -69,7 +64,40 @@ class SearchOrderTableTest(unittest.TestCase):
         psi = get_priority_slot_index(False, 3, 2, 1) # a.OOO Rarely wise
         self.assertEquals(psi, 12)
 
+    def testSOT_2_us(self):
+        psi = get_priority_slot_index(True, 2, 1, 2) # .aXX. This blocks a potential threat
+        self.assertEquals(psi, 13)
 
+        psi = get_priority_slot_index(True, 2, 2, 2) # .XaX. ..XaX
+        self.assertEquals(psi, 14)
+
+        psi = get_priority_slot_index(True, 2, 0, 1) # X.aX.
+        self.assertEquals(psi, 15)
+
+        psi = get_priority_slot_index(True, 2, 2, 1) # X.Xa.
+        self.assertEquals(psi, 16)
+
+        psi = get_priority_slot_index(True, 2, 0, 0) # X..Xa
+        self.assertEquals(psi, 17)
+
+    def testSOT_2_them(self):
+        psi = get_priority_slot_index(False, 2, 2, 2) # .OaO. ..OaO
+        self.assertEquals(psi, 18)
+
+        psi = get_priority_slot_index(False, 2, 1, 2) # .aOO. ..OOa Threaten
+        self.assertEquals(psi, 19)
+
+        psi = get_priority_slot_index(False, 2, 0, 1) # O.aO. Allows two potential threats
+        self.assertEquals(psi, 20)
+
+        psi = get_priority_slot_index(False, 2, 2, 1) # O.Oa.
+        self.assertEquals(psi, 21)
+
+        psi = get_priority_slot_index(False, 2, 0, 0) # O..aO / O.a.O / O..Oa 
+        self.assertEquals(psi, 22)
+
+        psi = get_priority_slot_index(False, 2, 1, 1) # .OO.a
+        self.assertEquals(psi, 23)
 
 
 """
@@ -107,7 +135,7 @@ O   3       1       0           OO.Oa
 
 O   3       2       1           a.OOO Rarely wise
 
-X   2       2       2           .aXX. This blocks a potential threat
+X   2       1       2           .aXX. This blocks a potential threat
 
 X   2       2       2           .XaX. ..XaX
 
@@ -129,8 +157,6 @@ O   2       0       0           O..aO Not sure which is better, if any
 O   2       0       0           O.a.O
 
 O   2       0       0           O..Oa A bit remote
-
-O   2       1       2           aOOa.
 
 O   2       1       1           .OO.a
 

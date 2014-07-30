@@ -62,58 +62,42 @@ def create_psi_table():
     add_to_psi_table(False, 3,2,1) # a.OOO Rarely wise
     next_psi_ind() 
 
+    add_to_psi_table(True, 2,1,2) # .aXX. This blocks a potential threat
+    next_psi_ind() 
+
+    add_to_psi_table(True, 2,2,2) # .XaX. ..XaX
+    next_psi_ind() 
+
+    add_to_psi_table(True, 2,0,1) # X.aX.
+    next_psi_ind() 
+
+    add_to_psi_table(True, 2,2,1) # X.Xa.
+
+    add_to_psi_table(True, 2,0,0) # X..Xa
+    next_psi_ind() 
+
+    add_to_psi_table(True, 2,0,0) # X..aX
+    next_psi_ind() 
+
+    add_to_psi_table(False, 2,2,2) # .OaO. ..OaO
+    next_psi_ind() 
+
+    add_to_psi_table(False, 2,1,2) # .aOO. ..OOa Threaten
+    next_psi_ind() 
+
+    add_to_psi_table(False, 2,0,1) # O.aO. Allows two potential threats
+    next_psi_ind() 
+
+    add_to_psi_table(False, 2,2,1) # O.Oa.
+    next_psi_ind() 
+
+    add_to_psi_table(False, 2,0,0) # O..aO / O.a.O / O..Oa
+    next_psi_ind() 
+
+    add_to_psi_table(False, 2,1,1) # .OO.a
+    next_psi_ind() 
+
     '''
-    add_to_psi_table(True,
-    2,2,2           .aXX. This blocks a potential threat
-    next_psi_ind() 
-
-    add_to_psi_table(True,
-    2,2,2           .XaX. ..XaX
-    next_psi_ind() 
-
-    add_to_psi_table(True,
-    2,0,1           X.aX.
-    2,2,1           X.Xa.
-    next_psi_ind() 
-
-    add_to_psi_table(True,
-    2,0,0           X..Xa
-    2,0,0           X..aX
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,2,2           .OaO. ..OaO
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,1,2           .aOO. ..OOa Threaten
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,1,1           O.aO. Allows two potential threats
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,2,1           O.Oa.
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,0,0           O..aO Not sure which is better, if any
-    2,0,0           O.a.O
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,0,0           O..Oa A bit remote
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,1,2           aOOa.
-    next_psi_ind() 
-
-    add_to_psi_table(
-    2,1,1           .OO.a
-    next_psi_ind() 
-
     add_to_psi_table(True,
 X   1       0       2           .a.X.
     next_psi_ind() 
@@ -175,7 +159,7 @@ create_psi_table()
 
     3,2,1           a.OOO Rarely wise
 
-    2,2,2           .aXX. This blocks a potential threat
+    2,1,2           .aXX. This blocks a potential threat
 
     2,2,2           .XaX. ..XaX
 
