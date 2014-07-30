@@ -1,15 +1,33 @@
 from pentai.base.defines import *
 
 psi_table = {}
+take_psi = [0,0]
+threat_psi = [0,0]
 
 def get_priority_slot_index(is_us, length, ps, ns):
     return psi_table[(is_us, length, ps, ns)]
+
+def get_take_slot_index(is_us):
+    return take_psi[is_us]
+
+def get_threat_slot_index(is_us):
+    return threat_psi[is_us]
 
 current_max_psi_ind = 0
 
 def add_to_psi_table(is_us, length, ps, ns):
     global current_max_psi_ind
     psi_table[(is_us, length, ps, ns)] = current_max_psi_ind
+
+def add_take_to_psi(is_us):
+    global current_max_psi_ind, take_psi
+    psi_table[(is_us, 0, 0, 0)] = current_max_psi_ind # Dummy
+    take_psi[is_us] = current_max_psi_ind
+
+def add_threat_to_psi(is_us):
+    global current_max_psi_ind, take_psi
+    psi_table[(is_us, 50, 0, 0)] = current_max_psi_ind # Dummy
+    threat_psi[is_us] = current_max_psi_ind
 
 def next_psi_ind():
     global current_max_psi_ind
@@ -27,6 +45,9 @@ def create_psi_table():
     add_to_psi_table(False, 4, 2, 0)
     next_psi_ind()
 
+    add_take_to_psi(True)
+    next_psi_ind()
+
     add_to_psi_table(True, 3,1,2) # .XXaX XXaX. These ones first because
     next_psi_ind()               #             they  close up the threat
 
@@ -34,6 +55,9 @@ def create_psi_table():
     next_psi_ind()
 
     add_to_psi_table(True, 3,1,1) # aXX.X Not so good, but it prevents a threat
+    next_psi_ind()
+
+    add_take_to_psi(False)
     next_psi_ind()
 
     add_to_psi_table(True, 3,0,1) # XXa.X Same resultant structure as below, stops a threat to us
@@ -62,6 +86,12 @@ def create_psi_table():
 
     add_to_psi_table(False, 3,2,1) # a.OOO Rarely wise
     next_psi_ind()
+
+    add_threat_to_psi(True)
+    next_psi_ind()
+
+    #add_threat_to_psi(False)
+    #next_psi_ind()
 
     add_to_psi_table(True, 2,1,2) # .aXX. This blocks a potential threat
     next_psi_ind()
@@ -117,17 +147,23 @@ def create_psi_table():
     add_to_psi_table(False, 1, 0, 0) # a..O.
     next_psi_ind()
 
+    add_threat_to_psi(False) # Covered already
+
 create_psi_table()
 
 search_order_us = range(current_max_psi_ind)
 search_order_them = [0] * current_max_psi_ind
+
 for k, v in psi_table.iteritems():
     is_us, length, ps, ns = k
-    other_ind = psi_table[(not is_us, length, ps, ns)]
-    search_order_them[other_ind] = v
-
-    #psi_table[(is_us, length, ps, ns)] = current_max_psi_ind
-#range(current_max_psi_ind)
+    try:
+        other_ind = psi_table[(not is_us, length, ps, ns)]
+        search_order_them[other_ind] = v
+    except KeyError:
+        pass
+    except IndexError:
+        pass
+        #st()
 
 '''
     4,0,0           XXaXX For completeness. Won game
