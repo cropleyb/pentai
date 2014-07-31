@@ -86,7 +86,8 @@ class PriorityFilter(object):
     def __repr__(self):
         return "%s" % self.candidates_by_priority_and_colour[5]
 
-    def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
+    def add_or_remove_candidates(self, colour, length, sub_type, pos_list, inc=1):
+    #def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length < 3:
             # allow space for threat priority
             length -= 1

@@ -1,4 +1,7 @@
 from pentai.base.defines import *
+from pentai.ai.search_order_table import *
+
+import copy
 
 def max_moves_sample_func(depth):
     return 9
@@ -16,13 +19,35 @@ class PriorityFilter4(object):
     def set_vision(self, val):
         self.vision = val
 
+    def set_our_colour(self, colour):
+        self.colour = colour
+
+        psi = get_priority_slot_index(True, 4, 0, 0)
+        self.our_fours  = self.priority_level(psi)
+        psi = get_priority_slot_index(False, 4, 0, 0)
+        self.their_fours = self.priority_level(psi)
+
+        #st()
+        self.our_takes = self.priority_level(take_psi[True]) # True -> us
+        self.their_takes = self.priority_level(take_psi[False])
+
     def reset(self, orig=None):
         if orig != None:
-            ocbpc = orig.candidates_by_priority_and_colour
-        self.captured = [None, 0, 0]
-        self.candidates_by_priority_and_colour = []
-        cbpc = self.candidates_by_priority_and_colour
+            ocbpc = orig.candidates_by_priority
 
+            self.candidates_by_priority = copy.deepcopy(ocbpc)
+            self.captured = copy.deepcopy(orig.captured)
+            self.set_our_colour(orig.colour)
+        else:
+            # TODO: Test this in interpreter
+            self.candidates_by_priority = [{} for i in range(len(psi_table))]
+            self.set_our_colour(P1) # TODO!
+            self.captured = [0, 0] # Is this ever set???
+
+
+        '''
+        cbpc = self.candidates_by_priority
+        # TODO: Time these
         for priority in range(6):
             l = []
             cbpc.append(l)
@@ -31,6 +56,7 @@ class PriorityFilter4(object):
                     l.append({})
                 else:
                     l.append(ocbpc[priority][colour].copy())
+        '''
 
     def copy(self):
         return PriorityFilter4(orig=self)
@@ -60,10 +86,11 @@ class PriorityFilter4(object):
         self.set_max_moves_func(mmpdl_func)
 
     def get_captured(self, colour):
-        return self.captured[colour]
+        is_us = (colour == self.colour)
+        return self.captured[is_us]
 
-    def priority_level(self, level, colour):
-        return self.candidates_by_priority_and_colour[level][colour]
+    def priority_level(self, order_index):
+        return self.candidates_by_priority[order_index]
 
     '''
     # TODO?
@@ -82,30 +109,28 @@ class PriorityFilter4(object):
     n        n-1? for opponent?
     '''
 
-    def get_priority_levels(self, our_colour):
-        their_colour = opposite_colour(our_colour)
-
-        our_fours = self.priority_level(5, our_colour)
+    def get_priority_levels(self, is_us):
+        our_fours = self.our_fours
         if len(our_fours) > 0:
             # This will win
             return [our_fours], True
 
-        our_captures = self.get_captured(our_colour)
-        our_takes = self.priority_level(4, our_colour)
+        our_captured = self.captured[is_us]
+        our_takes = self.our_takes
 
-        if our_captures >= 8 and len(our_takes) > 0:
+        if our_captured >= 8 and len(our_takes) > 0:
             # This will win too
             return [our_takes], True
 
-        their_captures = self.get_captured(their_colour)
-        their_takes = self.priority_level(4, their_colour)
+        their_captured = self.captured[not is_us]
+        their_takes = self.their_takes
 
-        if their_captures >= 8 and len(their_takes) > 0:
+        if their_captured >= 8 and len(their_takes) > 0:
             # Block their takes, or capture one of the ends of an
             # attacker, or lose
             return [our_takes, their_takes], False
 
-        their_fours = self.priority_level(5, their_colour)
+        their_fours = self.their_fours
 
         if len(their_fours) > 0:
             if len(their_fours) > 1:
@@ -119,45 +144,14 @@ class PriorityFilter4(object):
             # We will lose unless we block or capture 
             return [their_fours, our_takes], False
 
-        '''
-        # This works and has the same result as PF1, but it's slower
-        our_threes = self.priority_level(3, our_colour)
-        their_threes = self.priority_level(3, their_colour)
-        our_threats = self.priority_level(2, our_colour)
-        their_threats = self.priority_level(2, their_colour)
-        our_twos = self.priority_level(1, our_colour)
-
-        if len(their_threes) > 2 and len(our_threes) == 0:
-            return [their_threes, our_takes, our_threats, their_takes, our_twos], False
-        '''
-
-        '''
-
-        their_twos = self.priority_level(1, their_colour)
-        # if len(their_takes) > 0:
-
-        ret = [our_takes, their_takes, our_threes, their_threes, our_threats, their_threats]
-
-        #if len(their_threes) > 3 or len(their_threats) > 2 or len(our_threes) > 1 or len(our_threats) > 2:
-        if len(their_threes) > 3 or len(their_takes) > 1 or len(our_threes) > 2 or len(our_takes) > 1:
-            return ret, False
-
-        our_twos = self.priority_level(1, our_colour)
-        their_twos = self.priority_level(1, their_colour)
-
-        ret.extend([our_twos, their_twos])
-
-        if len(their_threes) > 0 or len(their_takes) > 0 or len(our_threes) > 0 or len(our_takes) > 0:
-            return ret, False
-
-        if len(their_twos) > 3 or len(their_threats) > 1 or len(our_twos) > 2 or len(our_threats) > 1:
-            return ret, False
-        '''
+        search_order = search_order_us
+        if not is_us:
+            search_order = search_order_them
 
         ret = []
-        for level in range(4, -1, -1):
-            for colour in [our_colour, their_colour]:
-                ret.append(self.priority_level(level, colour))
+        for psi in search_order[4:]:
+            ret.append(self.candidates_by_priority[psi])
+
         return ret, False
 
     def get_iter(self, our_colour, state=None, depth=0, min_priority=0, tried={}): # min_priority is ignored
@@ -183,52 +177,47 @@ class PriorityFilter4(object):
                             return
                         if len(tried) >= self.max_moves_func(depth):
                             return
-                """
-                for count, pos in sorted_slot:
-                    if count > 0:
-                        if not pos in tried:
-                            if self.vision < 100:
-                                if random.random() * 100 > self.vision:
-                                    # Can't see that sorry ;)
-                                    continue
-                            tried.add(pos)
-                            yield pos
-                            if len(tried) >= self.max_moves_func(depth):
-                                return
-                """
 
+    '''
     def __repr__(self):
-        return "%s" % self.candidates_by_priority_and_colour[5]
+        return "%s" % self.candidates_by_priority
+    '''
 
     def adjust_slot(self, slot, pos, inc):
         slot[pos] = slot.setdefault(pos, 0) + inc
         if slot[pos] == 0:
             del slot[pos]
 
-    def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
-        if length == 5:
-            # won already, ignore
-            return
-        if length == 4: # allow space for take priority
-            length = 5
-        if length < 3:  # allow space for threat priority
-            length -= 1
-        slot = self.candidates_by_priority_and_colour[length][colour]
-        for pos, subtype in pos_list:
+    def add_or_remove_candidates(self, colour, length, sub_type, pos_list, inc=1):
+        # TODO: pass in is_us?
+        is_us = (colour == self.colour)
+        #print "Subtype is %s" % sub_type
+
+        for pos, ns in pos_list:
             assert pos[0] >= 0
             assert pos[1] >= 0
+            psi = get_priority_slot_index(is_us, length, sub_type, ns)
+            slot = self.candidates_by_priority[psi]
             self.adjust_slot(slot, pos, inc)
 
     def add_or_remove_take(self, colour, pos, inc=1):
+        # TODO: pass in is_us?
+        is_us = (colour == self.colour)
+
         assert pos[0] >= 0
         assert pos[1] >= 0
-        # Valuing takes between 3s and 4s
-        slot = self.candidates_by_priority_and_colour[4][colour]
+        # Searching takes between 3s and 4s
+        psi = take_psi[is_us]
+        slot = self.candidates_by_priority[psi]
         self.adjust_slot(slot, pos, inc)
 
     def add_or_remove_threat(self, colour, pos, inc=1):
+        # TODO: pass in is_us?
+        is_us = (colour == self.colour)
+
         assert pos[0] >= 0
         assert pos[1] >= 0
-        # Valuing threats between 2s and 3s
-        slot = self.candidates_by_priority_and_colour[2][colour]
+        # Searching threats between 2s and 3s
+        psi = threat_psi[is_us]
+        slot = self.candidates_by_priority[psi]
         self.adjust_slot(slot, pos, inc)

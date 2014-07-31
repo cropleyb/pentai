@@ -51,10 +51,11 @@ class UtilityStats(object):
         stl_ind = (length-1)*3 + sub_type
         self.sub_type_lines[colour][stl_ind] += inc
 
+        # TODO: Can this be done faster?
         pos_list = [(self.i_to_p(i[0], self.s_num),i[1]) for i in ind_list]
 
         self.search_filter.add_or_remove_candidates(
-                colour, length, pos_list, inc)
+                colour, length, sub_type, pos_list, inc)
 
     def report_take(self, colour, ind, inc):
         self.takes[colour] += inc

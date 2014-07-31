@@ -69,6 +69,9 @@ def create_psi_table():
     add_to_psi_table(True, 3,1,0) # XX.Xa Two threats to us when it is blocked
     next_psi_ind()
 
+    add_to_psi_table(True, 3,0,0) # XX.aX 
+    next_psi_ind()
+
     add_to_psi_table(False, 3,1,2) # .OOaO OOaO. Threat + block
     next_psi_ind()
 
@@ -85,6 +88,9 @@ def create_psi_table():
     next_psi_ind()
 
     add_to_psi_table(False, 3,2,1) # a.OOO Rarely wise
+    next_psi_ind()
+
+    add_to_psi_table(False, 3,0,0) # XX.aX 
     next_psi_ind()
 
     add_threat_to_psi(True)
