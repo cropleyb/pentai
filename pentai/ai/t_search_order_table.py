@@ -103,50 +103,62 @@ class PrioritySlotIndexTest(unittest.TestCase):
         psi = get_priority_slot_index(True, 2, 2, 1) # X.Xa.
         self.assertEquals(psi, 22)
 
-        psi = get_priority_slot_index(True, 2, 1, 1) # X..Xa
+        psi = get_priority_slot_index(True, 2, 2, 0) # X.X.a
         self.assertEquals(psi, 23)
 
-        psi = get_priority_slot_index(True, 2, 0, 0) # X..Xa
+        psi = get_priority_slot_index(True, 2, 1, 1) # X..Xa
         self.assertEquals(psi, 24)
+
+        psi = get_priority_slot_index(True, 2, 0, 0) # X..Xa
+        self.assertEquals(psi, 25)
+
+        psi = get_priority_slot_index(True, 2, 1, 0) # XX..a
+        self.assertEquals(psi, 26)
 
     def testPSI_2_them(self):
         psi = get_priority_slot_index(False, 2, 2, 2) # .OaO. ..OaO
-        self.assertEquals(psi, 25)
-
-        psi = get_priority_slot_index(False, 2, 1, 2) # .aOO. ..OOa Threaten
-        self.assertEquals(psi, 26)
-
-        psi = get_priority_slot_index(False, 2, 0, 1) # O.aO. Allows two potential threats
         self.assertEquals(psi, 27)
 
-        psi = get_priority_slot_index(False, 2, 2, 1) # O.Oa.
+        psi = get_priority_slot_index(False, 2, 1, 2) # .aOO. ..OOa Threaten
         self.assertEquals(psi, 28)
 
-        psi = get_priority_slot_index(False, 2, 0, 0) # O..aO / O.a.O / O..Oa 
+        psi = get_priority_slot_index(False, 2, 0, 1) # O.aO. Allows two potential threats
         self.assertEquals(psi, 29)
 
-        psi = get_priority_slot_index(False, 2, 1, 1) # .OO.a
+        psi = get_priority_slot_index(False, 2, 2, 1) # O.Oa.
         self.assertEquals(psi, 30)
+
+        psi = get_priority_slot_index(False, 2, 0, 0) # O..aO / O.a.O / O..Oa 
+        self.assertEquals(psi, 31)
+
+        psi = get_priority_slot_index(False, 2, 2, 0) # O.O.a
+        self.assertEquals(psi, 32)
+
+        psi = get_priority_slot_index(False, 2, 1, 1) # .OO.a
+        self.assertEquals(psi, 33)
+
+        psi = get_priority_slot_index(False, 2, 1, 0) # OO..a
+        self.assertEquals(psi, 34)
 
     def testPSI_1_us(self):
         psi = get_priority_slot_index(True, 1, 0, 2) # .a.X.
-        self.assertEquals(psi, 31)
+        self.assertEquals(psi, 35)
 
         psi = get_priority_slot_index(True, 1, 0, 1) # ..aX.
-        self.assertEquals(psi, 32)
+        self.assertEquals(psi, 36)
 
         psi = get_priority_slot_index(True, 1, 0, 0) # a..X.
-        self.assertEquals(psi, 33)
+        self.assertEquals(psi, 37)
 
     def testPSI_1_them(self):
         psi = get_priority_slot_index(False, 1, 0, 1) # ..aO.
-        self.assertEquals(psi, 34)
+        self.assertEquals(psi, 38)
 
         psi = get_priority_slot_index(False, 1, 0, 2) # .a.O.
-        self.assertEquals(psi, 35)
+        self.assertEquals(psi, 39)
 
         psi = get_priority_slot_index(False, 1, 0, 0) # a..O.
-        self.assertEquals(psi, 36)
+        self.assertEquals(psi, 40)
 
 """
   Length    PS      NS    Order  Rep
@@ -228,8 +240,8 @@ O   1       0       0           a..O.
 class SearchOrderIndexTest(unittest.TestCase):
     def testSOI_Us(self):
         #get_priority_slot_index(our_turn, length, ps, ns) -> i
-        self.assertEquals(search_order_us, range(37))
+        self.assertEquals(search_order_us, range(41))
 
-        # TODO
         #print search_order_them
-        self.assertEquals(search_order_them, [1, 0, 6, 11, 13, 12, 2, 14, 16, 15, 17, 3, 5, 4, 7, 9, 8, 10, 37, 26, 25, 27, 28, 30, 29, 20, 19, 21, 22, 24, 23, 35, 34, 36, 32, 31, 33])
+        self.assertEquals(search_order_them, [1, 0, 6, 11, 13, 12, 2, 14, 16, 15, 17, 3, 5, 4, 7, 9, 8, 10, 41, 28, 27, 29, 30, 32, 33, 31, 34, 20, 19, 21, 22, 25, 23, 24, 26, 39, 38, 40, 36, 35, 37])
+

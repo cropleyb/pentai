@@ -62,7 +62,6 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertEquals(l[0],(3,2))
 
     def test_two_of_their_fours_no_take(self):
-        #st()
         self.arc(P2, 4, 0, (((1,2),0),) )
         self.arc(P2, 4, 0, (((3,4),0),) )
         l = list(self.pf4.get_iter(P1))
@@ -80,24 +79,22 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertEquals(l[0],(1,2))
 
     def test_block_or_take_to_defend_capture_loss(self):
-        #st()
         self.set_captured_by(False, 8)
         self.ar_take(P1, (1,2))
         self.ar_take(P2, (3,4))
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 2)
 
-    '''
-    def test_iterate_over_own_black_first(self):
-        self.arc(P2, 4, ((1,5),))
-        self.arc(P1, 4, ((3,4),))
+    def test_iterate_over_own_win_only(self):
+        self.arc(P2, 4, 0, (((1,5),0),) )
+        self.arc(P1, 4, 0, (((3,4),0),) )
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(3,4))
 
-    def test_iterate_over_higher_priority_only(self):
-        self.arc(P2, 3, ((1,5),))
-        self.arc(P2, 4, ((3,4),))
+    def test_block_their_four_only(self):
+        self.arc(P2, 3, 0, (((1,5),0),) )
+        self.arc(P2, 4, 0, (((3,4),0),) )
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(3,4))
@@ -118,26 +115,16 @@ class PriorityFilter4Test(unittest.TestCase):
 
     def test_iterate_over_other_players_four_before_our_capture(self):
         self.pf4.add_or_remove_take(P2, (7,2))
-        self.arc(P1, 4, ((3,4),))
+        self.arc(P1, 4, 0, (((3,4),0),) )
         l = list(self.pf4.get_iter(P2))
-        self.assertEquals(len(l), 2)
+        self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(3,4))
-        self.assertEquals(l[1],(7,2))
-
-    def atest_iterate_over_other_players_capture_before_our_threes(self):
-        self.arc(P1, 3, ((3,4),(1,5)))
-        self.pf4.add_or_remove_take(P2, (7,2))
-        l = list(self.pf4.get_iter(P2))
-        self.assertEquals(len(l), 3)
-        self.assertEquals(l[0],(7,2))
-        our_threes = ((3,4),(1,5))
-        self.assertIn(l[1], our_threes)
-        self.assertIn(l[2], our_threes)
+        #self.assertEquals(l[1],(7,2))
 
     def test_iterate_block_only(self):
-        self.arc(P2, 3, ((1,5),(2,4)))
+        self.arc(P2, 3, 2, (((1,5),2), ((2,4),1)) )
         self.pf4.add_or_remove_take(P1, (1,5))
-        self.arc(P1, 4, ((2,4),))
+        self.arc(P1, 4, 0, (((2,4),0),) )
         l = list(self.pf4.get_iter(P2))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(2,4))
@@ -148,20 +135,20 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(1,5))
 
-    def test_iterate_over_their_capture_before_our_two(self):
-        self.arc(P1, 2, ((2,4),(4,6),(5,7)))
+    def test_iterate_over_their_capture_before_our_twos_in_order(self):
+        self.arc(P1, 2, 1, (((2,4),0), ((4,6),2), ((5,7),1)) )
         self.pf4.add_or_remove_take(P2, (1,5))
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 4)
         self.assertEquals(l[0],(1,5))
-        twos = (2,4),(4,6),(5,7)
-        self.assertIn(l[1], twos)
-        self.assertIn(l[2], twos)
-        self.assertIn(l[3], twos)
+        self.assertEquals(l[1],(4,6))
+        self.assertEquals(l[2],(5,7))
+        self.assertEquals(l[3],(2,4))
 
-    def test_iterate_over_their_three_before_our_threat(self):
-        self.arc(P1, 3, ((2,4),(4,6),))
-        self.pf4.add_or_remove_threat(P2, (1,5))
+    def atest_iterate_over_their_three_before_our_threat(self):
+        self.arc(P1, 3, 1, (((2,4),0), ((4,6),1)) )
+        #self.pf4.add_or_remove_threat(P2, (1,5))
+        self.arc(P2, (1,5))
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 3)
         threes = (2,4),(4,6)
@@ -170,9 +157,9 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertEquals(l[2],(1,5))
         
     def test_add_and_remove_length_candidate(self):
-        self.arc(P1, 3, ((2,4),(4,6),), inc=1)
+        self.arc(P1, 3, 2, (((2,4),1),((4,6),2)), inc=1)
         self.pf4.add_or_remove_threat(P1, (1,5))
-        self.arc(P1, 3, ((2,4),(4,6),), inc=-1)
+        self.arc(P1, 3, 2, (((2,4),1),((4,6),2)), inc=-1)
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(1,5))
@@ -190,9 +177,9 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertEquals(len(l), 0)
 
     def test_add_and_remove_length_candidate_from_diff_directions(self):
-        self.arc(P1, 3, ((2,4),(4,6),), inc=1)
-        self.arc(P1, 3, ((2,4),(3,3),), inc=1)
-        self.arc(P1, 3, ((2,4),(4,6),), inc=-1)
+        self.arc(P1, 3, 2, (((2,4),2),((4,6),2),), inc=1)
+        self.arc(P1, 3, 2, (((2,4),2),((3,3),2),), inc=1)
+        self.arc(P1, 3, 2, (((2,4),2),((4,6),2),), inc=-1)
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 2)
         pair = ((2,4),(3,3),)
@@ -200,8 +187,10 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertIn(l[1], pair)
 
     def test_multiple_entries_searched_first(self):
-        self.arc(P1, 3, ((2,4),(4,6),), inc=1)
-        self.arc(P1, 3, ((2,4),(3,3),), inc=1)
+        # TODO: Should be multiple entries for the same length, 
+        # irrespective of subtype. ATM each subtype is grouped together.
+        self.arc(P1, 3, 1, (((2,4),1),((4,6),1)), inc=1)
+        self.arc(P1, 3, 1, (((2,4),1),((3,3),1)), inc=1)
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 3)
         self.assertEquals(l[0],(2,4))
@@ -210,10 +199,10 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertIn(l[2], others)
 
     def test_copy_is_deep(self):
-        self.arc(P1, 3, ((2,4),(3,3),), inc=1)
-        self.arc(P1, 4, ((3,3),), inc=1)
+        self.arc(P1, 3, 2, (((2,4),2),((3,3),1)), inc=1)
+        self.arc(P1, 4, 0, (((3,3),0),), inc=1)
         bsc = self.pf4.copy()
-        bsc.add_or_remove_candidates(P1, 4, [((3,3),0)], inc=-1)
+        bsc.add_or_remove_candidates(P1, 4, 0, (((3,3),0),), inc=-1)
         # Modifying the descendant should not have affected the parent
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(l[0],(3,3))
@@ -232,13 +221,12 @@ class PriorityFilter4Test(unittest.TestCase):
         self.assertIn(l[1], first_pair)
 
     def test_pointless_positions_ignored_gracefully(self):
-        self.arc(P1, 4, ((4,6),), inc=1)
-        self.arc(P1, 4, ((5,7),), inc=1)
-        self.arc(P1, 4, ((4,6),), inc=-1)
+        self.arc(P1, 4, 0, (((4,6),0),), inc=1)
+        self.arc(P1, 4, 0, (((5,7),0),), inc=1)
+        self.arc(P1, 4, 0, (((4,6),0),), inc=-1)
         l = list(self.pf4.get_iter(P1))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(5,7))
-    '''
 
 if __name__ == "__main__":
     unittest.main()

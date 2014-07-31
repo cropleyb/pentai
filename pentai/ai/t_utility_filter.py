@@ -23,7 +23,7 @@ class UtilityFilterTest(unittest.TestCase):
 
     def arc(self, colour, length, candidate_list, inc=1):
         cl2 = [(i,0) for i in candidate_list]
-        self.uf.add_or_remove_candidates(colour, length, cl2, inc)
+        self.uf.add_or_remove_candidates(colour, length, 0, cl2, inc)
 
     def set_captured_by(self, colour, captured):
         self.uf.captured[colour] = captured
@@ -220,7 +220,7 @@ class UtilityFilterTest(unittest.TestCase):
         self.arc(P1, 3, ((2,4),(3,3),), inc=1)
         self.arc(P1, 4, ((3,3),), inc=1)
         bsc = self.uf.copy()
-        bsc.add_or_remove_candidates(P1, 4, [((3,3),0)], inc=-1)
+        bsc.add_or_remove_candidates(P1, 4, 0, [((3,3),0)], inc=-1)
         # Modifying the descendant should not have affected the parent
         l = self.get_iter(P1)
         self.assertEquals(l[0],(3,3))

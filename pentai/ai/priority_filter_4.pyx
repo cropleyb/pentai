@@ -149,14 +149,15 @@ class PriorityFilter4(object):
             search_order = search_order_them
 
         ret = []
-        for psi in search_order[4:]:
+        for psi in search_order[2:]:
             ret.append(self.candidates_by_priority[psi])
 
         return ret, False
 
     def get_iter(self, our_colour, state=None, depth=0, min_priority=0, tried={}): # min_priority is ignored
         their_colour = opposite_colour(our_colour)
-        candidate_slots, one_poss = self.get_priority_levels(our_colour)
+        is_us = (our_colour==self.colour)
+        candidate_slots, one_poss = self.get_priority_levels(is_us)
         
         tried = set()
         for slot in candidate_slots:

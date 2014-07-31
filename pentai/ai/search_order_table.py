@@ -111,10 +111,16 @@ def create_psi_table():
     add_to_psi_table(True, 2,2,1) # X.Xa.
     next_psi_ind()
 
+    add_to_psi_table(True, 2,2,0) # X.X.a
+    next_psi_ind()
+
     add_to_psi_table(True, 2,1,1) # .XX.a
     next_psi_ind()
 
     add_to_psi_table(True, 2,0,0) # X..aX
+    next_psi_ind()
+
+    add_to_psi_table(True, 2,1,0) # XX..a
     next_psi_ind()
 
     add_to_psi_table(False, 2,2,2) # .OaO. ..OaO
@@ -132,7 +138,13 @@ def create_psi_table():
     add_to_psi_table(False, 2,0,0) # O..aO / O.a.O / O..Oa
     next_psi_ind()
 
+    add_to_psi_table(False, 2,2,0) # O.O.a
+    next_psi_ind()
+
     add_to_psi_table(False, 2,1,1) # .OO.a
+    next_psi_ind()
+
+    add_to_psi_table(False, 2,1,0) # OO..a
     next_psi_ind()
 
     add_to_psi_table(True, 1, 0, 2) # .a.X.
