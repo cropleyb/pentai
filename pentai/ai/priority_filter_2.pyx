@@ -11,6 +11,10 @@ class PriorityFilter2(object):
         self.max_moves_func = max_moves_sample_func
         if orig != None:
             self.max_moves_func = orig.max_moves_func
+        self.vision = 100
+
+    def set_vision(self, val):
+        self.vision = val
 
     def reset(self, orig=None):
         if orig != None:
@@ -168,6 +172,10 @@ class PriorityFilter2(object):
             for count, pos in sorted_slot:
                 if count > 0:
                     if not pos in tried:
+                        if self.vision < 100:
+                            if random.random() * 100 > self.vision:
+                                # Can't see that sorry ;)
+                                continue
                         tried.add(pos)
                         yield pos
                         if one_poss:
@@ -183,7 +191,7 @@ class PriorityFilter2(object):
         if slot[pos] == 0:
             del slot[pos]
 
-    def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
+    def add_or_remove_candidates(self, colour, length, subtype, pos_list, inc=1):
         if length == 5:
             # won already, ignore
             return
