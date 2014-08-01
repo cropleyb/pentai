@@ -66,6 +66,8 @@ class AIPlayer(p_m.Player):
             self.search_filter.set_game(self.ab_game)
 
         self.openings_mover = None
+        our_colour = base_game.get_colour_of_player(self)
+        self.search_filter.set_our_colour(our_colour)
 
     def prompt_for_action(self, base_game, gui, test=False):
         if test:
@@ -132,7 +134,8 @@ class AIPlayer(p_m.Player):
             rand_y = random.randrange(p2_y-2, p2_y+3)
             p3_move = rand_x, rand_y
             if rules.ok_third_move(p3_move):
-                return p3_move
+                if base_game.get_board().get_occ(p3_move) == EMPTY:
+                    return p3_move
 
     def do_the_search(self):
         try:
@@ -146,6 +149,7 @@ class AIPlayer(p_m.Player):
         seen = set()
         turn = ab_game.get_move_number()
         prev_move = ab_game.get_last_move()
+        #st()
         move = self.make_opening_move(turn, seen)
         rules = ab_game.get_rules()
 

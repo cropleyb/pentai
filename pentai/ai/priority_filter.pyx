@@ -18,6 +18,10 @@ class PriorityFilter(object):
     def set_vision(self, val):
         self.vision = val
 
+    def set_our_colour(self, val):
+        # N/A
+        pass
+
     def set_max_moves_per_depth_level(self, mmpdl, narrowing, chokes=[]):
         if narrowing != 0:
             def mmpdl_func(depth):

@@ -16,6 +16,9 @@ class PriorityFilter2(object):
     def set_vision(self, val):
         self.vision = val
 
+    def set_our_colour(self, val):
+        pass
+
     def reset(self, orig=None):
         if orig != None:
             ocbpc = orig.candidates_by_priority_and_colour
@@ -59,6 +62,7 @@ class PriorityFilter2(object):
 
         self.set_max_moves_func(mmpdl_func)
 
+    # This isn't being called?!
     def get_captured(self, colour):
         return self.captured[colour]
 

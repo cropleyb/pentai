@@ -3,6 +3,7 @@ import pentai.ai.length_lookup_table as llt_m
 from pentai.base.defines import *
 
 from libc.stdint cimport uint64_t as U64
+# U64 = int # For debugging as .py
 
 # TODO: move this to test code?
 def pass_through_func(a, ignored):

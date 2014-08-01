@@ -96,9 +96,6 @@ def create_psi_table():
     add_threat_to_psi(True)
     next_psi_ind()
 
-    #add_threat_to_psi(False)
-    #next_psi_ind()
-
     add_to_psi_table(True, 2,1,2) # .aXX. This blocks a potential threat
     next_psi_ind()
 

@@ -118,6 +118,7 @@ class StripCountingTest(unittest.TestCase):
         self.assertEquals(self.white_counter, [2,0,0,0,0])
 
     def test_pre_threaten_pair(self):
+        #st()
         self.process_substrips_for_str("     WW  ")
         self.assertEquals(self.black_counter, [0,0,0,0,0])
         self.assertEquals(self.white_counter, [1,3,0,0,0])
@@ -189,49 +190,49 @@ class SubtypeStripCountingTest(unittest.TestCase):
 
     def test_count_open_three(self):
         self.process_substrips_for_str("   BBB   ")
-        self.assertEquals(self.black_counter[3], 2) # 2 lots of len 2, tp 0
+        self.assertEquals(self.black_counter[4], 2) # 2 lots of len 2, tp 0
         self.assertEquals(self.black_counter[8], 3) # 3 lots of len 3, tp 2
         self.assertEquals(self.white_counter, [0]*15)
 
 
     def test_count_open_four(self):
         self.process_substrips_for_str("  BBBB   ")
-        self.assertEquals(self.black_counter[3], 1) # 1 lots of len 2, tp 0
+        self.assertEquals(self.black_counter[4], 1) # 1 lots of len 2, tp 0
         self.assertEquals(self.black_counter[8], 2) # 2 lots of len 3, tp 2
         self.assertEquals(self.black_counter[11], 2) # 2 lots of len 4, tp 2
         self.assertEquals(self.white_counter, [0]*15)
 
     def test_count_closed_four(self):
         self.process_substrips_for_str(" WBBBB   ")
-        self.assertEquals(self.black_counter[3], 1) # 1 lots of len 2, tp 0
+        self.assertEquals(self.black_counter[4], 1) # 1 lots of len 2, tp 1
         self.assertEquals(self.black_counter[8], 1) # 1 lots of len 3, tp 2
         self.assertEquals(self.black_counter[11], 1) # 1 lots of len 4, tp 2
         self.assertEquals(self.white_counter, [0]*15)
 
     def test_count_open_three_with_space_and_single_white(self):
         self.process_substrips_for_str(" W BBB   ")
-        self.assertEquals(self.black_counter[3], 1) # 1 lots of len 2, tp 0
+        self.assertEquals(self.black_counter[4], 1) # 1 lots of len 2, tp 1
         self.assertEquals(self.black_counter[8], 2) # 2 lots of len 3, tp 2
         self.assertEquals(self.white_counter, [0]*15)
 
     def test_count_double_split_three(self):
         self.process_substrips_for_str("  B B B  ")
         self.assertEquals(self.black_counter[5], 4) # 4 lots of len 2, tp 2
-        self.assertEquals(self.black_counter[7], 1) # 1 lots of len 3, tp 1
+        self.assertEquals(self.black_counter[6], 1) # 1 lots of len 3, tp 0
         self.assertEquals(self.white_counter, [0]*15)
 
     def test_count_split_four(self):
         self.process_substrips_for_str("  BBB B  ")
         self.assertEquals(self.black_counter[8], 2) # 2 lots of len 3, tp 2
         self.assertEquals(self.black_counter[10], 1) # 1 lots of len 4, tp 1
-        self.assertEquals(self.black_counter[6], 1) # 1 lots of len 3, tp 0
+        self.assertEquals(self.black_counter[7], 1) # 1 lots of len 3, tp 1
         self.assertEquals(self.black_counter[5], 1) # 1 lots of len 2, tp 2
         self.assertEquals(self.white_counter, [0]*15)
 
     def test_count_middle_split_four(self):
         self.process_substrips_for_str("  BB BB  ")
-        self.assertEquals(self.black_counter[3], 2) # 2 lots of len 2, tp 0
-        self.assertEquals(self.black_counter[6], 2) # 2 lots of len 3, tp 0
+        self.assertEquals(self.black_counter[4], 2) # 2 lots of len 2, tp 1
+        self.assertEquals(self.black_counter[7], 2) # 2 lots of len 3, tp 1
         self.assertEquals(self.black_counter[9], 1) # 1 lots of len 4, tp 0
         self.assertEquals(self.white_counter, [0]*15)
 
@@ -254,7 +255,7 @@ class SubtypeStripCountingTest(unittest.TestCase):
         self.assertEquals(self.black_counter[12], 1) # 1 lots of len 5, tp 0
         self.assertEquals(self.black_counter[11], 1) # 1 lots of len 4, tp 2
         self.assertEquals(self.black_counter[8], 1) # 1 lots of len 3, tp 2
-        self.assertEquals(self.black_counter[3], 1) # 1 lots of len 2, tp 0
+        self.assertEquals(self.black_counter[4], 1) # 1 lots of len 2, tp 1
         self.assertEquals(self.black_counter[0], 1) # 1 lots of len 1, tp 0
         self.assertEquals(self.white_counter, [0]*15)
 
@@ -271,7 +272,7 @@ class SubtypeStripCountingTest(unittest.TestCase):
     def test_pre_threaten_pair(self):
         self.process_substrips_for_str("     WW  ")
         self.assertEquals(self.white_counter[0], 1) # 1 lots of len 1, tp 0
-        self.assertEquals(self.white_counter[3], 3) # 3 lots of len 2, tp 0
+        self.assertEquals(self.white_counter[4], 3) # 3 lots of len 2, tp 1
         self.assertEquals(self.black_counter, [0]*15)
 
     def test_threaten_pair(self):
@@ -305,14 +306,22 @@ class SubtypeStripCountingTest(unittest.TestCase):
         self.assertEquals(self.black_counter, [0]*15)
 
     def test_len_2_subtype_0(self):
-        self.process_substrips_for_str("BB   ")
+        self.process_substrips_for_str("B   B")
         self.assertEquals(self.black_counter[3], 1)
-        self.process_substrips_for_str("   BB")
+        self.process_substrips_for_str("B  B ")
         self.assertEquals(self.black_counter[3], 2) # Add to prev
+        self.process_substrips_for_str(" B  B")
+        self.assertEquals(self.black_counter[3], 3) # Add to prev
 
     def test_len_2_subtype_1(self):
-        self.process_substrips_for_str("B   B")
+        self.process_substrips_for_str("BB   ")
         self.assertEquals(self.black_counter[4], 1)
+        self.process_substrips_for_str(" BB  ")
+        self.assertEquals(self.black_counter[4], 2) # Add to prev
+        self.process_substrips_for_str("  BB ")
+        self.assertEquals(self.black_counter[4], 3) # Add to prev
+        self.process_substrips_for_str("   BB")
+        self.assertEquals(self.black_counter[4], 4) # Add to prev
 
     def test_len_2_subtype_2(self):
         self.process_substrips_for_str("B B  ")
@@ -323,14 +332,18 @@ class SubtypeStripCountingTest(unittest.TestCase):
         self.assertEquals(self.black_counter[5], 3)
 
     def test_len_3_subtype_0(self):
-        self.process_substrips_for_str("BB B ")
+        self.process_substrips_for_str("B B B")
         self.assertEquals(self.black_counter[6], 1)
-        self.process_substrips_for_str(" BB B")
-        self.assertEquals(self.black_counter[6], 2) # Add to prev
+        self.process_substrips_for_str("BB  B")
+        self.assertEquals(self.black_counter[6], 2)
+        self.process_substrips_for_str("B  BB")
+        self.assertEquals(self.black_counter[6], 3)
 
     def test_len_3_subtype_1(self):
-        self.process_substrips_for_str("B B B")
+        self.process_substrips_for_str("BB B ")
         self.assertEquals(self.black_counter[7], 1)
+        self.process_substrips_for_str(" BB B")
+        self.assertEquals(self.black_counter[7], 2) # Add to prev
 
     def test_len_3_subtype_2(self):
         self.process_substrips_for_str("BBB  ")
@@ -392,15 +405,15 @@ class CandidateReportingTest(unittest.TestCase):
         us = self.util_stats
         calls = us.mockGetAllCalls()
         self.assertEquals(len(calls),1)
-        us.mockCheckCall(0, 'report_length_candidate', P1, 3, 1, [(1,1),(3,1)], 1)
+        us.mockCheckCall(0, 'report_length_candidate', P1, 3, 0, [(1,1),(3,1)], 1)
 
     def test_report_a_three_and_a_two(self):
         self.process_substrips_for_str("B B B ")
         us = self.util_stats
         calls = us.mockGetAllCalls()
         self.assertEquals(len(calls),2)
-        us.mockCheckCall(0, 'report_length_candidate', P1, 3, 1, [(1,1),(3,1)], 1)
-        us.mockCheckCall(1, 'report_length_candidate', P1, 2, 2, [(3,2),(1,0),(5,0)], 1)
+        us.mockCheckCall(0, 'report_length_candidate', P1, 3, 0, [(1,1),(3,1)], 1)
+        us.mockCheckCall(1, 'report_length_candidate', P1, 2, 2, [(3,2),(1,1),(5,1)], 1)
 
     def test_report_a_white_four(self):
         self.process_substrips_for_str("WW WW")

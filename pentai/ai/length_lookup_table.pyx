@@ -80,23 +80,23 @@ def calc_subtype_from_empty_list(empty_list):
         if el in ([0,1], [0,4], [3,4]):
             # solid
             return 2
-        elif el == ([1,3]):
+        elif el in ([1,3], [1,2], [2,3]):
             # evenly spread X.X.X
-            return 1
+            return 0
         else:
             # gap in middle .X.XX, X..XX etc.
-            return 0
+            return 1
     elif lel == 3:
         # 2 / 5
         if el in ([1,3,4], [0,2,4], [0,1,3]):
             # single gap between pieces - ideal
             return 2
-        elif el == [1,2,3]:
-            # gap to the side
-            return 1
-        else:
+        elif el in ([1,2,3], [1,2,4], [0,2,3]):
             # Not so good
             return 0
+        else:
+            # gap to the side
+            return 1
     # else lel == 4, no structure to report
     return 0
 
@@ -152,6 +152,12 @@ cpdef process_substrips(U64 bs, int min_ind, int max_ind, us, int inc):
         except KeyError:
             # Nope. Not interesting.
             continue
+
+        '''
+        # TEMP!
+        if length == 2 and sub_type == 0:
+            print "OCCS: %s" % occs
+        '''
 
         # Report it
         shifted_empties = [(e+ind, calc_subtype_2(empty_list, e)) for e in empty_list]

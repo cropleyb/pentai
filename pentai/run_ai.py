@@ -114,9 +114,10 @@ class Match():
 
         #self.genome1.utility_filter = True
 
-        self.genome2.filter_num = 2
-        self.genome2.chokes = [(3,5)]
-        self.genome2.mmpdl = 10
+        self.genome2.filter_num = 4
+        self.genome2.chokes = [(3,3)]
+        #self.genome2.mmpdl = 10
+        #self.genome2.mmpdl = 10
         #self.genome2.utility_filter = True
 
         #self.genome1.move_factor = 5
@@ -209,9 +210,9 @@ class Match():
 
         results = MatchResults()
         #for game_length in range(2,8):
-        for game_length in range(2,6):
+        #for game_length in range(2,6):
         #for game_length in range(2,8):
-        #for game_length in range(2,3):
+        for game_length in range(2,3):
         #for game_length in range(3,4):
             #for board_size in [19]:
             for board_size in [13, 19]:
@@ -220,6 +221,7 @@ class Match():
                     #for rules_type in ['t']:
                     for rules_type in ['s']:
                         self.set_up(game_length, 1)
+                        #self.set_up(game_length)
                         players = [self.p1, self.p2]
                         second_player = 1 - first_player
                         res = self.play_one_game(board_size, rules_type,

@@ -33,30 +33,18 @@ class PriorityFilter4(object):
 
     def reset(self, orig=None):
         if orig != None:
-            ocbpc = orig.candidates_by_priority
+            ocbp = orig.candidates_by_priority
 
-            self.candidates_by_priority = copy.deepcopy(ocbpc)
-            self.captured = copy.deepcopy(orig.captured)
+            self.candidates_by_priority = cbp = []
+            for v in ocbp:
+                cbp.append(v.copy())
+
+            self.captured = orig.captured[:]
             self.set_our_colour(orig.colour)
         else:
             # TODO: Test this in interpreter
             self.candidates_by_priority = [{} for i in range(len(psi_table))]
-            self.set_our_colour(P1) # TODO!
-            self.captured = [0, 0] # Is this ever set???
-
-
-        '''
-        cbpc = self.candidates_by_priority
-        # TODO: Time these
-        for priority in range(6):
-            l = []
-            cbpc.append(l)
-            for colour in range(3):
-                if orig is None:
-                    l.append({})
-                else:
-                    l.append(ocbpc[priority][colour].copy())
-        '''
+            self.captured = [0, 0] # Is this ever set??? TODO
 
     def copy(self):
         return PriorityFilter4(orig=self)
@@ -91,23 +79,6 @@ class PriorityFilter4(object):
 
     def priority_level(self, order_index):
         return self.candidates_by_priority[order_index]
-
-    '''
-    # TODO?
-    Opponent Min response
-    biggest  length
-    threat
-    ------------------------
-    2+x 4    win or take
-    1 x 4    win, block or take
-    take     create 3 type 1 or 2 (3), block 3?
-    3+ x 3   block or threaten (adjust 3+ threshold?)
-    1|2 x 3  block or threaten, or attack with 2->3
-    threat   defend
-    2        
-    1
-    n        n-1? for opponent?
-    '''
 
     def get_priority_levels(self, is_us):
         our_fours = self.our_fours
@@ -192,7 +163,6 @@ class PriorityFilter4(object):
     def add_or_remove_candidates(self, colour, length, sub_type, pos_list, inc=1):
         # TODO: pass in is_us?
         is_us = (colour == self.colour)
-        #print "Subtype is %s" % sub_type
 
         for pos, ns in pos_list:
             assert pos[0] >= 0
