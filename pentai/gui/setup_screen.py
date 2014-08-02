@@ -39,6 +39,7 @@ class SetupScreen(Screen):
         func = lambda v,dt: self.show_rules_explanation()
         self.ids.rules_id.bind(text=func)
 
+        self.defaults = None
         # TODO: Timer default
 
     def on_pre_enter(self):
@@ -46,37 +47,36 @@ class SetupScreen(Screen):
             self.initialised = True
 
         self.show_rules_explanation()
-        self.defaults = self.app.get_game_defaults()
-        self.set_GUI_from_game(self.defaults)
+        self.set_GUI_from_game(self.get_defaults())
         self.populate_all_players()
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
-            self.defaults.set_name(colour, player_name)
+            self.get_defaults().set_name(colour, player_name)
             self.populate_all_players()
 
     def set_player_type(self, colour, player_type):
         if self.initialised:
             if player_type == "Computer":
                 player_type = "AI"
-            self.defaults.set_type(colour, player_type)
+            self.get_defaults().set_type(colour, player_type)
             self.populate_all_players()
 
     def populate_all_players(self):
         self.repop = True
-        self.ids.bpl_id.text = self.defaults.get_player_name(P1)
-        self.ids.wpl_id.text = self.defaults.get_player_name(P2)
+        self.ids.bpl_id.text = self.get_defaults().get_player_name(P1)
+        self.ids.wpl_id.text = self.get_defaults().get_player_name(P2)
         self.repop = False
 
         self.populate_black_player_list()
         self.populate_white_player_list()
 
     def populate_black_player_list(self, *args):
-        ptb = self.defaults.get_type(P1)
+        ptb = self.get_defaults().get_type(P1)
         self.populate_player_list(ptb, P1)
 
     def populate_white_player_list(self, *args):
-        ptw = self.defaults.get_type(P2)
+        ptw = self.get_defaults().get_type(P2)
         self.populate_player_list(ptw, P2)
 
     def populate_player_list(self, pt, colour):
@@ -117,8 +117,14 @@ class SetupScreen(Screen):
         self.set_GUI_from_game(self.game)
         self.ids.start_game_id.text = "Resume Game"
 
+    def get_defaults(self):
+        if self.defaults == None:
+            self.defaults = self.app.get_game_defaults()
+        return self.defaults
+
+
     def set_defaults_from_game(self, game):
-        self.defaults.add_game(game)
+        self.get_defaults().add_game(game)
 
     def set_up_game_from_GUI(self):
         try:
