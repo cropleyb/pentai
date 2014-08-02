@@ -8,6 +8,7 @@ rm priority_filter.so
 rm priority_filter_2.so
 rm priority_filter_3.so
 rm priority_filter_4.so
+rm priority_filter_5.so
 rm heuristic_filter.so
 rm killer_filter.so
 rm utility_filter.so
@@ -23,6 +24,7 @@ rm priority_filter.py
 rm priority_filter_2.py
 rm priority_filter_3.py
 rm priority_filter_4.py
+rm priority_filter_5.py
 rm heuristic_filter.py
 rm killer_filter.py
 rm utility_filter.py
@@ -37,6 +39,7 @@ ln -s priority_filter.pyx    priority_filter.py
 ln -s priority_filter_2.pyx  priority_filter_2.py
 ln -s priority_filter_3.pyx  priority_filter_3.py
 ln -s priority_filter_4.pyx  priority_filter_4.py
+ln -s priority_filter_5.pyx  priority_filter_5.py
 ln -s heuristic_filter.pyx   heuristic_filter.py
 ln -s killer_filter.pyx      killer_filter.py
 ln -s utility_filter.pyx     utility_filter.py
