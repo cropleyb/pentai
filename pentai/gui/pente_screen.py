@@ -651,9 +651,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
         GS = self.grid_size()
         board_x = int(round(GS * bsp[0] / size_x) - 1)
         board_y = int(round(GS * bsp[1] / size_y) - 1)
-        if self.game.off_board((board_x, board_y)):
+        pos = board_x, board_y
+        if self.game.off_board(pos):
             raise OffBoardException
-        return board_x, board_y
+        cs = self.game.get_current_state()
+        if cs.get_occ(pos) != EMPTY:
+            raise IllegalMoveException
+        return pos
 
     def board_to_screen(self, board_pos):
         """ Convert a board coordinate pair to a screen position (in pixels),
@@ -716,7 +720,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 self.confirmation_in_progress = widget, board_pos
         else:
             colour = self.get_player_colour_index(self.game.to_move_colour())
-            #cfs = [None, black_confirm_filename, white_confirm_filename]
             cfs = confirm_filename
             filename = cfs[colour]
             widget = Piece(self.game.size(), source=filename)
@@ -789,6 +792,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             return True
 
         if touch.pos[1] < self.board_offset[1]:
+            # Off the playing area
             if self.confirmation_in_progress:
                 if self.confirm_mode() == "Off Board":
                     self.confirm_move()
@@ -796,7 +800,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                     self.cancel_confirmation()
                 return True
 
-            # Controls below the board recognized the touch
+            # Let controls below the board recognize the touch
             return super(PenteScreen, self).on_touch_down(touch)
         
         # i.e. else
@@ -815,15 +819,17 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 except Exception, e:
                     Logger.exception('Board: Unable to load <%s>' % x_filename)
             if self.marker.parent == self:
-                # Second touch, cancel both?
+                # Second touch, cancel both
                 self.remove_widget(self.marker)
                 self.marker = None
                 return True
             try:
                 self.marker.pos = self.snap_to_grid(touch.pos)
+                self.add_widget(self.marker)
             except OffBoardException:
                 return True
-            self.add_widget(self.marker)
+            except IllegalMoveException:
+                return True
         else:
             self.display_error("It is not your turn!")
 
@@ -838,9 +844,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
             # Move the marker position
             try:
                 self.marker.pos = self.snap_to_grid(touch.pos)
+                if self.marker.parent == None:
+                    self.add_widget(self.marker)
+                return
+
             except OffBoardException:
-                self.remove_widget(self.marker)
+                if self.marker.parent != None:
+                    self.remove_widget(self.marker)
                 self.marker = None
+
+            except IllegalMoveException:
+                # Leave the marker at the previous position
+                pass
 
     def on_touch_up(self, touch):
         # This is assuming that controls below the board
@@ -857,8 +872,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 self.remove_widget(self.marker)
 
                 try:
-                    board_pos = self.screen_to_board(touch.pos)
+                    board_pos = self.screen_to_board(self.marker.pos)
+                except IllegalMoveException:
+                    # Current marker position is somehow an illegal move?
+                    # It should not have been possible to set it there, but we
+                    # will ignore it.
+                    return
                 except OffBoardException:
+                    # The user dragged the marker off the board (presumably below)
+                    # so we will cancel that attempt to make a move.
                     return
 
                 if self.confirm_mode():

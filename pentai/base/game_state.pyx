@@ -59,6 +59,9 @@ class GameState(object):
     def get_all_captured(self):
         return self.captured
 
+    def get_occ(self, pos):
+        return self.board.get_occ(pos)
+
     # these two should only be used for testing
     def set_move_number(self, turn):
         self.move_number = turn
