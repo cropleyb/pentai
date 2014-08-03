@@ -48,8 +48,6 @@ Tara's suggestions
 Scroll help for AI players screen
 First player section of new game screen is not clear
 Openings book setup on iOS not clear
-Text: Demo 2:30mins
-Question mark shouldn't appear over existing stones
 Create AI player profiles if they don't exist already
 
 Assessor - show best move on screen. Forward/Back through best history?
