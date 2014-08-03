@@ -39,6 +39,10 @@ utility function
 - parallel lines
 - centeredness
 - hammer formation
+- How to gauge how many moves need to be searched at a particular level? For budget search etc.
+- Length level for search stats; yet another PF that uses it (count levels of lengths used as best, relative to the first level tried)
+- Go back a move in search to avoid cloning
+
 
 Assessor - show best move on screen. Forward/Back through best history?
 Transition to review should copy game and make it the active game (temp)
