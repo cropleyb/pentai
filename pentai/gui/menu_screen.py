@@ -26,7 +26,7 @@ class MenuScreen(Screen):
         self.about_text1 = \
 """      Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [ref=ww][color=00ffff]Winning Moves[/color][/ref] until recently.
 
-      Beginners: Watch the 2:30 "Rules Demo" and watch it to the end without touching the screen (it skips sections if you touch the screen). Create a new human player for youself, then start a game. Play your first game as the first player against "Anthony". Try to get five in a row. Then progress through the computer opponents alphabetically until you start to lose games. Don't skip too many or you may get disheartened!
+      Beginners: Watch the 2:30min "Rules Demo" and watch it to the end without touching the screen (it skips sections if you touch the screen). Create a new human player for youself, then start a game. Play your first game as the first player against "Anthony". Try to get five in a row. Then progress through the computer opponents alphabetically until you start to lose games. Don't skip too many or you may get disheartened!
 """
         self.about_text2 = \
 """      The rules of the game are very simple: The first player to get 5 stones in a straight line wins. Pairs of stones can be captured by placing a stone at each end of the pair. Capturing 5 pairs first also wins. Click "Rules Demo" below!
