@@ -15,6 +15,7 @@ class AIPlayerSubsystemTest(unittest.TestCase):
         aif = AIFactory()
         genome = AIGenome("Whatever")
         genome.use_openings_book = False
+        genome.filter_num = 5
         return aif.create_player(genome)
 
     def setUp(self):

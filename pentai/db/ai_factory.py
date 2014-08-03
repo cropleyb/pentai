@@ -5,6 +5,7 @@ from pentai.ai.priority_filter import *
 from pentai.ai.priority_filter_2 import *
 from pentai.ai.priority_filter_3 import *
 from pentai.ai.priority_filter_4 import *
+from pentai.ai.priority_filter_5 import *
 from pentai.ai.heuristic_filter import *
 from pentai.ai.killer_filter import *
 from pentai.ai.utility_filter import *
@@ -30,6 +31,8 @@ class AIFactory: # TODO: These are just functions
         elif filter_num == 4:
             sf = PriorityFilter4()
         elif filter_num == 5:
+            sf = PriorityFilter5()
+        elif filter_num == 6:
             sf = HeuristicFilter()
         else:
             sf = KillerFilter()
