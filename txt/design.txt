@@ -981,8 +981,8 @@ XXXX. or .XXXX 42
 How to match for different length 1D patterns?
 Or should I just make some special code for X.X and XXX?
 
-Evaluator II
-------------
+Evaluator II / Assessor
+-----------------------
 
 1. show what the best move was (in review mode)
 2. on the screen
@@ -999,7 +999,7 @@ UI
 
 Annotation/Post-game analysis? Genetic Alg. for tuning?
 Tune genome to pick better values for given position utility stats?
-Target would be based on a deeper search
+Target could be based on a deeper search, or better by manual selection.
 
 "Bad moves" can be identified by a stronger AI, or by strong players.
 When a bad move is identified, I need to figure out why the actual move was
@@ -1039,6 +1039,165 @@ take     3 type 1 or 2 (3)
 threat   defend
 2        
 1
+
+
+Yet Another New Search Idea
+---------------------------
+Subtypes for searches should be based on the patterns that appear AFTER the move.
+Modify length_lookup_table.pyx to store subtypes per empty index
+Broadcast this to search filters.
+Store in priority filter 2 extra candidate levels
+Search these extra levels in appropriate order
+
+The search order for P1 and P2 is different depending whose move it is.
+Do we need to store this?
+e.g. B 3,2,2 -> search order 3 for B, search order much more for W
+Only need one boolean for players: our turn or not our turn
+Store: 1 slot index per combination
+get_priority_slot_index(our_turn, length, ps, ns) -> i
+
+Lookup: can be >1 slot per priority level
+get_search_order_indices(i, our_turn) -> (i, j, k) # tuple of indices into slots
+
+  Length    PS      NS       Rep
+    4       0       0       XXaXX For completeness. Won game
+    4       1       0       XXXaX
+    4       2       0       XXXXa
+
+    4       0       0       OOaOO If X doesn't block then they lose, so all are 
+    4       1       0       OOOaO equivalent
+    4       2       0       OOOOa
+
+    3       1       2       .XXaX These ones first because they
+                            XXaX. close up the threat
+
+    3       2       2       aXXXa These can often form an open four.
+
+    3       1       1       aXX.X Not so good
+    3       0       1       XXa.X Same resultant structure as below,
+                                  but stops a threat to us
+
+    3       0       1       XaXaX Same resultant structure, but no threat stopped
+
+    3       1       0       XX.Xa Two threats against us when it is blocked
+
+    3       1       2       .OOaO OOaO. Threat + block
+
+    3       1       1       aOO.O Threat + block, but prob X 4 response
+
+    3       2       2       aOOOa .aOOO
+
+    3       0       1       OaOaO
+
+    3       1       0       OO.Oa
+
+    3       2       1       a.OOO Rarely wise
+
+    2       1       2       .aXX. This blocks a potential threat
+
+    2       2       2       .XaX. ..XaX
+
+    2       0       1       X.aX.
+    2       2       1       X.Xa.
+
+    2       0       0       X..Xa
+    2       0       0       X..aX
+
+    2       2       2       .OaO. ..OaO
+
+    2       1       2       .aOO. ..OOa Threaten
+
+    2       1       1       O.aO. Allows two potential threats
+
+    2       2       1       O.Oa.
+
+    2       0       0       O..aO Not sure which is better, if any
+    2       0       0       O.a.O
+
+    2       0       0       O..Oa A bit remote
+
+    2       1       2       aOOa.
+
+    2       1       1       .OO.a
+
+    1       0               ...X.
+    Take                    .XOO.
+    Threat                  ..OO.
+
+The candidate moves should be ordered so that equivalent positions are searched
+at the same time. ie if the resultant subtype is the same, the ordering should be the same.
+This doesn't apply to blocking moves:
+.XXXa -> .XXXO
+is not the same as
+.XXaX -> .XXOX This one should be searched before the above.
+
+But if it was our turn in the search, they should be equivalent:
+.XXXa -> .XXXX
+IS the same as
+.XXaX -> .XXXX
+
+Captures and threats
+--------------------
+Can these be regarded as having a fixed priority level?
+The priority level could depend on the number of pairs left to take for a win by that player. Getting to 4 pairs taken is equivalent to getting 4 out of 5, if there is another capture possibility after that. It is hard to tell if there is another capture possibility without making that move and checking:
+- the capture could open up another threat
+- captured stones may have been vulnerable to multiple attacks
+
+Captures that don't affect the maximum length opponent line(s) are less important and could/should(?) have a lower search order.
+
+How could this be implemented? Would need to store the number of line lengths of each line that passes through a point, or at least look it up efficiently?
+....O....
+
+Incrementally maintaining captures with changing priorities could be hard.
+
+Yet another priority_filter
+---------------------------
+Another depth level seems to help more than more width generally, but sometimes there are more moves that NEED to be evaluated, so position dependent width seems necessary.
+The maximum length of the two player's current position seems to be the most important consideration.
+
+Us Them  Our choices
+4   4     4X
+4   3     4X
+4   2     4X
+3   4     4O, CX
+3   3     3X, 3O, CX, CO, TX
+3   2     3X, 2X, 2O, CX, TX
+2   3     3O, CX, CO, TX
+2   2     2X, 2O, CX, TX
+2   1     2X, 1X, CX, TX
+1   2     2O, CX, TX
+1   1     1X, CX, TX
+
+C         CX
+T
+
+if len(our_fours) > 0:
+    return [our_fours]
+
+if len(CX) > 0:
+    ret = [CX]
+else:
+    ret = []
+
+get their_max_length, our_max_length
+
+length = our_max_length
+while length > 0
+    if length == their_max_length:
+        ret.append(their(length))
+        break
+    ret.append(our(length))
+    length -= 1
+
+if their_max_length < 4
+    ret.append(our(TX))
+
+And another scheme
+------------------
+One problem with the above is that there are still too many options suggested
+E.g. Any line of 3 also suggests a line of 2 and a line of one
+If the search is limited to 3 moves for depth 3+, this often results in a better result for depth 1.
+So try searching only subtype 2 for the above scheme, for depth 3+
 
 Parallel lines
 --------------
