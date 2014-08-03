@@ -7,6 +7,7 @@ import pentai.db.players_mgr as pm_m
 import pentai.db.zodb_dict as z_m
 import pentai.ai.ai_genome as aig_m
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 import sys
 import os
@@ -17,8 +18,15 @@ def dot():
 
 if __name__ == "__main__":
     z_m.set_db("db.fs")
+    create_default_names()
 
-    print "Creating Human Players"
+def create_default_players():
+    create_default_humans()
+    create_default_ais()
+
+def create_default_humans():
+
+    log.debug("Creating Human Players")
     pm = pm_m.PlayersMgr()
 
     # TODO: Don't release these.
@@ -32,8 +40,12 @@ if __name__ == "__main__":
             h = h_m.HumanPlayer(name)
         dot()
         pm.save(h)
+    print
 
-    print "Creating AI Players"
+def create_default_ais():
+    log.debug("Creating AI Players")
+    pm = pm_m.PlayersMgr()
+
     genome = aig_m.AIGenome("")
     
     players = [
@@ -80,38 +92,7 @@ if __name__ == "__main__":
     { "p_name": "*tony*", "use_openings_book": False, "max_depth": 1,
         "judgement": 0, "vision": 10, "capture_score_base": 400 },
     ]
-    '''
-    { "p_name": "deep thunk", "use_openings_book": True, "max_depth": 10,
-        "mmpdl": 9, "vision": 100, "capture_score_base": 300 },
-    { "p_name": "pentachov", "use_openings_book": True, "max_depth": 8,
-        "mmpdl": 9, "vision": 100, "capture_score_base": 300 },
-    { "p_name": "killer", "use_openings_book": True, "max_depth": 6,
-        "mmpdl": 9, "vision": 100, "capture_score_base": 300 },
-    { "p_name": "sonja", "use_openings_book": True, "max_depth": 4,
-        "mmpdl": 9, "vision": 100, "capture_score_base": 300 },
-    { "p_name": "renaldo", "use_openings_book": True, "max_depth": 2,
-        "mmpdl": 12, "vision": 100, "capture_score_base": 300 },
-    { "p_name": "stephanie", "use_openings_book": True, "max_depth": 6,
-        "mmpdl": 9, "vision": 90, "capture_score_base": 300 },
-    { "p_name": "professor", "use_openings_book": False, "max_depth": 10,
-        "mmpdl": 9, "vision": 100, "capture_score_base": 300 },
-    { "p_name": "andrea", "use_openings_book": False, "max_depth": 4,
-        "mmpdl": 9, "vision": 95, "capture_score_base": 300 },
-    { "p_name": "tamazin", "use_openings_book": False, "max_depth": 4,
-        "mmpdl": 9, "vision": 90, "capture_score_base": 200 },
-    { "p_name": "wei", "use_openings_book": False, "max_depth": 4,
-        "mmpdl": 9, "vision": 85, "capture_score_base": 300 },
-    { "p_name": "gretel", "use_openings_book": False, "max_depth": 4,
-        "mmpdl": 9, "vision": 80, "capture_score_base": 400 },
-    { "p_name": "jj", "use_openings_book": False, "max_depth": 6,
-        "mmpdl": 4, "vision": 75, "capture_score_base": 300 },
-    { "p_name": "sam", "use_openings_book": False, "max_depth": 4,
-        "mmpdl": 9, "vision": 70, "capture_score_base": 300 },
-    { "p_name": "scott", "use_openings_book": False, "max_depth": 2,
-        "mmpdl": 6, "vision": 65, "capture_score_base": 300 },
-    { "p_name": "tony", "use_openings_book": False, "max_depth": 1,
-        "mmpdl": 6, "vision": 60, "capture_score_base": 400 },
-    '''
+
     for p in players:
         genome.__dict__.update(p)
         dot()
@@ -124,4 +105,5 @@ if __name__ == "__main__":
         pm.save(genome.clone())
 
     z_m.sync()
+    print
 

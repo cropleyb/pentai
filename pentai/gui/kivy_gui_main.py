@@ -308,6 +308,9 @@ class PentAIApp(App):
         self.openings_book = ob_m.OpeningsBook()
         log.debug("Created Book")
         
+        import pentai.db.create_default_players as cdp
+        cdp.create_default_players()
+
         #Clock.schedule_once(self.load_games, 0.01)
         Clock.schedule_once(self.create_screens, 0.01)
 

@@ -48,7 +48,9 @@ Tara's suggestions
 Scroll help for AI players screen
 First player section of new game screen is not clear
 Openings book setup on iOS not clear
-Create AI player profiles if they don't exist already
+
+Help screen for AI player and Menu text don't drag scroll
+Human Screen Help missing?!
 
 Assessor - show best move on screen. Forward/Back through best history?
 Transition to review should copy game and make it the active game (temp)
