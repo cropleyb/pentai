@@ -14,6 +14,7 @@ from menu_screen import *
 from ai_player_screen import *
 from ai_help_screen import *
 from human_player_screen import *
+from human_help_screen import *
 from setup_screen import *
 from settings_screen import *
 from games_screen import *
@@ -78,6 +79,9 @@ class PentAIApp(App):
 
     def show_human_screen(self, ignored=None):
         self.root.set_current("Human")
+
+    def show_human_help(self, ignored=None):
+        self.root.set_current("HumanHelp")
 
     def show_menu_screen(self, ignored=None):
         self.root.set_current("Menu")
@@ -351,7 +355,7 @@ class PentAIApp(App):
         screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
                    (SetupScreen, "Setup"), (GamesScreen, "Games"),
                    (AIPlayerScreen, "AI"), (AIHelpScreen, "AIHelp"),
-                   (HumanPlayerScreen, "Human"), # (AIPlayerScreen, "AIHelp"),
+                   (HumanPlayerScreen, "Human"), (HumanHelpScreen, "HumanHelp"),
                    ]
 
         log.debug("Adding screens to SM")

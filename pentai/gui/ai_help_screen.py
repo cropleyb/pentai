@@ -1,19 +1,10 @@
-from kivy.uix.screenmanager import Screen
+import help_screen as hs_m
 
-from scrollable_label import *
-
-class HelpScreen(Screen):
-    def __init__(self, *args, **kwargs):
-        super(HelpScreen, self).__init__(*args, **kwargs)
-
-class AIHelpScreen(HelpScreen):
+class AIHelpScreen(hs_m.HelpScreen):
 
     def __init__(self, *args, **kwargs):
         self.heading = "AI Player Help"
         super(AIHelpScreen, self).__init__(*args, **kwargs)
-
-    def on_pre_enter(self):
-        self.set_text()
 
     def set_text(self):
         sc = self.ids.scrollable_id
@@ -29,7 +20,7 @@ class AIHelpScreen(HelpScreen):
         sc.text2 = """
       The Openings Book uses positions that have been played previously with PentAI, and by many skilled players on pente.org. Every time you play a game against an AI Player, the result is added to the Openings Book, along with the first 12 or so moves.
 
-      When you have finished editing, click on the Save button.
+      When you have finished creating or editing an AI Player, click on the Save button.
 
       Several profiles are included, have a look at and experiment with their configurations, or create your own. The AI players starting with a capital letter increase in difficulty alphabetically. Note that the players in *asterisks* are special, and do not follow any pattern.
 
