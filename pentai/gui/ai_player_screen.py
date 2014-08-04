@@ -108,6 +108,7 @@ class AIPlayerScreen(Screen):
 You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
 
 There are several settings that can be adjusted for a given Artificial Intelligence (AI) player profile:
+
     [i]Depth[/i]: Controls how many turns the AI looks ahead for each move.
     [i]Vision[/i]: How often does the AI see the better move possibilities?
     [i]Openings book[/i]: Should the AI be able to refer to previous games?
