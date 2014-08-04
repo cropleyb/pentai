@@ -50,6 +50,7 @@ Openings book setup on iOS not clear
 
 Coordinated help system
 -----------------------
+New Game help screen
 Linked pages
 Rules page, with text for Alan's demo
 The clock
