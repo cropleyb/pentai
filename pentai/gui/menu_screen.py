@@ -25,13 +25,15 @@ class MenuScreen(Screen):
         self.ids.gl_id.ids.label2_id.bind(on_ref_press=self.follow_link)
         self.about_text1 = \
 """      Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [ref=ww][color=00ffff]Winning Moves[/color][/ref] until recently.
-
-      Beginners: Watch the 2:30min "Rules Demo" and watch it to the end without touching the screen (it skips sections if you touch the screen). Create a new human player for youself, then start a game. Play your first game as the first player against "Anthony". Try to get five in a row. Then progress through the computer opponents alphabetically until you start to lose games. Don't skip too many or you may get disheartened!
+                      [sup](scroll to read)[/sup]
+[i]Beginners[/i]:
+      First, watch the 2.5min "Rules Demo" to the end without touching the screen (it skips a section if you touch the screen).
+      Next, create a new human player for youself
+      Then start a game. Play your first game as the first player against "Anthony". Try to get five in a row.
+      Continue through the computer opponents alphabetically until you start to lose games. Don't skip too many or you may get disheartened!
 """
         self.about_text2 = \
-"""      The rules of the game are very simple: The first player to get 5 stones in a straight line wins. Pairs of stones can be captured by placing a stone at each end of the pair. Capturing 5 pairs first also wins. Click "Rules Demo" below!
-
-      PentAI is a computer program to play Pente. It can be configured to play in a wide range of ability levels, from a complete beginner to a strong amateur player. For more information about how PentAI works, see my [ref=bc][color=00ffff]website[/color][/ref].
+"""      PentAI is a computer program to play Pente. It can be configured to play in a wide range of ability levels, from a complete beginner to a strong amateur player. For more information about how PentAI works, see my [ref=bc][color=00ffff]website[/color][/ref].
 """
         self.about_text3 = \
 """      If you get a sore brain, you can create a game between a couple of Artificial Intelligence (AI) players and watch what they do. Human versus Human games are also possible, though you may prefer to play with a real set.
