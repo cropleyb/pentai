@@ -1,20 +1,11 @@
-
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-
 from kivy.properties import *
 from kivy.uix.screenmanager import Screen
+from kivy.event import EventDispatcher
 
-from scrollable_label import *
-from popup import *
 import checkbox_list as cb_l
 
 import pentai.ai.ai_genome as aig_m
 
-
-from kivy.event import EventDispatcher
 
 
 # TODO: Make a reusable class for this.
@@ -104,23 +95,4 @@ class AIPlayerScreen(Screen):
         self.refresh_names()
 
     def show_help(self):
-        help_text1 = """
-You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
-
-There are several settings that can be adjusted for a given Artificial Intelligence (AI) player profile:
-
-    [i]Depth[/i]: Controls how many turns the AI looks ahead for each move.
-    [i]Vision[/i]: How often does the AI see the better move possibilities?
-    [i]Openings book[/i]: Should the AI be able to refer to previous games?
-    [i]Lines/Captures[/i]: How much value should the AI place on lines versus captures?
-    [i]Judgement[/i]: How well should the AI judge the value of positions?"""
-
-        help_text2 = """
-When you have finished editing, click on the Save button.
-
-Several profiles are included, have a look at and experiment with their configurations, or create your own. The AI players starting with a capital letter increase in difficulty alphabetically. The players in *Asterisks* are special.
-
-"""
-        st = ScrollableLabel(text1=help_text1, text2=help_text2)
-        MessagePopup(title='Help', content=st).open()
-		
+        self.app.show_ai_help()

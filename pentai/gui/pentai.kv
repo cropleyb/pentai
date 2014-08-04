@@ -146,7 +146,7 @@
             text: root.text2
             id: label2_id
 
-<MenuScrollableLabel>:
+<MyScrollableLabel>:
     size_hint_y: .8
     GridLayout:
         # This GridLayout and its children are due to an issue with
@@ -183,7 +183,7 @@
 
         HSpacer:
     
-        MenuScrollableLabel:
+        MyScrollableLabel:
             id: gl_id
             size_hint_x: 1
             text1: root.about_text1
@@ -382,6 +382,7 @@
     GridLayout:
         cols: 1
         Label:
+            size_hint: (1, 0.6)
             text: "Computer Player Editor"
 
         HSpacer:
@@ -488,6 +489,7 @@
 
         GridLayout:
             rows: 1 
+            size_hint_y: 0.7
 
             MyButton:
                 text: "Menu"
@@ -547,6 +549,31 @@
             MyButton:
                 text: "Help"
                 on_release: root.show_help()
+
+<HelpScreen>:
+    GridLayout:
+        cols: 1
+        id: gl_id
+        Label:
+            size_hint: 1, .07
+            markup: True
+            text: root.heading
+
+        HSpacer:
+    
+        MyScrollableLabel:
+            id: scrollable_id
+            size_hint_x: 1
+    
+        GridLayout:
+            cols: 1
+            size_hint: 1, .07
+
+            MyButton:
+                text: "Return"
+                on_press: root.app.return_screen()
+
+<AIHelpScreen@HelpScreen>:
 
 <ReviewButtons>:
     size_hint_x: .3
@@ -699,6 +726,8 @@
             text: "PentAI Settings"
             size_hint_y: .08
 
+        HSpacer:
+
         ScrollView:
             size_hint_y: .8
             GridLayout:
@@ -707,8 +736,6 @@
                 size_hint_x: 1
                 height: self.minimum_height
                 size_hint_y: 1.7
-
-                HSpacer:
 
                 SectionLabel:
                     text: "User Interface"

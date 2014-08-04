@@ -9,7 +9,7 @@ class ScrollableLabel(ScrollView):
         super(ScrollableLabel, self).__init__(*args, **kwargs)
 
 # HACK until kivy fixed
-class MenuScrollableLabel(ScrollView):
+class MyScrollableLabel(ScrollView):
     text1 = StringProperty('')
     text2 = StringProperty('')
     text3 = StringProperty('')
@@ -18,5 +18,5 @@ class MenuScrollableLabel(ScrollView):
     text6 = StringProperty('')
 
     def __init__(self, *args, **kwargs):
-        super(MenuScrollableLabel, self).__init__(*args, **kwargs)
+        super(MyScrollableLabel, self).__init__(*args, **kwargs)
 
