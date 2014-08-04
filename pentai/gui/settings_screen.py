@@ -5,6 +5,14 @@ from kivy.uix.settings import SettingSpacer
 from my_setting import *
 import audio as a_m
 
+from kivy.uix.widget import Widget
+
+class HSpacer(Widget):
+    pass
+
+class VSpacer(Widget):
+    pass
+
 class SettingsScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(SettingsScreen, self).__init__(*args, **kwargs)
