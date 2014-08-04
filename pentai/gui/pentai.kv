@@ -349,17 +349,27 @@
                     values: root.player_names[2]
                     size_hint: (1, .8)
                     id: wpl_id
+        Widget:
+            size_hint: (1, .02)
 
         MyButton:
-            size_hint: (.2, .2)
-            text: "Return"
-            on_press: root.app.return_screen()
-
-        MyButton:
-            size_hint: (.2, .2)
             text: "Start Game"
             on_press: root.start_game()
             id: start_game_id
+            size_hint: (1, .2)
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, .2)
+
+            MyButton:
+                text: "Return"
+                on_press: root.app.return_screen()
+
+            MyButton:
+                text: "Help"
+                on_press: root.app.todo()
+
 
 
 <AIPlayerScreen>:

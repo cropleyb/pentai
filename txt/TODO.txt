@@ -46,9 +46,21 @@ utility function
 Tara's suggestions
 ------------------
 Scroll help for AI players screen
-First player section of new game screen is not clear
 Openings book setup on iOS not clear
 
+Coordinated help system
+-----------------------
+Linked pages
+Rules page, with text for Alan's demo
+The clock
+Confirmation mode
+Music & Sound effects
+Acknowledgements?
+Openings book
+Saved Games
+
+Scroll help for AI players screen doesn't work on iOS
+Background not black
 Help screen for AI player and Menu text don't drag scroll
 Human Screen Help missing?!
 
