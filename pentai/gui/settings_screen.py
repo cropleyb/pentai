@@ -1,12 +1,11 @@
 from kivy.uix.screenmanager import Screen
-#from kivy.properties import *
-from kivy.uix.settings import SettingSpacer
 
 from my_setting import *
 import audio as a_m
 
 from kivy.uix.widget import Widget
 
+# TODO: Spacers could live elsewhere
 class HSpacer(Widget):
     pass
 
