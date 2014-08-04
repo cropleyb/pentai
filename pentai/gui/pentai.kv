@@ -31,6 +31,26 @@
     font_size: my.dp(30)
     bold: True
 
+<HSpacer>:
+    size_hint_y: None
+    height: 5
+    canvas:
+        Color:
+            rgb: .3, .3, .3
+        Rectangle:
+            pos: self.x, self.center_y
+            size: self.width, 1
+
+<VSpacer>:
+    size_hint_x: None
+    width: 5
+    canvas:
+        Color:
+            rgb: .3, .3, .3
+        Rectangle:
+            pos: self.center_x, self.y
+            size: 1, self.height
+
 <BigCheckBox@CheckBox>:
 
     canvas:
@@ -158,9 +178,10 @@
         cols: 1
         Label:
             size_hint: 1, .1
-            text: "PentAI %s by Bruce Cropley" % root.version_str
+            markup: True
+            text: "[b]PentAI %s[/b] by Bruce Cropley" % root.version_str
 
-        SettingSpacer:
+        HSpacer:
     
         MenuScrollableLabel:
             id: gl_id
@@ -211,6 +232,7 @@
     
             # TODO: Edit openings? Review completed games?
 
+
 <SetupScreen>:
     GridLayout:
         cols: 1
@@ -219,7 +241,7 @@
             text: "New Game"
             size_hint_y: .10
 
-        SettingSpacer:
+        HSpacer:
 
         GridLayout:
             cols: 2
@@ -246,8 +268,10 @@
                 id: bs_id
 
         SmallLabel:
-            size_hint: (1, .15)
+            size_hint: (1, .2)
             id: rules_explanation_id
+            valign: 'top'
+            markup: True
             
         GridLayout:
             cols: 1
@@ -276,58 +300,66 @@
         Label:
             size_hint_y: .05
 
-        SettingSpacer:
+        HSpacer:
 
         Label:
             text: "Players"
             size_hint_y: .11
 
-        SettingSpacer:
+        HSpacer:
 
         GridLayout:
-            cols: 2
+            rows: 1
             size_hint_y: .75
 
-            MyCategoryLabel:
-                text: "First Player"
-                height: my.dp(48)
+            GridLayout:
+                cols: 1
 
-            MyCategoryLabel:
-                text: "Second Player"
-                height: my.dp(48)
+                MyCategoryLabel:
+                    text: "First Player"
+                    height: my.dp(48)
 
-            CheckBoxList:
-                # TODO: Horizontally centred
-                group: 'black_type'
-                values: ('Human', 'Computer')
-                id: black_type_id
-            CheckBoxList:
-                # TODO: Horizontally centred
-                group: 'white_type'
-                values: ('Human', 'Computer')
-                id: white_type_id
+                CheckBoxList:
+                    # TODO: Horizontally centred
+                    group: 'black_type'
+                    values: ('Human', 'Computer')
+                    id: black_type_id
 
-            # TODO: double click to edit player?
-            Spinner:
-                values: root.player_names[1]
-                size_hint: (1, .8)
-                id: bpl_id
-            Spinner:
-                values: root.player_names[2]
-                size_hint: (1, .8)
-                id: wpl_id
+                # TODO: double click to edit player?
+                Spinner:
+                    values: root.player_names[1]
+                    size_hint: (1, .8)
+                    id: bpl_id
 
-            MyButton:
-                size_hint: (.2, .8)
-                text: "Return"
-                on_press: root.app.return_screen()
+            VSpacer:
 
-            MyButton:
-                size_hint: (.2, .8)
-                text: "Start Game"
-                on_press: root.start_game()
-                id: start_game_id
+            GridLayout:
+                cols: 1
+                MyCategoryLabel:
+                    text: "Second Player"
+                    height: my.dp(48)
 
+                CheckBoxList:
+                    # TODO: Horizontally centred
+                    group: 'white_type'
+                    values: ('Human', 'Computer')
+                    id: white_type_id
+
+                Spinner:
+                    values: root.player_names[2]
+                    size_hint: (1, .8)
+                    id: wpl_id
+
+        MyButton:
+            size_hint: (.2, .2)
+            text: "Return"
+            on_press: root.app.return_screen()
+
+        MyButton:
+            size_hint: (.2, .2)
+            text: "Start Game"
+            on_press: root.start_game()
+            id: start_game_id
 
 
 <AIPlayerScreen>:
@@ -336,7 +368,7 @@
         Label:
             text: "Computer Player Editor"
 
-        SettingSpacer:
+        HSpacer:
 
         Label:
             text: 'Choose Player'
@@ -356,7 +388,7 @@
         Label:
             text: 'Search Parameters'
 
-        SettingSpacer:
+        HSpacer:
 
         BoxLayout:
             size_hint_y: None
@@ -411,12 +443,12 @@
                 active: root.genome.use_openings_book
                 on_active: root.genome.use_openings_book = self.active
 
-        SettingSpacer:
+        HSpacer:
 
         Label:
             text: 'Position Evaluation'
 
-        SettingSpacer:
+        HSpacer:
 
         BoxLayout:
             size_hint_y: None
@@ -464,7 +496,7 @@
             text: "Human Player Editor"
             size_hint_y: .33
 
-        SettingSpacer:
+        HSpacer:
 
         Label:
             text: 'Choose Player'
@@ -660,27 +692,27 @@
                 height: self.minimum_height
                 size_hint_y: 1.7
 
-                SettingSpacer:
+                HSpacer:
 
                 SectionLabel:
                     text: "User Interface"
                     size_hint_y: .15
 
-                SettingSpacer:
+                HSpacer:
 
                 SwitchSetting:
                     text: "Mark Moves"
                     desc: "Mark the last two moves, each with a dot in the centre"
                     key: "mark_moves"
 
-                SettingSpacer:
+                HSpacer:
 
                 SwitchSetting:
                     text: "Show Captures"
                     desc: "Show pieces that were captured last move as transparent ghost pieces"
                     key: "mark_captures"
 
-                SettingSpacer:
+                HSpacer:
 
                 OptionsSetting:
                     text: "Move Confirmation"
@@ -688,7 +720,7 @@
                     desc: "For small screens or while travelling"
                     key: "move_confirmation"
 
-                SettingSpacer:
+                HSpacer:
 
                 SliderSetting:
                     text: "Minimum Wait Time"
@@ -699,7 +731,7 @@
                     key: "minimum_wait"
                             #text: "%.1f" % s_id.value
 
-                SettingSpacer:
+                HSpacer:
 
                 SwitchSetting:
                     text: "Show Confirmation Popups"
@@ -707,13 +739,13 @@
                     key: "confirm_popups"
                     on_value: root.set_confirmation_popups()
 
-                SettingSpacer:
+                HSpacer:
 
                 SectionLabel:
                     text: "Players"
                     size_hint_y: .15
 
-                SettingSpacer:
+                HSpacer:
 
                 OptionsSetting:
                     text: "Rematch first player"
@@ -721,7 +753,7 @@
                     desc: "Who goes first in a rematch?"
                     key: "rematch_first_player"
 
-                SettingSpacer:
+                HSpacer:
 
                 OptionsSetting:
                     text: "First player colour"
@@ -729,13 +761,13 @@
                     desc: "Which colour goes first"
                     key: "first_player_colour"
 
-                SettingSpacer:
+                HSpacer:
 
                 SectionLabel:
                     text: "Openings Book"
                     size_hint_y: .15
 
-                SettingSpacer:
+                HSpacer:
 
                 SwitchSetting:
                     text: "Add games"
@@ -757,13 +789,13 @@
                         text: "The rest"
                         on_press: print "The rest"
 
-                SettingSpacer:
+                HSpacer:
 
                 SectionLabel:
                     text: "Sound"
                     size_hint_y: .15
 
-                SettingSpacer:
+                HSpacer:
 
                 SliderSetting:
                     text: "Effects Volume"
@@ -774,21 +806,21 @@
                     display_factor: 100
                     on_value: root.adjust_volumes()
 
-                SettingSpacer:
+                HSpacer:
 
                 SwitchSetting:
                     text: "Tick"
                     desc: "Should the clock make a ticking sound?"
                     key: "tick"
 
-                SettingSpacer:
+                HSpacer:
 
                 SwitchSetting:
                     text: "Play win/loss sounds"
                     desc: "Should the end of a game play music?"
                     key: "win_loss_sound"
 
-                SettingSpacer:
+                HSpacer:
 
                 SliderSetting:
                     text: "Music Volume"
@@ -799,7 +831,7 @@
                     display_factor: 100
                     on_value: root.adjust_volumes()
 
-                SettingSpacer:
+                HSpacer:
 
         Button:
             size_hint_y: .06
