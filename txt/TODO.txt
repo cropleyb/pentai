@@ -52,18 +52,26 @@ utility function
 Tara's suggestions
 ------------------
 Openings book setup on iOS not clear
+Acknowledgements? Tara?
 
-Acknowledgements?
 Coordinated help system:
 Game Setup help screen
+- Player selection
 - The clock
 - Rules page, with text for Alan's demo
 Linked help pages?
 Settings Screen help
 - Confirmation mode
+- Rematch options
 - Music & Sound effects
 Games load screens Help
-Saved Games
+- Finished Games
+- Unfinished Games
+- Edit game
+
+Duplicate finished games when restored and modified?
+
+Settings Dropdowns pop open again when you click on the existing option
 
 Scroll help for AI players screen doesn't work on iOS
 Background not black

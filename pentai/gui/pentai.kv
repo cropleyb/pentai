@@ -109,20 +109,27 @@
             id: games_view
 
         GridLayout:
-            rows: 1
-            size_hint: (1, .1)
-            MyButton:
-                text: "Menu"
-                on_release: root.app.show_menu_screen()
-            MyButton:
-                text: "Delete"
-                on_release: root.delete_game()
-            MyButton:
-                text: "Edit"
-                on_release: root.edit_game()
-            MyButton:
-                text: "Load"
-                on_release: root.load_game()
+            rows: 2
+            size_hint: (1, .2)
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "Delete"
+                    on_release: root.delete_game()
+                MyButton:
+                    text: "Edit"
+                    on_release: root.edit_game()
+                MyButton:
+                    text: "Load"
+                    on_release: root.load_game()
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "Menu"
+                    on_release: root.app.show_menu_screen()
+                MyButton:
+                    text: "Help"
+                    on_release: root.app.show_load_help()
 
 <SLPart@Label>:
     size_hint_y: None
@@ -374,8 +381,7 @@
 
             MyButton:
                 text: "Help"
-                on_press: root.app.todo()
-
+                on_press: root.app.show_game_setup_help()
 
 
 <AIPlayerScreen>:
@@ -878,10 +884,17 @@
 
                 HSpacer:
 
-        Button:
-            size_hint_y: .06
-            text: "Return"
-            on_press: root.app.return_screen()
+        GridLayout:
+            rows: 1
+            size_hint: (1, .1)
+
+            MyButton:
+                text: "Return"
+                on_press: root.app.return_screen()
+
+            MyButton:
+                text: "Help"
+                on_press: root.app.show_settings_help()
 
 <Piece>:
     Image:

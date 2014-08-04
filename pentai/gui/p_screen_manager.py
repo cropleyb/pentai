@@ -10,6 +10,7 @@ class PScreenManager(ScreenManager):
         super(PScreenManager, self).__init__(*args, **kwargs)
         self.transition = SlideTransition()
         self.random_transition()
+        self.previous = []
 
     def set_demo(self, d):
         if self.demo:
@@ -23,11 +24,14 @@ class PScreenManager(ScreenManager):
     def set_current(self, screen_name):
         if self.current != screen_name:
             self.random_transition()
-            self.previous = self.current
+            self.previous.append(self.current)
             self.current = screen_name
+            if len(self.previous) > 3:
+                self.previous[:3] = []
 
     def return_screen(self):
-        self.current = self.previous
+        self.current = self.previous[-1]
+        del self.previous[-1]
 
     def random_transition(self):
         trans = self.transition

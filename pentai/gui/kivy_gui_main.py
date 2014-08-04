@@ -16,8 +16,11 @@ from ai_help_screen import *
 from human_player_screen import *
 from human_help_screen import *
 from setup_screen import *
+from setup_help_screen import *
 from settings_screen import *
+from settings_help_screen import *
 from games_screen import *
+from load_help_screen import *
 import pente_screen
 from popup import *
 import my_button
@@ -64,12 +67,18 @@ class PentAIApp(App):
     def show_settings_screen(self):
         self.root.set_current("Settings")
 
+    def show_settings_help(self, ignored=None):
+        self.root.set_current("SettingsHelp")
+
     def show_pente_screen(self):
         self.root.set_current("Pente")
 
     def show_games_screen(self, ignored=None, finished=False):
         self.games_screen.set_show_finished(finished)
-        self.root.set_current("Games")
+        self.root.set_current("Load")
+
+    def show_load_help(self, ignored=None):
+        self.root.set_current("LoadHelp")
 
     def show_ai_screen(self, ignored=None):
         self.root.set_current("AI")
@@ -90,6 +99,9 @@ class PentAIApp(App):
         self.game_filename = ""
         self.setup_screen.create_game()
         self.root.set_current("Setup")
+
+    def show_game_setup_help(self, ignored=None):
+        self.root.set_current("GameSetupHelp")
 
     def show_demo(self):
         d = d_m.Demo(self, self.setup_screen.size)
@@ -248,7 +260,7 @@ class PentAIApp(App):
                 return True
 
         elif key == 8: # 'delete'
-            if self.root.current == "Games":
+            if self.root.current == "Load":
                 self.games_screen.delete_game()
             return True
 
@@ -352,8 +364,13 @@ class PentAIApp(App):
         root = self.root
 
         log.debug("Creating screens")
-        screens = [(MenuScreen, "Menu"), (SettingsScreen, "Settings"),
-                   (SetupScreen, "Setup"), (GamesScreen, "Games"),
+        screens = [(MenuScreen, "Menu"),
+                   (SettingsScreen, "Settings"),
+                   (SettingsHelpScreen, "SettingsHelp"),
+                   (SetupScreen, "Setup"),
+                   (SetupHelpScreen, "GameSetupHelp"),
+                   (GamesScreen, "Load"),
+                   (LoadHelpScreen, "LoadHelp"),
                    (AIPlayerScreen, "AI"), (AIHelpScreen, "AIHelp"),
                    (HumanPlayerScreen, "Human"), (HumanHelpScreen, "HumanHelp"),
                    ]
@@ -365,7 +382,7 @@ class PentAIApp(App):
         self.menu_screen = root.get_screen("Menu")
         self.setup_screen = root.get_screen("Setup")
         self.settings_screen = root.get_screen("Settings")
-        self.games_screen = root.get_screen("Games")
+        self.games_screen = root.get_screen("Load")
         self.pente_screen = None
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
