@@ -46,7 +46,7 @@
     width: 5
     canvas:
         Color:
-            rgb: .3, .3, .3
+            rgb: .7, .7, .7
         Rectangle:
             pos: self.center_x, self.y
             size: 1, self.height
@@ -195,36 +195,42 @@
     
         GridLayout:
             cols: 1
-            size_hint: 1, .5
+            size_hint: 1, .4
     
             MyButton:
                 id: new_game_id
                 text: "New Game"
                 on_release: root.app.show_new_game_screen()
     
-            MyButton:
-                text: "In Progress"
-                on_release: root.app.show_games_screen()
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "In Progress"
+                    on_release: root.app.show_games_screen()
 
-            MyButton:
-                text: "Recently Finished"
-                on_release: root.app.show_games_screen(finished=True)
+                MyButton:
+                    text: "Recently Finished"
+                    on_release: root.app.show_games_screen(finished=True)
     
-            MyButton:
-                text: "Edit Human Players"
-                on_release: root.app.show_human_screen()
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "Human Players"
+                    on_release: root.app.show_human_screen()
+        
+                MyButton:
+                    text: "AI Players"
+                    on_release: root.app.show_ai_screen()
     
-            MyButton:
-                text: "Edit AI Players"
-                on_release: root.app.show_ai_screen()
-    
-            MyButton:
-                text: "Settings"
-                on_release: root.app.show_settings_screen()
-    
-            MyButton:
-                text: "Rules Demo"
-                on_release: root.app.show_demo()
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "Rules Demo"
+                    on_release: root.app.show_demo()
+        
+                MyButton:
+                    text: "Settings"
+                    on_release: root.app.show_settings_screen()
     
             MyButton:
                 text: "Quit"
