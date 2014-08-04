@@ -14,7 +14,6 @@ import checkbox_list as cb_l
 import pentai.ai.ai_genome as aig_m
 
 
-
 from kivy.event import EventDispatcher
 
 
@@ -109,11 +108,11 @@ class AIPlayerScreen(Screen):
 You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
 
 There are several settings that can be adjusted for a given Artificial Intelligence (AI) player profile:
-    Depth: Controls how many turns the AI looks ahead for each move.
-    Vision: How often does the AI see the better move possibilities?
-    Openings book: Should the AI be able to refer to previous games?
-    Lines/Captures: How much value should the AI place on lines versus captures?
-    Judgement: How well should the AI judge the value of positions?"""
+    [i]Depth[/i]: Controls how many turns the AI looks ahead for each move.
+    [i]Vision[/i]: How often does the AI see the better move possibilities?
+    [i]Openings book[/i]: Should the AI be able to refer to previous games?
+    [i]Lines/Captures[/i]: How much value should the AI place on lines versus captures?
+    [i]Judgement[/i]: How well should the AI judge the value of positions?"""
 
         help_text2 = """
 When you have finished editing, click on the Save button.
