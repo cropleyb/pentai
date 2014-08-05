@@ -494,12 +494,8 @@
                 text: '{}'.format(int(j_id.value))
 
         GridLayout:
-            rows: 1 
-            size_hint_y: 0.7
-
-            MyButton:
-                text: "Menu"
-                on_release: root.app.show_menu_screen()
+            rows: 2 
+            size_hint_y: 1.2
 
             MyButton:
                 text: "Cancel"
@@ -508,6 +504,10 @@
             MyButton:
                 text: "Save"
                 on_release: root.save()
+
+            MyButton:
+                text: "Menu"
+                on_release: root.app.show_menu_screen()
 
             MyButton:
                 text: "Help"
@@ -537,12 +537,11 @@
             text: root.rename_text
             multiline: False
 
-        GridLayout:
-            rows: 1 
+        Widget:
 
-            MyButton:
-                text: "Menu"
-                on_release: root.app.show_menu_screen()
+        GridLayout:
+            rows: 2
+            size_hint: 1, .6
 
             MyButton:
                 text: "Cancel"
@@ -551,6 +550,10 @@
             MyButton:
                 text: "Save"
                 on_release: root.save()
+
+            MyButton:
+                text: "Menu"
+                on_release: root.app.show_menu_screen()
 
             MyButton:
                 text: "Help"
@@ -886,7 +889,7 @@
 
         GridLayout:
             rows: 1
-            size_hint: (1, .1)
+            size_hint: (1, .06)
 
             MyButton:
                 text: "Return"
