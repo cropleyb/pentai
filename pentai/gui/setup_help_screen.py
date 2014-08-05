@@ -22,5 +22,5 @@ All variants can be won by getting 5 or more of your pieces in a continuous, str
 If you want a bigger challenge, you can turn on the clocks. They give each player a number of minutes to complete the game. If you run out of time before the game is finished, you lose.
 
 [b]Player selection[/b]
-Select the types of the first (to move) and second players, from [i]Human[/i] or [i]Computer[/i]. Then select the particular player of that type from the list.  
+Select the types of the first (to move) and second players, from [i]Human[/i] or [i]Computer[/i]. Then select the particular player of that type from the list below.  
 """
