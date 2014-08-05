@@ -299,7 +299,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if fpc == "Always White":
             ret = opposite_colour(ret)
 
-        elif fpc == "Keep the same":
+        elif fpc == "Keep The Same":
             if self.swap_colours_due_to_rematch:
                 ret = opposite_colour(ret)
 
