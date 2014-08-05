@@ -133,10 +133,6 @@ class Demo():
         s.ps = s.app.pente_screen
         yield(1.2) # Compensating for .7 wait at start?!
 
-        #play_speech("black_first")
-        #yield(2)
-        #yield(.3)
-
         play_speech("centre_first")
         yield(1.5)
         s.mm(3,4)
