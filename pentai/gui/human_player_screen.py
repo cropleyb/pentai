@@ -48,6 +48,9 @@ class HumanPlayerScreen(Screen):
     def on_enter(self):
         self.refresh_names()
 
+    def on_leave(self):
+        self.save()
+
     def refresh_names(self):
         self.player_names = [self.create_text]
         pns = self.pm.get_human_player_names()
