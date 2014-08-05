@@ -78,20 +78,28 @@ class GameState(object):
         for o in self.observers:
             o.after_set_occ(self.game, move_pos, my_colour)
 
-    def make_move(self, move_pos):
+    def is_illegal(self, move_pos):
         if self.board.off_board(move_pos):
-            raise IllegalMoveException("Position %s is off the board" % \
+            return IllegalMoveException("Position %s is off the board" % \
                     b_m.pos2str(move_pos))
         if self.board.get_occ(move_pos) > 0:
-            raise IllegalMoveException("Position %s is already occupied" % \
+            return IllegalMoveException("Position %s is already occupied" % \
                     b_m.pos2str(move_pos))
         if self._won_by != EMPTY:
-            raise IllegalMoveException("The game is already over")
+            return IllegalMoveException("The game is already over")
+
+        if self.move_number == 3:
+            rules = self.get_rules()
+            if rules.move_is_too_close(move_pos):
+                return IllegalMoveException("That move is too close to the centre.")
+        return False
+
+    def make_move(self, move_pos):
+        exception = self.is_illegal(move_pos)
+        if exception:
+            raise exception
 
         rules = self.get_rules()
-        if self.move_number == 3:
-            if rules.move_is_too_close(move_pos):
-                raise IllegalMoveException("That move is too close to the centre.")
 
         my_colour = self.to_move_colour() # Save it before the turn is changed
         self.move_number += 1

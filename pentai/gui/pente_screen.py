@@ -652,11 +652,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
         board_x = int(round(GS * bsp[0] / size_x) - 1)
         board_y = int(round(GS * bsp[1] / size_y) - 1)
         pos = board_x, board_y
-        if self.game.off_board(pos):
-            raise OffBoardException
         cs = self.game.get_current_state()
-        if cs.get_occ(pos) != EMPTY:
-            raise IllegalMoveException
+        exception = cs.is_illegal(pos)
+        if exception:
+            raise exception
         return pos
 
     def board_to_screen(self, board_pos):
