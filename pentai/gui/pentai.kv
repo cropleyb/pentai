@@ -262,7 +262,7 @@
             height: my.dp(170)
 
             MyCategoryLabel:
-                text: "Rules"
+                text: "Rules Variation"
 
             MyCategoryLabel:
                 text: "Board Size"
@@ -291,7 +291,7 @@
             size_hint_y: .3
             Label:
             Label:
-                text: "Game Time (minutes each)"
+                text: "Game Clocks (minutes each)"
             Label:
 
             GridLayout:
@@ -330,7 +330,9 @@
 
                 MyCategoryLabel:
                     text: "First Player"
-                    height: my.dp(48)
+                    size_hint_y: .5
+
+                HSpacer:
 
                 CheckBoxList:
                     # TODO: Horizontally centred
@@ -350,7 +352,9 @@
                 cols: 1
                 MyCategoryLabel:
                     text: "Second Player"
-                    height: my.dp(48)
+                    size_hint_y: .5
+
+                HSpacer:
 
                 CheckBoxList:
                     # TODO: Horizontally centred
@@ -835,7 +839,7 @@
                     rows: 1
                     size_hint_y: .15
                     SmallLabel:
-                        text: "Build now:"
+                        text: "Build now"
                     Button:
                         text: "Some"
                         on_press: root.app.load_games("ignored")
