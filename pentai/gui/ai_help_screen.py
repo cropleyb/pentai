@@ -22,6 +22,6 @@ class AIHelpScreen(hs_m.HelpScreen):
 
       When you have finished creating or editing an AI Player, click on the Save button.
 
-      Several profiles are included, have a look at and experiment with their configurations, or create your own. The AI players starting with a capital letter increase in difficulty alphabetically. Note that the players in *asterisks* are special, and do not follow any pattern.
+      Several profiles are included. Have a look at, and experiment with their configurations, or create your own. The AI players starting with a capital letter increase in difficulty alphabetically. Note that the players in *asterisks* are special, and do not follow any pattern.
 
 """
