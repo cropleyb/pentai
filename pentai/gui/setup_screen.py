@@ -87,11 +87,11 @@ class SetupScreen(Screen):
         text = self.ids.rules_id.text
         re_id = self.ids.rules_explanation_id
         if text == "Standard":
-            re_id.text = "Games can be won by capturing 5 pairs"
+            re_id.text = "Games can be won by capturing 5 pairs, or by getting 5 in a row."
         elif text == "Tournament":
-            re_id.text = "Same as Standard rules, but the 2[sup]nd[/sup] move by the 1[sup]st[/sup] player cannot be close to the centre"
+            re_id.text = "Same as Standard rules, but the 2[sup]nd[/sup] move by the 1[sup]st[/sup] player cannot be close to the centre."
         elif text == "5-In-A-Row":
-            re_id.text = "Games can only be won with 5 in a row"
+            re_id.text = "Games can ONLY be won by getting 5 in a row. The first move can be anywhere."
         else:
             assert(text == "Unknown Rules type")
 
