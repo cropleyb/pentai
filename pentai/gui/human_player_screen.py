@@ -2,6 +2,7 @@ from kivy.properties import *
 from kivy.uix.screenmanager import Screen
 
 from scrollable_label import *
+from pentai.base.defines import *
 
 from pentai.base.human_player import *
 
@@ -23,7 +24,8 @@ class HumanPlayerScreen(Screen):
         self.ids.player_spinner_id.bind(text=self.select_player)
         self.current_name = self.create_text
 
-        self.ids.rename_id.bind(focus=self.on_rename_focus)
+        self.ids.name_id.bind(focus=self.on_rename_focus)
+        self.ids.name_id.bind(on_text_validate=self.save)
 
     def on_rename_focus(self, instance, value):
         if value:
@@ -42,13 +44,6 @@ class HumanPlayerScreen(Screen):
 
     def edit_player(self, name):
         g = self.pm.find_by_name(name)
-        # TODO?
-        '''
-        if g is None:
-            g = self.pm.find_genome_by_name(name)
-        self.genome.genome2screen(g)
-        self.genome.screen2genome()
-        '''
 
     def on_enter(self):
         self.refresh_names()
@@ -62,20 +57,44 @@ class HumanPlayerScreen(Screen):
         self.app.return_screen()
 
     def cancel(self, unused=None):
-        if self.ids.rename_id.text != self.rename_req:
-            self.ids.rename_id.text = self.rename_text
+        if self.ids.name_id.text != self.rename_req:
+            self.ids.name_id.text = self.rename_text
+
+    def delete(self, unused=None):
+        #st()
+        if self.ids.name_id.text != self.rename_req:
+            hp = self.pm.find_by_name(self.ids.name_id.text, "Human")
+            self.ids.name_id.text = self.rename_req
+            self.pm.remove(hp.p_key)
+            self.rename_text = self.rename_req
+            self.refresh_names()
+            #st()
+            self.set_spinner_val(self.create_text)
 
     def save(self, unused=None):
-        if self.ids.rename_id.text in [self.rename_req, ""]:
+        if self.ids.name_id.text in [self.rename_req, ""]:
             # Attempt to save with no name set.
             self.app.display_error("Please choose a name first")
             return
 
-        hpn = self.ids.rename_id.text
-        hp = HumanPlayer(hpn)
+        # The entered name
+        hpn = self.ids.name_id.text
+        if self.current_name != self.create_text:
+            # Rename
+            hp = self.pm.find_by_name(self.rename_text, "Human")
+            self.pm.remove(hp.p_key)
+            hp.p_name = hpn
+        else:
+            # Create
+            hp = HumanPlayer(hpn)
+
         self.pm.save(hp)
-        self.current_name = hpn
+        self.set_spinner_val(hpn)
         self.refresh_names()
+
+    def set_spinner_val(self, new_val):
+        self.current_name = new_val
+        self.ids.player_spinner_id.text = new_val
 
     def show_help(self):
         self.app.show_human_help()
