@@ -12,4 +12,5 @@ class HumanHelpScreen(hs_m.HelpScreen):
 You can either edit an existing player by selecting their name, or create a new one (leave the top box with "Create One", and type in the name immediately below).
 
 At the moment there is nothing else to change about a human player besides their name.
+Make sure you [TODO FONT] Save before leaving.
 """
