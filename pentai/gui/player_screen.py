@@ -29,6 +29,8 @@ class PlayerScreen(Screen):
                 self.rename_text = ""
 
     def select_player(self, spinner, val):
+        # TODO: Trigger save somehow?
+
         if val == self.create_text:
             self.rename_text = self.rename_req
             return
@@ -42,8 +44,6 @@ class PlayerScreen(Screen):
 
     def on_enter(self):
         self.refresh_names()
-        #if self.rename_text == self.rename_req:
-        #st()
         if self.ids.player_spinner_id.text == self.create_text:
             self.ids.name_id.text = self.rename_req
             self.ids.name_id.focus = False
@@ -82,28 +82,29 @@ class PlayerScreen(Screen):
 
     def save(self, unused=None):
         # The entered name
-        hpn = self.ids.name_id.text
-        if not hpn:
-            return
-        if hpn == self.rename_text:
-            # No change
+        pn = self.ids.name_id.text
+        if not pn:
             return
 
-        if hpn != self.create_text and hpn and self.rename_text:
+        if pn != self.create_text and pn and self.rename_text:
             # Rename
             pl = self.pm.find_by_name(self.rename_text, self.player_type_str)
             self.pm.remove(pl.p_key)
-            pl.p_name = hpn
+            pl.p_name = pn
         else:
-            if (hpn == self.rename_req) or (not hpn):
+            if (pn == self.rename_req) or (not pn):
                 return
             # Create
-            pl = self.player_class(hpn)
+            pl = self.player_class(pn)
 
         if pl:
+            self.update_player(pl, pn)
             self.pm.save(pl)
-            self.set_spinner_val(hpn)
+            self.set_spinner_val(pn)
             self.refresh_names()
+
+    def update_player(self, player, new_name):
+        pass
 
     def set_spinner_val(self, new_val):
         self.ids.player_spinner_id.text = new_val

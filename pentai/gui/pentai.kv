@@ -497,7 +497,7 @@
                 text: '{}'.format(int(j_id.value))
 
         GridLayout:
-            rows: 2 
+            rows: 1 
             size_hint_y: 1.2
 
             MyButton:
@@ -508,6 +508,13 @@
                 text: "Delete"
                 on_release: root.delete()
 
+            MyButton:
+                text: "Save"
+                on_release: root.save()
+
+        GridLayout:
+            rows: 1 
+            size_hint_y: 1.2
             MyButton:
                 text: "Menu"
                 on_release: root.app.show_menu_screen()
