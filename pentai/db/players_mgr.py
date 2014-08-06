@@ -71,12 +71,19 @@ class PlayersMgr():
         rps = []
         for rp in rpks:
             p = self.convert_to_player(rp)
+
             if p:
                 rps.append(p)
         return rps
 
     def remove(self, pid):
-        del self.players[pid]
+        try:
+            del self.players[pid]
+        except KeyError:
+            pass
+        for player_type in ["AI", "Human"]:
+            rpks = self.get_rpks(player_type)
+            rpks.delete(pid)
 
     def save(self, player, update_cache=True):
         if player.__class__ is type(0):

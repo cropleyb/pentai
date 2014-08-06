@@ -5,7 +5,6 @@ from pentai.base.defines import *
 
 class PlayerScreen(Screen):
     create_text = "Create one"
-    current_name = StringProperty(create_text)
     player_names = ListProperty([])
     rename_req = "Give me a name"
     rename_text = StringProperty(rename_req)
@@ -14,10 +13,13 @@ class PlayerScreen(Screen):
         super(PlayerScreen, self).__init__(*args, **kwargs)
 
         self.ids.player_spinner_id.bind(text=self.select_player)
-        self.current_name = self.create_text
+        self.ids.player_spinner_id.text = self.create_text
 
         self.ids.name_id.bind(focus=self.on_rename_focus)
-        self.ids.name_id.bind(on_text_validate=self.save)
+        self.ids.name_id.bind(on_text_validate=self.save_with_check)
+
+    def set_player_names(self, names):
+        self.player_names = names
 
     def on_rename_focus(self, instance, value):
         if value:
@@ -35,18 +37,24 @@ class PlayerScreen(Screen):
         self.edit_player(val)
 
     def edit_player(self, name):
-        g = self.pm.find_by_name(name)
+        if name != self.rename_req:
+            g = self.pm.find_by_name(name)
 
     def on_enter(self):
         self.refresh_names()
+        #if self.rename_text == self.rename_req:
+        #st()
+        if self.ids.player_spinner_id.text == self.create_text:
+            self.ids.name_id.text = self.rename_req
+            self.ids.name_id.focus = False
 
     def on_leave(self):
         self.save()
 
     def refresh_names(self):
-        self.player_names = [self.create_text]
-        pns = self.pm.get_human_player_names()
-        self.player_names.extend(sorted(pns))
+        pns = [self.create_text]
+        pns.extend(sorted(self.get_players()))
+        self.set_player_names(pns)
 
     def menu(self, unused=None):
         self.app.return_screen()
@@ -56,37 +64,48 @@ class PlayerScreen(Screen):
             self.ids.name_id.text = self.rename_text
 
     def delete(self, unused=None):
-        if self.ids.name_id.text != self.rename_req:
-            hp = self.pm.find_by_name(self.ids.name_id.text, self.player_type_str)
+        pl = self.pm.find_by_name(self.ids.name_id.text, self.player_type_str)
+        if pl:
             self.ids.name_id.text = self.rename_req
-            self.pm.remove(hp.p_key)
+            self.pm.remove(pl.p_key)
             self.rename_text = self.rename_req
+            self.ids.name_id.focus = False
             self.refresh_names()
             self.set_spinner_val(self.create_text)
 
-    def save(self, unused=None):
+    def save_with_check(self, unused=None):
         if self.ids.name_id.text in [self.rename_req, ""]:
             # Attempt to save with no name set.
-            self.app.display_error("Please choose a name first")
+            self.app.display_error("Please choose a name before saving")
             return
+        self.save()
 
+    def save(self, unused=None):
         # The entered name
         hpn = self.ids.name_id.text
-        if self.current_name != self.create_text:
-            # Rename
-            hp = self.pm.find_by_name(self.rename_text, self.player_type_str)
-            self.pm.remove(hp.p_key)
-            hp.p_name = hpn
-        else:
-            # Create
-            hp = self.player_class(hpn)
+        if not hpn:
+            return
+        if hpn == self.rename_text:
+            # No change
+            return
 
-        self.pm.save(hp)
-        self.set_spinner_val(hpn)
-        self.refresh_names()
+        if hpn != self.create_text and hpn and self.rename_text:
+            # Rename
+            pl = self.pm.find_by_name(self.rename_text, self.player_type_str)
+            self.pm.remove(pl.p_key)
+            pl.p_name = hpn
+        else:
+            if (hpn == self.rename_req) or (not hpn):
+                return
+            # Create
+            pl = self.player_class(hpn)
+
+        if pl:
+            self.pm.save(pl)
+            self.set_spinner_val(hpn)
+            self.refresh_names()
 
     def set_spinner_val(self, new_val):
-        self.current_name = new_val
         self.ids.player_spinner_id.text = new_val
 
     def show_help(self):
