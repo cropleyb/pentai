@@ -1,6 +1,7 @@
 from kivy.uix.screenmanager import *
 
 import pentai.gui.intro_screen as i_m
+from pentai.base.defines import *
 
 import random
 
@@ -21,17 +22,23 @@ class PScreenManager(ScreenManager):
         self.add_widget(i_m.IntroScreen(name="Intro"))
         self.current = "Intro"
 
+    def push_current(self, screen_name):
+        self.previous.append(self.current)
+        self.set_current(screen_name)
+        if len(self.previous) > 4:
+            self.previous[:2] = []
+
     def set_current(self, screen_name):
         if self.current != screen_name:
             self.random_transition()
-            self.previous.append(self.current)
             self.current = screen_name
-            if len(self.previous) > 3:
-                self.previous[:3] = []
 
     def return_screen(self):
         self.current = self.previous[-1]
         del self.previous[-1]
+
+    def clear_hist(self):
+        self.previous[:] = []
 
     def random_transition(self):
         trans = self.transition

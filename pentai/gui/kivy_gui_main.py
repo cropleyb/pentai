@@ -65,10 +65,10 @@ class PentAIApp(App):
         self.root.return_screen()
 
     def show_settings_screen(self):
-        self.root.set_current("Settings")
+        self.root.push_current("Settings")
 
     def show_settings_help(self, ignored=None):
-        self.root.set_current("SettingsHelp")
+        self.root.push_current("SettingsHelp")
 
     def show_pente_screen(self):
         self.root.set_current("Pente")
@@ -78,30 +78,37 @@ class PentAIApp(App):
         self.root.set_current("Load")
 
     def show_load_help(self, ignored=None):
-        self.root.set_current("LoadHelp")
+        self.root.push_current("LoadHelp")
 
     def show_ai_screen(self, ignored=None):
         self.root.set_current("AI")
 
     def show_ai_help(self, ignored=None):
-        self.root.set_current("AIHelp")
+        self.root.push_current("AIHelp")
 
     def show_human_screen(self, ignored=None):
         self.root.set_current("Human")
 
     def show_human_help(self, ignored=None):
-        self.root.set_current("HumanHelp")
+        self.root.push_current("HumanHelp")
 
     def show_menu_screen(self, ignored=None):
         self.root.set_current("Menu")
+        self.root.clear_hist()
 
     def show_new_game_screen(self):
         self.game_filename = ""
         self.setup_screen.create_game()
-        self.root.set_current("Setup")
+        self.root.push_current("Setup")
+
+    def edit_game(self, game=None):
+        if not game is None:
+            self.game = game
+        self.setup_screen.alter_game(self.game)
+        self.root.push_current("Setup")
 
     def show_game_setup_help(self, ignored=None):
-        self.root.set_current("GameSetupHelp")
+        self.root.push_current("GameSetupHelp")
 
     def show_demo(self):
         d = d_m.Demo(self, self.setup_screen.size)
@@ -130,12 +137,6 @@ class PentAIApp(App):
             self.display_error("Please select a game first")
             return
         self.load_game_file(full_path)
-
-    def edit_game(self, game=None):
-        if not game is None:
-            self.game = game
-        self.setup_screen.alter_game(self.game)
-        self.root.current = "Setup"
 
     def get_game_defaults(self):
         if not self.defaults:
@@ -332,6 +333,8 @@ class PentAIApp(App):
         cdp.create_default_players()
 
         #Clock.schedule_once(self.load_games, 0.01)
+        self.pack()
+
         Clock.schedule_once(self.create_screens, 0.01)
 
     def ob_timeout(self, ignored):
@@ -350,6 +353,9 @@ class PentAIApp(App):
             # We'll add some more, but give Kivy some CPU too.
             Clock.schedule_once(self.load_games, 0.1)
         else:
+            self.pack()
+
+    def pack(self):
             log.info("About to pack DB")
             # Finished loading openings games. Pack the DB to reclaim space 
             #z_m.pack()
@@ -358,7 +364,7 @@ class PentAIApp(App):
             z_m.openings.pack()
             log.info("Done packing DB")
             self.openings_builder_timeout = False
-            Clock.schedule_once(self.create_screens, 0)
+            #Clock.schedule_once(self.create_screens, 0)
 
     def create_screens(self, ignored):
         root = self.root
