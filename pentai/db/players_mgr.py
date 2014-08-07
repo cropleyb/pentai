@@ -12,12 +12,27 @@ import os
 def misc():
     return m_m.get_instance()
 
+HUMAN_TYPE = 0
+AI_TYPE = 1
+
+def player_type_to_int(pt):
+    pt = pt.lower()
+    if pt == "human":
+        return HUMAN_TYPE
+    if pt == "ai" or pt == "computer":
+        return AI_TYPE
+
 class PlayersMgr():
     # TODO: Borg pattern?
     def __init__(self, *args, **kwargs):
         self.factory = ai_factory.AIFactory()
         section = "players"
-        self.players = z_m.get_section(section)
+        self.players_by_p_key = z_m.get_section(section)
+        section = "p_keys_by_name"
+        self.p_keys_by_name = z_m.get_section(section)
+        if not self.p_keys_by_name.has_key(HUMAN_TYPE):
+            self.p_keys_by_name[HUMAN_TYPE] = z_m.ZM()
+            self.p_keys_by_name[AI_TYPE] = z_m.ZM()
 
     def ensure_has_key(self, player):
         assert not player is None
@@ -78,12 +93,20 @@ class PlayersMgr():
 
     def remove(self, pid):
         try:
-            del self.players[pid]
+            player = self.players_by_p_key[pid]
         except KeyError:
-            pass
-        for player_type in ["AI", "Human"]:
-            rpks = self.get_rpks(player_type)
-            rpks.delete(pid)
+            return
+
+        player_type = player.get_type()
+        pti = player_type_to_int(player_type)
+        player_name = player.get_name()
+        del self.players_by_p_key[pid]
+
+        pkbn = self.p_keys_by_name[pti]
+        del pkbn[player_name]
+
+        rpks = self.get_rpks(player_type)
+        rpks.delete(pid)
 
     def save(self, player, update_cache=True):
         if player.__class__ is type(0):
@@ -101,7 +124,15 @@ class PlayersMgr():
             # We're already dealing with a genome
             pass
 
-        self.players[p_key] = player
+        self.players_by_p_key[p_key] = player
+
+        player_type = player.get_type()
+        player_name = player.get_name()
+
+        pti = player_type_to_int(player_type)
+        pbkn = self.p_keys_by_name[pti]
+        pbkn[player_name] = p_key
+
         if update_cache:
             self.mark_recent_player(p_key)
         z_m.sync()
@@ -112,19 +143,27 @@ class PlayersMgr():
             return self.convert_to_player(genome)
 
     def find_genome_by_name(self, name, player_type=None, update_cache=True):
-        for p_key, genome in self.players.iteritems():
-            if type(genome) == type(0):
-                continue
-            if player_type and genome.get_type() != player_type:
-                continue
-            if genome.get_name() == name:
-                if update_cache:
-                    self.mark_recent_player(p_key)
-                return genome
+        if player_type:
+            return self.find_genome_by_name_inner(name, player_type, update_cache)
+
+        for pt in ("Human", "AI"):
+            gbn = self.find_genome_by_name_inner(name, pt, update_cache)
+            if gbn:
+                return gbn
+
+    def find_genome_by_name_inner(self, name, player_type, update_cache=True):
+        try:
+            pti = player_type_to_int(player_type)
+            pkbn = self.p_keys_by_name[pti]
+            p_key = pkbn[name]
+            return self.players_by_p_key[p_key]    
+
+        except KeyError:
+            return None
 
     def find(self, p_key, update_cache=True):
         try:
-            p = self.players[p_key]
+            p = self.players_by_p_key[p_key]
         except KeyError:
             return None
         if update_cache:
@@ -133,7 +172,7 @@ class PlayersMgr():
 
     def get_player_name(self, p_key):
         try:
-            p = self.players[p_key]
+            p = self.players_by_p_key[p_key]
         except KeyError:
             return None
         return p.get_name()
@@ -141,7 +180,7 @@ class PlayersMgr():
     def convert_to_player(self, player):
         if type(player) == type(0):
             try:
-                player = self.players[player]
+                player = self.players_by_p_key[player]
             except KeyError:
                 return None
 
