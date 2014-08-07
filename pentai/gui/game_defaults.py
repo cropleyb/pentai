@@ -17,8 +17,8 @@ class GameDefaults(Persistent):
 
     def play_game(self, p1, p2, rules):
         self.rules = rules
-        self.last_game_types[:] = [None, p1[0], p2[0]]
-        self.last_game_names[:] = [None, p1[1], p2[1]]
+        self.last_game_types[:] = ZL([None, p1[0], p2[0]])
+        self.last_game_names[:] = ZL([None, p1[1], p2[1]])
         self.types = self.last_game_types[:]
 
         self.set_name(P1, p1[1])
@@ -90,8 +90,8 @@ class GameDefaults(Persistent):
         try:
             if not name == st_var[0]:
                 # push a new player name 
-                st_var[:0] = [name]
-                st_var[2:] = []
+                st_var[:0] = ZL([name])
+                st_var[2:] = ZL([])
         except IndexError:
             st_var.append(name)
 
