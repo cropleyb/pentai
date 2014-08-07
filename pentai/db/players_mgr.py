@@ -175,7 +175,8 @@ class PlayersMgr():
         try:
             p = self.players_by_p_key[p_key]
         except KeyError:
-            return None
+            # This is probably only because the DB hasn't been re-initialised.
+            return "p_key %s" % p_key
         return p.get_name()
 
     def convert_to_player(self, player):
