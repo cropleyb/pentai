@@ -33,7 +33,7 @@ class AIPlayer(p_m.Player):
         return p_m.Player.__init__(self, *args, **vargs)
 
     def __eq__(self, other):
-        return self.genome == other.genome
+        return self.__class__ == other.__class__ and self.genome == other.genome
 
     def use_openings_book(self):
         return not (self.openings_book is None) and not skip_openings_book

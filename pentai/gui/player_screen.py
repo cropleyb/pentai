@@ -89,6 +89,8 @@ class PlayerScreen(Screen):
         if pn != self.create_text and pn and self.rename_text:
             # Rename
             pl = self.pm.find_by_name(self.rename_text, self.player_type_str)
+            if not pl:
+                return
             self.pm.remove(pl.p_key)
             pl.p_name = pn
         else:
