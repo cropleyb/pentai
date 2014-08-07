@@ -12,6 +12,7 @@ import os
 def misc():
     return m_m.get_instance()
 
+# TODO: Move these into player classes
 HUMAN_TYPE = 0
 AI_TYPE = 1
 
