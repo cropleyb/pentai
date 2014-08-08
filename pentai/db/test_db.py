@@ -40,6 +40,9 @@ def clear_all():
     initialise = False
     delete_test_db()
 
+    import misc_db
+    misc_db.reset()
+
 def delete_test_db():
     for f in ["test.db.most", "test.db.openings"]:
         for ext in ["", ".lock", ".tmp", ".index"]:

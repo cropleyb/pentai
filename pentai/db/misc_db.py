@@ -10,3 +10,7 @@ def get_instance(prefix=None):
         the_instance = zd_m.get_section("misc")
     return the_instance
 
+def reset():
+    global the_instance
+    the_instance = None
+
