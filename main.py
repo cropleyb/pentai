@@ -12,6 +12,10 @@ def main():
     console.setFormatter(formatter)
     sys._kivy_logging_handler = console
 
+    logging.getLogger("ZODB.FileStorage").addHandler(console)
+    logging.getLogger("ZODB.lock_file").addHandler(console)
+    logging.getLogger("ZODB.Connection").addHandler(console)
+
     import startup
     startup.run()
 
