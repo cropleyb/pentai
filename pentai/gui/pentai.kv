@@ -263,21 +263,23 @@
 
             MyCategoryLabel:
                 text: "Rules Variation"
+                size_hint: (1, .7)
 
             MyCategoryLabel:
                 text: "Board Size"
+                size_hint: (1, .7)
 
             Spinner:
                 text: 'Standard'
                 values: ['Standard', 'Tournament', '5-In-A-Row']
                       #, 'Keryo', 'Freestyle', 'No Captures']
-                size_hint: (1, None)
+                size_hint: (1, .7)
                 id: rules_id
 
             Spinner:
                 text: '13'
                 values: ['9', '13', '19']
-                size_hint: (1, None)
+                size_hint: (1, .7)
                 id: bs_id
 
         SmallLabel:
@@ -343,7 +345,7 @@
                 # TODO: double click to edit player?
                 Spinner:
                     values: root.player_names[1]
-                    size_hint: (1, .8)
+                    size_hint: (1, .7)
                     id: bpl_id
 
             VSpacer:
@@ -364,7 +366,7 @@
 
                 Spinner:
                     values: root.player_names[2]
-                    size_hint: (1, .8)
+                    size_hint: (1, .7)
                     id: wpl_id
         Widget:
             size_hint: (1, .02)
@@ -373,11 +375,11 @@
             text: "Start Game"
             on_press: root.start_game()
             id: start_game_id
-            size_hint: (1, .2)
+            size_hint: (1, .22)
 
         GridLayout:
             rows: 1
-            size_hint: (1, .2)
+            size_hint: (1, .18)
 
             MyButton:
                 text: "Return"
