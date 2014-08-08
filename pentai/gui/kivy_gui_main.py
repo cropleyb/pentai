@@ -1,4 +1,9 @@
 from kivy.app import App
+from kivy.properties import StringProperty
+import os
+import pentai.base.logger as log
+
+# TODO: Delay these imports somehow, until after __init__() and build()
 from kivy.clock import *
 from kivy.base import *
 
@@ -6,38 +11,16 @@ import pentai.gui.config as cf_m
 
 from kivy.uix.screenmanager import * # TODO: Remove
 
-import pentai.base.logger as log
 import pentai.db.zodb_dict as z_m
 import p_screen_manager as ps_m
 
-from menu_screen import *
-from ai_player_screen import *
-from ai_help_screen import *
-from human_player_screen import *
-from human_help_screen import *
-from setup_screen import *
-from setup_help_screen import *
-from settings_screen import *
-from settings_help_screen import *
-from games_screen import *
-from load_help_screen import *
-import pente_screen
-from popup import *
 import my_button
 
 from pentai.db.games_mgr import *
 import pentai.db.openings_book as ob_m
 import pentai.db.openings_builder as obl_m
 
-from kivy.properties import ObjectProperty
-
-import pentai.ai.alpha_beta as ab_m
-
-import os
-import time
-import copy as c_m
-
-import demo as d_m
+from popup import *
 
 class PentAIApp(App):
     game_filename = StringProperty("")
@@ -111,6 +94,7 @@ class PentAIApp(App):
         self.root.push_current("GameSetupHelp")
 
     def show_demo(self):
+        import demo as d_m
         d = d_m.Demo(self, self.setup_screen.size)
 
         # Intercept all touch events
@@ -119,6 +103,7 @@ class PentAIApp(App):
         d.start()
 
     def finish_demo(self):
+        import audio as a_m
         a_m.instance.cut_demo()
         z_m.abort()
 
@@ -139,6 +124,7 @@ class PentAIApp(App):
         self.load_game_file(full_path)
 
     def get_game_defaults(self):
+        from pentai.gui.game_defaults import *
         if not self.defaults:
             self.defaults = misc().setdefault("game_defaults", GameDefaults())
         return self.defaults
@@ -163,7 +149,8 @@ class PentAIApp(App):
         except ScreenManagerException:
             pass
 
-        self.add_screen(pente_screen.PenteScreen,
+        import pente_screen as ps_m
+        self.add_screen(ps_m.PenteScreen,
             'Pente', screen_size=screen_size,
             filename=self.game_filename)
 
@@ -252,6 +239,7 @@ class PentAIApp(App):
         elif key == 100: # 'd'
             # Debug
             if not self.root.current in typing_screens:
+                import pentai.ai.alpha_beta as ab_m
                 ab_m.debug = not ab_m.debug
                 self.debug = ab_m.debug
 
@@ -307,6 +295,7 @@ class PentAIApp(App):
         root.show_intro_screen()
         self.root = root
 
+        import audio as a_m
         self.audio = a_m.Audio(self.config)
         log.debug("app build 4")
         self.audio.schedule_music()
@@ -329,8 +318,8 @@ class PentAIApp(App):
         self.openings_book = ob_m.OpeningsBook()
         log.debug("Created Book")
         
-        import pentai.db.create_default_players as cdp
-        cdp.create_default_players()
+        #import pentai.db.create_default_players as cdp
+        #cdp.create_default_players()
 
         #Clock.schedule_once(self.load_games, 0.01)
         self.pack()
@@ -370,16 +359,8 @@ class PentAIApp(App):
         root = self.root
 
         log.debug("Creating screens")
-        screens = [(MenuScreen, "Menu"),
-                   (SettingsScreen, "Settings"),
-                   (SettingsHelpScreen, "SettingsHelp"),
-                   (SetupScreen, "Setup"),
-                   (SetupHelpScreen, "GameSetupHelp"),
-                   (GamesScreen, "Load"),
-                   (LoadHelpScreen, "LoadHelp"),
-                   (AIPlayerScreen, "AI"), (AIHelpScreen, "AIHelp"),
-                   (HumanPlayerScreen, "Human"), (HumanHelpScreen, "HumanHelp"),
-                   ]
+
+        screens = root.get_all_screens()
 
         log.debug("Adding screens to SM")
         for scr_cls, scr_name in screens:
