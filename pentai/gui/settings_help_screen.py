@@ -17,8 +17,8 @@ The Setting screen allows you to change how you want PentAI to behave, for all f
  The last two moves can be marked with a dot in the centre to make it easier to see what has happened recently.
 
 [i]Show Captures[/i]
- When pieces were captured last move, the removed pieces are shown as transparent ghost pieces, just for one turn. You can still move there.
-
+ When pieces were captured last move, the removed pieces are shown as transparent ghost pieces, just for one turn. You can still move there."""
+        sc.text2 = """
 [i]Move Confirmation[/i]
  If you find that you often slip when putting a piece on the board, you can turn on one of the move confirmation modes. [i]Off Board[/i] is the safest - when you get it in the right place, click anywhere below the board to confirm the move. [i]On Piece[/i] is for people who expect to have to double click move location to confirm a move.
 
@@ -26,8 +26,8 @@ The Setting screen allows you to change how you want PentAI to behave, for all f
  If you find it disconcerting for the AI to play instantly, you can set the smallest time that AI players will take to make a move.
 
 [i]Show Confirmation Popups[/i]
- Would you prefer to confirm major actions before making them?
-
+ Would you prefer to confirm major actions before making them?"""
+        sc.text3 = """
 [b]Players[/b]
 
 [i]Rematch first player[/i]
@@ -40,8 +40,8 @@ The Setting screen allows you to change how you want PentAI to behave, for all f
  Which colour should go first? If you have trouble remembering whether you are white or black, choose [i]Keep The Same[/i]
 - [i]Always White[/i]
 - [i]Always Black[/i]
-- [i]Keep The Same[/i]
-
+- [i]Keep The Same[/i]"""
+        sc.text4 = """
 [b]Openings Book[/b]
 
 [i]Add games[/i]
@@ -51,8 +51,8 @@ The Setting screen allows you to change how you want PentAI to behave, for all f
  The openings book takes a while to build, and takes a fair amount of space.
 Expert players will want it be built in its entirity. Beginners will not notice a difference.
 Some
-The rest
-
+The rest"""
+        sc.text5 = """
 [b]Sound[/b]
 
 [i]Effects Volume[/i]
