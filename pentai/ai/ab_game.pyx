@@ -69,7 +69,8 @@ class ABGame():
         self.heuristic_stats.report_short_circuit(move, depth)
 
     def report_vals(self, depth, save_values):
-        choice_stats.report_vals(depth, save_values)
+        pass
+        # choice_stats.report_vals(depth, save_values)
 
     def use_bl_cutoff(self):
         return self.bl_cutoff
