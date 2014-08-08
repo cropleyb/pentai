@@ -48,7 +48,6 @@ class SetupScreen(Screen):
 
         self.show_rules_explanation()
         self.set_GUI_from_game(self.get_defaults())
-        self.populate_all_players()
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
@@ -114,7 +113,6 @@ class SetupScreen(Screen):
     def alter_game(self, game):
         self.game = game
         self.set_defaults_from_game(game)
-        self.set_GUI_from_game(self.game)
         self.ids.start_game_id.text = "Resume Game"
 
     def get_defaults(self):
