@@ -48,17 +48,19 @@ class PlayersMgr():
             key = "recent_ai_player_ids"
         else:
             key = "recent_human_ids"
-        rpks = misc().setdefault(key, mru_m.MRUCache(30))
+        try:
+            rpks = misc()[key]
+        except KeyError:
+            rpks = misc()[key] = mru_m.MRUCache(30)
         return rpks
 
     def mark_recent_player(self, player):
-        #log.debug("in mark_recent_player")
         try:
             p_key = player.get_key()
         except AttributeError:
             p_key = player
 
-        player = self.convert_to_player(p_key)
+        player = self.convert_to_genome(p_key)
         p_type = player.get_type()
         rpks = self.get_rpks(p_type)
         rpks.add(p_key)
@@ -66,7 +68,8 @@ class PlayersMgr():
 
     def get_recent_player_names(self, player_type, number):
         # TODO: use "number" for # returned players
-        rps = self.get_recent_players(player_type, number)
+        rps = self.get_recent_genomes(player_type, number)
+
         rpns = []
         seen = set()
         for rp in rps:
@@ -74,19 +77,22 @@ class PlayersMgr():
             if not rpn in seen:
                 rpns.append(rpn)
                 seen.add(rpn)
+
         return rpns
 
+    # Is this used?
     def get_ai_player_names(self):
         return self.get_recent_player_names("AI", 30)
 
+    # Is this used?
     def get_human_player_names(self):
         return self.get_recent_player_names("Human", 30)
 
-    def get_recent_players(self, player_type, number):
+    def get_recent_genomes(self, player_type, number):
         rpks = self.get_rpks(player_type).top(number)
         rps = []
         for rp in rpks:
-            p = self.convert_to_player(rp)
+            p = self.players_by_p_key[rp]
 
             if p:
                 rps.append(p)
@@ -144,7 +150,7 @@ class PlayersMgr():
             return self.convert_to_player(genome)
 
     def find_genome_by_name(self, name, player_type=None, update_cache=True):
-        if player_type:
+        if not player_type is None:
             return self.find_genome_by_name_inner(name, player_type, update_cache)
 
         for pt in ("Human", "AI"):
@@ -191,6 +197,15 @@ class PlayersMgr():
         else:
             # HumanPlayers are stored directly
             pass
+        return player
+
+    def convert_to_genome(self, player):
+        if type(player) == type(0):
+            try:
+                player = self.players_by_p_key[player]
+            except KeyError:
+                return None
+
         return player
 
     def get_max_id(self):
