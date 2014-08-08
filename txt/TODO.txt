@@ -49,33 +49,43 @@ utility function
 - Length level for search stats; yet another PF that uses it (count levels of lengths used as best, relative to the first level tried)
 - Go back a move in search to avoid cloning
 
+Noel's suggestions
+------------------
+Add Kivy request for Text underline
+Courier for button names?
+        '''
+        if _name_ == "__main__":
+            platform = Platform()
+            if platform == 'android':
+                font_path = '/system/fonts/DroidSansFallback.ttf'
+            elif platform == 'macosx':
+                font_path = os.path.expanduser('~/Library/Fonts/stsong.ttf')
+            else:
+                font_path = os.path.join(os.path.dirname(__file__), "font/simsun.ttf")
+
+            TextInput.font_name = StringProperty(font_path)
+            Label.font_name = StringProperty(font_path)
+        '''
+# Change Save to Delete on player screens
+AI Player delete
+Keyboard delete for players
+# Add "Or 5 in a row" for Games screen Standard mode.
+# Don't allow/show illegal tournament mode moves before they are made.
+Delay between confirming piece - "?" disappears, pause, stone appears.
+Delete player confirm mode
+
 Tara's suggestions
 ------------------
 Openings book setup on iOS not clear
-Acknowledgements? Tara?
+Acknowledgements? "Tara"?
 
-Coordinated help system:
-Game Setup help screen
-- Player selection
-- The clock
-- Rules page, with text for Alan's demo
-Linked help pages?
-Settings Screen help
-- Confirmation mode
-- Rematch options
-- Music & Sound effects
-Games load screens Help
-- Finished Games
-- Unfinished Games
-- Edit game
+Coordinated help system: Linked help pages?
 
 Duplicate finished games when restored and modified?
 
 Settings Dropdowns pop open again when you click on the existing option
 
-Scroll help for AI players screen doesn't work on iOS
-Background not black
-Help screen for AI player and Menu text don't drag scroll
+Help screen for AI player and Menu text don't drag scroll on OS X
 Human Screen Help missing?!
 
 Assessor - show best move on screen. Forward/Back through best history?
@@ -92,6 +102,9 @@ overall chess ratings
 better graphics (theme) - ask on kivy forum
 AI player help screen isn't scrolling on iOS: popup intercepting scroll?
 AI player help screen dark grey background instead of black
+
+Edit unstarted 5-in-a-row game to add clocks
+Recently finished games should be ordered most recent first
 
 Beta release
 
