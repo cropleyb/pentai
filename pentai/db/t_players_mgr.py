@@ -83,17 +83,19 @@ class RecentUseTest(unittest.TestCase):
 
     def test_human_save_to_db(self):
         db = PlayersMgr(prefix="test_")
+        fp = db.find_by_name("Sandra")
+        self.assertEquals(fp, None)
         p = HumanPlayer("Sandra")
         db.save(p)
 
         fp = db.find_by_name("Sandra")
         self.assertEquals(fp.get_name(), "Sandra")
 
-        pl = db.get_recent_players("Human", 10)
+        pl = db.get_recent_genomes("Human", 10)
         self.assertEquals(len(pl), 1)
         self.assertEquals(pl[0].get_name(), "Sandra")
 
-        pl = db.get_recent_players("AI", 10)
+        pl = db.get_recent_genomes("AI", 10)
         self.assertEquals(len(pl), 0)
 
         pl = db.get_recent_player_names("Human", 10)
