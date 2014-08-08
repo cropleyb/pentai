@@ -22,10 +22,10 @@ class DBConn(object):
             return
         fp = self.get_filepath()
         for ext in (".lock", ".index"):
-            # Don't need index yet, and lock file it a pain if we crashed
-            lock_file_path = fp + ext
+            # Don't need index yet, and lock file is a pain if we crashed
+            whole_file_path = fp + ext
             try:
-                os.unlink(lock_file_path)
+                os.unlink(whole_file_path)
             except OSError:
                 pass
         storage = FileStorage.FileStorage(fp)
