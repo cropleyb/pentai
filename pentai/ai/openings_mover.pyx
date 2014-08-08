@@ -32,8 +32,10 @@ class OpeningsMover(object):
 
             # TODO: Store scores in the DB? retain flexibility for now
             mr_factor = data.get_max_rating() / 1000.0
-            wins = data.get_wins(search_colour)
+            wins = float(data.get_wins(search_colour))
             losses = data.get_wins(other_colour)
+            if wins/(losses+wins) < .4:
+                continue
             score = (mr_factor * (wins or .3))/(losses or .2)
 
             if secondary:
@@ -45,10 +47,7 @@ class OpeningsMover(object):
             total_score += score
 
         score_moves.sort(reverse=True)
-        lsm = len(score_moves)
-        if lsm > 5:
-            del score_moves[lsm//2:]
-        
+
         rand_val = random.random() * total_score
 
         for score, move in score_moves:

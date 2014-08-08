@@ -85,7 +85,6 @@ class OpeningsMoverTest(unittest.TestCase):
         answers = self.multiple_tries(100, self.player)
 
         self.assertGreater(answers[(4,4)], 65)
-        self.assertGreater(answers[(3,4)], 0)
         self.assertGreater(answers[None], 0)
 
     #! python pentai/ai/t_openings_mover.py OpeningsMoverTest.test_add_to_previously_seen
