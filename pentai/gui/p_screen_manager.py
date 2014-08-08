@@ -75,3 +75,27 @@ class PScreenManager(ScreenManager):
     def leave(self):
         self.current_screen.on_leave()
     
+    def get_all_screens(self):
+        from menu_screen import *
+        from ai_player_screen import *
+        from ai_help_screen import *
+        from human_player_screen import *
+        from human_help_screen import *
+        from setup_screen import *
+        from setup_help_screen import *
+        from settings_screen import *
+        from settings_help_screen import *
+        from games_screen import *
+        from load_help_screen import *
+
+        screens = [(MenuScreen, "Menu"),
+                   (SettingsScreen, "Settings"),
+                   (SettingsHelpScreen, "SettingsHelp"),
+                   (SetupScreen, "Setup"),
+                   (SetupHelpScreen, "GameSetupHelp"),
+                   (GamesScreen, "Load"),
+                   (LoadHelpScreen, "LoadHelp"),
+                   (AIPlayerScreen, "AI"), (AIHelpScreen, "AIHelp"),
+                   (HumanPlayerScreen, "Human"), (HumanHelpScreen, "HumanHelp"),
+                   ]
+        return screens
