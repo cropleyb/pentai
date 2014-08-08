@@ -27,7 +27,7 @@ def suite():
     iam("t_priority_filter_2")
     iam("t_priority_filter_3")
     iam("t_priority_filter_4")
-    iam("t_priority_filter_5")
+    #iam("t_priority_filter_5")
     iam("t_utility_filter")
     iam("t_search_order_table")
     #iam("t_heuristic_filter")
