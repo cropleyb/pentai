@@ -110,7 +110,7 @@
 
         GridLayout:
             rows: 2
-            size_hint: (1, .2)
+            size_hint: (1, .15)
             GridLayout:
                 rows: 1
                 MyButton:
@@ -418,58 +418,63 @@
 
         HSpacer:
 
-        BoxLayout:
-            size_hint_y: None
-            height: my.dp(48)
+        GridLayout:
+            size_hint_y: 3
+            cols: 1
 
-            Label:
-                size_hint_x: .3
-                text: 'Depth'
+            BoxLayout:
+                #size_hint_y: None
+                #height: my.dp(48)
 
-            Slider:
-                id: depth_id
-                min: 1
-                max: 10
-                step: 1
-                value: root.genome.max_depth
-                on_value: root.genome.max_depth = self.value
+                Label:
+                    size_hint_x: .3
+                    text: 'Depth'
 
-            Label:
-                size_hint_x: .2
-                text: '{}'.format(int(depth_id.value))
+                Slider:
+                    id: depth_id
+                    min: 1
+                    max: 10
+                    step: 1
+                    value: root.genome.max_depth
+                    on_value: root.genome.max_depth = self.value
 
-        BoxLayout:
-            size_hint_y: None
-            height: my.dp(48)
+                Label:
+                    size_hint_x: .2
+                    text: '{}'.format(int(depth_id.value))
 
-            Label:
-                size_hint_x: .3
-                text: 'Vision'
+            BoxLayout:
+                #size_hint_y: None
+                #size_hint_y: 0.5
+                #height: my.dp(48)
 
-            Slider:
-                id: vision_id
-                min: 10
-                max: 100
-                step: 1
-                value: root.genome.vision
-                on_value: root.genome.vision = self.value
+                Label:
+                    size_hint_x: .3
+                    text: 'Vision'
 
-            Label:
-                size_hint_x: .2
-                text: '{}'.format(int(vision_id.value))
+                Slider:
+                    id: vision_id
+                    min: 10
+                    max: 100
+                    step: 1
+                    value: root.genome.vision
+                    on_value: root.genome.vision = self.value
 
-        BoxLayout:
-            size_hint_y: None
-            height: my.dp(48)
+                Label:
+                    size_hint_x: .2
+                    text: '{}'.format(int(vision_id.value))
 
-            Label:
-                size_hint_x: .75
-                text: 'Openings Book'
+            BoxLayout:
+                #size_hint_y: None
+                #height: my.dp(48)
 
-            BigCheckBox:
-                id: openings_id
-                active: root.genome.use_openings_book
-                on_active: root.genome.use_openings_book = self.active
+                Label:
+                    size_hint_x: .75
+                    text: 'Openings Book'
+
+                BigCheckBox:
+                    id: openings_id
+                    active: root.genome.use_openings_book
+                    on_active: root.genome.use_openings_book = self.active
 
         HSpacer:
 
@@ -479,7 +484,8 @@
         HSpacer:
 
         BoxLayout:
-            size_hint_y: None
+            #size_hint_y: None
+            size_hint_y: 1.5
             height: my.dp(48)
 
             Label:
@@ -500,7 +506,7 @@
 
         GridLayout:
             rows: 1 
-            size_hint_y: 1.2
+            size_hint_y: 0.75
 
             MyButton:
                 text: "Cancel"
@@ -516,7 +522,7 @@
 
         GridLayout:
             rows: 1 
-            size_hint_y: 1.2
+            size_hint_y: 0.75
             MyButton:
                 text: "Menu"
                 on_release: root.app.show_menu_screen()
