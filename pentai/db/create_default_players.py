@@ -95,11 +95,12 @@ def create_default_ais():
 
     for p in players:
         genome.__dict__.update(p)
-        dot()
         p = pm.find_genome_by_name(genome.p_name, "AI")
         if not p:
             genome.p_key = pm.next_id()
-            pm.save(genome.clone())
+            gen_clone = genome.clone()
+            pm.save(gen_clone)
+        dot()
 
     z_m.sync()
     print
