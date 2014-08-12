@@ -76,26 +76,26 @@ class PScreenManager(ScreenManager):
         self.current_screen.on_leave()
     
     def get_all_screens(self):
-        from menu_screen import *
-        from ai_player_screen import *
-        from ai_help_screen import *
-        from human_player_screen import *
-        from human_help_screen import *
-        from setup_screen import *
-        from setup_help_screen import *
-        from settings_screen import *
-        from settings_help_screen import *
-        from games_screen import *
-        from load_help_screen import *
+        import menu_screen as ms_m
+        import ai_player_screen as aips_m
+        import ai_help_screen as aihs_m
+        import human_player_screen as hps_m
+        import human_help_screen as hhs_m
+        import setup_screen as sts_m
+        import setup_help_screen as shs_m
+        import settings_screen as ses_m
+        import settings_help_screen as sehs_m
+        import games_screen as gs_m
+        import load_help_screen as lhs_m
 
-        screens = [(MenuScreen, "Menu"),
-                   (SettingsScreen, "Settings"),
-                   (SettingsHelpScreen, "SettingsHelp"),
-                   (SetupScreen, "Setup"),
-                   (SetupHelpScreen, "GameSetupHelp"),
-                   (GamesScreen, "Load"),
-                   (LoadHelpScreen, "LoadHelp"),
-                   (AIPlayerScreen, "AI"), (AIHelpScreen, "AIHelp"),
-                   (HumanPlayerScreen, "Human"), (HumanHelpScreen, "HumanHelp"),
+        screens = [(ms_m.MenuScreen, "Menu"),
+                   (ses_m.SettingsScreen, "Settings"),
+                   (sehs_m.SettingsHelpScreen, "SettingsHelp"),
+                   (sts_m.SetupScreen, "Setup"),
+                   (shs_m.SetupHelpScreen, "GameSetupHelp"),
+                   (gs_m.GamesScreen, "Load"),
+                   (lhs_m.LoadHelpScreen, "LoadHelp"),
+                   (aips_m.AIPlayerScreen, "AI"), (aihs_m.AIHelpScreen, "AIHelp"),
+                   (hps_m.HumanPlayerScreen, "Human"), (hhs_m.HumanHelpScreen, "HumanHelp"),
                    ]
         return screens
