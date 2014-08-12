@@ -14,12 +14,15 @@ from games_mgr import *
 from players_mgr import *
 import ai_factory as aif_m
 
+import pentai.db.test_db as tdb_m
+
 class GamesMgrTest(unittest.TestCase):
     def setUp(self):
+        tdb_m.init()
         self.gm = GamesMgr()
 
     def tearDown(self):
-        pass
+        tdb_m.clear_all()
 
     def test_game_to_filename(self):
         rules = Rules(13, "tournament")

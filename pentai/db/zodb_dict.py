@@ -9,6 +9,8 @@ import transaction
 import zc.zlibstorage
 import os
 
+from pentai.base.defines import *
+
 class DBConn(object):
     def __init__(self, db_name):
         self.db_name = db_name
@@ -21,20 +23,13 @@ class DBConn(object):
         if self.zdbroot:
             return
         fp = self.get_filepath()
-        for ext in (".lock", ".index"):
-            # Don't need index yet, and lock file is a pain if we crashed
-            whole_file_path = fp + ext
-            try:
-                os.unlink(whole_file_path)
-            except OSError:
-                pass
         storage = FileStorage.FileStorage(fp)
         self.db = DB(storage, cache_size=1000)
         self.conn = self.db.open()
         self.zdbroot = self.conn.root()
 
     def get_section(self, section_key, tp=None):
-        if not self.zdbroot:
+        if self.zdbroot is None:
             self.load_db()
         if self.zdbroot.has_key(section_key):
             section = self.zdbroot[section_key]
@@ -53,8 +48,14 @@ class DBConn(object):
         self.db.pack(*args, **kwargs)
         self.delete_extra_files()
 
+    def close(self):
+        try:
+            self.conn.close()
+        except AttributeError:
+            pass
+
     def delete_extra_files(self):
-        for ext in ["tmp", "old", "lock", "index"]:
+        for ext in ["tmp", "old"]:
             extra_file_path = ".".join([self.get_filepath(), ext])
             try:
                 os.unlink(extra_file_path)
@@ -63,10 +64,12 @@ class DBConn(object):
 
     def delete_all_dangerous(self):
         """ Only use this for test code!!!"""
-        try:
-            self.zdbroot.clear()
-        except AttributeError:
-            pass
+        for ext in ["", ".tmp", ".lock", ".index"]:
+            extra_file_path = "%s%s" % (self.get_filepath(), ext)
+            try:
+                os.unlink(extra_file_path)
+            except OSError:
+                pass
 
 db_path = None
 most = None
@@ -89,7 +92,10 @@ def get_section(section_key, tp=None):
     db = most
     if section_key == "openings":
         db = openings
-    return db.get_section(section_key, tp)
+    try:
+        return db.get_section(section_key, tp)
+    except:
+        pass
 
 def sync():
     transaction.commit()
@@ -97,10 +103,20 @@ def sync():
 def abort():
     transaction.abort()
 
+def close():
+    global most, openings
+    if most:
+        most.close()
+    if openings:
+        openings.close()
+
 def delete_all_dangerous():
     """ Only use this for test code!!!"""
-    most.delete_all_dangerous()
-    openings.delete_all_dangerous()
-
-
+    global most, openings
+    if most:
+        most.delete_all_dangerous()
+    if openings:
+        openings.delete_all_dangerous()
+    most = None
+    openings = None
 

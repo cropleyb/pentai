@@ -30,14 +30,22 @@ class PentAIApp(App):
         super(PentAIApp, self).__init__(*args, **kwargs)
         self.defaults = None
         #if True:
-        if not "db.fs" in os.listdir(self.user_data_dir):
+        if False:
+        #if not "db.fs.most" in os.listdir(self.user_data_dir):
             log.info("Copying db")
             import shutil
             dest = self.user_data_dir
-            for fn in ["db.fs", "db.fs.index"]:
-                shutil.copy(fn, dest)
+            for fn in ["db.fs.most", "db.fs.openings"]:
+                for ext in ["", ".index"]:
+                    fn_ext = "%s%s" % (fn, ext)
+                    shutil.copy(fn_ext, dest)
+                    '''
+                    del_path = os.path.join(dest, fn_ext)
+                    os.unlink(del_path)
+                    '''
 
     def display_error(self, message):
+        from kivy.uix.label import Label
         self.popup = MessagePopup(title='Error', content=Label(text=message, font_size='20sp'), \
                 size_hint=(.9, .2),
                 timeout_val=4)
@@ -124,9 +132,13 @@ class PentAIApp(App):
         self.load_game_file(full_path)
 
     def get_game_defaults(self):
-        from pentai.gui.game_defaults import *
+        import pentai.gui.game_defaults as gd_m
         if not self.defaults:
-            self.defaults = misc().setdefault("game_defaults", GameDefaults())
+            # self.defaults = misc().setdefault("game_defaults", gd_m.GameDefaults())
+            try:
+                self.defaults = misc()["game_defaults"]
+            except KeyError:
+                self.defaults = misc()["game_defaults"] = gd_m.GameDefaults()
         return self.defaults
 
     def load_game_file(self, full_path=None):
@@ -318,8 +330,8 @@ class PentAIApp(App):
         self.openings_book = ob_m.OpeningsBook()
         log.debug("Created Book")
         
-        #import pentai.db.create_default_players as cdp
-        #cdp.create_default_players()
+        import pentai.db.create_default_players as cdp
+        cdp.create_default_players()
 
         #Clock.schedule_once(self.load_games, 0.01)
         self.pack()
@@ -379,6 +391,7 @@ class PentAIApp(App):
         self.show_menu_screen()
 
     def set_confirmation_popups(self):
+        import pentai.gui.popup as p_m
         p_m.ConfirmPopup.bypass = \
             not self.config.getint("PentAI", "confirm_popups")
 

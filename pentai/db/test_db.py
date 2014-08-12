@@ -2,6 +2,7 @@ import os
 import logging
 
 def init():
+    """ TODO: Call this setUp """
     global initialised
     try:
         if initialised:
@@ -34,21 +35,18 @@ def init_logging():
 init()
 
 def clear_all():
+    """ TODO: Call this tearDown """
     import zodb_dict as z_m
-    z_m.delete_all_dangerous()
     z_m.sync()
-    initialise = False
-    delete_test_db()
+    z_m.close()
+    z_m.delete_all_dangerous()
+
+    global initialised
+    initialised = False
 
     import misc_db
     misc_db.reset()
 
-def delete_test_db():
-    for f in ["test.db.most", "test.db.openings"]:
-        for ext in ["", ".lock", ".tmp", ".index"]:
-            fn = "%s%s" % (f, ext)
-            try:
-                os.unlink(fn)
-            except Exception, e:
-                pass
+    import openings_book as ob_m
+    ob_m.instance = None
 
