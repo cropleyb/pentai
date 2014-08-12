@@ -28,9 +28,6 @@ class ATOTest(unittest.TestCase):
 
     def tearDown(self):
         tdb_m.clear_all()
-        tdb_m.delete_test_db()
-        ob_m.instance = None
-        m_m.the_instance = None
 
     def load_moves_and_set_win(self, moves, winner=P1, game=None):
         if not game:
@@ -50,7 +47,6 @@ class ATOTest(unittest.TestCase):
     def atest_add_initial_position(self):
         print_func()
         # This works when debugged?!
-        #st()
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n3. (9,10)\n4. (11,10)")
         self.ob.add_position(self.game, 1, P1)
 
@@ -374,16 +370,13 @@ class TranslationalSymmetryTest(unittest.TestCase):
 
     def tearDown(self):
         tdb_m.clear_all()
-        #tdb_m.delete_test_db()
-        ob_m.instance = None
-        m_m.the_instance = None
 
     def load_moves_and_set_win(self, moves, winner=P1):
         self.game.load_moves(moves)
         self.game.current_state.set_won_by(winner)
         self.game.game_id = random.randrange(10000)
 
-    # ! kivy pentai/db/t_openings_book.py ATOTest.test_translation_away_from_edges
+    # ! python pentai/db/t_openings_book.py TranslationalSymmetryTest.test_translation_away_from_edges
     def test_translation_away_from_edges(self):
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n")
         self.ob.add_game(self.game, P1)
@@ -401,10 +394,11 @@ class TranslationalSymmetryTest(unittest.TestCase):
     # TODO: rules types delegation tests
 
 class CirculateTest(unittest.TestCase):
+    def setUp(self):
+        tdb_m.init()
+
     def tearDown(self):
         tdb_m.clear_all()
-        ob_m.instance = None
-        m_m.the_instance = None
 
     def test_circulate_array(self):
         a = range(20)
