@@ -27,7 +27,7 @@ class AIFactoryTest(unittest.TestCase):
         self.assertEquals(rp.get_name(), "Samuel")
         self.assertEquals(rp.max_depth, 3)
 
-    def test_ai_restore_player(self):
+    def test_ai_restore_player2(self):
         genome = AIGenome("Hagrid")
         genome.max_depth = 3
         aif = AIFactory()
@@ -51,6 +51,7 @@ class HumanDBTest(unittest.TestCase):
     def tearDown(self):
         test_db.clear_all()
 
+    # !python ./pentai/db/t_players_mgr.py HumanDBTest.test_human_save_to_db
     def test_human_save_to_db(self):
         db = PlayersMgr(prefix="test_")
         p = HumanPlayer("Sandra")
