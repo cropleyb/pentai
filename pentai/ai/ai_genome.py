@@ -1,5 +1,7 @@
 import copy as c_m
 from persistent import Persistent
+from persistent.list import PersistentList as ZL
+from persistent.mapping import PersistentMapping as ZM
 
 class AIGenomeException(Exception):
     pass
@@ -7,53 +9,43 @@ class AIGenomeException(Exception):
 class AIGenome(Persistent):
     def __init__(self, name, *args, **kwargs):
         super(AIGenome, self).__init__(*args, **kwargs)
-        defaults = {
-            "override": False,
-            "p_name": name,
-            "p_key": None,
-            "use_openings_book": True,
-            # Search params
-            "max_depth": 6,
-            "max_depth_boost": 0,
-            "mmpdl": 9,
-            "narrowing": 0,
-            "chokes": ((4,5),),
-            "bl_cutoff": False,
-            "utility_filter": False,
-            #"filter2": False,
-            "filter_num": 1,
-            "vision": 100,
-            # Utility function
-            "calc_mode": 1,
-            "capture_score_base": 300,
-            "take_score_base": 80,
-            "threat_score_base": 20,
-            "enclosed_four_base": 400,
-            "use_net_captures": True,
-            "captures_scale": (1, 1, 1, 2, 4, 8),
-            "length_scale": (1, 1, 1, 1, 1, 1),
-            "length_factor": 35,
-            "move_factor": 45,
-            "scale_pob": False,
-            "force_depth": 0,
-            "judgement": 100,
-            "length_boosts": [], # length, boost
-            "sub_type_boosts": [], # length, sub_type, boost):
-        }
-        super(AIGenome, self).__setattr__("__dict__", defaults)
-
-    def set_override(self, val):
-        self.override = val
+        self.p_name = name
+        self.p_key = None
+        self.use_openings_book = True
+        # Search params
+        self.max_depth = 6
+        self.max_depth_boost = 0
+        self.mmpdl = 9
+        self.narrowing = 0
+        self.chokes = ((4,5),)
+        self.bl_cutoff = False
+        self.utility_filter = False
+        self.filter_num = 1
+        self.vision = 100
+        # Utility function
+        self.calc_mode = 1
+        self.capture_score_base = 300
+        self.take_score_base = 80
+        self.threat_score_base = 20
+        self.enclosed_four_base = 400
+        self.use_net_captures = True
+        self.captures_scale = (1, 1, 1, 2, 4, 8)
+        self.length_scale = (1, 1, 1, 1, 1, 1)
+        self.length_factor = 35
+        self.move_factor = 45
+        self.scale_pob = False
+        self.force_depth = 0
+        self.judgement = 100
+        self.length_boosts = () #ZL([]), # length, boost
+        self.sub_type_boosts = () #ZL([]), # length, sub_type, boost):
 
     def get_name(self):
         try:
             name = self.p_name
         except AttributeError:
             name = self.name
-            self.set_override(True)
             self.p_name = name
             del self.name
-            self.set_override(False)
         return name
 
     def get_type(self):
@@ -61,14 +53,4 @@ class AIGenome(Persistent):
 
     def get_key(self):
         return self.p_key
-
-    def __setattr__(self, attr_name, val):
-        if hasattr(self, "override") and not self.override:
-            if not hasattr(self, attr_name):
-                raise AIGenomeException("Cannot set attribute %s" % attr_name)
-        super(AIGenome, self).__setattr__(attr_name, val)
-
-    def clone(self):
-        c = c_m.deepcopy(self)
-        return c
 

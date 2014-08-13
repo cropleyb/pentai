@@ -46,8 +46,6 @@ def create_default_ais():
     log.debug("Creating AI Players")
     pm = pm_m.PlayersMgr()
 
-    genome = aig_m.AIGenome("")
-    
     players = [
     { "p_name": "Samuel", "use_openings_book": True, "max_depth": 10,
         "judgement": 100, "vision": 100, "capture_score_base": 350 },
@@ -94,12 +92,13 @@ def create_default_ais():
     ]
 
     for p in players:
-        genome.__dict__.update(p)
+        genome = aig_m.AIGenome("")
+        for k,v in p.items():
+            setattr(genome, k, v)
         p = pm.find_genome_by_name(genome.p_name, "AI")
         if not p:
             genome.p_key = pm.next_id()
-            gen_clone = genome.clone()
-            pm.save(gen_clone)
+            pm.save(genome)
         dot()
 
     z_m.sync()

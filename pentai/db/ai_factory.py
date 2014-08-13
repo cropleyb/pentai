@@ -41,9 +41,7 @@ class AIFactory: # TODO: These are just functions
             if genome.utility_filter:
                 sf = UtilityFilter(sf, 10)
         except AttributeError:
-            genome.set_override(True)
             genome.utility_filter = False
-            genome.set_override(False)
 
         sf.set_max_moves_per_depth_level(mmpdl=genome.mmpdl, narrowing=genome.narrowing,
                 chokes=genome.chokes)
@@ -79,9 +77,7 @@ class AIFactory: # TODO: These are just functions
 
         p.force_depth = genome.force_depth
 
-        genome.set_override(True)
         p.set_max_depth(genome.max_depth + genome.max_depth_boost)
-        genome.set_override(False)
 
         self.set_utility_config(genome, p)
         p.genome = genome
@@ -116,7 +112,6 @@ class AIFactory: # TODO: These are just functions
             pass
         uc.set_factors(factors)
 
-        genome.set_override(True)
         try:
             uc.enclosed_four_base = genome.enclosed_four_base
         except:
@@ -135,5 +130,4 @@ class AIFactory: # TODO: These are just functions
             uc.length_scale = genome.length_scale = [1,1,1,1,1,1]
         # Then run upgrade_dbs.py
         '''
-        genome.set_override(False)
 
