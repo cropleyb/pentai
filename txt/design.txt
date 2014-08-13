@@ -1205,3 +1205,13 @@ Parallel lines
 Diagonal weighting
 ------------------
 
+Player modification
+-------------------
+Players can be modified or deleted.
+How does this affect the game setup screen?
+- Active spinner value must be updated
+    - If the name has changed, it should show the new name.
+    - If the player has been deleted, ideally we should show the next player in
+      the game defaults.
+- Spinner options must be reloaded (done)
+
