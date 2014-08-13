@@ -1,6 +1,5 @@
 from persistent import *
 from pentai.base.defines import *
-from pentai.base.rules import *
 from pentai.db.zodb_dict import ZL
 
 class GameDefaults(Persistent):
@@ -12,7 +11,7 @@ class GameDefaults(Persistent):
         self.old_game_names_by_type_then_colour = ZL( [ZL([]), ZL([]), ZL([]) ])
 
         self.types = ZL([None, None, None])
-        self.rules = Rules(19, "Standard")
+        self.rules = None
         self.last_name_set_of_type_was_colour = ZL([None, None])
 
     def play_game(self, p1, p2, rules):
@@ -31,10 +30,16 @@ class GameDefaults(Persistent):
                         (p2.get_type(), p2.get_name()), rules)
 
     def get_size(self):
-        return self.rules.size
+        try:
+            return self.rules.size
+        except AttributeError:
+            return 19
 
     def get_rules_type_name(self):
-        return self.rules.get_type_name()
+        try:
+            return self.rules.get_type_name()
+        except AttributeError:
+            return "Standard"
 
     def get_total_time(self):
         return self.rules.get_time_control()
