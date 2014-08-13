@@ -38,11 +38,16 @@ class PentAIApp(App):
             for fn in ["db.fs.most", "db.fs.openings"]:
                 for ext in ["", ".index"]:
                     fn_ext = "%s%s" % (fn, ext)
+                    '''
+                    # Copy DB to user_data_dir
                     shutil.copy(fn_ext, dest)
                     '''
+                    # Delete existing DB in user_data_dir
                     del_path = os.path.join(dest, fn_ext)
-                    os.unlink(del_path)
-                    '''
+                    try:
+                        os.unlink(del_path)
+                    except OSError:
+                        pass
 
     def display_error(self, message):
         from kivy.uix.label import Label
