@@ -105,6 +105,8 @@ AI player help screen dark grey background instead of black
 
 Edit unstarted 5-in-a-row game to add clocks
 Recently finished games should be ordered most recent first
+Delete a Human Player - they should not appear on the New Game screen
+Default values for game_defaults for the first time it is run.
 
 Beta release
 
