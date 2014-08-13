@@ -48,6 +48,7 @@ class SetupScreen(Screen):
 
         self.show_rules_explanation()
         self.set_GUI_from_game(self.get_defaults())
+        self.populate_all_players()
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
