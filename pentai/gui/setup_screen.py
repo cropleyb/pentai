@@ -52,7 +52,7 @@ class SetupScreen(Screen):
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
-            self.get_defaults().set_name(colour, player_name)
+            self.get_defaults().set_player(colour, player_name)
             self.populate_all_players()
 
     def set_player_type(self, colour, player_type):
@@ -64,8 +64,8 @@ class SetupScreen(Screen):
 
     def populate_all_players(self):
         self.repop = True
-        self.ids.bpl_id.text = self.get_defaults().get_player_name(P1)
-        self.ids.wpl_id.text = self.get_defaults().get_player_name(P2)
+        self.ids.bpl_id.text = self.get_defaults().get_player(P1)
+        self.ids.wpl_id.text = self.get_defaults().get_player(P2)
         self.repop = False
 
         self.populate_black_player_list()
@@ -163,8 +163,8 @@ class SetupScreen(Screen):
         return self.game
     
     def set_GUI_from_game(self, g):
-        self.ids.bpl_id.text = g.get_player_name(P1)
-        self.ids.wpl_id.text = g.get_player_name(P2)
+        self.ids.bpl_id.text = g.get_player(P1)
+        self.ids.wpl_id.text = g.get_player(P2)
         bpt = g.get_player_type(P1)
         wpt = g.get_player_type(P2)
         self.ids.black_type_id.set_active(bpt)
