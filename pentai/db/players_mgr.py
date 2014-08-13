@@ -13,8 +13,8 @@ def misc():
     return m_m.get_instance()
 
 # TODO: Move these into player classes
-HUMAN_TYPE = 0
-AI_TYPE = 1
+HUMAN_TYPE = int(0)
+AI_TYPE = int(1)
 
 def player_type_to_int(pt):
     pt = pt.lower()
@@ -28,12 +28,12 @@ class PlayersMgr():
     def __init__(self, *args, **kwargs):
         self.factory = ai_factory.AIFactory()
         section = "players"
-        self.players_by_p_key = z_m.get_section(section)
-        section = "p_keys_by_name"
-        self.p_keys_by_name = z_m.get_section(section)
-        if not self.p_keys_by_name.has_key(HUMAN_TYPE):
-            self.p_keys_by_name[HUMAN_TYPE] = z_m.ZM()
-            self.p_keys_by_name[AI_TYPE] = z_m.ZM()
+        players = self.players_by_p_key = z_m.get_section(section)
+        subsection = "p_keys_by_name"
+        try:
+            self.p_keys_by_name = players[subsection]
+        except KeyError:
+            self.p_keys_by_name = players[subsection] = z_m.ZL((z_m.ZM(), z_m.ZM()))
 
     def ensure_has_key(self, player):
         assert not player is None
@@ -59,6 +59,7 @@ class PlayersMgr():
             p_key = player.get_key()
         except AttributeError:
             p_key = player
+        assert(type(p_key) == type(0))
 
         player = self.convert_to_genome(p_key)
         p_type = player.get_type()
@@ -73,6 +74,7 @@ class PlayersMgr():
         rpns = []
         seen = set()
         for rp in rps:
+            # This is where the stall happens, per rp.
             rpn = rp.get_name()
             if not rpn in seen:
                 rpns.append(rpn)
@@ -124,9 +126,7 @@ class PlayersMgr():
         try:
             player = player.genome
             # update the genome as well
-            player.set_override(True)
             player.p_key = p_key
-            player.set_override(False)
         except AttributeError:
             # We're already dealing with a genome
             pass
@@ -137,8 +137,9 @@ class PlayersMgr():
         player_name = player.get_name()
 
         pti = player_type_to_int(player_type)
-        pbkn = self.p_keys_by_name[pti]
-        pbkn[player_name] = p_key
+        pkbn = self.p_keys_by_name[pti]
+
+        pkbn[player_name[:]] = p_key
 
         if update_cache:
             self.mark_recent_player(p_key)
