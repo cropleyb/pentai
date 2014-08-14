@@ -80,7 +80,7 @@ class GameState(object):
 
     def is_illegal(self, move_pos):
         if self.board.off_board(move_pos):
-            return IllegalMoveException("Position %s is off the board" % \
+            return OffBoardException("Position %s is off the board" % \
                     b_m.pos2str(move_pos))
         if self.board.get_occ(move_pos) > 0:
             return IllegalMoveException("Position %s is already occupied" % \
