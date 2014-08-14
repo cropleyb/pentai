@@ -20,7 +20,10 @@ The Setting screen allows you to change how you want PentAI to behave, for all f
  When pieces were captured last move, the removed pieces are shown as transparent ghost pieces, just for one turn. You can still move there."""
         sc.text2 = """
 [i]Move Confirmation[/i]
- If you find that you often slip when putting a piece on the board, you can turn on one of the move confirmation modes. [i]Off Board[/i] is the safest - when you get it in the right place, click anywhere below the board to confirm the move. [i]On Piece[/i] is for people who expect to have to double click move location to confirm a move.
+ If you find that you often slip when putting a piece on the board, you can turn on one of the move confirmation modes.
+     [i]Off Board[/i] is safer - when you get it in the right place, click anywhere below the board to confirm the move. Use
+     [i]None Required[/i] if you have good coordination and are in a stable location.
+ Note that when you are placing a piece, you can slide your finger around to get it in the right place before letting go, and if you missed you can use the [i]Take Back[/i] button if required.
 
 [i]Minimum Wait Time[/i]
  If you find it disconcerting for the AI to play instantly, you can set the smallest time that AI players will take to make a move.
