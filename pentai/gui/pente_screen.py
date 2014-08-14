@@ -711,8 +711,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 cm = self.confirm_mode()
                 if cm == "Off Board":
                     self.cancel_confirmation()
-                elif cm == "On Piece":
-                    self.confirm_move()
             else:
                 # Adjust the confirmation
                 widget.pos = self.board_to_screen(board_pos)
@@ -728,9 +726,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if self.confirm_mode() == "Off Board":
                 # Green to confirm off board
                 col = [0, 1, 0, .5]
-            elif self.confirm_mode() == "On Piece":
-                # Red to confirm off board
-                col = [1, 0, 0, .5]
 
             self.confirm_rect_color = col
 
@@ -795,8 +790,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if self.confirmation_in_progress:
                 if self.confirm_mode() == "Off Board":
                     self.confirm_move()
-                elif self.confirm_mode() == "On Piece":
-                    self.cancel_confirmation()
                 return True
 
             # Let controls below the board recognize the touch
