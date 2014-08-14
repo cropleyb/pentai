@@ -81,6 +81,10 @@ class PlayerScreen(Screen):
         self.save()
 
     def save(self, unused=None):
+        if self.ids.name_id.text in [self.rename_req, ""]:
+            # Attempt to save with no name set, ignore
+            return
+
         # The entered name
         pn = self.ids.name_id.text
         if not pn:

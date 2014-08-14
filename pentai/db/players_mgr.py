@@ -43,6 +43,14 @@ class PlayersMgr():
 
         return player.p_key
 
+    def get_p_key_from_name(self, name):
+        for player_type in (HUMAN_TYPE, AI_TYPE):
+            try:
+                p_key = self.p_keys_by_name[player_type][name]
+                return p_key
+            except KeyError:
+                pass
+
     def get_rpks(self, player_type):
         if player_type == "AI" or player_type == "Computer": # Computer is temp
             key = "recent_ai_player_ids"
@@ -183,7 +191,7 @@ class PlayersMgr():
             p = self.players_by_p_key[p_key]
         except KeyError:
             # This is probably only because the DB hasn't been re-initialised.
-            return "p_key %s" % p_key
+            return ""
         return p.get_name()
 
     def convert_to_player(self, player):

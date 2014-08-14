@@ -26,8 +26,8 @@ class GameDefaults(Persistent):
     def add_game(self, game):
         p1, p2 = game.get_all_players()[1:]
         rules = game.get_rules()
-        self.play_game((p1.get_type(), p1.get_name()), 
-                        (p2.get_type(), p2.get_name()), rules)
+        self.play_game((p1.get_type(), p1.get_key()), 
+                        (p2.get_type(), p2.get_key()), rules)
 
     def get_size(self):
         try:

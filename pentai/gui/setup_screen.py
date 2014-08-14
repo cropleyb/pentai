@@ -47,12 +47,13 @@ class SetupScreen(Screen):
             self.initialised = True
 
         self.show_rules_explanation()
-        self.set_GUI_from_game(self.get_defaults())
+        self.set_GUI_from_defaults(self.get_defaults())
         self.populate_all_players()
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
-            self.get_defaults().set_player(colour, player_name)
+            p_key = self.pm.get_p_key_from_name(player_name)
+            self.get_defaults().set_player(colour, p_key)
             self.populate_all_players()
 
     def set_player_type(self, colour, player_type):
@@ -62,10 +63,17 @@ class SetupScreen(Screen):
             self.get_defaults().set_type(colour, player_type)
             self.populate_all_players()
 
+    def get_default_player_name(self, colour):
+        p_key = self.get_defaults().get_player(colour)
+        if not p_key:
+            return ""
+        p_name = self.pm.get_player_name(p_key)
+        return p_name
+
     def populate_all_players(self):
         self.repop = True
-        self.ids.bpl_id.text = self.get_defaults().get_player(P1)
-        self.ids.wpl_id.text = self.get_defaults().get_player(P2)
+        self.ids.bpl_id.text = self.get_default_player_name(P1)
+        self.ids.wpl_id.text = self.get_default_player_name(P2)
         self.repop = False
 
         self.populate_black_player_list()
@@ -121,7 +129,6 @@ class SetupScreen(Screen):
             self.defaults = self.app.get_game_defaults()
         return self.defaults
 
-
     def set_defaults_from_game(self, game):
         self.get_defaults().add_game(game)
 
@@ -162,9 +169,9 @@ class SetupScreen(Screen):
         self.set_defaults_from_game(self.game)
         return self.game
     
-    def set_GUI_from_game(self, g):
-        self.ids.bpl_id.text = g.get_player(P1)
-        self.ids.wpl_id.text = g.get_player(P2)
+    def set_GUI_from_defaults(self, g): # TODO: don't pass g in?
+        self.ids.bpl_id.text = self.get_default_player_name(P1)
+        self.ids.wpl_id.text = self.get_default_player_name(P2)
         bpt = g.get_player_type(P1)
         wpt = g.get_player_type(P2)
         self.ids.black_type_id.set_active(bpt)

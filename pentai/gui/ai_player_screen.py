@@ -44,7 +44,7 @@ class AIPlayerScreen(PlayerScreen):
     def update_player(self, player, new_name):
         self.genome.screen2genome()
         self.genome.inst.p_name = new_name
-        player.genome.__dict__.update(self.genome.inst.__dict__)
+        player.__dict__.update(self.genome.inst.__dict__)
 
     def get_players(self):
         return self.pm.get_ai_player_names()
