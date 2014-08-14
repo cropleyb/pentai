@@ -9,6 +9,9 @@ from kivy.uix.spinner import Spinner, SpinnerOption
 from kivy.config import Config
 
 import pentai.gui.scale as my
+from pentai.base.defines import *
+
+import datetime
 
 class SmallLabel(Label):
     pass
@@ -70,6 +73,25 @@ class MySpinnerOption(SpinnerOption):
         super(MySpinnerOption, self).__init__(*args, **kwargs)
         self.font_size = my.dp(20)
 
+class MySpinner(Spinner):
+    """ Workaround for Kivy bug with Spinner inside a ScrollView (via GridLayout) """
+    def _toggle_dropdown(self, *args):
+        now = self.get_now()
+        td = datetime.timedelta(days=0, seconds=.2)
+
+        if (not hasattr(self, "last_toggle_time")) or \
+                ((now-self.last_toggle_time) > td):
+            self.last_toggle_time = now
+            return super(MySpinner, self)._toggle_dropdown(*args)
+
+    def _on_dropdown_select(self, *args):
+        self.last_toggle_time = self.get_now()
+        return super(MySpinner, self)._on_dropdown_select(*args)
+
+    def get_now(self):
+        now = datetime.datetime.utcnow()
+        return now
+
 class OptionsSetting(MySetting):
     values = ListProperty([])
 
@@ -81,7 +103,7 @@ class OptionsSetting(MySetting):
         sl.valign = "middle"
         gl.add_widget(sl)
 
-        self.sp = sp = Spinner()
+        self.sp = sp = MySpinner()
         sp.values = self.values
         sp.valign = 'bottom'
         sp.size_hint_x = .5
