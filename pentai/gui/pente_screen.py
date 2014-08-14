@@ -387,6 +387,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
         game = self.game
         move = None
         while not self.action_queue.empty():
+            # Remove marker if it is currently displayed
+            self.remove_widget(self.marker)
+
+            # Remove any confirmation piece
+            self.cancel_confirmation()
+
             action = self.action_queue.get()
             if not game.is_live():
                 return
@@ -733,7 +739,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if self.confirmation_in_progress != None:
             widget, board_pos = self.confirmation_in_progress
             self.enqueue_move(board_pos)
-            self.cancel_confirmation()
 
     def confirm_mode(self):
         cm = self.config.get("PentAI", "move_confirmation")
@@ -861,7 +866,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             # If there is an active marker,
             # replace the marker with a piece of the appropriate colour
             if self.marker != None:
-                self.remove_widget(self.marker)
 
                 try:
                     board_pos = self.screen_to_board(self.marker.pos)
@@ -869,13 +873,16 @@ class PenteScreen(Screen, gso_m.GSObserver):
                     # Current marker position is somehow an illegal move?
                     # It should not have been possible to set it there, but we
                     # will ignore it.
+                    self.remove_widget(self.marker)
                     return
                 except OffBoardException:
                     # The user dragged the marker off the board (presumably below)
                     # so we will cancel that attempt to make a move.
+                    self.remove_widget(self.marker)
                     return
 
                 if self.confirm_mode():
+                    self.remove_widget(self.marker)
                     self.adjust_confirmation(board_pos)
                 else:
                     # Queue the move, this will place the
