@@ -71,22 +71,18 @@ AI Player delete
 Keyboard delete for players
 # Add "Or 5 in a row" for Games screen Standard mode.
 # Don't allow/show illegal tournament mode moves before they are made.
-Delay between confirming piece - "?" disappears, pause, stone appears.
-Delete player confirm mode
+# Delay between confirming piece - "?" disappears, pause, stone appears.
 
 Tara's suggestions
 ------------------
-Openings book setup on iOS not clear
+#Openings book setup on iOS not clear
+OB build all
 Acknowledgements? "Tara"?
-
-Coordinated help system: Linked help pages?
-
+# Coordinated help system: Linked help pages?
 Duplicate finished games when restored and modified?
-
-Settings Dropdowns pop open again when you click on the existing option
-
-Help screen for AI player and Menu text don't drag scroll on OS X
-Human Screen Help missing?!
+# Settings Dropdowns pop open again when you click on the existing option
+# Help screen for AI player and Menu text don't drag scroll on OS X
+# Human Screen Help missing?!
 
 Assessor - show best move on screen. Forward/Back through best history?
 Transition to review should copy game and make it the active game (temp)
