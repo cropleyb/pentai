@@ -848,17 +848,11 @@
                 Label:
                     size_hint_y: .07
 
-                GridLayout:
-                    rows: 1
-                    size_hint_y: .15
-                    SmallLabel:
-                        text: "Build now"
-                    Button:
-                        text: "Some"
-                        on_press: root.app.load_games("ignored")
-                    Button:
-                        text: "The rest"
-                        on_press: print "The rest"
+                OptionsSetting:
+                    text: "Build"
+                    values: ("Don't Build", "Part On Startup", "Build All Now")
+                    desc: "Do you want to use the openings book?"
+                    key: "openings_book_building"
 
                 HSpacer:
 

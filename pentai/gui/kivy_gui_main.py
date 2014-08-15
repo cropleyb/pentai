@@ -297,8 +297,8 @@ class PentAIApp(App):
     def build(self):
         log.debug("app build 1")
         ini_file = "pentai.ini"
-        #if True:
         if False:
+        #if True:
             # Keep this for developing new config items
             log.info("Copying init")
             import shutil
@@ -338,17 +338,20 @@ class PentAIApp(App):
         import pentai.db.create_default_players as cdp
         cdp.create_default_players()
 
-        #Clock.schedule_once(self.load_games, 0.01)
-        self.pack()
-
-        Clock.schedule_once(self.create_screens, 0.01)
+        obb = self.config.get("PentAI", "openings_book_building")
+        if obb == "Part On Startup":
+            Clock.schedule_once(self.load_games, 0.01)
+        else:
+            self.pack_and_start()
 
     def ob_timeout(self, ignored):
         log.debug("Intro Time is up")
         self.openings_builder_timeout = True
 
     def load_games(self, ignored):
-        if not self.openings_builder_timeout:
+        if self.openings_builder_timeout:
+            self.pack_and_start()
+        else:
             enough = obl_m.build(self.openings_book, self.user_data_dir, count=2)
             if enough:
                 # Might as well stop waiting
@@ -358,19 +361,14 @@ class PentAIApp(App):
             # TODO: Max DB space
             # We'll add some more, but give Kivy some CPU too.
             Clock.schedule_once(self.load_games, 0.1)
-        else:
-            self.pack()
 
-    def pack(self):
-            log.info("About to pack DB")
-            # Finished loading openings games. Pack the DB to reclaim space 
-            #z_m.pack()
-            # TODO
-            z_m.most.pack()
-            z_m.openings.pack()
-            log.info("Done packing DB")
-            self.openings_builder_timeout = False
-            #Clock.schedule_once(self.create_screens, 0)
+    def pack_and_start(self):
+        log.info("About to pack_and_start DB")
+        # Finished loading openings games. Pack the DB to reclaim space 
+        z_m.pack()
+        log.info("Done packing DB")
+        self.openings_builder_timeout = False
+        Clock.schedule_once(self.create_screens, 0)
 
     def create_screens(self, ignored):
         root = self.root

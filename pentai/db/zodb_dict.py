@@ -110,6 +110,13 @@ def close():
     if openings:
         openings.close()
 
+def pack():
+    global most, openings
+    if most:
+        most.pack()
+    if openings:
+        openings.pack()
+
 def delete_all_dangerous():
     """ Only use this for test code!!!"""
     global most, openings

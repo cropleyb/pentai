@@ -1215,3 +1215,8 @@ How does this affect the game setup screen?
       the game defaults.
 - Spinner options must be reloaded (done)
 
+Openings book building
+----------------------
+"Don't Use"
+"Part On Startup"
+"Build All Now"
