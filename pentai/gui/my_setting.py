@@ -129,6 +129,7 @@ class OptionsSetting(MySetting):
     def save_value(self, switch, val):
         self.get_config().set('PentAI', self.key, val)
         self.get_config().write()
+        self.value = val
 
 class SliderSetting(MySetting):
     value = NumericProperty()
