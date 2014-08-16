@@ -776,9 +776,14 @@
         canvas:
             Color:
                 rgba: root.confirm_rect_color
-                id: 'confirm_rect'
             Rectangle:
                 size: (root.size[0], self.parent.board_offset[1])
+        Label:
+            id: 'confirm_text'
+            size_hint_y: .35
+            color: root.confirm_text_color
+            font_size: my.dp(65)
+            text: "Confirm Here"
 
 <SettingsScreen>:
     GridLayout:

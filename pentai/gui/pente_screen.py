@@ -54,6 +54,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     # TODO: Only the vertical offset is used so far.
     board_offset = ListProperty([0,180.0])
     confirm_rect_color = ListProperty([0, 0, 0, 0])
+    confirm_text_color = ListProperty([0, 0, 0, 0])
     illegal_rect_color = ListProperty([0, 0, 0, 0])
     illegal_rect_pos = ListProperty([0, 0])
     illegal_rect_size = ListProperty([0, 0])
@@ -708,7 +709,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
             widget, board_pos = self.confirmation_in_progress
             self.remove_widget(widget)
             self.confirmation_in_progress = None
+
+            # Hide confirm area and text
             self.confirm_rect_color = [0, 0, 0, 0]
+            self.confirm_text_color = [0, 0, 0, 0]
 
     def adjust_confirmation(self, board_pos):
         if self.confirmation_in_progress:
@@ -716,8 +720,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if board_pos == old_board_pos:
                 # Click on the confirm piece
                 cm = self.confirm_mode()
-                if cm == "Off Board":
-                    self.cancel_confirmation()
+                self.cancel_confirmation()
             else:
                 # Adjust the confirmation
                 widget.pos = self.board_to_screen(board_pos)
@@ -730,11 +733,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
             widget.pos = self.board_to_screen(board_pos)
             self.add_widget(widget)
             self.confirmation_in_progress = widget, board_pos
-            if self.confirm_mode() == "Off Board":
-                # Green to confirm off board
-                col = [0, 1, 0, .5]
-
+            
+            # Green to confirm off board
+            col = [0, 1, 0, .5]
             self.confirm_rect_color = col
+
+            # Gray "Confirm Here"
+            self.confirm_text_color = [.155, .155, .155, .50]
 
     def confirm_move(self):
         if self.confirmation_in_progress != None:
