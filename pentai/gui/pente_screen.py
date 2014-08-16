@@ -340,6 +340,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def load_moves(self, dt=None):
         self.get_audio().mute()
         self.game.resume()
+
+        is_finished = self.game.get_won_by() > 0
+        self.set_review_mode(is_finished)
+
         self.game_filename = None
         self.refresh_all()
         self.get_audio().unmute()
