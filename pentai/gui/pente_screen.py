@@ -118,18 +118,21 @@ class PenteScreen(Screen, gso_m.GSObserver):
             tm = Piece(13, source=filename)
             self.turn_markers.append(tm)
 
+    def confirm_menu_screen(self):
+        popup.ConfirmPopup.create_and_open(
+                message="Go to Menu and leave this game?",
+                action=self.app.show_menu_screen,
+                size_hint=(.8, .2))
+
     def rematch(self):
         self.get_audio().hush_game_over_sound()
         cs = self.game.get_current_state()
-        if not self.reviewing:
-            self.rematch_confirmed()
-        elif cs.get_won_by():
+        if cs.get_won_by():
             self.rematch_confirmed()
         else:
             popup.ConfirmPopup.create_and_open(message="Rematch and leave this game?",
                         action=self.rematch_confirmed,
-                        size_hint=(.8, .2),
-                        force=True)
+                        size_hint=(.8, .2))
 
     def rematch_confirmed(self, *ignored):
         og = self.game
