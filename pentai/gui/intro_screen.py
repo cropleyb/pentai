@@ -12,35 +12,26 @@ class IntroScreen(Screen):
 
         super(IntroScreen, self).__init__(*args, **kwargs)
 
-        gl = gl_m.GridLayout()
-        gl.cols = 1
-        self.add_widget(gl)
-
-        l = l_m.Label()
-        l.size_hint = (1, 0.1)
-        l.text = "Preparing for PentAI!"
-        l.font_size = my.dp(40)
-        gl.add_widget(l)
-
-        self.activity_label = l2 = l_m.Label()
-        l2.size_hint = (1, 0.1)
-        l2.font_size = my.dp(30)
-        gl.add_widget(l2)
-
-        self.progress_bar = pb = pb_m.ProgressBar(max=1000)
-        pb.size_hint = (1, 0.1)
-        gl.add_widget(pb)
+        self.activity_label = self.ids.activity_label_id
+        self.progress_bar = self.ids.progress_bar_id
         
         self.show_activity()
 
     def on_enter(self):
-        # TODO: Fancy graphics? transition to menu
         Clock.schedule_once(self.add_progress, .5)
 
     def on_leave(self):
         Clock.unschedule(self.add_progress)
 
-    # TODO: hurry_up()
+    def prompt_quit(self):
+        self.app.prompt_quit()
+
+    def pop_screen(self):
+        self.app.interrupt_openings_building()
+        self.app.pop_screen()
+
+    def show_help(self):
+        self.app.show_intro_help()
 
     def add_progress(self, *ignored):
         self.progress_bar.value += random.randrange(50, 150)

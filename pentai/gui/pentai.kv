@@ -97,6 +97,40 @@
                 font_size: my.dp(20)
                 on_release: root.ok_confirm()
 
+<IntroScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            size_hint: (1, 0.1)
+            text: "Preparing for PentAI!"
+            font_size: my.dp(40)
+
+        Label:
+            id: activity_label_id
+            size_hint: (1, 0.1)
+            font_size: my.dp(30)
+
+        ProgressBar:
+            id: progress_bar_id
+            max: 1000
+            size_hint: (1, 0.1)
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, 0.03)
+
+            MyButton:
+                text: "Quit"
+                on_release: root.prompt_quit()
+
+            MyButton:
+                text: "Skip"
+                on_release: root.pop_screen()
+
+            MyButton:
+                text: "Help"
+                on_release: root.show_help()
+
 <GamesScreen>:
     GridLayout:
         cols: 1
@@ -383,7 +417,7 @@
 
             MyButton:
                 text: "Return"
-                on_press: root.app.return_screen()
+                on_press: root.app.pop_screen()
 
             MyButton:
                 text: "Help"
@@ -597,7 +631,7 @@
 
             MyButton:
                 text: "Return"
-                on_press: root.app.return_screen()
+                on_press: root.app.pop_screen()
 
 <HumanHelpScreen@HelpScreen>:
 
@@ -851,8 +885,6 @@
                 OptionsSetting:
                     id: build_id
                     text: "Build"
-                    values: ("Don't Build", "Part On Startup", "Build All Now")
-                    desc: "Do you want to use the openings book?"
                     key: "openings_book_building"
 
                 HSpacer:
@@ -905,7 +937,7 @@
 
             MyButton:
                 text: "Return"
-                on_press: root.app.return_screen()
+                on_press: root.app.pop_screen()
 
             MyButton:
                 text: "Help"
