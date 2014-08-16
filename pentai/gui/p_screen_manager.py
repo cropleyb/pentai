@@ -3,6 +3,7 @@ from kivy.uix.screenmanager import *
 from pentai.gui.intro_screen import *
 from pentai.gui.intro_help_screen import *
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 import random
 
@@ -24,6 +25,9 @@ class PScreenManager(ScreenManager):
         self.demo = d 
 
     def push_current(self, screen_name):
+        if self.current == screen_name:
+            return
+        log.debug("Pushing %s to %s, change to %s" % (self.current, self.previous, screen_name))
         self.previous.append(self.current)
         self.set_current(screen_name)
         if len(self.previous) > 20:
@@ -35,6 +39,7 @@ class PScreenManager(ScreenManager):
             self.current = screen_name
 
     def pop_screen(self):
+        log.debug("Popping from %s" % (self.previous))
         if len(self.previous) < 1:
             return False
 
