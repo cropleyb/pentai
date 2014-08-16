@@ -77,7 +77,7 @@ Tara's suggestions
 ------------------
 # Acknowledgements? "Tara"?
 # Green region "Confirm Here"
-Colour change of wins in demo is confusing
+# Colour change of wins in demo is confusing
 Move some of the demo so it still moves in the centre first
 Change beginner instructions: create Human Player first
 Review mode is confusing (+Rematch)
