@@ -29,6 +29,10 @@ class PentAIApp(App):
         self.debug = False
         super(PentAIApp, self).__init__(*args, **kwargs)
         self.defaults = None
+        self.building_openings = False
+        self.menu_screen = None
+        self.intro_help_screen = None
+
         #if True:
         if False:
         #if not "db.fs.most" in os.listdir(self.user_data_dir):
@@ -57,8 +61,21 @@ class PentAIApp(App):
         self.popup.open()
         log.info(message)
 
-    def return_screen(self, ignored=None):
-        self.root.return_screen()
+    def show_intro_screen(self):
+        self.root.push_current("Intro")
+
+    def show_intro_help(self, ignored=None):
+        if self.intro_help_screen is None:
+            self.intro_help_screen = \
+                    self.add_screen(ps_m.IntroHelpScreen, 'IntroHelp')
+        self.root.push_current("IntroHelp")
+
+    def pop_screen(self, ignored=None):
+        ok = self.root.pop_screen()
+        if not ok:
+            self.create_screens()
+        if self.root.current_screen == "Intro" and not self.building_openings:
+            ok = self.root.pop_screen()
 
     def show_settings_screen(self):
         self.root.push_current("Settings")
@@ -139,7 +156,6 @@ class PentAIApp(App):
     def get_game_defaults(self):
         import pentai.gui.game_defaults as gd_m
         if not self.defaults:
-            # self.defaults = misc().setdefault("game_defaults", gd_m.GameDefaults())
             try:
                 self.defaults = misc()["game_defaults"]
             except KeyError:
@@ -156,6 +172,24 @@ class PentAIApp(App):
         # TODO production app should start game here.
         self.root.current = "Setup"
 
+    def openings_book_is_finished(self):
+        return obl_m.is_finished()
+
+    def build_all_openings(self):
+        self.building_openings = True
+        self.show_intro_screen()
+        Clock.schedule_once(self.build_all_openings_inner, 0.1)
+
+    def build_all_openings_inner(self, *ignored):
+        enough = obl_m.build(self.openings_book, self.user_data_dir, count=2)
+        if enough:
+            # UI bypass will skip the pack() call
+            z_m.pack()
+            self.building_openings = False
+            self.pop_screen()
+        if self.building_openings:
+            Clock.schedule_once(self.build_all_openings_inner, 0.1)
+
     def start_game(self, game, screen_size, swap_colours=False, demo=False):
         # TODO: Move this?
         root = self.root
@@ -166,8 +200,8 @@ class PentAIApp(App):
         except ScreenManagerException:
             pass
 
-        import pente_screen as ps_m
-        self.add_screen(ps_m.PenteScreen,
+        from pente_screen import PenteScreen
+        self.add_screen_inc_globals(PenteScreen,
             'Pente', screen_size=screen_size,
             filename=self.game_filename)
 
@@ -203,12 +237,14 @@ class PentAIApp(App):
         typing_screens = ["Setup", "AI", "Human"]
         if key == 27:
             # Escape
-            if BasePopup.my_active:
+            if self.building_openings:
+                self.building_openings = False
+            elif BasePopup.my_active:
                 # Cancel any popup
                 BasePopup.clear()
             else:
                 if self.root.current == "Settings":
-                    self.return_screen()
+                    self.pop_screen()
                 elif self.root.current == "Pente" and \
                      self.pente_screen.confirmation_in_progress:
                     self.pente_screen.cancel_confirmation()
@@ -289,10 +325,14 @@ class PentAIApp(App):
         scr = scr_cls(name=scr_name, **kwargs)
         scr.app = self
         scr.config = self.config # TODO: only use singleton accessor
+        self.root.add_widget(scr)
+        return scr
+
+    def add_screen_inc_globals(self, scr_cls, scr_name, **kwargs):
+        scr = self.add_screen(scr_cls, scr_name, **kwargs)
         scr.gm = self.games_mgr
         scr.ob = self.openings_book
         scr.pm = self.games_mgr.players_mgr
-        self.root.add_widget(scr)
 
     def build(self):
         log.debug("app build 1")
@@ -308,9 +348,11 @@ class PentAIApp(App):
         self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
 
         root = ps_m.PScreenManager()
-        log.debug("app build 3")
-        root.show_intro_screen()
         self.root = root
+        self.add_screen(ps_m.IntroScreen, 'Intro')
+        log.debug("app build 3")
+        self.show_intro_screen()
+        EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
 
         import audio as a_m
         self.audio = a_m.Audio(self.config)
@@ -319,15 +361,14 @@ class PentAIApp(App):
         log.debug("app build 5")
         
         Clock.schedule_once(self.build_more, 0.1)
-
+        
         return root
 
     def build_more(self, ignored):
         self.game = None
-
-        self.openings_builder_timeout = False
-        #self.openings_builder_timeout = True # TEMP for faster testing
-        Clock.schedule_once(self.ob_timeout, 10)
+        
+        #self.building_openings = True
+        Clock.schedule_once(self.interrupt_openings_building, 10)
 
         log.debug("Create Games Mgr")
         self.games_mgr = GamesMgr()
@@ -340,22 +381,23 @@ class PentAIApp(App):
 
         obb = self.config.get("PentAI", "openings_book_building")
         if obb == "Part On Startup":
+            self.building_openings = True
             Clock.schedule_once(self.load_games, 0.01)
         else:
             self.pack_and_start()
 
-    def ob_timeout(self, ignored):
-        log.debug("Intro Time is up")
-        self.openings_builder_timeout = True
+    def interrupt_openings_building(self, ignored=None):
+        log.debug("Stop building openings book")
+        self.building_openings = False
 
     def load_games(self, ignored):
-        if self.openings_builder_timeout:
+        if not self.building_openings:
             self.pack_and_start()
         else:
             enough = obl_m.build(self.openings_book, self.user_data_dir, count=2)
             if enough:
                 # Might as well stop waiting
-                self.openings_builder_timeout = True
+                self.building_openings = False
                 log.debug("OK that's enough")
 
             # TODO: Max DB space
@@ -367,19 +409,23 @@ class PentAIApp(App):
         # Finished loading openings games. Pack the DB to reclaim space 
         z_m.pack()
         log.info("Done packing DB")
-        self.openings_builder_timeout = False
         Clock.schedule_once(self.create_screens, 0)
 
-    def create_screens(self, ignored):
+    def create_screens(self, ignored=None):
+        if not self.menu_screen is None:
+            self.show_menu_screen()
+
         root = self.root
 
         log.debug("Creating screens")
+
+        self.building_openings = False
 
         screens = root.get_all_screens()
 
         log.debug("Adding screens to SM")
         for scr_cls, scr_name in screens:
-            self.add_screen(scr_cls, scr_name)
+            self.add_screen_inc_globals(scr_cls, scr_name)
 
         self.menu_screen = root.get_screen("Menu")
         self.setup_screen = root.get_screen("Setup")
@@ -387,10 +433,9 @@ class PentAIApp(App):
         self.games_screen = root.get_screen("Load")
         self.pente_screen = None
 
-        EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         self.popup = None
-        log.debug("Showing menu")
 
+        log.debug("Showing menu")
         self.show_menu_screen()
 
     def set_confirmation_popups(self):
