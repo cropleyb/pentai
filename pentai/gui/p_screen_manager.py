@@ -31,7 +31,7 @@ class PScreenManager(ScreenManager):
             self.current = screen_name
 
     def pop_screen(self):
-        if len(self.previous) <= 1:
+        if len(self.previous) < 1:
             return False
 
         self.current = self.previous[-1]
