@@ -75,19 +75,28 @@ Keyboard delete for players
 
 Tara's suggestions
 ------------------
-#Openings book setup on iOS not clear
-OB build all
-Acknowledgements? "Tara"?
-# Coordinated help system: Linked help pages?
-# Settings Dropdowns pop open again when you click on the existing option
-# Help screen for AI player and Menu text don't drag scroll on OS X
-# Human Screen Help missing?!
+# Acknowledgements? "Tara"?
+Green region "Confirm Here"
+Colour change of wins in demo is confusing
+Move some of the demo so it still moves in the centre first
+Change beginner instructions: create Human Player first
+Review mode is confusing (+Rematch)
+Help page for game screen (+Button?)
+Get rid of DT image
+Courier Font for AI players
+"Always Swap" -> "Alternate"
+Demo skip "New Game" page
+Highlight "New Game" and "Start Game" after watching the Demo
+Animate Arrow after a move
+Colour the Settings headings
+
 Duplicate finished games when restored and modified?
 
-Intro help - pop screen * 2
-Time full OB build
+# Intro help - pop screen * 2
+Time full OB build on iOS
 Font Colours?
-Reset OB build setting as we go into full build
+# Reset OB build setting as we go into full build
+# iOS build openings cleanup zip files
 
 Assessor - show best move on screen. Forward/Back through best history?
 Transition to review should copy game and make it the active game (temp)
