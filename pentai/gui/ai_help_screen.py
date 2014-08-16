@@ -18,7 +18,7 @@ class AIHelpScreen(hs_m.HelpScreen):
     [i]Judgement[/i]: How well should the AI judge the value of positions?"""
 
         sc.text2 = """
-      The Openings Book uses positions that have been played previously with PentAI, and by many skilled players on pente.org. Every time you play a game against an AI Player, the result is added to the Openings Book, along with the first 12 or so moves.
+      The Openings Book uses positions that have been played previously with PentAI, and by many skilled players on pente.org. Every time you play a game against an AI Player, the result is added to the Openings Book, along with the first 12 or so moves. (unless you disable this in [i]Settings[/i])
 
       When you have finished creating or editing an AI Player, click on the Save button.
 
