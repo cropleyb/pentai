@@ -79,10 +79,15 @@ Tara's suggestions
 OB build all
 Acknowledgements? "Tara"?
 # Coordinated help system: Linked help pages?
-Duplicate finished games when restored and modified?
 # Settings Dropdowns pop open again when you click on the existing option
 # Help screen for AI player and Menu text don't drag scroll on OS X
 # Human Screen Help missing?!
+Duplicate finished games when restored and modified?
+
+Intro help - pop screen * 2
+Time full OB build
+Font Colours?
+Reset OB build setting as we go into full build
 
 Assessor - show best move on screen. Forward/Back through best history?
 Transition to review should copy game and make it the active game (temp)
