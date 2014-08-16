@@ -78,16 +78,16 @@ Tara's suggestions
 # Acknowledgements? "Tara"?
 # Green region "Confirm Here"
 # Colour change of wins in demo is confusing
-Move some of the demo so it still moves in the centre first
-Change beginner instructions: create Human Player first
+# Change beginner instructions: create Human Player first
+# "Always Swap" -> "Alternate"
 Review mode is confusing (+Rematch)
 Help page for game screen (+Button?)
 Get rid of DT image
 Courier Font for AI players
-"Always Swap" -> "Alternate"
+Animate Arrow after a move
+Move more of the demo so it always moves in the centre first
 Demo skip "New Game" page
 Highlight "New Game" and "Start Game" after watching the Demo
-Animate Arrow after a move
 Colour the Settings headings
 
 Duplicate finished games when restored and modified?
