@@ -4,9 +4,9 @@ from kivy.uix.screenmanager import Screen
 from pentai.base.defines import *
 
 class PlayerScreen(Screen):
-    create_text = "Create one"
+    create_text = "Create One"
     player_names = ListProperty([])
-    rename_req = "Give me a name"
+    rename_req = "Give me a Name"
     rename_text = StringProperty(rename_req)
 
     def __init__(self, *args, **kwargs):
