@@ -388,7 +388,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         move = None
         while not self.action_queue.empty():
             # Remove marker if it is currently displayed
-            self.remove_widget(self.marker)
+            if self.marker:
+                self.remove_widget(self.marker)
 
             # Remove any confirmation piece
             self.cancel_confirmation()
