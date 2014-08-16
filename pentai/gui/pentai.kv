@@ -641,6 +641,9 @@
     size_hint_x: .3
     cols: 1
     MyButton:
+        text: "Rematch"
+        on_release: root.ps.rematch()
+    MyButton:
         text: "Continue"
         on_release: root.ps.set_review_mode(False)
     MyButton:
@@ -648,16 +651,13 @@
         id: beginning_id
         on_release: root.ps.go_to_the_beginning()
     MyButton:
-        text: "Back"
-        on_release: root.ps.go_backwards_one()
-    MyButton:
         text: "Forward"
         silent: True
         id: forward_id
         on_release: root.ps.go_forwards_one()
     MyButton:
-        text: "Rematch"
-        on_release: root.ps.rematch()
+        text: "Back"
+        on_release: root.ps.go_backwards_one()
     MyButton:
         text: "Menu"
         on_release: root.ps.app.show_menu_screen()
@@ -666,6 +666,9 @@
     size_hint_x: .3
     cols: 1
 
+    MyButton:
+        text: "Rematch"
+        on_release: root.ps.rematch()
     MyButton:
         text: "Review"
         id: review_id
@@ -677,8 +680,8 @@
         text: "Settings"
         on_release: root.ps.app.show_settings_screen()
     MyButton:
-        text: "Rematch"
-        on_release: root.ps.rematch()
+        text: "Help"
+        on_release: pass # root.ps.show_help()
     MyButton:
         text: "Menu"
         on_release: root.ps.app.show_menu_screen()
