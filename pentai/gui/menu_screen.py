@@ -19,25 +19,28 @@ class MenuScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(MenuScreen, self).__init__(*args, **kwargs)
 
-        self.version_str = "0.9.1"
+        self.version_str = "0.9.2"
 
-        self.ids.gl_id.ids.label1_id.bind(on_ref_press=self.follow_link)
-        self.ids.gl_id.ids.label2_id.bind(on_ref_press=self.follow_link)
+        glids = self.ids.gl_id.ids
+        glids.label1_id.bind(on_ref_press=self.follow_link)
+        glids.label2_id.bind(on_ref_press=self.follow_link)
+        glids.label3_id.bind(on_ref_press=self.follow_link)
+        glids.label4_id.bind(on_ref_press=self.follow_link)
 
         self.about_text1 = \
 """      Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [ref=ww][color=00ffff]Winning Moves[/color][/ref] until recently.
                   (scroll for more)
 [b]Beginners[/b]
-1. First, edit [i]Human Players[/i] to create a new human player for yourself.
-2. Next, watch the 2.5min [i]Rules Demo[/i] (button below) to the end, without touching the screen - it skips the current section if you touch the screen.
-3. Start a [i]New Game[/i]. Play your first game as the first player against "Anthony". Try to get five in a row.
+1. First, edit [ref=hp][color=00ffff]Human Players[/color][/ref] to create a new human player for yourself.
+2. Next, watch the 2.5min [ref=rd][color=00ffff]Rules Demo[/color][/ref] (button below) to the end, without touching the screen - it skips the current section if you touch the screen.
+3. Start a [ref=ng][color=00ffff]New Game[/color][/ref]. Play your first game as the first player against "Anthony". Try to get five in a row.
 4. Continue through the computer opponents alphabetically until you start to lose games. Don't skip too many or you may get disheartened!"""
         self.about_text2 = \
 """
 [b]Experts[/b]
-1. Edit [i]Human Players[/i] to create a new human player for yourself.
-2. Then start a [i]New Game[/i]. Play your first game as the first player against *killer*.
-3. If *killer* is too hard, try going through the alphabetically ordered AI players, starting with "Henrietta", or create an [i]AI Player[/i] to your taste.
+1. Edit [ref=hp][color=00ffff]Human Players[/color][/ref] to create a new human player for yourself.
+2. Then start a [ref=ng][color=00ffff]New Game[/color][/ref]. Play your first game as the first player against *killer*.
+3. If *killer* is too hard, try going through the alphabetically ordered AI players, starting with "Henrietta", or create an [ref=aip][color=00ffff]AI Player[/color][/ref] to your taste.
 4. If *killer* is too easy for you, try "Samuel", or play timed games to make it tougher.
 """     
         self.about_text3 = \
@@ -45,11 +48,11 @@ class MenuScreen(Screen):
 
 If you get a sore brain, you can create a game between a couple of Artificial Intelligence (AI) players and watch how they play. Human versus Human games can also be played with PentAI, though you may prefer to play with a real board.
 
-      Games are automatically saved, and can be resumed if they were left unfinished - see [i]In Progress[/i].
- [i]Recently Finished[/i] games can be reviewed.
+      Games are automatically saved, and can be resumed if they were left unfinished - see [ref=ip][color=00ffff]In Progress[/color][/ref].
+ [ref=rf][color=00ffff]Recently Finished[/color][/ref] games can be reviewed.
 """
         self.about_text4 = \
-"""      There are a few [i]Settings[/i] that you might like to change, for things such as move confirmation style, sound volume and so on.
+"""      There are a few [ref=settings][color=00ffff]Settings[/color][/ref] that you might like to change, for things such as move confirmation style, sound volume and so on.
 
       Thanks go to:
 """
@@ -73,7 +76,22 @@ If you get a sore brain, you can create a game between a couple of Artificial In
         log.debug("User clicked on: %s" % ref)
         if ref == "ww":
             link = "http://winning-moves.com"
+            webbrowser.open_new_tab(link)
         elif ref == "bc":
             link = "http://www.bruce-cropley.com/pentai"
-        webbrowser.open_new_tab(link)
+            webbrowser.open_new_tab(link)
+        elif ref == "hp":
+            self.app.show_human_screen()
+        elif ref == "aip":
+            self.app.show_ai_screen()
+        elif ref == "rd":
+            self.app.show_demo()
+        elif ref == "ng":
+            self.app.show_new_game_screen()
+        elif ref == "ip":
+            self.app.show_games_screen(finished=False)
+        elif ref == "rf":
+            self.app.show_games_screen(finished=True)
+        elif ref == "settings":
+            self.app.show_settings_screen()
 
