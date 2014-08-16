@@ -14,6 +14,10 @@ class PScreenManager(ScreenManager):
         self.random_transition()
         self.previous = []
 
+    def push_demo(self, d):
+        self.previous.append(self.current)
+        self.set_demo(d)
+
     def set_demo(self, d):
         if self.demo:
             self.demo.clean_up()
@@ -22,7 +26,7 @@ class PScreenManager(ScreenManager):
     def push_current(self, screen_name):
         self.previous.append(self.current)
         self.set_current(screen_name)
-        if len(self.previous) > 6:
+        if len(self.previous) > 20:
             self.previous[:1] = []
 
     def set_current(self, screen_name):
@@ -88,6 +92,7 @@ class PScreenManager(ScreenManager):
         import settings_help_screen as sehs_m
         import games_screen as gs_m
         import load_help_screen as lhs_m
+        import pente_help_screen as phs_m
 
         screens = [(ms_m.MenuScreen, "Menu"),
                    (ses_m.SettingsScreen, "Settings"),
@@ -98,5 +103,6 @@ class PScreenManager(ScreenManager):
                    (lhs_m.LoadHelpScreen, "LoadHelp"),
                    (aips_m.AIPlayerScreen, "AI"), (aihs_m.AIHelpScreen, "AIHelp"),
                    (hps_m.HumanPlayerScreen, "Human"), (hhs_m.HumanHelpScreen, "HumanHelp"),
+                   (phs_m.PenteHelpScreen, "PenteHelp"),
                    ]
         return screens

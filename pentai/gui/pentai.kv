@@ -206,12 +206,16 @@
             id: label2_id
         SLPart:
             text: root.text3
+            id: label3_id
         SLPart:
             text: root.text4
+            id: label4_id
         SLPart:
             text: root.text5
+            id: label5_id
         SLPart:
             text: root.text6
+            id: label6_id
 
 
 <MenuScreen>:
@@ -681,7 +685,7 @@
         on_release: root.ps.app.show_settings_screen()
     MyButton:
         text: "Help"
-        on_release: pass # root.ps.show_help()
+        on_release: root.ps.show_help()
     MyButton:
         text: "Menu"
         on_release: root.ps.confirm_menu_screen()

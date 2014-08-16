@@ -124,6 +124,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 action=self.app.show_menu_screen,
                 size_hint=(.8, .2))
 
+    def show_help(self):
+        self.app.show_pente_help()
+
     def rematch(self):
         self.get_audio().hush_game_over_sound()
         cs = self.game.get_current_state()

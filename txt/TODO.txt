@@ -80,7 +80,7 @@ Tara's suggestions
 # Colour change of wins in demo is confusing
 # Change beginner instructions: create Human Player first
 # "Always Swap" -> "Alternate"
-Review mode is confusing (+Rematch)
+# Review mode is confusing (+Rematch)
 Help page for game screen (+Button?)
 Get rid of DT image
 Courier Font for AI players
