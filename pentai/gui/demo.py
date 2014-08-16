@@ -167,26 +167,30 @@ class Demo():
         s.mm(5, 5)
         yield(.5)
 
-        s.mm(4, 6)
+        s.mm(4, 4)
         yield(.5)
-        s.mm(7, 3)
+        s.mm(3, 5)
+        yield(.5)
+
+        s.mm(6, 2)
         yield(.5)
 
         play_speech("diagonal_wins")
 
-        s.mm(7, 5)
-        yield(.5)
-        s.mm(9, 1)
-        yield(.5)
-
-        s.mm(5, 6)
-        yield(.5)
         s.mm(6, 4)
         yield(.5)
 
-        s.mm(8, 6)
+        s.mm(8, 0)
+        yield(.5)
+        s.mm(4, 5)
+        yield(.5)
+
+        s.mm(5, 3)
+        yield(.5)
+        s.mm(7, 5)
         yield(.8)
-        s.mm(8, 2)
+
+        s.mm(7, 1)
         yield(2.5)
 
     def rules_script3(s):
