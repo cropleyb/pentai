@@ -62,6 +62,12 @@ def add_game(openings_book, g, won_by):
     except pe_m.OpeningsBookDuplicateException:
         pass
 
+def is_finished():
+    try:
+        return misc()["opening_section"] < 34
+    except KeyError:
+        return False
+
 def build(openings_book, user_data_dir, section=None, start=None, count=100):
     # Extend library
     if not section:
