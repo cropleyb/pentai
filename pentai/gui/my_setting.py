@@ -68,6 +68,7 @@ class SwitchSetting(MySetting):
         self.get_config().write()
         self.value = val
 
+
 class MySpinnerOption(SpinnerOption):
     def __init__(self, *args, **kwargs):
         super(MySpinnerOption, self).__init__(*args, **kwargs)
@@ -106,7 +107,7 @@ class OptionsSetting(MySetting):
         self.sp = sp = MySpinner()
         sp.values = self.values
         sp.valign = 'bottom'
-        sp.size_hint_x = .5
+        sp.size_hint_x = .6
         sp.font_size = my.dp(20)
         sp.option_cls = MySpinnerOption
         gl.add_widget(sp)
@@ -116,20 +117,27 @@ class OptionsSetting(MySetting):
         l.size_hint_x = .05
         gl.add_widget(l)
 
-        dl = TinyLabel(text=self.desc)
-        dl.size_hint_y = .8
-        self.add_widget(dl)
+        self.dl = TinyLabel(text=self.desc)
+        self.dl.size_hint_y = .8
+        self.add_widget(self.dl)
 
         self.load_value()
         self.sp.bind(text=self.save_value)                  
 
     def load_value(self):
         self.sp.text = self.get_config().get('PentAI', self.key)
+        return self.sp.text
 
     def save_value(self, switch, val):
         self.get_config().set('PentAI', self.key, val)
         self.get_config().write()
         self.value = val
+
+    def set_desc(self, val):
+        self.dl.text = val
+
+    def set_values(self, values):
+        self.sp.values = values
 
 class SliderSetting(MySetting):
     value = NumericProperty()
