@@ -3,6 +3,7 @@
 # 2. Add a number of games to the openings book db
 
 import os
+import shutil
 import parse_game as par_m
 import pentai.base.pente_exceptions as pe_m
 import zodb_dict as z_m
@@ -33,7 +34,14 @@ def unzip_section(section, user_data_dir):
         log.warn("OSError creating %s" % target_directory)
         pass
     zf.extractall(target_directory)
-    return True
+    return False
+
+def remove_unzipped(section, user_data_dir):
+    target_directory = os.path.join(user_data_dir, "openings", "%s" % section)
+
+    log.info("removing unzipped from %s" % target_directory)
+    shutil.rmtree(target_directory, ignore_errors=True)
+    
 
 def add_games(openings_book, section_dir, start, count=100):
 
@@ -80,11 +88,10 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     section_dir = os.path.join(openings_dir, str(section))
     
     if not os.path.isdir(section_dir):
-        # That will be enough startup time for now.
         if unzip_section(section, user_data_dir):
-            return True
+            return False
         else:
-            # No such file, try next one down
+            # This is just for the case where there is no zip file for that section
             misc()["opening_section"] -= 1
             return False
     
@@ -103,11 +110,13 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
 
         if remaining:
             # Not enough games in that section
+            # We've finished with the current section so get rid of the
+            # unzipped games directory.
+            remove_unzipped(section, user_data_dir)
             start = 0
             section -= 1
             count = remaining
-            if section < 30:
-                break
+            break
         else:
             start += count
 

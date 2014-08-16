@@ -238,7 +238,7 @@ class PentAIApp(App):
         if key == 27:
             # Escape
             if self.building_openings:
-                self.building_openings = False
+                self.interrupt_openings_building()
             elif BasePopup.my_active:
                 # Cancel any popup
                 BasePopup.clear()
