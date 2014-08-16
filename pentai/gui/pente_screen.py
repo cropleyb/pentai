@@ -149,10 +149,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
         o_p1 = og.get_player(P1)
         o_p2 = og.get_player(P2)
 
-        if rfp == "Don't swap":
+        if rfp == "Don't Swap":
             p1 = o_p1
             p2 = o_p2
-        elif rfp == "Always swap":
+        elif rfp == "Alternate":
             p1 = o_p2
             p2 = o_p1
         else:
@@ -167,7 +167,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             # The game was unfinished
             else:
                 if o_p1.get_type() == o_p2.get_type():
-                    # H vs. H, or C vs. C - Always swap who goes first
+                    # H vs. H, or C vs. C - Alternate who goes first
                     p1 = o_p2
                     p2 = o_p1
                 else:

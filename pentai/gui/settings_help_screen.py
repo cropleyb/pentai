@@ -35,9 +35,9 @@ The Setting screen allows you to change how you want PentAI to behave, for all f
 
 [i]Rematch first player[/i]
  When you choose [i]Rematch[/i] in the game screen, who should go first in the next game? You decide who will go first, out of:
-- [i]Don't swap[/i]
-- [i]Always swap[/i]
-- [i]Loser first[/i]
+- [i]Don't Swap[/i]
+- [i]Alternate[/i]
+- [i]Loser First[/i]
 
 [i]First player colour[/i]
  Which colour should go first? If you have trouble remembering whether you are white or black, choose [i]Keep The Same[/i]
