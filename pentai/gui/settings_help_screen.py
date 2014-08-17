@@ -55,8 +55,7 @@ The Setting screen allows you to change how you want PentAI to behave, for all f
  Expert players will want it be built in its entirity. Beginners will not notice a difference.
 - [i]Don't Build[/i]: Just uses the experience of games played through your app.
 - [i]Part On Startup[/i]: Takes a few seconds each time you start the app.
-- [i]Build All Now[/i]: This takes a long time, but it only needs to be done once.
-"""
+- [i]Build All Now[/i]: This takes a long time, but it only needs to be done once."""
         sc.text5 = """
 [b]Sound[/b]
 
