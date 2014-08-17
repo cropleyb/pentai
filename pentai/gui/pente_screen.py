@@ -79,7 +79,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.game = None
         self.game_filename = filename
 
-        self.turn_markers = None
+        self.turn_marker = None
         self.win_marker = Piece(13, source=win_filename)
 
         self.calc_board_offset(screen_size)
@@ -107,18 +107,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.remove_captured_widgets(colour)
 
     # GuiPlayer
-    def setup_turn_markers(self):
-        self.turn_markers = [None]
-        for colour in [P1, P2]:
-            player = self.game.get_player(colour)
-
-            if player.get_type() == "Human":
-                filename = turn_filename
-            else:
-                filename = computer_filename
-
-            tm = Piece(13, source=filename)
-            self.turn_markers.append(tm)
+    def setup_turn_marker(self):
+        self.turn_marker = Piece(13, source=turn_filename)
 
     def confirm_menu_screen(self):
         popup.ConfirmPopup.create_and_open(
@@ -547,10 +537,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.clocks[P2].refresh()
 
     # KivyPlayer
-    def get_turn_marker(self, colour):
-        if self.turn_markers is None:
-            self.setup_turn_markers()
-        return self.turn_markers[colour]
+    def get_turn_marker(self):
+        if self.turn_marker is None:
+            self.setup_turn_marker()
+        return self.turn_marker
 
     # KivyPlayer
     def refresh_captures_and_winner(self):
@@ -568,26 +558,27 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if self.game.finished():
             widget = self.win_marker
             colour = self.game.get_won_by()
-            other_markers = [self.get_turn_marker(colour)]
+            other_marker = self.get_turn_marker()
         else:
             colour = self.game.to_move_colour()
-            widget = self.get_turn_marker(colour)
-            other_markers = [self.win_marker]
+            widget = self.get_turn_marker()
+            other_marker = self.win_marker
 
-        other_markers.append(self.get_turn_marker(opposite_colour(colour)))
-        if widget.parent == None:
-            self.add_widget(widget)
-        for om in other_markers:
-            if om.parent != None:
-                self.remove_widget(om)
+        if other_marker.parent != None:
+            self.remove_widget(other_marker)
 
         size_x, size_y = self.size
-
         level = colour
-
         base_y = self.board_offset[1] * .5 * (2.5-level)
+        new_pos = size_x/2, base_y
 
-        widget.pos = size_x/2, base_y
+        if widget.parent == None:
+            widget.pos = new_pos
+            self.add_widget(widget)
+        else:
+            from kivy.animation import Animation
+            anim = Animation(pos=new_pos, duration=0.2)
+            anim.start(widget)
 
     def get_my_dp(self):
         return my_dp
