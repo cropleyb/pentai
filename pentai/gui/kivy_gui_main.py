@@ -86,6 +86,9 @@ class PentAIApp(App):
     def show_pente_screen(self):
         self.root.set_current("Pente")
 
+    def show_pente_help(self, ignored=None):
+        self.root.push_current("PenteHelp")
+
     def show_games_screen(self, ignored=None, finished=False):
         self.games_screen.set_show_finished(finished)
         self.root.set_current("Load")
@@ -125,10 +128,10 @@ class PentAIApp(App):
 
     def show_demo(self):
         import demo as d_m
+        self.saved_pente_screen = self.pente_screen
         d = d_m.Demo(self, self.setup_screen.size)
-
         # Intercept all touch events
-        self.root.set_demo(d)
+        self.root.push_demo(d)
 
         d.start()
 
@@ -137,8 +140,10 @@ class PentAIApp(App):
         a_m.instance.cut_demo()
         z_m.abort()
 
-        self.show_menu_screen()
-        self.pente_screen = None
+        #self.show_menu_screen()
+        self.pop_screen()
+        self.pente_screen = self.saved_pente_screen
+        #self.pente_screen = None
         self.root.set_demo(None)
 
     def in_demo_mode(self):
