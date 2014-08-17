@@ -8,7 +8,7 @@
 
 # Labels for Settings screen
 <SectionLabel@Label>:
-    color: (0.5,0.5,0.5,1)
+    color: (0.4,0.5,0.8,1)
 
 <SmallLabel>:
     font_size: my.dp(20)
@@ -294,6 +294,12 @@
 
         HSpacer:
 
+        SectionLabel:
+            text: "Rules"
+            size_hint_y: .11
+
+        HSpacer:
+
         GridLayout:
             cols: 2
             size_hint: 1, None
@@ -355,7 +361,7 @@
 
         HSpacer:
 
-        Label:
+        SectionLabel:
             text: "Players"
             size_hint_y: .11
 
@@ -437,7 +443,7 @@
 
         HSpacer:
 
-        Label:
+        SectionLabel:
             text: 'Choose Player'
 
         Spinner:
@@ -451,7 +457,7 @@
             text: root.rename_text
             multiline: False
 
-        Label:
+        SectionLabel:
             text: 'Search Parameters'
 
         HSpacer:
@@ -516,7 +522,7 @@
 
         HSpacer:
 
-        Label:
+        SectionLabel:
             text: 'Position Evaluation'
 
         HSpacer:

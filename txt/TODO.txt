@@ -85,11 +85,14 @@ Tara's suggestions
 # Courier Font for AI players
 # Get rid of DT image
 # Animate Arrow after a move
-New game screen "Rules" section
-Move more of the demo so it always moves in the centre first
+# New game screen "Rules" section?
+# Colour the Settings headings
 Demo skip "New Game" page
-Highlight "New Game" and "Start Game" after watching the Demo
-Colour the Settings headings
+Menu Sections -> SectionLabel
+Help Sections -> SectionLabel
+Move more of the demo so it always moves in the centre first
+Highlight "New Game" and "Start Game" after watching the Demo?
+
 
 Duplicate finished games when restored and modified?
 
