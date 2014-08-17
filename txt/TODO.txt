@@ -87,12 +87,15 @@ Tara's suggestions
 # Animate Arrow after a move
 # New game screen "Rules" section?
 # Colour the Settings headings
+Rules Demo return to PenteScreen - doubling sound effects
 Demo skip "New Game" page
-Menu Sections -> SectionLabel
+Create SectionText, inc. conversion of AI_FONT
+Menu Sections -> SectionLabel.
 Help Sections -> SectionLabel
 Move more of the demo so it always moves in the centre first
 Highlight "New Game" and "Start Game" after watching the Demo?
 
+Human player place stone time optimisation
 
 Duplicate finished games when restored and modified?
 
