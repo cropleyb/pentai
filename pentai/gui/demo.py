@@ -128,8 +128,7 @@ class Demo():
         # And start it...
 
         # demo flag: Disable prompting of players
-        size = s.app.menu_screen.size
-        s.app.start_game(s.game, size, demo=True)
+        s.app.start_game(s.game, demo=True)
         s.ps = s.app.pente_screen
         yield(1.2) # Compensating for .7 wait at start?!
 

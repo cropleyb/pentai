@@ -113,7 +113,7 @@ class SetupScreen(Screen):
     def start_game(self, unused=None):
         g = self.set_up_game_from_GUI()
         if g:
-            self.app.start_game(g, self.size)
+            self.app.start_game(g)
 
     def create_game(self):
         self.game = self.app.games_mgr.create_game()

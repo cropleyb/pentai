@@ -33,6 +33,9 @@ class PScreenManager(ScreenManager):
         if len(self.previous) > 20:
             self.previous[:1] = []
 
+    def get_size(self):
+        return self.current_screen.size
+
     def set_current(self, screen_name):
         if self.current != screen_name:
             self.random_transition()

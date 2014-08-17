@@ -127,8 +127,11 @@ class PentAIApp(App):
         self.root.push_current("GameSetupHelp")
 
     def show_demo(self):
+        self.saved_pente_game = self.game
+        if self.pente_screen:
+            self.pente_screen.leave_game()
+
         import demo as d_m
-        self.saved_pente_screen = self.pente_screen
         d = d_m.Demo(self, self.setup_screen.size)
         # Intercept all touch events
         self.root.push_demo(d)
@@ -140,11 +143,12 @@ class PentAIApp(App):
         a_m.instance.cut_demo()
         z_m.abort()
 
-        #self.show_menu_screen()
         self.pop_screen()
-        self.pente_screen = self.saved_pente_screen
-        #self.pente_screen = None
         self.root.set_demo(None)
+        if self.saved_pente_game:
+            gid = self.saved_pente_game.key()
+            game = self.games_mgr.get_game(gid)
+            self.start_game(self.saved_pente_game)
 
     def in_demo_mode(self):
         return self.root.in_demo_mode()
@@ -195,7 +199,7 @@ class PentAIApp(App):
         if self.building_openings:
             Clock.schedule_once(self.build_all_openings_inner, 0.1)
 
-    def start_game(self, game, screen_size, swap_colours=False, demo=False):
+    def start_game(self, game, swap_colours=False, demo=False):
         # TODO: Move this?
         root = self.root
         try:
@@ -204,6 +208,8 @@ class PentAIApp(App):
                 root.remove_widget(prev_game_screen)
         except ScreenManagerException:
             pass
+
+        screen_size = root.get_size()
 
         from pente_screen import PenteScreen
         self.add_screen_inc_globals(PenteScreen,
@@ -216,7 +222,6 @@ class PentAIApp(App):
         # load the game screen
         self.pente_screen.set_game(game, swap_colours=swap_colours)
 
-        # TODO
         self.pente_screen.set_live(not demo)
 
         self.show_pente_screen()

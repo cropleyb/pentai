@@ -48,7 +48,7 @@ class GamesScreen(Screen):
         self.app.get_game_defaults().add_game(game)
 
         self.clear_selected()
-        self.app.start_game(game, self.size)
+        self.app.start_game(game)
 
     def edit_game(self):
         if not self.selected_gid:

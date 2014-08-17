@@ -148,7 +148,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         p1, p2 = self.calculate_rematch_players(og)
 
         g = self.gm.create_game(rules, p1, p2)
-        self.app.start_game(g, self.size, self.swap_colours_due_to_rematch)
+        self.app.start_game(g, self.swap_colours_due_to_rematch)
 
     def calculate_rematch_players(self, orig_game):
         rfp = self.config.get("PentAI", "rematch_first_player")
@@ -371,6 +371,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
         time.sleep(0.5)
 
     def on_pre_leave(self):
+        self.leave_game()
+
+    def leave_game(self):
         self.set_live(False)
         if not self.app.in_demo_mode():
             self.gm.save(self.game)
