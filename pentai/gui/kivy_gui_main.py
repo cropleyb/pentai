@@ -127,7 +127,10 @@ class PentAIApp(App):
         self.root.push_current("GameSetupHelp")
 
     def show_demo(self):
-        self.saved_pente_game_key = self.game.key()
+        if self.game:
+            self.saved_pente_game_key = self.game.key()
+        else:
+            self.saved_pente_game_key = None
         if self.pente_screen:
             self.pente_screen.leave_game()
 
