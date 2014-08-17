@@ -36,7 +36,6 @@ confirm_filename = (None, \
     "./media/w_confirm.png")
 win_filename = "./media/winning_flag.png"
 turn_filename = "./media/turn_marker.png"
-computer_filename = "./media/DT.png"
 x_filename = "./media/X_transparent.png"
 moved_marker_filename_w = "./media/moved_marker_w.png"
 moved_marker_filename_b = "./media/moved_marker_b.png"
