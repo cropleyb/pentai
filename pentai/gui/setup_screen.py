@@ -117,11 +117,13 @@ class SetupScreen(Screen):
 
     def create_game(self):
         self.game = self.app.games_mgr.create_game()
+        self.ids.title_id.text = "New Game"
         self.ids.start_game_id.text = "Start Game"
 
     def alter_game(self, game):
         self.game = game
         self.set_defaults_from_game(game)
+        self.ids.title_id.text = "Edit Game"
         self.ids.start_game_id.text = "Resume Game"
 
     def get_defaults(self):
