@@ -9,6 +9,8 @@ from kivy.uix.label import Label
 import pentai.base.gs_observer as gso_m
 from pentai.base.pente_exceptions import *
 
+from pentai.gui.fonts import AI_FONT
+
 import audio as a_m
 from pentai.base.defines import *
 import pentai.base.logger as log
@@ -187,7 +189,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
                         p2 = o_p1
         if p1 != o_p1:
             #print "Swapping colours due to rematch"
-            #st()
             self.swap_colours_due_to_rematch ^= True
         return p1, p2
 
@@ -283,7 +284,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
     # GuiPlayer
     def display_names(self):
         for player_num in (P1, P2):
-            self.player_name[player_num] = self.game.get_player_name(player_num)
+            pname = self.game.get_player_name(player_num)
+            ptype = self.game.get_player_type(player_num)
+            if ptype in ("Computer", "AI"):
+                pname = "[font=%s]%s[/font]" % (AI_FONT, pname)
+            self.player_name[player_num] = pname
 
         c1 = self.get_player_colour(1)
         self.ids.p1_id.color = c1
@@ -313,7 +318,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return ret
 
     def display_error(self, message):
-        #st()
         self.get_audio().beep()
         self.app.display_error(message)
 
