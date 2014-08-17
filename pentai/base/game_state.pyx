@@ -42,7 +42,8 @@ class GameState(object):
         return self.game.rules
 
     def add_observer(self, o):
-        self.observers.append(o)
+        if not o in self.observers:
+            self.observers.append(o)
 
     def remove_observer(self, o):
         self.observers.remove(o)
