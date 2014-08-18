@@ -34,7 +34,7 @@ class Demo():
         # TODO Save settings
         # for settings demo
 
-        self.script_list = [self.rules_script1, self.rules_script2,
+        self.script_list = [self.rules_script2,
                 self.rules_script3, self.rules_script4, self.rules_script5]
         self.script = None
 
@@ -80,6 +80,8 @@ class Demo():
         Clock.unschedule(self.play)
 
     def rules_script1(self):
+        # I'll leave this dead code as an example for now
+        '''
         play_speech("intersections")
 
         # We're already on the menu screen
@@ -104,6 +106,7 @@ class Demo():
         yield(2)
 
         sim_press(ss.ids.start_game_id)
+        '''
 
     def mm(self, x,y):
         self.game.make_move((x,y))
@@ -111,6 +114,8 @@ class Demo():
         self.app.pente_screen.refresh_all()
 
     def rules_script2(s):
+        play_speech("intersections")
+
         # Use most recent human player name
         pmgr = pm_m.PlayersMgr()
         human = pmgr.get_recent_player_names("Human", 1)[0]
@@ -130,7 +135,11 @@ class Demo():
         # demo flag: Disable prompting of players
         s.app.start_game(s.game, demo=True)
         s.ps = s.app.pente_screen
+
         yield(1.2) # Compensating for .7 wait at start?!
+
+        # 
+        yield(1.5)
 
         play_speech("centre_first")
         yield(1.5)
