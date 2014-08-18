@@ -20,9 +20,19 @@ if __name__ == "__main__":
     z_m.set_db("db.fs")
     create_default_names()
 
-def create_default_players():
-    create_default_humans()
-    create_default_ais()
+def create_default_players(defaults):
+    pm = pm_m.PlayersMgr() 
+    if pm.get_num_players() == 0:
+        create_default_humans()
+        create_default_ais()
+
+        # Set up default players for first game
+        import pentai.base.rules as r_m
+        rules = r_m.Rules(13, "S")
+        you = pm.get_p_key_from_name("You")
+        anthony = pm.get_p_key_from_name("Anthony")
+        defaults.play_game(("Human", you), ("AI", anthony), rules)
+
 
 def create_default_humans():
 
@@ -31,7 +41,7 @@ def create_default_humans():
 
     # TODO: Don't release these.
     player_names = ["BC", "Bruce", "Mark", "Jespah", "Arwen", "Sascha",
-            "Marion", "Wendy"]
+            "Marion", "Wendy", "You"]
 
     player_names.reverse()
     for name in player_names:

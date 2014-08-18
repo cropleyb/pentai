@@ -391,7 +391,7 @@ class PentAIApp(App):
         log.debug("Created Book")
         
         import pentai.db.create_default_players as cdp
-        cdp.create_default_players()
+        cdp.create_default_players(self.get_game_defaults())
 
         obb = self.config.get("PentAI", "openings_book_building")
         if obb == "Part On Startup":

@@ -35,6 +35,9 @@ class PlayersMgr():
         except KeyError:
             self.p_keys_by_name = players[subsection] = z_m.ZL((z_m.ZM(), z_m.ZM()))
 
+    def get_num_players(self):
+        return len(self.p_keys_by_name[0]) + len(self.p_keys_by_name[1])
+
     def ensure_has_key(self, player):
         assert not player is None
         if not hasattr(player, "p_key") or player.p_key is None:
