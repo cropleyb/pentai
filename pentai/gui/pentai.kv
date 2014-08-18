@@ -7,7 +7,7 @@
     font_size: my.dp(25)
 
 # Labels for Settings screen
-<SectionLabel@Label>:
+<SectionTitle@Label>:
     halign: "center"
     color: (0.4,0.5,0.8,1)
 
@@ -99,22 +99,26 @@
                 on_release: root.ok_confirm()
 
 <Section@GridLayout>:
-    size_hint_y: None
+    cols: 1
+    height: self.minimum_height
 
-    HSpacer:
-
-    SectionLabel: # TODO: Rename to Section title
+    SectionTitle:
         text: root.title
+        height: self.texture_size[1]
+        size_hint_y: None
 
     HSpacer:
+        id: h_spacer_id
+        size: self.size
 
     Label:
-        text: self.text
-        #size_hint_y: None
-        #text_size: (.95 * root.width), None
+        text: root.text
+        size_hint_y: None
+        text_size: (.95 * root.width), None
         height: self.texture_size[1]
         strip: False
         markup: True
+        on_ref_press: root.follow_link(*args)
 
 <IntroScreen>:
     GridLayout:
@@ -183,10 +187,6 @@
                 MyButton:
                     text: "Help"
                     on_release: root.app.show_load_help()
-
-        #Section:
-            #id: label1_id
-            #text: root.text1
 
 <SLPart@Label>:
     size_hint_y: None
@@ -260,28 +260,44 @@
     
         ScrollView:
             size_hint_x: 1
-            size_hint_y: .8
+            #size_hint_y: .8
+            #size_hint_y: 1
 
             MyScrollable:
-                size_hint_y: 6.5
-                SLPart:
+                size_hint_y: 6.3
+
+                Section:
+                    size_hint_y: 0.3
+                    title: "Introduction"
+                    text: root.intro_text
+                HSpacer:
+                Section:
+                    size_hint_y: 0.55
+                    title: "Beginners"
+                    text: root.beginners_text
+                HSpacer:
+                Section:
+                    size_hint_y: 0.48
+                    title: "Experts"
+                    text: root.experts_text
+                HSpacer:
+                Section:
+                    title: "About"
+                    size_hint_y: 0.6
                     text: root.about_text1
-                    on_ref_press: root.follow_link(*args) # TODO: Move
-                SLPart:
+                #Label:
+                Section:
                     text: root.about_text2
-                    on_ref_press: root.follow_link(*args)
-                SLPart:
-                    text: root.about_text3
-                    on_ref_press: root.follow_link(*args)
-                SLPart:
-                    text: root.about_text4
-                    on_ref_press: root.follow_link(*args)
-                SLPart:
-                    text: root.about_text5
-                    on_ref_press: root.follow_link(*args)
-                SLPart:
-                    text: root.about_text6
-                    on_ref_press: root.follow_link(*args)
+                    size_hint_y: None
+                    text_size: (.95 * root.width), None
+                    #height: self.texture_size[1]
+                    strip: False
+                    markup: True
+                    #on_ref_press: root.follow_link(*args)
+                HSpacer:
+                Section:
+                    title: "Acknowledgements"
+                    text: root.ack_text
     
         GridLayout:
             cols: 1
@@ -339,7 +355,7 @@
 
         HSpacer:
 
-        SectionLabel:
+        SectionTitle:
             text: "Rules"
             size_hint_y: .11
 
@@ -406,7 +422,7 @@
 
         HSpacer:
 
-        SectionLabel:
+        SectionTitle:
             text: "Players"
             size_hint_y: .11
 
@@ -488,7 +504,7 @@
 
         HSpacer:
 
-        SectionLabel:
+        SectionTitle:
             text: 'Choose Player'
 
         Spinner:
@@ -502,7 +518,7 @@
             text: root.rename_text
             multiline: False
 
-        SectionLabel:
+        SectionTitle:
             text: 'Search Parameters'
 
         HSpacer:
@@ -567,7 +583,7 @@
 
         HSpacer:
 
-        SectionLabel:
+        SectionTitle:
             text: 'Position Evaluation'
 
         HSpacer:
@@ -864,7 +880,7 @@
                 height: self.minimum_height
                 size_hint_y: 1.7
 
-                SectionLabel:
+                SectionTitle:
                     text: "User Interface"
                     size_hint_y: .15
 
@@ -911,7 +927,7 @@
 
                 HSpacer:
 
-                SectionLabel:
+                SectionTitle:
                     text: "Players"
                     size_hint_y: .15
 
@@ -933,7 +949,7 @@
 
                 HSpacer:
 
-                SectionLabel:
+                SectionTitle:
                     text: "Openings Book"
                     size_hint_y: .15
 
@@ -954,7 +970,7 @@
 
                 HSpacer:
 
-                SectionLabel:
+                SectionTitle:
                     text: "Sound"
                     size_hint_y: .15
 
