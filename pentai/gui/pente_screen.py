@@ -316,7 +316,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def enqueue_action(self, action):
         self.action_queue.put(action)
-        mw = self.config.getfloat("PentAI", "minimum_wait")
+        current_player_type = self.game.get_current_player_type()
+        mw = 0.0
+        if current_player_type in ("Computer", "AI"):
+            mw = self.config.getfloat("PentAI", "minimum_wait")
         Clock.schedule_once(self.trig, mw)
 
     def enqueue_move(self, move):
@@ -400,7 +403,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
             # Remove any confirmation piece
             self.cancel_confirmation()
-
+            
             action = self.action_queue.get()
             if not game.is_live():
                 return

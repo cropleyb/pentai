@@ -99,6 +99,9 @@ class Game(object):
     def get_current_player(self):
         return self.current_state.to_move_player()
 
+    def get_current_player_type(self):
+        return self.get_current_player().get_type()
+
     def get_colour_of_player(self, player):
         if self.players[P1] == player:
             return P1
