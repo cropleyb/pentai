@@ -1,4 +1,5 @@
 from kivy.uix.scrollview import *
+from kivy.uix.gridlayout import *
 from kivy.properties import StringProperty
 
 class ScrollableLabel(ScrollView):
@@ -19,4 +20,7 @@ class MyScrollableLabel(ScrollView):
 
     def __init__(self, *args, **kwargs):
         super(MyScrollableLabel, self).__init__(*args, **kwargs)
+
+class MyScrollable(GridLayout):
+    pass
 

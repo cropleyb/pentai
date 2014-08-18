@@ -22,12 +22,6 @@ class MenuScreen(Screen):
 
         self.version_str = "0.9.2"
 
-        glids = self.ids.gl_id.ids
-        glids.label1_id.bind(on_ref_press=self.follow_link)
-        glids.label2_id.bind(on_ref_press=self.follow_link)
-        glids.label3_id.bind(on_ref_press=self.follow_link)
-        glids.label4_id.bind(on_ref_press=self.follow_link)
-
         self.about_text1 = \
 """      Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [ref=ww][color=00ffff]Winning Moves[/color][/ref] until recently.
                   (scroll for more)
