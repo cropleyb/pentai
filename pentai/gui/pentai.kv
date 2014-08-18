@@ -8,6 +8,7 @@
 
 # Labels for Settings screen
 <SectionLabel@Label>:
+    halign: "center"
     color: (0.4,0.5,0.8,1)
 
 <SmallLabel>:
@@ -97,6 +98,24 @@
                 font_size: my.dp(20)
                 on_release: root.ok_confirm()
 
+<Section@GridLayout>:
+    size_hint_y: None
+
+    HSpacer:
+
+    SectionLabel: # TODO: Rename to Section title
+        text: root.title
+
+    HSpacer:
+
+    Label:
+        text: self.text
+        #size_hint_y: None
+        #text_size: (.95 * root.width), None
+        height: self.texture_size[1]
+        strip: False
+        markup: True
+
 <IntroScreen>:
     GridLayout:
         cols: 1
@@ -165,6 +184,10 @@
                     text: "Help"
                     on_release: root.app.show_load_help()
 
+        #Section:
+            #id: label1_id
+            #text: root.text1
+
 <SLPart@Label>:
     size_hint_y: None
     text_size: (.95 * root.width), None
@@ -198,6 +221,7 @@
         size_hint_x: 1
         height: self.minimum_height
         size_hint_y: None
+
         SLPart:
             text: root.text1
             id: label1_id
@@ -217,6 +241,12 @@
             text: root.text6
             id: label6_id
 
+<MyScrollable@GridLayout>:
+    size_hint_y: .8
+    cols: 1
+    size_hint_x: 1
+    id: gl_id
+    height: self.minimum_height
 
 <MenuScreen>:
     GridLayout:
@@ -228,15 +258,30 @@
 
         HSpacer:
     
-        MyScrollableLabel:
-            id: gl_id
+        ScrollView:
             size_hint_x: 1
-            text1: root.about_text1
-            text2: root.about_text2
-            text3: root.about_text3
-            text4: root.about_text4
-            text5: root.about_text5
-            text6: root.about_text6
+            size_hint_y: .8
+
+            MyScrollable:
+                size_hint_y: 6.5
+                SLPart:
+                    text: root.about_text1
+                    on_ref_press: root.follow_link(*args) # TODO: Move
+                SLPart:
+                    text: root.about_text2
+                    on_ref_press: root.follow_link(*args)
+                SLPart:
+                    text: root.about_text3
+                    on_ref_press: root.follow_link(*args)
+                SLPart:
+                    text: root.about_text4
+                    on_ref_press: root.follow_link(*args)
+                SLPart:
+                    text: root.about_text5
+                    on_ref_press: root.follow_link(*args)
+                SLPart:
+                    text: root.about_text6
+                    on_ref_press: root.follow_link(*args)
     
         GridLayout:
             cols: 1
@@ -634,7 +679,7 @@
         MyScrollableLabel:
             id: scrollable_id
             size_hint_x: 1
-    
+
         GridLayout:
             cols: 1
             size_hint: 1, .07
