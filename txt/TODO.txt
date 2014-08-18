@@ -94,14 +94,18 @@ Create SectionText, inc. conversion of AI_FONT
 Menu Sections -> Section
 Help Sections -> Section
 Move more of the demo so it always moves in the centre first
-Default first game to Human ("You") versus Anthony
+# Default first game to Human ("You") versus Anthony
 
+# Create player -> New default in New Game screen
+
+Time full OB build on iOS
 # Human player place stone time optimisation
+
+Rename AI should be reflected in AI Players and Setup Screen. etc.
 
 Duplicate finished games when restored and modified?
 
 # Intro help - pop screen * 2
-Time full OB build on iOS
 Font Colours?
 # Reset OB build setting as we go into full build
 # iOS build openings cleanup zip files

@@ -6,7 +6,7 @@ class GameDefaults(Persistent):
     def __init__(self, *args, **kwargs):
         super(GameDefaults, self).__init__(*args, **kwargs)
         self.last_game_types = ZL([None, None, None])
-        self.last_game_players = ZL([None, "", ""])
+        self.last_game_players = ZL([None, "You", "Anthony"])
 
         self.old_game_players_by_type_then_colour = ZL( [ZL([]), ZL([]), ZL([]) ])
 
@@ -102,6 +102,14 @@ class GameDefaults(Persistent):
                 st_var[2:] = ZL([])
         except IndexError:
             st_var.append(name)
+
+    def set_player_of_type(self, ptype, name):
+        for tp in (P1, P2):
+            if self.types[tp] == ptype:
+                break
+        else:
+            return
+        self.set_player(tp, name)
 
     def set_type(self, colour, new_type):
         if self.types[colour] != new_type:

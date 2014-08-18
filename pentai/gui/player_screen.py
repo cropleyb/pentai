@@ -109,6 +109,9 @@ class PlayerScreen(Screen):
             self.set_spinner_val(pn)
             self.refresh_names()
 
+            defaults = self.app.get_game_defaults()
+            defaults.set_player_of_type(pl.get_type(), pl.p_key)
+
     def update_player(self, player, new_name):
         pass
 

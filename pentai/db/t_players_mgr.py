@@ -61,6 +61,27 @@ class HumanDBTest(unittest.TestCase):
         self.assertEquals(fp.__class__, HumanPlayer)
         self.assertEquals(fp.get_name(), "Sandra")
 
+    def test_rename_ai(self):
+        db = PlayersMgr(prefix="test_")
+        genome = AIGenome("Hagrid")
+        genome.max_depth = 3
+        db.save(genome)
+
+        gp = db.find_genome_by_name("Hagrid")
+
+        genome.p_name = "Hagrid2"
+        db.save(genome)
+
+        # Needs fixing, but how?
+        #gp = db.find_genome_by_name("Hagrid")
+        #self.assertEquals(gp, None)
+
+        gp = db.find_genome_by_name("Hagrid2")
+
+        self.assertEquals(gp.__class__, AIGenome)
+        self.assertEquals(gp.get_name(), "Hagrid2")
+        self.assertEquals(gp.max_depth, 3)
+
 class RecentUseTest(unittest.TestCase):
     def setUp(self):
         test_db.init()
