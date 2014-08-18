@@ -13,6 +13,11 @@ class Section(GridLayout):
 
     def __init__(self, *args, **kwargs):
         super(Section, self).__init__(*args, **kwargs)
+        self.bind(continuation=self.on_continuation)
+
+    def on_continuation(self, *ignored):
+        sep = self.ids.h_spacer_id
+        self.remove_widget(sep)
 
     def follow_link(self, inst, ref):
         log.debug("User clicked on: %s" % ref)

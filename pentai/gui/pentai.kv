@@ -98,7 +98,7 @@
                 font_size: my.dp(20)
                 on_release: root.ok_confirm()
 
-<Section@GridLayout>:
+<Section>:
     cols: 1
     height: self.minimum_height
 
@@ -241,7 +241,7 @@
             text: root.text6
             id: label6_id
 
-<MyScrollable@GridLayout>:
+<MyScrollable>:
     size_hint_y: .8
     cols: 1
     size_hint_x: 1
@@ -270,30 +270,30 @@
                     size_hint_y: 0.3
                     title: "Introduction"
                     text: root.intro_text
+                    
                 HSpacer:
                 Section:
                     size_hint_y: 0.55
                     title: "Beginners"
                     text: root.beginners_text
+
                 HSpacer:
                 Section:
                     size_hint_y: 0.48
                     title: "Experts"
                     text: root.experts_text
+
                 HSpacer:
                 Section:
                     title: "About"
                     size_hint_y: 0.6
                     text: root.about_text1
-                #Label:
                 Section:
+                    continuation: True
                     text: root.about_text2
                     size_hint_y: None
                     text_size: (.95 * root.width), None
-                    #height: self.texture_size[1]
-                    strip: False
-                    markup: True
-                    #on_ref_press: root.follow_link(*args)
+
                 HSpacer:
                 Section:
                     title: "Acknowledgements"
