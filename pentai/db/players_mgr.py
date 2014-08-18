@@ -149,8 +149,16 @@ class PlayersMgr():
 
         pti = player_type_to_int(player_type)
         pkbn = self.p_keys_by_name[pti]
+        
+        try:
+            if player._saved_name:
+                prev_saved_name = player._saved_name
+                del pkbn[prev_saved_name]
+        except AttributeError:
+            pass
 
-        pkbn[player_name[:]] = p_key
+        player._saved_name = player_name
+        pkbn[player_name] = p_key
 
         if update_cache:
             self.mark_recent_player(p_key)

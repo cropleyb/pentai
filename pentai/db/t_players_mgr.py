@@ -72,9 +72,8 @@ class HumanDBTest(unittest.TestCase):
         genome.p_name = "Hagrid2"
         db.save(genome)
 
-        # Needs fixing, but how?
-        #gp = db.find_genome_by_name("Hagrid")
-        #self.assertEquals(gp, None)
+        gp = db.find_genome_by_name("Hagrid")
+        self.assertEquals(gp, None)
 
         gp = db.find_genome_by_name("Hagrid2")
 

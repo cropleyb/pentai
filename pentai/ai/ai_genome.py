@@ -10,6 +10,7 @@ class AIGenome(Persistent):
     def __init__(self, name, *args, **kwargs):
         super(AIGenome, self).__init__(*args, **kwargs)
         self.p_name = name
+        self._saved_name = None
         self.p_key = None
         self.use_openings_book = True
         # Search params
