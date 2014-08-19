@@ -6,7 +6,6 @@
 <Label>:
     font_size: my.dp(25)
 
-# Labels for Settings screen
 <SectionTitle@Label>:
     color: (0.4,0.5,0.8,1)
     halign: "center"
@@ -152,7 +151,7 @@
     GridLayout:
         cols: 1
         Label:
-            #text: "Unfinished Games"
+            # text: "Unfinished Games" or "Recently Finished"
             id: title_id
             size_hint_y: .10
 
@@ -233,10 +232,10 @@
             id: label6_id
 
 <MyScrollable>:
-    #size_hint_y: .8
     cols: 1
     id: gl_id
-    #height: self.minimum_height
+    height: self.minimum_height
+    size_hint_y: None
 
 <MenuScreen>:
     GridLayout:
@@ -251,8 +250,6 @@
         ScrollView:
 
             MyScrollable:
-                height: self.minimum_height
-                size_hint_y: None
 
                 Section:
                     title: "Introduction"
@@ -687,7 +684,51 @@
 
 <HumanHelpScreen@HelpScreen>:
 
-<AIHelpScreen@HelpScreen>:
+<NewHelpScreen>:
+    GridLayout:
+        cols: 1
+        id: gl_id
+        Label:
+            size_hint: 1, .07
+            markup: True
+            text: root.title_text
+
+        HSpacer:
+    
+        ScrollView:
+            # This is for switching help text
+            id: scrollable_id
+
+        GridLayout:
+            cols: 1
+            size_hint: 1, .07
+
+            MyButton:
+                text: "Return"
+                on_press: root.app.pop_screen()
+
+<AIHelpScreen>:
+    title: "AI Player Help"
+
+<AIHelpText>:
+    Section:
+        continuation: True
+        text: root.intro_text
+        
+    HSpacer:
+    Section:
+        title: "Properties"
+        text: root.properties_text
+ 
+    HSpacer:
+    Section:
+        title: "Openings Book"
+        text: root.openings_text
+ 
+    HSpacer:
+    Section:
+        title: "Profiles"
+        text: root.profiles_text
 
 <ReviewButtons>:
     size_hint_x: .3
