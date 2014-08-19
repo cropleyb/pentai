@@ -181,6 +181,29 @@
                     text: "Help"
                     on_release: root.app.show_load_help()
 
+<LoadHelpScreen>:
+    title: "Games Screens Help"
+
+<LoadHelpText>:
+    Section:
+        continuation: True
+        text: root.intro_text
+        
+    HSpacer:
+    Section:
+        title: "Load"
+        text: root.load_text
+ 
+    HSpacer:
+    Section:
+        title: "Edit"
+        text: root.edit_text
+ 
+    HSpacer:
+    Section:
+        title: "Delete"
+        text: root.delete_text
+
 <SLPart@Label>:
     size_hint_y: None
     text_size: (.95 * root.width), None
