@@ -3,7 +3,6 @@ import help_screen as hs_m
 from pentai.gui.fonts import AI_FONT
 from kivy.properties import StringProperty
 
-
 class AIHelpText(hs_m.HelpText):
     intro_text = StringProperty("")
     properties_text = StringProperty("")
@@ -11,7 +10,7 @@ class AIHelpText(hs_m.HelpText):
     profiles_text= StringProperty("")
 
     def __init__(self, *args, **kwargs):
-        self.heading = "AI Player Help"
+        self.heading = "AI Player Editor Help"
         self.set_text()
         super(AIHelpText, self).__init__(*args, **kwargs)
 
@@ -39,4 +38,3 @@ class AIHelpText(hs_m.HelpText):
 class AIHelpScreen(hs_m.NewHelpScreen):
     help_text_class = AIHelpText
 
-    #title_text = "AI Player Help"

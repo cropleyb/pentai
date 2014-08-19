@@ -6,8 +6,11 @@
 <Label>:
     font_size: my.dp(25)
 
+<TitleLabel@Label>:
+    color: (0.8,0.8,0.4,1)
+
 <SectionTitle@Label>:
-    color: (0.4,0.5,0.8,1)
+    color: (0.5,0.8,0.9,1)
     halign: "center"
     text_size: self.size
     size_hint_y: None
@@ -150,7 +153,7 @@
 <GamesScreen>:
     GridLayout:
         cols: 1
-        Label:
+        TitleLabel:
             # text: "Unfinished Games" or "Recently Finished"
             id: title_id
             size_hint_y: .10
@@ -274,6 +277,14 @@
         continuation: True
         text: root.controls_text2
 
+<HumanHelpScreen>:
+    title: "Human Edit Help"
+
+<HumanHelpText>:
+    Section:
+        title: "Edit"
+        text: root.edit_text
+
 <SLPart@Label>:
     size_hint_y: None
     text_size: (.95 * root.width), None
@@ -333,7 +344,7 @@
 <MenuScreen>:
     GridLayout:
         cols: 1
-        Label:
+        TitleLabel:
             size_hint: 1, .1
             markup: True
             text: "[b]PentAI %s[/b] by Bruce Cropley" % root.version_str
@@ -421,7 +432,7 @@
     GridLayout:
         cols: 1
 
-        Label:
+        TitleLabel:
             id: title_id
             size_hint_y: .10
 
@@ -570,9 +581,9 @@
 <AIPlayerScreen>:
     GridLayout:
         cols: 1
-        Label:
+        TitleLabel:
             size_hint: (1, 0.6)
-            text: "Computer Player Editor"
+            text: "AI Player Editor"
 
         HSpacer:
 
@@ -711,7 +722,7 @@
 <HumanPlayerScreen>:
     GridLayout:
         cols: 1
-        Label:
+        TitleLabel:
             text: "Human Player Editor"
             size_hint_y: .33
 
@@ -757,7 +768,7 @@
     GridLayout:
         cols: 1
         id: gl_id
-        Label:
+        TitleLabel:
             size_hint: 1, .07
             markup: True
             text: root.heading
@@ -781,7 +792,7 @@
     GridLayout:
         cols: 1
         id: gl_id
-        Label:
+        TitleLabel:
             size_hint: 1, .07
             markup: True
             text: root.title_text
@@ -978,7 +989,7 @@
 <SettingsScreen>:
     GridLayout:
         cols: 1
-        Label:
+        TitleLabel:
             text: "PentAI Settings"
             size_hint_y: .08
 
