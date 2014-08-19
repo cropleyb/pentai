@@ -223,6 +223,37 @@
         title: "Player Selection"
         text: root.players_text
 
+<SettingsHelpScreen>:
+    title: "Settings Help"
+
+<SettingsHelpText>:
+
+    Section:
+        text: root.intro_text
+
+    HSpacer:
+    Section:
+        title: "User Interface"
+        text: root.ui_text1
+    Section:
+        continuation: True
+        text: root.ui_text2
+
+    HSpacer:
+    Section:
+        title: "Players"
+        text: root.players_text
+
+    HSpacer:
+    Section:
+        title: "Opening Book"
+        text: root.ob_text
+
+    HSpacer:
+    Section:
+        title: "Sound"
+        text: root.sound_text
+
 <SLPart@Label>:
     size_hint_y: None
     text_size: (.95 * root.width), None
