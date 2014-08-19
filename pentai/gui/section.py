@@ -1,5 +1,4 @@
 from kivy.uix.gridlayout import GridLayout
-#from kivy.uix.label import Label
 from kivy.properties import *
 import webbrowser
 
