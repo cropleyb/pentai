@@ -8,8 +8,11 @@
 
 # Labels for Settings screen
 <SectionTitle@Label>:
-    halign: "center"
     color: (0.4,0.5,0.8,1)
+    halign: "center"
+    text_size: self.size
+    size_hint_y: None
+    height: my.dp(30)
 
 <SmallLabel>:
     font_size: my.dp(20)
@@ -101,24 +104,15 @@
 <Section>:
     cols: 1
     height: self.minimum_height
-
+    size_hint_y: None
     SectionTitle:
         text: root.title
-        height: self.texture_size[1]
-        size_hint_y: None
-
     HSpacer:
         id: h_spacer_id
-        size: self.size
-
-    Label:
+    SLPart:
         text: root.text
-        size_hint_y: None
-        text_size: (.95 * root.width), None
-        height: self.texture_size[1]
-        strip: False
-        markup: True
         on_ref_press: root.follow_link(*args)
+
 
 <IntroScreen>:
     GridLayout:
@@ -196,11 +190,9 @@
     markup: True
 
 <ScrollableLabel>:
-    size_hint_y: 1.0
     GridLayout:
         id: gl_id
         cols: 1
-        size_hint_x: 1
         height: self.minimum_height
         size_hint_y: None
         SLPart:
@@ -218,7 +210,6 @@
         # https://github.com/kivy/kivy/issues/2119
         id: gl_id
         cols: 1
-        size_hint_x: 1
         height: self.minimum_height
         size_hint_y: None
 
@@ -242,11 +233,10 @@
             id: label6_id
 
 <MyScrollable>:
-    size_hint_y: .8
+    #size_hint_y: .8
     cols: 1
-    size_hint_x: 1
     id: gl_id
-    height: self.minimum_height
+    #height: self.minimum_height
 
 <MenuScreen>:
     GridLayout:
@@ -259,40 +249,32 @@
         HSpacer:
     
         ScrollView:
-            size_hint_x: 1
-            #size_hint_y: .8
-            #size_hint_y: 1
 
             MyScrollable:
-                size_hint_y: 6.3
+                height: self.minimum_height
+                size_hint_y: None
 
                 Section:
-                    size_hint_y: 0.3
                     title: "Introduction"
                     text: root.intro_text
                     
                 HSpacer:
                 Section:
-                    size_hint_y: 0.55
                     title: "Beginners"
                     text: root.beginners_text
 
                 HSpacer:
                 Section:
-                    size_hint_y: 0.48
                     title: "Experts"
                     text: root.experts_text
 
                 HSpacer:
                 Section:
                     title: "About"
-                    size_hint_y: 0.6
                     text: root.about_text1
                 Section:
                     continuation: True
                     text: root.about_text2
-                    size_hint_y: None
-                    text_size: (.95 * root.width), None
 
                 HSpacer:
                 Section:
@@ -694,7 +676,6 @@
     
         MyScrollableLabel:
             id: scrollable_id
-            size_hint_x: 1
 
         GridLayout:
             cols: 1
@@ -786,7 +767,6 @@
             id: lower_horiz_grid_id
             pos: 0,0
             GridLayout:
-                size_hint_x: 1
                 rows: 1
         #Label:
             #text: root.h_grid_text
@@ -864,7 +844,6 @@
 <SettingsScreen>:
     GridLayout:
         cols: 1
-        size_hint_y: 1.0
         Label:
             text: "PentAI Settings"
             size_hint_y: .08
@@ -876,7 +855,6 @@
             GridLayout:
                 id: gl_id
                 cols: 1
-                size_hint_x: 1
                 height: self.minimum_height
                 size_hint_y: 1.7
 
