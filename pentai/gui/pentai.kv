@@ -208,7 +208,6 @@
     title: "Games Screens Help"
 
 <SetupHelpText>:
-
     Section:
         title: "Rules Variation"
         text: root.rules_text
@@ -227,7 +226,6 @@
     title: "Settings Help"
 
 <SettingsHelpText>:
-
     Section:
         text: root.intro_text
 
@@ -253,6 +251,28 @@
     Section:
         title: "Sound"
         text: root.sound_text
+
+<PenteHelpScreen>:
+    title: "Pente Game Screen Help"
+
+<PenteHelpText>:
+    Section:
+        title: "User Interface"
+        text: root.play_text1
+    Section:
+        continuation: True
+        text: root.play_text2
+    Section:
+        continuation: True
+        text: root.play_text3
+
+    HSpacer:
+    Section:
+        title: "Controls"
+        text: root.controls_text1
+    Section:
+        continuation: True
+        text: root.controls_text2
 
 <SLPart@Label>:
     size_hint_y: None
