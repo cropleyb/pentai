@@ -9,7 +9,7 @@ class SetupHelpText(hs_m.HelpText):
     players_text = StringProperty("")
 
     def __init__(self, *args, **kwargs):
-        self.heading = "Game Setup Help"
+        self.title = "Game Setup Help"
         self.set_text()
         super(SetupHelpText, self).__init__(*args, **kwargs)
 
