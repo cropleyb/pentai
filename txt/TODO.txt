@@ -1,4 +1,3 @@
-Kids in Melbourne 2 July
 Letter from Prof. Rosenthal that I can't work
 Disability solicitor: Maurice Blackburn 1800 173 657
 Local toy broker: Malcolm Hall: 9886 9122
@@ -48,6 +47,14 @@ utility function
 - How to gauge how many moves need to be searched at a particular level? For budget search etc.
 - Length level for search stats; yet another PF that uses it (count levels of lengths used as best, relative to the first level tried)
 - Go back a move in search to avoid cloning
+
+Wendy's suggestions (iOS)
+-------------------
+AI goes slower or stops early in game
+Take back and play not possible
+Can only create one player
+# Main title colour is too much like settings title colour
+Find same size, level courier font
 
 Noel's suggestions
 ------------------
