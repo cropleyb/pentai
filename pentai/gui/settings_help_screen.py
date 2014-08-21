@@ -17,8 +17,7 @@ class SettingsHelpText(hs_m.HelpText):
         super(SettingsHelpText, self).__init__(*args, **kwargs)
 
     def set_text(self):
-        self.intro_text = """
- The Setting screen allows you to change how you want PentAI to behave, for all future interaction.
+        self.intro_text = """ The Setting screen allows you to change how you want PentAI to behave, for all future interaction.
 """
         self.ui_text1 = """ [i]Mark Moves[/i]
  The last two moves can be marked with a dot in the centre to make it easier to see what has happened recently.
