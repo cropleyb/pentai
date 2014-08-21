@@ -1,6 +1,6 @@
 import help_screen as hs_m
 
-from pentai.gui.fonts import AI_FONT
+from pentai.gui.fonts import *
 from kivy.properties import StringProperty
 
 class LoadHelpText(hs_m.HelpText):

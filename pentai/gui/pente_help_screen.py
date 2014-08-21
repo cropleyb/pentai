@@ -1,7 +1,7 @@
 import help_screen as hs_m
 import pentai.base.logger as log
 
-from pentai.gui.fonts import AI_FONT
+from pentai.gui.fonts import *
 from kivy.properties import StringProperty
 
 class PenteHelpText(hs_m.HelpText):
