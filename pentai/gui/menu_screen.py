@@ -18,7 +18,7 @@ class MenuScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(MenuScreen, self).__init__(*args, **kwargs)
 
-        self.version_str = "0.9.2"
+        self.version_str = "0.9.3"
 
         self.intro_text = conv(
 """ Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [REF=ww]Winning Moves[/REF] until recently.
@@ -38,7 +38,7 @@ class MenuScreen(Screen):
 4. If [AI]*killer*[/AI] is too easy for you, try [AI]Samuel[/AI], or play timed games to make it tougher.
 """)
         self.about_text1 = conv(
-""" PentAI is a computer program to play Pente. It can be configured to play in a wide range of ability levels, from a complete beginner to a strong amateur player. For more information about how PentAI works, see my [REF=bc]website[/REF] [REF]website[/REF].
+""" PentAI is a computer program to play Pente. It can be configured to play in a wide range of ability levels, from a complete beginner to a strong amateur player. For more information about how PentAI works, see my [REF=bc]website[/REF].
 
  If you get a sore brain, you can create a game between a couple of
  [AI]Artificial Intelligence[/AI] ([AI]AI[/AI]) players and watch how they play. Human versus Human games can also be played with PentAI, though you may prefer to play with a real board.""")
