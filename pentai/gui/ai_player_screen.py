@@ -41,10 +41,16 @@ class AIPlayerScreen(PlayerScreen):
         self.genome.genome2screen(g)
         self.genome.screen2genome()
 
-    def update_player(self, player, new_name):
+    def update_player(self, player, new_name, create):
         self.genome.screen2genome()
         self.genome.inst.p_name = new_name
         player.__dict__.update(self.genome.inst.__dict__)
+        if create:
+            player.p_key = None
+            if hasattr(player, "_saved_name"):
+                # TODO: This is a bit ugly, it would be nice to contain
+                # this to the PlayersMgr
+                player._saved_name = None
 
     def get_players(self):
         return self.pm.get_ai_player_names()

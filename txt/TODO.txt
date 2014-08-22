@@ -52,9 +52,10 @@ Wendy's suggestions (iOS)
 -------------------
 AI goes slower or stops early in game
 Take back and play not possible
-Can only create one player
+Slow to get game screen when AI makes slow first move
+# Can only create one player
 # Main title colour is too much like settings title colour
-Find same size, level courier font
+# Find same size, level courier font
 
 Noel's suggestions
 ------------------

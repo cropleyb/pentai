@@ -92,18 +92,20 @@ class PlayerScreen(Screen):
 
         if pn != self.create_text and pn and self.rename_text:
             # Rename
-            pl = self.pm.find_by_name(self.rename_text, self.player_type_str)
+            pl = self.pm.find_genome_by_name(self.rename_text, self.player_type_str)
             if not pl:
                 return
             pl.p_name = pn
+            create = False
         else:
             if (pn == self.rename_req) or (not pn):
                 return
             # Create
             pl = self.player_class(pn)
+            create = True
 
         if pl:
-            self.update_player(pl, pn)
+            self.update_player(pl, pn, create)
             self.pm.save(pl)
             self.set_spinner_val(pn)
             self.refresh_names()
@@ -111,7 +113,7 @@ class PlayerScreen(Screen):
             defaults = self.app.get_game_defaults()
             defaults.set_player_of_type(pl.get_type(), pl.p_key)
 
-    def update_player(self, player, new_name):
+    def update_player(self, player, new_name, create):
         pass
 
     def set_spinner_val(self, new_val):
