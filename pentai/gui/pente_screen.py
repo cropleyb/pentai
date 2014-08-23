@@ -222,18 +222,22 @@ class PenteScreen(Screen, gso_m.GSObserver):
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
 
-        # Need some time for kivy to finish setting up, otherwise
-        # the pieces are all stacked in the bottom left corner,
-        # or we get lots of GUI lag for the screen transition (AI)
-        transition_time = 1.0
+        self.really_start_game()
 
-        start_func = self.make_first_move
+    def is_current_screen(self):
+        return self.app.is_current_screen(self)
+
+    def really_start_game(self, *ignored):
+        while not self.is_current_screen():
+            Clock.schedule_once(self.really_start_game, 0.3)
+            return
+
         if self.game_filename:
-            start_func = self.load_file
-        elif not self.game.resume_move_number is None:
-            start_func = self.load_moves
-
-        Clock.schedule_once(start_func, transition_time)
+            self.load_file()
+        elif self.game.resume_move_number > 1:
+            self.load_moves()
+        else:
+            self.make_first_move()
 
     def is_live(self):
         return self.game.is_live()
@@ -246,7 +250,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if not was_live and not self.game.finished():
                 if self.game.get_move_number() > 1:
                     # Transitioning to live, so get things going
-                    #print "set_live prompt_for_action"
                     self.prompt_for_action()
 
                 if not self.reviewing:
@@ -256,7 +259,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.game.get_current_player().stop()
 
     # GuiPlayer?
-    def make_first_move(self, dt):
+    def make_first_move(self, *ignored):
         """
         Some rule variations require that the first black move must
         be in the center. TODO: This shouldn't really be in the GUI.
@@ -267,7 +270,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.game.make_move((bs/2, bs/2))
             self.refresh_all()
             self.clocks[P1].made_move()
-        #print "make_first_move prompt_for_action"
         self.prompt_for_action()
 
     # GuiPlayer
@@ -336,7 +338,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_grid()
         self.game_filename = None
         self.refresh_all()
-        #print "load_file prompt_for_action"
         self.prompt_for_action()
 
     def load_moves(self, dt=None):
@@ -349,7 +350,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.game_filename = None
         self.refresh_all()
         self.get_audio().unmute()
-        #print "load_moves prompt_for_action"
         self.prompt_for_action()
 
     def on_enter(self):
@@ -374,7 +374,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 won_by = self.game.get_won_by()
                 if won_by:
                     add_to_ob = self.config.get("PentAI", "add_games_to_ob")
-                    log.debug("Add games to openings book: %s" % add_to_ob)
+                    log.debug("Add single game to openings book: %s" % add_to_ob)
                     if add_to_ob:
                         self.ob.add_game(self.game, won_by)
             except OpeningsBookDuplicateException:

@@ -47,13 +47,16 @@ utility function
 - How to gauge how many moves need to be searched at a particular level? For budget search etc.
 - Length level for search stats; yet another PF that uses it (count levels of lengths used as best, relative to the first level tried)
 - Go back a move in search to avoid cloning
+- 0. m 1. capture m 2. m Must be better than 0. m 1. Anything else
+  (where m is an opponent move, and 2. m is the best line of play for P2)
+- Create a list of instructive lost games
 
 Wendy's suggestions (iOS)
 -------------------
 AI goes slower or stops early in game
-Take back and play not possible
+Take back and play not possible (iOS? intermittent?)
 Slow to get game screen when AI makes slow first move
-# Can only create one player
+# Can only create one AI player
 # Main title colour is too much like settings title colour
 # Find same size, level courier font
 
@@ -81,6 +84,8 @@ Keyboard delete for players
 # Don't allow/show illegal tournament mode moves before they are made.
 # Delay between confirming piece - "?" disappears, pause, stone appears.
 
+Add clocks through "edit game" -> crash on resume
+
 Tara's suggestions
 ------------------
 # Acknowledgements? "Tara"?
@@ -98,9 +103,9 @@ Tara's suggestions
 # Rules Demo return to PenteScreen - doubling sound effects
 # Highlight "New Game" and "Start Game" after watching the Demo? Nah
 # Demo skip "New Game" page
-Create SectionText, inc. conversion of AI_FONT
-Menu Sections -> Section
-Help Sections -> Section
+# Create SectionText, inc. conversion of AI_FONT
+# Menu Sections -> Section
+# Help Sections -> Section
 Move more of the demo so it always moves in the centre first
 # Default first game to Human ("You") versus Anthony
 

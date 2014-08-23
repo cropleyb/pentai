@@ -61,6 +61,9 @@ class PentAIApp(App):
         self.popup.open()
         log.info(message)
 
+    def is_current_screen(self, screen):
+        return self.root.current_screen == screen
+
     def show_intro_screen(self):
         self.root.push_current("Intro")
 
@@ -111,6 +114,7 @@ class PentAIApp(App):
     def show_menu_screen(self, ignored=None):
         self.root.set_current("Menu")
         self.root.clear_hist()
+        self.game = None
 
     def show_new_game_screen(self):
         self.game_filename = ""
@@ -127,12 +131,13 @@ class PentAIApp(App):
         self.root.push_current("GameSetupHelp")
 
     def show_demo(self):
+        # This is to allow the demo to be shown from the game screen help.
         if self.game:
             self.saved_pente_game_key = self.game.key()
+            if self.pente_screen:
+                self.pente_screen.leave_game()
         else:
             self.saved_pente_game_key = None
-        if self.pente_screen:
-            self.pente_screen.leave_game()
 
         import demo as d_m
         d = d_m.Demo(self, self.setup_screen.size)
@@ -144,9 +149,10 @@ class PentAIApp(App):
     def finish_demo(self):
         import audio as a_m
         a_m.instance.cut_demo()
+        self.game = None
+        self.pop_screen()
         z_m.abort()
 
-        self.pop_screen()
         self.root.set_demo(None)
         if self.saved_pente_game_key:
             gid = self.saved_pente_game_key
@@ -381,9 +387,6 @@ class PentAIApp(App):
     def build_more(self, ignored):
         self.game = None
         
-        #self.building_openings = True
-        Clock.schedule_once(self.interrupt_openings_building, 10)
-
         log.debug("Create Games Mgr")
         self.games_mgr = GamesMgr()
         log.debug("Create Openings Book")
@@ -412,7 +415,7 @@ class PentAIApp(App):
             if enough:
                 # Might as well stop waiting
                 self.building_openings = False
-                log.debug("OK that's enough")
+                log.debug("OK that's enough openings built")
 
             # TODO: Max DB space
             # We'll add some more, but give Kivy some CPU too.
@@ -426,9 +429,6 @@ class PentAIApp(App):
         Clock.schedule_once(self.create_screens, 0)
 
     def create_screens(self, ignored=None):
-        if not self.menu_screen is None:
-            self.show_menu_screen()
-
         root = self.root
 
         log.debug("Creating screens")
