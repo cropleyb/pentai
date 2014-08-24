@@ -74,8 +74,6 @@ class OpeningsBook(object):
         position_key = std_state
 
         # Get the appropriate section for this position
-        log.debug("add_position %s" % (position_key,))
-
         next_move = game.move_history[move_number-1]
         standardised_move = fwd(*next_move)
         size = game.get_size()
