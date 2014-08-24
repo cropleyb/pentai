@@ -222,16 +222,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
         # This must occur before the start function
         Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
 
-        self.really_start_game()
+        self.start_game_soon()
 
     def is_current_screen(self):
         return self.app.is_current_screen(self)
 
-    def really_start_game(self, *ignored):
+    def start_game_soon(self, *ignored):
         while not self.is_current_screen():
-            Clock.schedule_once(self.really_start_game, 0.3)
+            Clock.schedule_once(self.start_game_soon, 0.3)
             return
+        Clock.schedule_once(self.really_start_game, 0.3)
 
+    def really_start_game(self, *ignored):
         if self.game_filename:
             self.load_file()
         elif self.game.resume_move_number > 1:
