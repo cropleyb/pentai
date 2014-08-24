@@ -7,6 +7,6 @@ try () {
 DESTDIR=$1
 
 mkdir -p $DESTDIR
-rsync -ra pentai* setup.py main.py $DESTDIR
+rsync -ra pentai* setup.py main.py --exclude build $DESTDIR
 
 
