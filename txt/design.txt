@@ -1220,3 +1220,14 @@ Openings book building
 "Don't Use"
 "Part On Startup"
 "Build All Now"
+
+iOS
+---
+Call Apple Dev support?
+Follow testflight instructions again?
+
+bundle id: org.kivy.pentai4 (click project, General tab)
+Use wildcarddistprofile (which version? trying lowest?)
+Build Settings -> Code Signing -> Provisioning Profile -> Release -> wildcarddistprofile (lowest = latest?)
+Build Settings -> Architectures -> Build Active Archive Only -> No
+Build Settings -> Deployment -> iOS Deployment -> iOS 7.0
