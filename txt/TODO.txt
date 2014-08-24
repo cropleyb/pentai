@@ -56,7 +56,7 @@ utility function
 
 Wendy's suggestions (iOS)
 -------------------
-AI goes slower or stops early in game
+AI goes slower or stops early in game (fixed?)
 Take back and play not possible (iOS? intermittent?)
 Slow to get game screen when AI makes slow first move
 # Can only create one AI player
