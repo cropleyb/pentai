@@ -6,10 +6,10 @@ import os
 import shutil
 import parse_game as par_m
 import pentai.base.pente_exceptions as pe_m
-import zodb_dict as z_m
-import openings_book as ob_m
-import games_mgr as gm_m
-import misc_db as m_m
+import pentai.db.zodb_dict as z_m
+import pentai.db.openings_book as ob_m
+import pentai.db.games_mgr as gm_m
+import pentai.db.misc_db as m_m
 
 from pentai.base.defines import *
 import pentai.base.logger as log
@@ -25,6 +25,7 @@ def unzip_section(section, user_data_dir):
         zf = zf_m.ZipFile(zip_path)
     except IOError:
         # HACK!
+        misc()["opening_section"] -= 1
         return section == 48
 
     target_directory = os.path.join(user_data_dir, "openings")
@@ -55,6 +56,8 @@ def add_games(openings_book, section_dir, start, count=100):
         try:
             g = par_m.convert_game(gf_str, int(gf))
             add_game(openings_book, g, g.get_won_by())
+            global total_added
+            total_added += 1
             added += 1
             if added >= count:
                 break
@@ -91,8 +94,6 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
         if not unzip_section(section, user_data_dir):
             return True
         else:
-            # This is just for the case where there is no zip file for that section
-            misc()["opening_section"] -= 1
             return False
     
     if not start:
@@ -126,3 +127,19 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     log.debug("Completed: section: %s; start game: %s" % (section, start))
     return False
 
+total_added = 0
+
+if __name__ == "__main__":
+    from main import setup_logging
+    setup_logging()
+    db_path = os.path.join(".", "db.fs")
+    z_m.set_db(db_path)
+    import pentai.db.openings_book as ob_m
+    openings_book = ob_m.OpeningsBook()
+    while True:
+        if build(openings_book, ".", count=100):
+            break
+        section = misc()["opening_section"]
+        log.debug("built %s games so far, in section %s" % (total_added, section))
+    log.debug("Finished building %s games, now packing" % total_added)
+    z_m.pack()
