@@ -7,7 +7,7 @@ sys.exit(0)
 
 import sys
 
-def main():
+def setup_logging():
     formatter = logging.Formatter("[%(asctime)s.%(msecs)03d][%(levelname)s][%(message)s]",
                                           "%H:%M:%S")
     console = logging.StreamHandler()
@@ -19,6 +19,8 @@ def main():
     logging.getLogger("ZODB.lock_file").addHandler(console)
     logging.getLogger("ZODB.Connection").addHandler(console)
 
+def main():
+    setup_logging()
     import startup
     startup.run()
 
