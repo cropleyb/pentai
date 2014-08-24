@@ -25,7 +25,7 @@ def unzip_section(section, user_data_dir):
         zf = zf_m.ZipFile(zip_path)
     except IOError:
         # HACK!
-        return section != 48
+        return section == 48
 
     target_directory = os.path.join(user_data_dir, "openings")
     try:
@@ -34,7 +34,7 @@ def unzip_section(section, user_data_dir):
         log.warn("OSError creating %s" % target_directory)
         pass
     zf.extractall(target_directory)
-    return False
+    return True
 
 def remove_unzipped(section, user_data_dir):
     target_directory = os.path.join(user_data_dir, "openings", "%s" % section)
@@ -88,8 +88,8 @@ def build(openings_book, user_data_dir, section=None, start=None, count=100):
     section_dir = os.path.join(openings_dir, str(section))
     
     if not os.path.isdir(section_dir):
-        if unzip_section(section, user_data_dir):
-            return False
+        if not unzip_section(section, user_data_dir):
+            return True
         else:
             # This is just for the case where there is no zip file for that section
             misc()["opening_section"] -= 1
