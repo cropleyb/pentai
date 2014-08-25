@@ -34,13 +34,17 @@ $HOSTPYTHON -OO -m compileall $YOURAPPDIR
 echo "-> Remove unused files (pyc, py)"
 find $YOURAPPDIR -iname '*.py' -exec rm {} \;
 find $YOURAPPDIR -iname '*.pyc' -exec rm {} \;
+# Tweaks by BC for PentAI
 find $YOURAPPDIR -iname 'media.bak' -exec rm {} \;
 find $YOURAPPDIR -iname 'games' -exec rm -r {} \;
 find $YOURAPPDIR -iname '*.c' -exec rm -r {} \;
 find $YOURAPPDIR -iname 'media.bak' -exec rm -r {} \;
+# For some reason this find is returning an error. This is a hacky workaround
+set ok=find $YOURAPPDIR -iname 'build' -exec rm -rf {} \;
 
 pushd $YOURAPPDIR
 rm -rf web .git bak* tags
 popd
+# End tweaks
 
 echo "-> Source code of $APPNAME updated."
