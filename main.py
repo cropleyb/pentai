@@ -5,6 +5,33 @@ import sys
 sys.exit(0)
 '''
 
+import os
+
+'''
+def _total_size(source):
+    total_size = os.path.getsize(source)
+    for item in os.listdir(source):
+        itempath = os.path.join(source, item)
+        if os.path.isfile(itempath):
+            total_size += os.path.getsize(itempath)
+        elif os.path.isdir(itempath):
+            dir_size = _total_size(itempath)
+            print "%s: %s" % (itempath, dir_size)
+            total_size += dir_size
+    return total_size
+
+def main():
+    print _total_size("..")
+
+    """
+    source = os.path.join(".", "txt")
+    for item in os.listdir(source):
+        itempath = os.path.join(source, item)
+        if os.path.isfile(itempath):
+            print "%s: %s" % (itempath, os.path.getsize(itempath))
+    """
+
+'''
 import sys
 
 def setup_logging():
