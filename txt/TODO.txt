@@ -66,20 +66,6 @@ Slow to get game screen when AI makes slow first move
 Noel's suggestions
 ------------------
 Add Kivy request for Text underline
-Courier for button names?
-        '''
-        if _name_ == "__main__":
-            platform = Platform()
-            if platform == 'android':
-                font_path = '/system/fonts/DroidSansFallback.ttf'
-            elif platform == 'macosx':
-                font_path = os.path.expanduser('~/Library/Fonts/stsong.ttf')
-            else:
-                font_path = os.path.join(os.path.dirname(__file__), "font/simsun.ttf")
-
-            TextInput.font_name = StringProperty(font_path)
-            Label.font_name = StringProperty(font_path)
-        '''
 # Change Save to Delete on player screens
 AI Player delete
 Keyboard delete for players
