@@ -65,13 +65,13 @@ Slow to get game screen when AI makes slow first move
 
 Noel's suggestions
 ------------------
-Add Kivy request for Text underline
+# Add Kivy request for Text underline
 # Change Save to Delete on player screens
-AI Player delete
-Keyboard delete for players
+# AI Player delete
 # Add "Or 5 in a row" for Games screen Standard mode.
 # Don't allow/show illegal tournament mode moves before they are made.
 # Delay between confirming piece - "?" disappears, pause, stone appears.
+Keyboard delete for players
 
 Add clocks through "edit game" -> crash on resume
 
