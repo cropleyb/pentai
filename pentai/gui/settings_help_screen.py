@@ -51,14 +51,16 @@ class SettingsHelpText(hs_m.HelpText):
 """
         self.ob_text = """ [i]Add games[/i]
  Should completed games be added to the openings book?
-
+"""
+        # In case I change my mind again:
+        '''
 [i]Build[/i]
  The openings book takes a while to build, and takes a fair amount of space.
  Expert players will want it be built in its entirity. Beginners will not notice a difference.
 - [i]Don't Build[/i]: Just uses the experience of games played through your app.
 - [i]Part On Startup[/i]: Takes a few seconds each time you start the app.
 - [i]Build All Now[/i]: This takes a long time, but it only needs to be done once.
-"""
+        '''
         self.sound_text = """ [i]Effects Volume[/i]
  You can adjust how loud the sound effects are.
 

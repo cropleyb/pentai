@@ -5,18 +5,21 @@ import audio as a_m
 
 from popup import *
 
+'''
 BUILD_ALL_NOW = "Build All Now"
 BUILT = "Built"
 DONT_BUILD = "Don't Build"
 PART_ON_STARTUP = "Part On Startup"
+'''
 
 class SettingsScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(SettingsScreen, self).__init__(*args, **kwargs)
-        self.build_spinner = self.ids.build_id
-        self.build_spinner.bind(value=self.on_build_ob)                  
+        #self.build_spinner = self.ids.build_id
+        #self.build_spinner.bind(value=self.on_build_ob)                  
         self.app = None
 
+    '''
     def on_pre_enter(self):
         self.set_build_options()
 
@@ -36,6 +39,7 @@ class SettingsScreen(Screen):
         if val == BUILT:
             self.ids.build_id.save_value(None, DONT_BUILD)
             self.ids.build_id.load_value()
+    '''
 
     def adjust_volumes(self, *args):
         a_m.adjust_volumes()
@@ -43,6 +47,7 @@ class SettingsScreen(Screen):
     def set_confirmation_popups(self, *args):
         self.app.set_confirmation_popups()
 
+    '''
     def on_build_ob(self, widget, val, *args):
         if val == BUILD_ALL_NOW:
             msg_str = "Build entire DB now?"
@@ -54,3 +59,4 @@ class SettingsScreen(Screen):
         self.app.build_all_openings()
         self.ids.build_id.save_value(None, PART_ON_STARTUP)
         self.ids.build_id.load_value()
+    '''
