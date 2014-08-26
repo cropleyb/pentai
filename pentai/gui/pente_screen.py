@@ -129,6 +129,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
                         size_hint=(.8, .2))
 
     def rematch_confirmed(self, *ignored):
+        log.debug("Calling set_live False due to rematch")
+
         og = self.game
         og.set_live(False, self)
 
@@ -245,7 +247,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return self.game.is_live()
 
     def set_live(self, val):
-        log.debug("pente_screen set_live: %s" % val)
+        #log.debug("pente_screen set_live: %s" % val)
         was_live = self.is_live()
         self.game.set_live(val, self)
         if val:
@@ -368,6 +370,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.leave_game()
 
     def leave_game(self):
+        log.debug("Calling set_live False in leave_game")
         self.set_live(False)
         if not self.app.in_demo_mode():
             self.gm.save(self.game)
@@ -403,11 +406,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if self.marker:
                 self.remove_widget(self.marker)
 
-            # Remove any confirmation piece
+            # Remove any confirmation piece, and hide the confirmation area
             self.cancel_confirmation()
             
             action = self.action_queue.get()
             if not game.is_live():
+                log.info("Attempt was made to move while the game was not live")
                 return
             if not action:
                 if self.game.get_won_by() == (P1+P2):
@@ -425,6 +429,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 continue
 
         if not move:
+            log.warn("No valid move found")
             return
 
         try:
@@ -998,6 +1003,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.reviewing = val
         
         # TODO: Demo flag?
+        log.debug("Calling set_live from set_review_mode")
         self.set_live(not val and not self.app.in_demo_mode())
         
         if val:
