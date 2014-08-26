@@ -27,6 +27,7 @@ def run():
 
         if pentai_path == None:
             pentai_path = pa.user_data_dir
+        print "User Data Dir: %s" % pa.user_data_dir
 
         db_path = os.path.join(pentai_path, "db.fs")
         print "Loading DB from %s" % db_path
