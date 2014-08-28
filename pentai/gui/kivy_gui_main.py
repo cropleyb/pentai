@@ -18,7 +18,6 @@ import my_button
 
 from pentai.db.games_mgr import *
 import pentai.db.openings_book as ob_m
-import pentai.db.openings_builder as obl_m
 
 from popup import *
 
@@ -29,7 +28,6 @@ class PentAIApp(App):
         self.debug = False
         super(PentAIApp, self).__init__(*args, **kwargs)
         self.defaults = None
-        self.building_openings = False
         self.menu_screen = None
         self.intro_help_screen = None
 
@@ -42,7 +40,7 @@ class PentAIApp(App):
             for fn in ["db.fs.most", "db.fs.openings"]:
                 for ext in ["", ".index"]:
                     fn_ext = "%s%s" % (fn, ext)
-                    '''
+
                     # Copy DB to user_data_dir
                     shutil.copy(fn_ext, dest)
                     '''
@@ -52,6 +50,7 @@ class PentAIApp(App):
                         os.unlink(del_path)
                     except OSError:
                         pass
+                    '''
 
     def display_error(self, message):
         from kivy.uix.label import Label
@@ -77,7 +76,7 @@ class PentAIApp(App):
         ok = self.root.pop_screen()
         if not ok:
             self.create_screens()
-        if self.root.current_screen == "Intro" and not self.building_openings:
+        if self.root.current_screen == "Intro":
             ok = self.root.pop_screen()
 
     def show_settings_screen(self):
@@ -194,21 +193,6 @@ class PentAIApp(App):
     def openings_book_is_finished(self):
         return obl_m.is_finished()
 
-    def build_all_openings(self):
-        self.building_openings = True
-        self.show_intro_screen()
-        Clock.schedule_once(self.build_all_openings_inner, 0.1)
-
-    def build_all_openings_inner(self, *ignored):
-        enough = obl_m.build(self.openings_book, self.user_data_dir, count=2)
-        if enough:
-            # UI bypass will skip the pack() call
-            z_m.pack()
-            self.building_openings = False
-            self.pop_screen()
-        if self.building_openings:
-            Clock.schedule_once(self.build_all_openings_inner, 0.1)
-
     def start_game(self, game, swap_colours=False, demo=False):
         # TODO: Move this?
         root = self.root
@@ -232,6 +216,7 @@ class PentAIApp(App):
         # load the game screen
         self.pente_screen.set_game(game, swap_colours=swap_colours)
 
+        log.debug("Calling set_live %s from app.start_game" % (not demo))
         self.pente_screen.set_live(not demo)
 
         self.show_pente_screen()
@@ -257,9 +242,7 @@ class PentAIApp(App):
         typing_screens = ["Setup", "AI", "Human"]
         if key == 27:
             # Escape
-            if self.building_openings:
-                self.interrupt_openings_building()
-            elif BasePopup.my_active:
+            if BasePopup.my_active:
                 # Cancel any popup
                 BasePopup.clear()
             else:
@@ -396,30 +379,7 @@ class PentAIApp(App):
         import pentai.db.create_default_players as cdp
         cdp.create_default_players(self.get_game_defaults())
 
-        obb = self.config.get("PentAI", "openings_book_building")
-        if obb == "Part On Startup":
-            self.building_openings = True
-            Clock.schedule_once(self.load_games, 0.01)
-        else:
-            self.pack_and_start()
-
-    def interrupt_openings_building(self, ignored=None):
-        log.debug("Stop building openings book")
-        self.building_openings = False
-
-    def load_games(self, ignored):
-        if not self.building_openings:
-            self.pack_and_start()
-        else:
-            enough = obl_m.build(self.openings_book, self.user_data_dir, count=2)
-            if enough:
-                # Might as well stop waiting
-                self.building_openings = False
-                log.debug("OK that's enough openings built")
-
-            # TODO: Max DB space
-            # We'll add some more, but give Kivy some CPU too.
-            Clock.schedule_once(self.load_games, 0.1)
+        self.pack_and_start()
 
     def pack_and_start(self):
         log.info("About to pack_and_start DB")
@@ -432,8 +392,6 @@ class PentAIApp(App):
         root = self.root
 
         log.debug("Creating screens")
-
-        self.building_openings = False
 
         screens = root.get_all_screens()
 
