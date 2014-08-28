@@ -5,13 +5,10 @@ from pentai.base.defines import *
 
 class UtilityCalculator(object):
     def __init__(self):
-        self.factors = None
+        pass
 
     def set_rules(self, rules):
         self.rules = rules
-
-    def set_factors(self, factors):
-        self.factors = factors
 
     """ Captures become increasingly important as we approach 5 """
     def captured_contrib(self, captures):
@@ -208,23 +205,13 @@ class UtilityCalculator(object):
 
         score = 0
 
-        if self.factors:
-            w = self.factors.get_weights()
-
-            sub_type_lines = state.utility_stats.sub_type_lines[eval_colour]
-            for i, stl_count in enumerate(sub_type_lines):
-                st_score = stl_count * w[i]
-                score += st_score
-
-        else:
-            # DEAD
-            lf = self.length_factor
-            eval_lines = state.utility_stats.lines[eval_colour]
-            # TODO: Use enumerate
-            for i in range(len(eval_lines)):
-                score *= lf
-                rev = 4 - i
-                score += eval_lines[rev] * self.length_scale[rev]
+        lf = self.length_factor
+        eval_lines = state.utility_stats.lines[eval_colour]
+        # TODO: Use enumerate
+        for i in range(len(eval_lines)):
+            score *= lf
+            rev = 4 - i
+            score += eval_lines[rev] * self.length_scale[rev]
 
         if self.enclosed_four_base != 0:
             ee4 = state.utility_stats.enclosed_four[eval_colour]

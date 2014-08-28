@@ -10,8 +10,6 @@ from pentai.ai.heuristic_filter import *
 from pentai.ai.killer_filter import *
 from pentai.ai.utility_filter import *
 
-import pentai.ai.length_factor as lf_m
-
 import openings_book as ob_m
 import games_mgr
 
@@ -97,20 +95,6 @@ class AIFactory: # TODO: These are just functions
         uc.length_scale = genome.length_scale
         uc.scale_pob = genome.scale_pob
         uc.calc_mode = genome.calc_mode
-
-        factors = lf_m.LengthFactor()
-        factors.set_default_factor(genome.length_factor)
-        try:
-            for length, boost in genome.length_boosts:
-                factors.set_length_boost(length, boost)
-        except:
-            pass
-        try:
-            for length, sub_type, boost in genome.sub_type_boosts:
-                factors.set_sub_type_boost(length, sub_type, boost)
-        except:
-            pass
-        uc.set_factors(factors)
 
         try:
             uc.enclosed_four_base = genome.enclosed_four_base

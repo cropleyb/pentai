@@ -18,6 +18,9 @@ class PriorityFilter3(object):
     def set_vision(self, val):
         self.vision = val
 
+    def set_our_colour(self, *ignored):
+        pass
+
     def set_max_moves_per_depth_level(self, mmpdl, narrowing, chokes=[]):
         if narrowing != 0:
             def mmpdl_func(depth):
@@ -62,6 +65,7 @@ class PriorityFilter3(object):
     def copy(self, min_priority=0):
         return PriorityFilter3(orig=self, min_priority=min_priority)
 
+    #def get_iter(self, our_colour, state=None, depth=0, min_priority=0, tried={}): # min_priority is ignored
     def get_iter(self, our_colour, depth=0, min_priority=0, tried=None):
         if tried is None:
             tried = set()

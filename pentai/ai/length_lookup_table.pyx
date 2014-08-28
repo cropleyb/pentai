@@ -49,61 +49,14 @@ def extend_and_store_lookups(occ, depth, occ_val, length, colour, empty_list, re
             # add_pattern
             assert length <= 5
             rep_str = rep_str + ">"
-            sub_type = calc_subtype_from_empty_list(empty_list)
             candidates = [(candidate_lookup[i], i) for i in empty_list]
             candidates.sort()
             candidates = [i for o,i in candidates]
-            length_lookup[occ_val] = colour, length, sub_type, candidates, rep_str
+            length_lookup[occ_val] = colour, length, candidates, rep_str
     else:
         # Recursively add to the stretch
         build_and_store_values(depth-1, occ_val, length, colour, empty_list[:], rep_str)
 
-def calc_subtype_from_empty_list(empty_list):
-    el = sorted(empty_list)
-    lel = len(empty_list)
-    if lel == 0:
-        # all 5
-        return 0
-    elif lel == 1:
-        # 4 / 5
-        if el[0] == 2:
-            # gap in middle
-            return 0
-        elif el[0] in (1,3):
-            # gap to the side
-            return 1
-        else:
-            # gap at end
-            return 2
-    elif lel == 2:
-        # 3 / 5
-        if el in ([0,1], [0,4], [3,4]):
-            # solid
-            return 2
-        elif el in ([1,3], [1,2], [2,3]):
-            # evenly spread X.X.X
-            return 0
-        else:
-            # gap in middle .X.XX, X..XX etc.
-            return 1
-    elif lel == 3:
-        # 2 / 5
-        if el in ([1,3,4], [0,2,4], [0,1,3]):
-            # single gap between pieces - ideal
-            return 2
-        elif el in ([1,2,3], [1,2,4], [0,2,3]):
-            # Not so good
-            return 0
-        else:
-            # gap to the side
-            return 1
-    # else lel == 4, no structure to report
-    return 0
-
-def calc_subtype_2(empty_list,e):
-    el2 = empty_list[:]
-    el2.remove(e)
-    return calc_subtype_from_empty_list(el2)
 
 def build_and_store_values(depth, occ_val, length, colour, empty_list, rep_str=None):
     """ Add one stone or empty place """
@@ -148,18 +101,12 @@ cpdef process_substrips(U64 bs, int min_ind, int max_ind, us, int inc):
 
         # Now see if it's in our lookup table
         try:
-            colour, length, sub_type, empty_list, rep_str = length_lookup[occs]
+            colour, length, empty_list, rep_str = length_lookup[occs]
         except KeyError:
             # Nope. Not interesting.
             continue
 
-        '''
-        # TEMP!
-        if length == 2 and sub_type == 0:
-            print "OCCS: %s" % occs
-        '''
-
         # Report it
-        shifted_empties = [(e+ind, calc_subtype_2(empty_list, e)) for e in empty_list]
-        us.report_length_candidate(colour, length, sub_type, shifted_empties, inc)
+        shifted_empties = [e+ind for e in empty_list]
+        us.report_length_candidate(colour, length, shifted_empties, inc)
 

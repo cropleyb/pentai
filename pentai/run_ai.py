@@ -114,10 +114,9 @@ class Match():
 
         #self.genome1.utility_filter = True
 
-        self.genome2.filter_num = 1
-        self.genome2.chokes = [(3,3)]
-        #self.genome2.mmpdl = 10
-        #self.genome2.mmpdl = 10
+        self.genome2.filter_num = 5
+        #self.genome2.chokes = [(3,3)]
+        self.genome2.mmpdl = 13
         #self.genome2.utility_filter = True
 
         #self.genome1.move_factor = 5
@@ -209,19 +208,20 @@ class Match():
         #self.genome2.misjudgement = 8
 
         results = MatchResults()
-        #for game_length in range(2,8):
-        for game_length in range(2,6):
-        #for game_length in range(2,8):
         #for game_length in range(2,3):
-        #for game_length in range(3,6):
+        #for game_length in range(2,4):
+        for game_length in range(2,5):
+        #for game_length in range(2,6):
+        #for game_length in range(2,7):
+        #for game_length in range(2,8):
             for board_size in [19]:
             #for board_size in [13, 19]:
                 for first_player in [0, 1]:
-                    #for rules_type in ['s', 't']:
+                    for rules_type in ['s', 't']:
                     #for rules_type in ['t']:
-                    for rules_type in ['s']:
-                        self.set_up(game_length, 1)
-                        #self.set_up(game_length)
+                    #for rules_type in ['s']:
+                        #self.set_up(game_length, 1) # For p2 depth boost
+                        self.set_up(game_length)
                         players = [self.p1, self.p2]
                         second_player = 1 - first_player
                         res = self.play_one_game(board_size, rules_type,

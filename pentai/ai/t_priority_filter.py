@@ -10,8 +10,7 @@ class PriorityFilterTest(unittest.TestCase):
         self.pf = PriorityFilter()
 
     def arc(self, colour, length, candidate_list, inc=1):
-        cl2 = [(i,0) for i in candidate_list]
-        self.pf.add_or_remove_candidates(colour, length, 0, cl2, inc)
+        self.pf.add_or_remove_candidates(colour, length, candidate_list, inc)
 
     def get_iter(self, colour, *args, **kwargs):
         return list(self.pf.get_iter(colour, None, *args, **kwargs))
@@ -177,7 +176,7 @@ class PriorityFilterTest(unittest.TestCase):
         self.arc(P1, 3, ((2,4),(3,3),), inc=1)
         self.arc(P1, 4, ((3,3),), inc=1)
         pfc = self.pf.copy()
-        pfc.add_or_remove_candidates(P1, 4, 0, [((3,3),0)], inc=-1)
+        pfc.add_or_remove_candidates(P1, 4, [(3,3)], inc=-1)
         # Modifying the descendant should not have affected the parent
         l = self.get_iter(P1)
         self.assertEquals(l[0],(3,3))

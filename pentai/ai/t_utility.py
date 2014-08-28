@@ -57,9 +57,6 @@ class UtilityTest(unittest.TestCase):
     def set_lines(self, pn, lines):
         us = self.s.utility_stats
         us.lines[pn] = lines
-        st_lines = [[l, 0, 0] for l in lines]
-        st_lines = list(itertools.chain.from_iterable(st_lines))
-        us.sub_type_lines[pn] = st_lines
 
     def set_black_lines(self, lines):
         self.set_lines(P1, lines)

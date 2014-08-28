@@ -195,7 +195,7 @@ class PriorityFilter2(object):
         if slot[pos] == 0:
             del slot[pos]
 
-    def add_or_remove_candidates(self, colour, length, subtype, pos_list, inc=1):
+    def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length == 5:
             # won already, ignore
             return
@@ -204,7 +204,7 @@ class PriorityFilter2(object):
         if length < 3:  # allow space for threat priority
             length -= 1
         slot = self.candidates_by_priority_and_colour[length][colour]
-        for pos, subtype in pos_list:
+        for pos in pos_list:
             assert pos[0] >= 0
             assert pos[1] >= 0
             self.adjust_slot(slot, pos, inc)

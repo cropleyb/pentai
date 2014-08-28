@@ -37,6 +37,8 @@ class AIGenome(Persistent):
         self.scale_pob = False
         self.force_depth = 0
         self.judgement = 100
+
+        # dead
         self.length_boosts = () #ZL([]), # length, boost
         self.sub_type_boosts = () #ZL([]), # length, sub_type, boost):
 
