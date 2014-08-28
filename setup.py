@@ -15,6 +15,7 @@ from collections import OrderedDict
 
 #from Cython.Compiler.Options import directive_defaults
 #directive_defaults['profile'] = True
+# Try editing /Library/Python/2.7/site-packages/Cython/Compiler/Options.py
 
 if sys.version > '3':
     PY3 = True
