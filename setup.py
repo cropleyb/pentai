@@ -363,15 +363,25 @@ def determine_sdl():
 base_flags = determine_base_flags()
 gl_flags = determine_gl_flags()
 
+'''
+# TODO:
+sources = {
+    'base/*.pyx': base_flags,
+    'ai/*.pyx': base_flags,
+    'db/openings_book.pyx': base_flags,
+}
+'''
 sources = {
     'base/board_strip.pyx': base_flags,
     'base/direction_strips.pyx': base_flags,
     'base/board.pyx': base_flags,
+    'base/game.pyx': base_flags,
     'base/game_state.pyx': base_flags,
     'base/bit_reverse.pyx': base_flags,
     'base/defines.pyx': base_flags,
     'db/openings_book.pyx': base_flags,
     'ai/length_lookup_table.pyx': base_flags,
+    'ai/length_factor.pyx': base_flags,
     'ai/priority_filter.pyx': base_flags,
     'ai/priority_filter_2.pyx': base_flags,
     'ai/priority_filter_3.pyx': base_flags,

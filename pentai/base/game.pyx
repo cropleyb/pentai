@@ -1,11 +1,6 @@
-
-from pente_exceptions import *
-
+from pentai.base.pente_exceptions import *
 import pentai.base.game_state as gs_m
-import pentai.base.player as p_m # TODO: Shouldn't be necessary
-import pentai.base.rules as r_m
 from pentai.base.defines import *
-import pentai.base.logger as log
 
 import datetime
 
@@ -115,6 +110,7 @@ class Game(object):
         return self.live
 
     def set_live(self, val, gui): # TODO: Remove gui
+        import pentai.base.logger as log
         log.debug("set_live %s" % val)
         if gui:
             if val:
@@ -272,6 +268,7 @@ class Game(object):
 
     def configure_from_str(self, s):
         """ Keep this for test code """
+        import pentai.base.player as p_m # TODO: Shouldn't be necessary
         player_line, size_line, rules_line, the_rest = s.split('\n', 3)
 
         # TODO: This is ugly - these values will be replaced shortly
