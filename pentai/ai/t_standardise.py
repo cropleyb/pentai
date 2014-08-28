@@ -4,6 +4,7 @@ import unittest
 
 from pentai.base.game_state import *
 from pentai.base.game import *
+import pentai.base.player as p_m
 from pentai.base.rules import *
 from pentai.ai.standardise import *
 from pentai.base.direction_strips import *
