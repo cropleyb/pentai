@@ -49,7 +49,7 @@ def create_psi_table():
     next_psi_ind()
 
     add_to_psi_table(True, 3,1,2) # .XXaX XXaX. These ones first because
-    next_psi_ind()               #             they  close up the threat
+    next_psi_ind()               #              they close up the threat
 
     add_to_psi_table(True, 3,2,2) # aXXXa These can often form an open four.
     next_psi_ind()
