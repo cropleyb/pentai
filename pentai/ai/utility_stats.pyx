@@ -113,7 +113,5 @@ cdef inline set_or_reset_occs(self, brd, rules, pos, int inc):
             bs_m.process_takes(bs, ind, strip_min, strip_max, self, inc)
             bs_m.process_threats(bs, ind, strip_min, strip_max, self, inc)
 
-        # TODO: Put these in one function
         bs_m.process_enclosed_fours(bs, ind, self, inc)
-        #bs_m.process_enclosed_four(bs, ind, P2, self, inc)
 
