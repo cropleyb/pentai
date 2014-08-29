@@ -33,6 +33,12 @@ class BoardTest(unittest.TestCase):
         board.set_occ((6, 6), P2)
         self.assertEquals(board.get_occ((6, 6)), P2)
 
+    def test_board_place_one_piece_in_big_corner_then_remove(self):
+        board = Board(size = 7)
+        board.set_occ((6, 6), P2)
+        board.set_occ((6, 6), EMPTY)
+        self.assertEquals(board.get_occ((6, 6)), EMPTY)
+
     def test_place_off_board_raises_exception(self):
         board = Board(size = 7)
         try:
