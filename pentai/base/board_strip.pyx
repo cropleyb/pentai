@@ -174,19 +174,22 @@ cdef inline match_pattern_right(U64 bs, U64 ind, U64 pattern):
     return ()
 
 @cython.profile(False)
-cdef match_black_capture_left(U64 bs, U64 ind):
+cdef inline match_black_capture_left(U64 bs, U64 ind):
     # BWWx
     return match_pattern_left(bs, ind, P1_CAPTURE_LEFT_PATTERN)
 
-cdef match_white_capture_left(U64 bs, U64 ind):
+@cython.profile(False)
+cdef inline match_white_capture_left(U64 bs, U64 ind):
     # WBBx
     return match_pattern_left(bs, ind, P2_CAPTURE_LEFT_PATTERN )
 
-cdef match_black_capture_right(U64 bs, U64 ind):
+@cython.profile(False)
+cdef inline match_black_capture_right(U64 bs, U64 ind):
     # xWWB
     return match_pattern_right(bs, ind, P1_CAPTURE_RIGHT_PATTERN)
 
-cdef match_white_capture_right(U64 bs, U64 ind):
+@cython.profile(False)
+cdef inline match_white_capture_right(U64 bs, U64 ind):
     # xBBW
     return match_pattern_right(bs, ind, P2_CAPTURE_RIGHT_PATTERN)
 
@@ -201,19 +204,23 @@ def get_capture_indices(bs, ind, colour):
         captures.extend(match_white_capture_right(bs, ind))
     return captures
 
-def match_black_threat_left(bs, ind):
+@cython.profile(False)
+cdef inline match_black_threat_left(bs, ind):
     # BWWx
     return match_pattern_left(bs, ind, P1_THREAT_LEFT_PATTERN)
 
-def match_white_threat_left(bs, ind):
+@cython.profile(False)
+cdef inline match_white_threat_left(bs, ind):
     # WBBx
     return match_pattern_left(bs, ind, P2_THREAT_LEFT_PATTERN)
 
-def match_black_threat_right(bs, ind):
+@cython.profile(False)
+cdef inline match_black_threat_right(bs, ind):
     # xWWB
     return match_pattern_right(bs, ind, P1_THREAT_RIGHT_PATTERN)
 
-def match_white_threat_right(bs, ind):
+@cython.profile(False)
+cdef inline match_white_threat_right(bs, ind):
     # xBBW
     return match_pattern_right(bs, ind, P2_THREAT_RIGHT_PATTERN)
 
