@@ -1,6 +1,7 @@
 import pentai.base.board_strip as bs_m
 import pentai.ai.length_lookup_table as llt_m
 from pentai.base.defines import *
+# cython: profile=True
 
 from libc.stdint cimport uint64_t as U64
 # U64 = int # For debugging as .py
@@ -71,39 +72,48 @@ class UtilityStats(object):
         self.i_to_p = func
         self.s_num = s_num
     
-    # Slowish
-    def set_or_reset_occs(self, brd, rules, pos, inc):
-        cdef U64 bs
+    # Slow
+    #@cython.profile(False)
+    def set_or_reset_occs(self, brd, rules, pos, int inc):
+        set_or_reset_occs(self, brd, rules, pos, inc)
 
-        # update substrips
-        ccp = rules.can_capture_pairs
-        brd_size = brd.get_size()
+#@cython.profile(False)
+cdef inline set_or_reset_occs(self, brd, rules, pos, int inc):
+    cdef U64 bs
+    cdef int ind, s_num, strip_min, strip_max, brd_size, ccp
+    cdef int min_ind, max_ind
 
-        for ds in brd.get_direction_strips():
-            # Keep track of the lengths of lines that can form 5
-            # in a row
+    # update substrips
+    ccp = rules.can_capture_pairs
+    brd_size = brd.get_size()
 
-            bs, s_num = ds.get_strip(pos)
-            ind = ds.get_index(pos)
+    for ds in brd.get_direction_strips():
+        # Keep track of the lengths of lines that can form 5
+        # in a row
 
-            strip_min, strip_max = ds.get_bounds(s_num, brd_size)
+        bs, s_num = ds.get_strip(pos)
+        ind = ds.get_index(pos)
 
-            self.set_ind_to_pos(ds.get_pos, s_num)
+        strip_min, strip_max = ds.get_bounds(s_num, brd_size)
 
-            # These are the absolute indices that bound the strip
-            # that we want to use to adjust length stats.
-            min_ind = max(strip_min, ind-4) # TODO: constants
-            max_ind = min(ind+4, strip_max) # inclusive
+        self.set_ind_to_pos(ds.get_pos, s_num)
 
-            # These have different parameter lists because of the different
-            # lengths of the matching required.
-            # TODO move min_ind into process_substrips
-            llt_m.process_substrips(bs, min_ind, max_ind, self, inc)
+        # These are the absolute indices that bound the strip
+        # that we want to use to adjust length stats.
+        min_ind = max(strip_min, ind-4) # TODO: constants
+        max_ind = min(ind+4, strip_max) # inclusive
 
-            if ccp:
-                bs_m.process_takes(bs, ind, strip_min, strip_max, self, inc)
-                bs_m.process_threats(bs, ind, strip_min, strip_max, self, inc)
+        # These have different parameter lists because of the different
+        # lengths of the matching required.
+        # TODO move min_ind into process_substrips
+        llt_m.process_substrips(bs, min_ind, max_ind, self, inc)
 
-            bs_m.process_enclosed_four(bs, ind, P1, self, inc)
-            bs_m.process_enclosed_four(bs, ind, P2, self, inc)
+        if ccp:
+            # TODO: Put these in one function
+            bs_m.process_takes(bs, ind, strip_min, strip_max, self, inc)
+            bs_m.process_threats(bs, ind, strip_min, strip_max, self, inc)
+
+        # TODO: Put these in one function
+        bs_m.process_enclosed_fours(bs, ind, self, inc)
+        #bs_m.process_enclosed_four(bs, ind, P2, self, inc)
 

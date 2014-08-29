@@ -1,4 +1,5 @@
 cimport cython
+# cython: profile=True
 
 from pentai.base.defines import *
 
@@ -41,6 +42,8 @@ cdef U64 P2_CAPTURE_RIGHT_PATTERN = (P1 + (4 * P1) + (16 * P2)) * 4
 cdef U64 P1_THREAT_LEFT_PATTERN =         (4 * P2) + ((4**2) * P2) # + 4**3 * 0
 # EBBx
 cdef U64 P2_THREAT_LEFT_PATTERN =         (4 * P1) + ((4**2) * P1) # + 4**3 * 0
+
+# TODO: P1_THREAT_LEFT_PATTERN == P1_THREAT_RIGHT_PATTERN?!
 # EWWB
 cdef U64 P1_THREAT_RIGHT_PATTERN = (P2 + (4 * P2) ) * 4
 # EBBW
@@ -101,12 +104,15 @@ cdef int match_five_inner(U64 bs, U64 move_ind, U64 pattern):
 
 ######################################################################
 
+# Test code only
 cpdef int match_enclosed_four(U64 bs, U64 move_ind, int colour):
     if colour == P1:
         pattern = P1_ENCLOSED_PATTERN
     else:
         pattern = P2_ENCLOSED_PATTERN
+
     return match_six_inner(bs, move_ind, pattern)
+
     
 # This probably misses an extremely rare pattern of two enclosed 4s
 # but I'd be astonished if this has ever occurred.
@@ -223,17 +229,6 @@ def match_threat_right(bs, ind, colour):
     else:
         return match_white_threat_right(bs, ind)
 
-def get_threat_indices(bs, ind, colour):
-    threats = []
-    if colour == P1:
-        threats.extend(match_black_threat_left(bs, ind))
-        threats.extend(match_black_threat_right(bs, ind))
-    else:
-        # P2
-        threats.extend(match_white_threat_left(bs, ind))
-        threats.extend(match_white_threat_right(bs, ind))
-    return threats
-
 #######################################
 
 def process_takes(bs, ind, strip_min, strip_max, us, inc):
@@ -241,7 +236,7 @@ def process_takes(bs, ind, strip_min, strip_max, us, inc):
     bs is the board strip that we are looking through
     ind is the index of the affected position, only the 3 positions
     to its left and 3 to the right need to be examined.
-    [ind, ... ind+3] for capture left
+    [ind, ..., ind+3] for capture left
     [ind-3, ..., ind] for capture right
     """
     # Why is iteration required? Ah, because this is really for counting
@@ -283,9 +278,9 @@ def process_threats(bs, ind, strip_min, strip_max, us, inc):
 
 #######################################
 
-def process_enclosed_four(U64 bs, U64 move_ind, int colour, us, inc):
-    if match_enclosed_four(bs, move_ind, colour):
-        us.report_enclosed_four(colour, inc)
-	# TODO: Report ends indices?
-
+cpdef process_enclosed_fours(U64 bs, U64 move_ind, us, int inc):
+    if match_six_inner(bs, move_ind, P1_ENCLOSED_PATTERN):
+        us.report_enclosed_four(P1, inc)
+    if match_six_inner(bs, move_ind, P2_ENCLOSED_PATTERN):
+        us.report_enclosed_four(P2, inc)
 
