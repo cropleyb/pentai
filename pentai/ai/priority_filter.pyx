@@ -1,6 +1,10 @@
 from pentai.base.defines import *
+# cython: profile=True
 
 import random
+
+# allow space for threat priority at 2, and capture at 4
+LENGTH_MAP = (0, 0, 1, 3, 5,)
 
 def max_moves_sample_func(depth):
     return 9
@@ -91,16 +95,11 @@ class PriorityFilter(object):
         return "%s" % self.candidates_by_priority_and_colour[5]
 
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
-        if length < 3:
-            # allow space for threat priority
-            length -= 1
-        elif length == 4:
-            # allow space for capture priority
-            length = 5
-        elif length == 5:
-            # won already, ignore
+        try:
+            priority = LENGTH_MAP[length]
+        except IndexError:
             return
-        slot = self.candidates_by_priority_and_colour[length][colour]
+        slot = self.candidates_by_priority_and_colour[priority][colour]
         for pos in pos_list:
             assert pos[0] >= 0
             assert pos[1] >= 0
