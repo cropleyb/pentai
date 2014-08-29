@@ -38,16 +38,10 @@ cdef U64 P2_CAPTURE_RIGHT_PATTERN = (P1 + (4 * P1) + (16 * P2)) * 4
 
 # These patterns are matched against to detect threats
 
-# EWWx
-cdef U64 P1_THREAT_LEFT_PATTERN =         (4 * P2) + ((4**2) * P2) # + 4**3 * 0
-# EBBx
-cdef U64 P2_THREAT_LEFT_PATTERN =         (4 * P1) + ((4**2) * P1) # + 4**3 * 0
-
-# TODO: P1_THREAT_LEFT_PATTERN == P1_THREAT_RIGHT_PATTERN?!
-# EWWB
-cdef U64 P1_THREAT_RIGHT_PATTERN = (P2 + (4 * P2) ) * 4
-# EBBW
-cdef U64 P2_THREAT_RIGHT_PATTERN = (P1 + (4 * P1) ) * 4
+# .WW.
+cdef U64 P1_THREAT_PATTERN =         (4 * P2) + ((4**2) * P2) # + 4**3 * 0
+# .BB.
+cdef U64 P2_THREAT_PATTERN =         (4 * P1) + ((4**2) * P1) # + 4**3 * 0
 
 # BBBBB
 cdef U64 P1_FIVE_PATTERN = P1 + 4 * P1 + (4**2) * P1 + (4**3) * P1 + (4**4) * P1
@@ -58,11 +52,11 @@ cdef U64 P1_ENCLOSED_PATTERN = P2 + 4 * P1 + (4**2) * P1 + (4**3) * P1 + (4**4) 
 # BWWWWB
 cdef U64 P2_ENCLOSED_PATTERN = P1 + 4 * P2 + (4**2) * P2 + (4**3) * P2 + (4**4) * P2 + (4**5) * P1
 
-cpdef U64 get_occ(U64 bs, U64 ind):
+cpdef U64 get_occ(U64 bs, int ind):
     ret = bs >> (ind * 2UL)
     return ret & 3UL
 
-cpdef U64 set_occ(U64 bs, U64 ind, U64 occ):
+cpdef U64 set_occ(U64 bs, int ind, U64 occ):
     cdef U64 shift
     shift = 4UL ** ind
     #shift = 1 << (ind * 2) # Type conversion issues in C
@@ -76,7 +70,7 @@ def get_occ_list(bs, min_ind, max_ind):
     return ol
 
 
-cpdef int match_five_in_a_row(U64 bs, U64 move_ind, int colour):
+cpdef int match_five_in_a_row(U64 bs, int move_ind, int colour):
     if colour == P1:
         pattern = P1_FIVE_PATTERN
     else:
@@ -84,7 +78,7 @@ cpdef int match_five_in_a_row(U64 bs, U64 move_ind, int colour):
     return match_five_inner(bs, move_ind, pattern)
     
 
-cdef int match_five_inner(U64 bs, U64 move_ind, U64 pattern):
+cdef int match_five_inner(U64 bs, int move_ind, U64 pattern):
     cdef int l
     cdef U64 to_right
     cdef U64 occs
@@ -105,7 +99,7 @@ cdef int match_five_inner(U64 bs, U64 move_ind, U64 pattern):
 ######################################################################
 
 # Test code only
-cpdef int match_enclosed_four(U64 bs, U64 move_ind, int colour):
+cpdef int match_enclosed_four(U64 bs, int move_ind, int colour):
     if colour == P1:
         pattern = P1_ENCLOSED_PATTERN
     else:
@@ -116,7 +110,7 @@ cpdef int match_enclosed_four(U64 bs, U64 move_ind, int colour):
     
 # This probably misses an extremely rare pattern of two enclosed 4s
 # but I'd be astonished if this has ever occurred.
-cdef int match_six_inner(U64 bs, U64 move_ind, U64 pattern):
+cdef int match_six_inner(U64 bs, int move_ind, U64 pattern):
     cdef int l
     cdef U64 to_right
     cdef U64 occs
@@ -136,20 +130,20 @@ cdef int match_six_inner(U64 bs, U64 move_ind, U64 pattern):
 
 ######################################################################
 
-cpdef match_capture_left(U64 bs, U64 ind, int colour):
+cpdef match_capture_left(U64 bs, int ind, int colour):
     if colour == P1:
         return match_black_capture_left(bs, ind)
     else:
         return match_white_capture_left(bs, ind)
 
-cpdef match_capture_right(U64 bs, U64 ind, int colour):
+cpdef match_capture_right(U64 bs, int ind, int colour):
     if colour == P1:
         return match_black_capture_right(bs, ind)
     else:
         return match_white_capture_right(bs, ind)
 
 @cython.profile(False)
-cdef inline match_pattern_left(U64 bs, U64 ind, U64 pattern):
+cdef inline match_pattern_left(U64 bs, int ind, U64 pattern):
     cdef U64 shift
     cdef U64 occs
 
@@ -163,7 +157,7 @@ cdef inline match_pattern_left(U64 bs, U64 ind, U64 pattern):
     return ()
 
 @cython.profile(False)
-cdef inline match_pattern_right(U64 bs, U64 ind, U64 pattern):
+cdef inline match_pattern_right(U64 bs, int ind, U64 pattern):
     cdef U64 shift
     cdef U64 occs
 
@@ -174,22 +168,22 @@ cdef inline match_pattern_right(U64 bs, U64 ind, U64 pattern):
     return ()
 
 @cython.profile(False)
-cdef inline match_black_capture_left(U64 bs, U64 ind):
+cdef inline match_black_capture_left(U64 bs, int ind):
     # BWWx
     return match_pattern_left(bs, ind, P1_CAPTURE_LEFT_PATTERN)
 
 @cython.profile(False)
-cdef inline match_white_capture_left(U64 bs, U64 ind):
+cdef inline match_white_capture_left(U64 bs, int ind):
     # WBBx
     return match_pattern_left(bs, ind, P2_CAPTURE_LEFT_PATTERN )
 
 @cython.profile(False)
-cdef inline match_black_capture_right(U64 bs, U64 ind):
+cdef inline match_black_capture_right(U64 bs, int ind):
     # xWWB
     return match_pattern_right(bs, ind, P1_CAPTURE_RIGHT_PATTERN)
 
 @cython.profile(False)
-cdef inline match_white_capture_right(U64 bs, U64 ind):
+cdef inline match_white_capture_right(U64 bs, int ind):
     # xBBW
     return match_pattern_right(bs, ind, P2_CAPTURE_RIGHT_PATTERN)
 
@@ -207,22 +201,22 @@ def get_capture_indices(bs, ind, colour):
 @cython.profile(False)
 cdef inline match_black_threat_left(bs, ind):
     # BWWx
-    return match_pattern_left(bs, ind, P1_THREAT_LEFT_PATTERN)
+    return match_pattern_left(bs, ind, P1_THREAT_PATTERN)
 
 @cython.profile(False)
 cdef inline match_white_threat_left(bs, ind):
     # WBBx
-    return match_pattern_left(bs, ind, P2_THREAT_LEFT_PATTERN)
+    return match_pattern_left(bs, ind, P2_THREAT_PATTERN)
 
 @cython.profile(False)
 cdef inline match_black_threat_right(bs, ind):
     # xWWB
-    return match_pattern_right(bs, ind, P1_THREAT_RIGHT_PATTERN)
+    return match_pattern_right(bs, ind, P1_THREAT_PATTERN)
 
 @cython.profile(False)
 cdef inline match_white_threat_right(bs, ind):
     # xBBW
-    return match_pattern_right(bs, ind, P2_THREAT_RIGHT_PATTERN)
+    return match_pattern_right(bs, ind, P2_THREAT_PATTERN)
 
 def match_threat_left(bs, ind, colour):
     if colour == P1:
@@ -285,7 +279,7 @@ def process_threats(bs, ind, strip_min, strip_max, us, inc):
 
 #######################################
 
-cpdef process_enclosed_fours(U64 bs, U64 move_ind, us, int inc):
+cpdef process_enclosed_fours(U64 bs, int move_ind, us, int inc):
     if match_six_inner(bs, move_ind, P1_ENCLOSED_PATTERN):
         us.report_enclosed_four(P1, inc)
     if match_six_inner(bs, move_ind, P2_ENCLOSED_PATTERN):
