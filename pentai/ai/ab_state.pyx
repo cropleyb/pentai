@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import pentai.base.game_state as gs_m
 import pentai.base.game as g_m
 from pentai.base.defines import *
