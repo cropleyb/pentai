@@ -1,5 +1,4 @@
 cimport cython
-# cython: profile=True
 
 from pentai.base.defines import *
 
