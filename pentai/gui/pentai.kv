@@ -178,9 +178,11 @@
             GridLayout:
                 rows: 1
                 MyButton:
+                    id: menu_id
                     text: "Menu"
                     on_release: root.app.show_menu_screen()
                 MyButton:
+                    id: help_id
                     text: "Help"
                     on_release: root.app.show_load_help()
 
@@ -405,6 +407,7 @@
             GridLayout:
                 rows: 1
                 MyButton:
+                    id: human_players_id
                     text: "Human Players"
                     on_release: root.app.show_human_screen()
         
@@ -415,10 +418,12 @@
             GridLayout:
                 rows: 1
                 MyButton:
+                    id: rules_demo_id
                     text: "Rules Demo"
                     on_release: root.app.show_demo()
         
                 MyButton:
+                    id: settings_id
                     text: "Settings"
                     on_release: root.app.show_settings_screen()
     
@@ -561,9 +566,9 @@
             size_hint: (1, .02)
 
         MyButton:
+            id: start_game_id
             text: "Start Game"
             on_press: root.start_game()
-            id: start_game_id
             size_hint: (1, .22)
 
         GridLayout:
@@ -571,10 +576,12 @@
             size_hint: (1, .18)
 
             MyButton:
+                id: return_id
                 text: "Return"
                 on_press: root.app.pop_screen()
 
             MyButton:
+                id: help_id
                 text: "Help"
                 on_press: root.app.show_game_setup_help()
 
@@ -713,10 +720,12 @@
             rows: 1 
             size_hint_y: 0.75
             MyButton:
+                id: menu_id
                 text: "Menu"
                 on_release: root.app.show_menu_screen()
 
             MyButton:
+                id: help_id
                 text: "Help"
                 on_release: root.show_help()
 
@@ -758,6 +767,7 @@
                 on_release: root.delete()
 
             MyButton:
+                id: menu_id
                 text: "Menu"
                 on_release: root.app.show_menu_screen()
 
@@ -784,6 +794,7 @@
             size_hint: 1, .07
 
             MyButton:
+                id: return_id
                 text: "Return"
                 on_press: root.app.pop_screen()
 
@@ -809,6 +820,7 @@
             size_hint: 1, .07
 
             MyButton:
+                id: return_id
                 text: "Return"
                 on_press: root.app.pop_screen()
 
@@ -857,6 +869,7 @@
         text: "Back"
         on_release: root.ps.go_backwards_one()
     MyButton:
+        id: menu_id
         text: "Menu"
         on_release: root.ps.app.show_menu_screen()
 
@@ -881,6 +894,7 @@
         text: "Help"
         on_release: root.ps.show_help()
     MyButton:
+        id: menu_id
         text: "Menu"
         on_release: root.ps.confirm_menu_screen()
 
@@ -1141,10 +1155,12 @@
             size_hint: (1, .06)
 
             MyButton:
+                id: return_id
                 text: "Return"
                 on_press: root.app.pop_screen()
 
             MyButton:
+                id: help_id
                 text: "Help"
                 on_press: root.app.show_settings_help()
 

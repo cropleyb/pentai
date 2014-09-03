@@ -3,6 +3,7 @@ from kivy.uix.screenmanager import *
 from pentai.gui.intro_screen import *
 from pentai.gui.intro_help_screen import *
 from pentai.base.defines import *
+from pentai.gui.guide import *
 import pentai.base.logger as log
 
 import random
@@ -14,6 +15,7 @@ class PScreenManager(ScreenManager):
         self.transition = SlideTransition()
         self.random_transition()
         self.previous = []
+        # self.guide = Guide() # TODO: Persistent -> misc_db
 
     def push_demo(self, d):
         self.previous.append(self.current)
@@ -40,13 +42,14 @@ class PScreenManager(ScreenManager):
         if self.current != screen_name:
             self.random_transition()
             self.current = screen_name
+            self.guide.on_enter(screen_name)
 
     def pop_screen(self):
-        log.debug("Popping from %s" % (self.previous))
+        log.debug("Popping to %s" % (self.previous))
         if len(self.previous) < 1:
             return False
 
-        self.current = self.previous[-1]
+        self.set_current(self.previous[-1])
         del self.previous[-1]
         return True
 

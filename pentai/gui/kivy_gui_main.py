@@ -8,6 +8,7 @@ from kivy.clock import *
 from kivy.base import *
 
 import pentai.gui.config as cf_m
+import pentai.gui.guide as gd_m
 
 from kivy.uix.screenmanager import * # TODO: Remove
 
@@ -120,6 +121,9 @@ class PentAIApp(App):
         self.setup_screen.create_game()
         self.root.push_current("Setup")
 
+    def get_screen(self, screen_name):
+        return self.root.get_screen(screen_name)
+
     def edit_game(self, game=None):
         if not game is None:
             self.game = game
@@ -153,6 +157,7 @@ class PentAIApp(App):
         z_m.abort()
 
         self.root.set_demo(None)
+        self.guide.unhighlight("rules_demo_id")
         if self.saved_pente_game_key:
             gid = self.saved_pente_game_key
             game = self.games_mgr.get_game(gid)
@@ -404,6 +409,14 @@ class PentAIApp(App):
         self.settings_screen = root.get_screen("Settings")
         self.games_screen = root.get_screen("Load")
         self.pente_screen = None
+
+        try:
+            self.guide = misc()["guide"]
+        except KeyError:
+            self.guide = misc()["guide"] = gd_m.Guide()
+
+        root.guide = self.guide
+        self.guide.start(self)
 
         self.popup = None
 
