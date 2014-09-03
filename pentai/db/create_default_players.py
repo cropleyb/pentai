@@ -33,6 +33,8 @@ def create_default_players(defaults):
         anthony = pm.get_p_key_from_name("Anthony")
         defaults.play_game(("Human", you), ("AI", anthony), rules)
 
+        z_m.sync()
+
 
 def create_default_humans():
 
