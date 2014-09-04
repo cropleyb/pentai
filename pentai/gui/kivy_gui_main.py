@@ -212,7 +212,7 @@ class PentAIApp(App):
 
         from pente_screen import PenteScreen
         self.add_screen_inc_globals(PenteScreen,
-            'Pente', screen_size=screen_size,
+            "Pente", screen_size=screen_size,
             filename=self.game_filename)
 
         self.pente_screen = root.get_screen("Pente")
