@@ -479,6 +479,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.refresh_all()
 
         self.set_review_mode(True)
+        self.app.guide.on_end_of_game()
 
     def get_audio(self):
         return a_m.instance
@@ -1015,6 +1016,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
         panel_buttons = cls()
         self.panel_buttons = panel_buttons
         panel_buttons.ps = self
+
+        # TODO Merge into one call
+        self.app.guide.setup_pente_panel_hooks(panel_buttons)
+        self.app.guide.on_pente_panel_switch(panel_buttons)
+
         pb_parent = self.ids.panel_buttons_id
         pb_parent.clear_widgets()
         pb_parent.add_widget(panel_buttons)

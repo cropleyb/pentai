@@ -851,14 +851,15 @@
     size_hint_x: .3
     cols: 1
     MyButton:
+        id: rematch_id
         text: "Rematch"
         on_release: root.ps.rematch()
     MyButton:
         text: "Continue"
         on_release: root.ps.set_review_mode(False)
     MyButton:
-        text: "Beginning"
         id: beginning_id
+        text: "Beginning"
         on_release: root.ps.go_to_the_beginning()
     MyButton:
         text: "Forward"
@@ -878,6 +879,7 @@
     cols: 1
 
     MyButton:
+        id: rematch_id
         text: "Rematch"
         on_release: root.ps.rematch()
     MyButton:
@@ -891,6 +893,7 @@
         text: "Settings"
         on_release: root.ps.app.show_settings_screen()
     MyButton:
+        id: help_id
         text: "Help"
         on_release: root.ps.show_help()
     MyButton:
