@@ -25,28 +25,27 @@ class Highlight(object):
     def __init__(self, widget, initial_wait=0.1):
         self.widget = widget
         self.finished = False
-        self.set_orig_colour()
+        self.save_orig_colour()
         self.getting_brighter = True
         Clock.schedule_once(self.change_colour, initial_wait)
 
         all_highlights[widget.my_id] = self
 
 
-    def set_orig_colour(self):
+    def save_orig_colour(self):
         w = self.widget
         w_id = w.my_id
 
         global orig_colour_for_id
         try:
-            print "using %s for %s" % (w.background_color, w_id)
             self.orig_colour = orig_colour_for_id[w_id]
         except KeyError:
-            print "setting %s to %s" % (w_id, w.background_color)
             self.orig_colour = orig_colour_for_id[w_id] = w.background_color
 
     def stop(self, *ignored):
         self.finished = True
         self.anim.stop(self.widget)
+        self._revert_anim()
         Clock.schedule_once(self._revert_anim, FLASH_TIME + 2.0)
 
     def _revert_anim(self, *ignored):
@@ -156,8 +155,6 @@ class Guide(Persistent):
         self.stop()
 
     def stop(self):
-        print "guide stop"
-
         global waiting_for_end_of_game
         waiting_for_end_of_game = None
 
@@ -186,7 +183,6 @@ class Guide(Persistent):
                 continue
             w.bind(on_press=self.on_press) 
 
-
     def setup_hooks(self, screen_name):
         remaining_for_screen = self.suggestions[screen_name]
         screen = the_app.get_screen(screen_name)
@@ -196,12 +192,9 @@ class Guide(Persistent):
             w.bind(on_press=self.on_press) 
 
             if trigger_time == "F":
-                # Stop when the focus on the text input
-                w.bind(on_focus=self.on_focus)
-                
-                # TODO. Hack that doesn't work
-                global foo
-                foo.append(w)
+                # TODO: This should work, but doesn't:
+                # w.bind(on_focus=self.on_focus)
+                screen.set_focus_callback(self.on_focus)
 
     def on_focus(self, widget, *args):
         try:
