@@ -1017,9 +1017,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.panel_buttons = panel_buttons
         panel_buttons.ps = self
 
-        # TODO Merge into one call
-        self.app.guide.setup_pente_panel_hooks(panel_buttons)
-        self.app.guide.on_pente_panel_switch(panel_buttons)
+        try:
+            # TODO Merge into one call
+            self.app.guide.setup_pente_panel_hooks(panel_buttons)
+            self.app.guide.on_pente_panel_switch(panel_buttons)
+        except AttributeError:
+            pass
 
         pb_parent = self.ids.panel_buttons_id
         pb_parent.clear_widgets()

@@ -42,7 +42,8 @@ class PScreenManager(ScreenManager):
         if self.current != screen_name:
             self.random_transition()
             self.current = screen_name
-            self.guide.on_enter(screen_name)
+            if not self.in_demo_mode():
+                self.guide.on_enter(screen_name)
 
     def pop_screen(self):
         log.debug("Popping to %s" % (self.previous))

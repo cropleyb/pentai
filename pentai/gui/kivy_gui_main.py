@@ -142,6 +142,9 @@ class PentAIApp(App):
         else:
             self.saved_pente_game_key = None
 
+        self.saved_guide = self.guide
+        self.guide = None
+
         import demo as d_m
         d = d_m.Demo(self, self.setup_screen.size)
         # Intercept all touch events
@@ -157,12 +160,17 @@ class PentAIApp(App):
         z_m.abort()
 
         self.root.set_demo(None)
-        self.guide.unhighlight("rules_demo_id")
         if self.saved_pente_game_key:
             gid = self.saved_pente_game_key
             game = self.games_mgr.get_game(gid)
             self.saved_pente_game_key = None
             self.start_game(game)
+        try:
+            self.guide = self.saved_guide
+            del self.saved_guide
+            self.guide.unhighlight("rules_demo_id")
+        except AttributeError:
+            pass
 
     def in_demo_mode(self):
         return self.root.in_demo_mode()
