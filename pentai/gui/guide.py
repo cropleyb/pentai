@@ -78,20 +78,20 @@ class Guide(Persistent):
         global the_app
         the_app = app
 
-        # TODO: ZL for each
-        sugg["Menu"] = ["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:settings_id"]
-        sugg["Setup"] = ["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"]
-        sugg["GameSetupHelp"] = ["3:return_id"]
-        sugg["Pente"] = ["0:help_id", "G:rematch_id", "G:menu_id"]
-        sugg["PenteHelp"] = ["3:return_id"]
-        sugg["Human"] = ["F:name_id", "0:menu_id"]
-        sugg["HumanHelp"] = ["3:return_id"]
-        sugg["Load"] = ["3:help_id", "3:menu_id"]
-        sugg["LoadHelp"] = ["3:return_id"]
-        sugg["AI"] = ["0:help_id", "F:name_id", "3:menu_id"]
-        sugg["AIHelp"] = ["3:return_id"]
-        sugg["Settings"] = ["3:help_id", "3:return_id"]
-        sugg["SettingsHelp"] = ["3:return_id"]
+        # Real: sugg["Menu"]          = ZL(["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:new_game_id", "1:settings_id", "1:new_game_id", "1:ai_players_id"])
+        sugg["Menu"]          = ZL(["1:ai_players_id"]) # TEMP
+        sugg["Setup"]         = ZL(["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
+        sugg["GameSetupHelp"] = ZL(["3:return_id"])
+        sugg["Pente"]         = ZL(["0:help_id", "G:rematch_id", "G:menu_id"])
+        sugg["PenteHelp"]     = ZL(["15:return_id"])
+        sugg["Human"]         = ZL(["F:name_id", "4:menu_id"])
+        sugg["HumanHelp"]     = ZL(["5:return_id"])
+        sugg["Load"]          = ZL(["3:help_id", "3:menu_id"])
+        sugg["LoadHelp"]      = ZL(["10:return_id"])
+        sugg["AI"]            = ZL(["0:help_id", "F:name_id", "3:menu_id"])
+        sugg["AIHelp"]        = ZL(["20:return_id"])
+        sugg["Settings"]      = ZL(["3:help_id", "3:return_id"])
+        sugg["SettingsHelp"]  = ZL(["30:return_id"])
 
         setup_screen = the_app.get_screen("Setup")
         setup_screen.updated_players = \
