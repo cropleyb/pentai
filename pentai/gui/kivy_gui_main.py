@@ -416,7 +416,8 @@ class PentAIApp(App):
             self.guide = misc()["guide"] = gd_m.Guide()
 
         root.guide = self.guide
-        self.guide.start(self)
+        # TODO: Persistent guide
+        self.guide.reset(self)
 
         self.popup = None
 

@@ -1,5 +1,4 @@
-
-from persistent import Persistent
+from pentai.db.zodb_dict import *
 from kivy.animation import Animation
 from kivy.clock import Clock
 
@@ -10,13 +9,20 @@ FLASH_TIME = 0.5
 
 # To prevent unwanted garbage disposal
 all_highlights = {}
-foo = []
+
+# Prevent overwriting the default colour
 orig_colour_for_id = {}
+
+# Prevent duplicate initialisation
+screens_visited = set()
 
 def stop_all_highlights():
     for id, highlight in all_highlights.iteritems():
         widget = highlight.widget
-        highlight.anim.stop(widget)
+        try:
+            anim = highlight.anim.stop(widget)
+        except AttributeError:
+            pass
         widget.background_color = orig_colour_for_id[id]
     global all_highlights
     all_highlights = {}
@@ -30,7 +36,6 @@ class Highlight(object):
         Clock.schedule_once(self.change_colour, initial_wait)
 
         all_highlights[widget.my_id] = self
-
 
     def save_orig_colour(self):
         w = self.widget
@@ -68,17 +73,13 @@ class Highlight(object):
 
 class Guide(Persistent):
 
-    def __init__(self):
-        self.suggestions = {}
-
-    def start(self, app):
-        self.suggestions = sugg = {}
+    def reset(self, app):
+        self.suggestions = sugg = ZM()
         global the_app
         the_app = app
-        # Real: sugg["Menu"] = ["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:settings_id"]
-        sugg["Menu"] = ["1:human_players_id", "1:settings_id"]
-        # sugg["Setup"] = ["1:help_id", "1:start_game_id", "1:wpl_id", "1:beatrice", "1:start_game_id"] # TODO: Beatrice etc.
-        sugg["Setup"] = ["1:help_id", "1:start_game_id", "1:wpl_id"]
+
+        sugg["Menu"] = ["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:settings_id"]
+        sugg["Setup"] = ["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"]
         sugg["GameSetupHelp"] = ["3:return_id"]
         sugg["Pente"] = ["0:help_id", "G:rematch_id", "G:menu_id"]
         sugg["PenteHelp"] = ["3:return_id"]
@@ -91,20 +92,29 @@ class Guide(Persistent):
         sugg["Settings"] = ["3:help_id", "3:return_id"]
         sugg["SettingsHelp"] = ["3:return_id"]
 
-        for sn in sugg.iterkeys():
-            if sn != "Pente":
-                self.setup_hooks(sn)
+        setup_screen = the_app.get_screen("Setup")
+        setup_screen.updated_players = \
+            lambda: self.activate_from_remaining("Setup")
+
+    def updated_players(self):
+        """ This is a bit of a hack; most buttons cause a change of screen,
+            but this one doesn't. """
+        Clock.schedule_once(lambda dt: self.activate_from_remaining("Setup"), 0.2)
 
     def on_enter(self, screen_name):
         self.stop()
         
         global current_screen_name
         current_screen_name = screen_name
-
+        
         if screen_name != "Pente":
-            screen = the_app.get_screen(screen_name)
-            remaining = self.suggestions[screen_name]
-            self.start_activation(remaining, screen)
+            self.setup_hooks(screen_name)
+            self.activate_from_remaining(screen_name)
+
+    def activate_from_remaining(self, screen_name):
+        screen = the_app.get_screen(screen_name)
+        remaining = self.suggestions[screen_name]
+        self.start_activation(remaining, screen)
 
     def on_pente_panel_switch(self, parent):
         remaining = self.suggestions["Pente"]
@@ -136,7 +146,11 @@ class Guide(Persistent):
             if start_time == "F":
                 start_time = 0
 
-            widget = parent.ids[widget_id_text]
+            try:
+                widget = parent.ids[widget_id_text]
+            except KeyError:
+                widget = parent.text_to_widget[widget_id_text]
+
             widget.my_id = widget_id_text
 
             if start_time == "G":
@@ -184,12 +198,21 @@ class Guide(Persistent):
             w.bind(on_press=self.on_press) 
 
     def setup_hooks(self, screen_name):
+        if screen_name in screens_visited:
+            return
+        if screen_name != "Pente":
+            # Pente screen is sometimes recreated when reentered.
+            screens_visited.add(screen_name)
+
         remaining_for_screen = self.suggestions[screen_name]
         screen = the_app.get_screen(screen_name)
         for activation_str in remaining_for_screen:
             trigger_time, widget_id_text = activation_str.split(':')
-            w = screen.ids[widget_id_text]
-            w.bind(on_press=self.on_press) 
+            try:
+                w = screen.ids[widget_id_text]
+            except KeyError:
+                w = screen.text_to_widget[widget_id_text]
+            w.bind(on_press=self.on_press)
 
             if trigger_time == "F":
                 # TODO: This should work, but doesn't:

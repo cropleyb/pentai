@@ -6,11 +6,21 @@ from pentai.base.defines import *
 from pentai.base.pente_exceptions import *
 import pentai.base.logger as log
 
-import pentai.db.misc_db as m_m
 from pentai.gui.game_defaults import *
+
+import pentai.db.misc_db as m_m
 
 def misc():
     return m_m.get_instance()
+
+from kivy.uix.spinner import *
+
+screen = None
+
+class HighlightableOption(SpinnerOption):
+
+    def on_text(self, widget, text):
+        screen.text_to_widget["%s_id" % text] = widget
 
 class SetupScreen(Screen):
     player_names = ListProperty([[], [], []])
@@ -19,10 +29,16 @@ class SetupScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(SetupScreen, self).__init__(*args, **kwargs)
 
+        global screen
+        screen = self
+
         self.game = None
         self.repop = False
         self.initialised = False
-            
+        
+        self.text_to_widget = {}
+        self.ids.wpl_id.option_cls = HighlightableOption
+
         # Updating a player name triggers set_player_name
         func = lambda v,dt: self.set_player_name(P1, v.text)
         self.ids.bpl_id.bind(text=func)
@@ -39,8 +55,15 @@ class SetupScreen(Screen):
         func = lambda v,dt: self.show_rules_explanation()
         self.ids.rules_id.bind(text=func)
 
+        # Opening player list triggers updated_players
+        self.ids.wpl_id.bind(is_open=self.on_p2_open)
+
         self.defaults = None
         # TODO: Timer default
+
+    def on_p2_open(self, spinner, is_open):
+        if is_open:
+            self.updated_players()
 
     def on_pre_enter(self):
         if not self.initialised:
@@ -49,6 +72,9 @@ class SetupScreen(Screen):
         self.show_rules_explanation()
         self.set_GUI_from_defaults(self.get_defaults())
         self.populate_all_players()
+
+    def on_enter(self):
+        self.updated_players()
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
@@ -86,6 +112,11 @@ class SetupScreen(Screen):
     def populate_white_player_list(self, *args):
         ptw = self.get_defaults().get_type(P2)
         self.populate_player_list(ptw, P2)
+        try:
+            # Callback to guide
+            self.updated_players()
+        except AttributeError:
+            pass
 
     def populate_player_list(self, pt, colour):
         rpl = self.pm.get_recent_player_names(pt, 30)
