@@ -12,8 +12,9 @@ class PlayerScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(PlayerScreen, self).__init__(*args, **kwargs)
 
-        self.ids.player_spinner_id.bind(text=self.select_player)
-        self.ids.player_spinner_id.text = self.create_text
+        spinner = self.ids.player_spinner_id
+        spinner.bind(text=self.select_player)
+        spinner.text = self.create_text
 
         self.ids.name_id.bind(focus=self.on_rename_focus)
         self.ids.name_id.bind(on_text_validate=self.save_with_check)
