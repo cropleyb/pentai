@@ -25,7 +25,7 @@ class PenteHelpText(hs_m.HelpText):
 
  Last move markers are shown with a dot in the middle of the pieces that were placed in the last two turns."""
 
-        self.play_text3 = """ If you make a mistake, you can [i]Take Back[/i] if no-one is watching over your shoulder! If you are playing against an AI player, you will need to get the game back to a point where it was your turn.
+        self.play_text3 = """ If you make a mistake, you can [i]Take Back[/i] if no-one is watching over your shoulder! If you are playing against an AI player, you will want to get the game back to a point where it was your turn, so you may need to click [i]Take Back[/i] twice.
 
  Most of these features can be configured on the [ref=settings][color=00ffff]Settings[/color][/ref] screen.
 """
