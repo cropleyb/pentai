@@ -79,7 +79,8 @@ class Guide(Persistent):
         the_app = app
 
         sugg["Menu"]          = ZL(["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:new_game_id", "1:settings_id", "1:new_game_id", "1:ai_players_id"])
-        sugg["Setup"]         = ZL(["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
+        # sugg["Setup"]         = ZL(["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
+        sugg["Setup"]         = ZL(["1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
         sugg["GameSetupHelp"] = ZL(["3:return_id"])
         sugg["Pente"]         = ZL(["0:help_id", "G:rematch_id", "G:menu_id"])
         sugg["PenteHelp"]     = ZL(["15:return_id"])
@@ -192,13 +193,16 @@ class Guide(Persistent):
     def setup_pente_panel_hooks(self, parent):
         remaining_for_screen = self.suggestions["Pente"]
 
+        bound = set()
         for activation_str in remaining_for_screen:
             trigger_time, widget_id_text = activation_str.split(':')
             try:
                 w = parent.ids[widget_id_text]
             except KeyError:
                 continue
-            w.bind(on_press=self.on_press) 
+            if not widget_id_text in bound:
+                w.bind(on_press=self.on_press) 
+                bound.add(widget_id_text)
 
     def setup_hooks(self, screen_name):
         if screen_name in screens_visited:
@@ -209,6 +213,7 @@ class Guide(Persistent):
 
         remaining_for_screen = self.suggestions[screen_name]
         screen = the_app.get_screen(screen_name)
+        bound = set()
         for activation_str in remaining_for_screen:
             trigger_time, widget_id_text = activation_str.split(':')
             try:
@@ -216,7 +221,10 @@ class Guide(Persistent):
             except KeyError:
                 w = screen.text_to_widget[widget_id_text]
             w.my_id = widget_id_text
-            w.bind(on_press=self.on_press)
+
+            if not widget_id_text in bound:
+                w.bind(on_press=self.on_press) 
+                bound.add(widget_id_text)
 
             if trigger_time == "F":
                 # TODO: This should work, but doesn't:
