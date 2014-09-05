@@ -145,6 +145,10 @@ class PentAIApp(App):
         self.saved_guide = self.guide
         self.guide = None
 
+        # After the demo, we only want to revert the persistent operations
+        # done during the demo. Anything done so far should be kept.
+        z_m.sync()
+
         import demo as d_m
         d = d_m.Demo(self, self.setup_screen.size)
         # Intercept all touch events
@@ -169,6 +173,7 @@ class PentAIApp(App):
             self.guide = self.saved_guide
             del self.saved_guide
             self.guide.unhighlight("rules_demo_id")
+            self.guide.on_enter("Menu")
         except AttributeError:
             pass
 

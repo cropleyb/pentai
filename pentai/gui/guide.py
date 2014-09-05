@@ -78,6 +78,7 @@ class Guide(Persistent):
         global the_app
         the_app = app
 
+        # TODO: ZL for each
         sugg["Menu"] = ["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:settings_id"]
         sugg["Setup"] = ["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"]
         sugg["GameSetupHelp"] = ["3:return_id"]
@@ -212,6 +213,7 @@ class Guide(Persistent):
                 w = screen.ids[widget_id_text]
             except KeyError:
                 w = screen.text_to_widget[widget_id_text]
+            w.my_id = widget_id_text
             w.bind(on_press=self.on_press)
 
             if trigger_time == "F":
@@ -236,7 +238,6 @@ class Guide(Persistent):
         self.unhighlight(widget_id)
 
     def unhighlight(self, widget_id):
-
         remaining_for_screen = self.suggestions[current_screen_name]
 
         found = None
