@@ -1,11 +1,14 @@
 from kivy.properties import *
 from kivy.uix.screenmanager import Screen
 from kivy.event import EventDispatcher
+from kivy.clock import Clock
 
 import checkbox_list as cb_l
 
 from pentai.gui.player_screen import *
 import pentai.ai.ai_genome as aig_m
+
+from kivy.uix.spinner import *
 
 # TODO: Make a reusable class for this.
 class GenomeProperties(EventDispatcher):
@@ -30,11 +33,37 @@ class GenomeProperties(EventDispatcher):
 for attr_name, val in GenomeProperties.inst.__dict__.iteritems():
     setattr(GenomeProperties, attr_name, Property(val, allownone=True))
 
+screen = None
+
+# TODO: Put this in its own file
+class HighlightableOption(SpinnerOption):
+    def on_text(self, widget, text):
+        screen.text_to_widget["%s_id" % text] = widget
+
 class AIPlayerScreen(PlayerScreen):
     genome = GenomeProperties()
 
     player_class = aig_m.AIGenome
     player_type_str = "AI"
+
+    def __init__(self, *args, **kwargs):
+        super(AIPlayerScreen, self).__init__(*args, **kwargs)
+
+        global screen
+        screen = self
+
+        self.text_to_widget = {}
+        self.ids.player_spinner_id.option_cls = HighlightableOption
+        Clock.schedule_once(self.bind_players, 0.1)
+
+    def bind_players(self, *args):
+        # Opening player list triggers updated_players
+        self.refresh_names()
+        self.ids.player_spinner_id.bind(is_open=self.on_p_open)
+
+    def on_p_open(self, spinner, is_open):
+        if is_open:
+            self.updated_players()
 
     def edit_player(self, name):
         g = self.pm.find_genome_by_name(name)

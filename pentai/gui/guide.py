@@ -78,8 +78,7 @@ class Guide(Persistent):
         global the_app
         the_app = app
 
-        # Real: sugg["Menu"]          = ZL(["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:new_game_id", "1:settings_id", "1:new_game_id", "1:ai_players_id"])
-        sugg["Menu"]          = ZL(["1:ai_players_id"]) # TEMP
+        sugg["Menu"]          = ZL(["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:new_game_id", "1:settings_id", "1:new_game_id", "1:ai_players_id"])
         sugg["Setup"]         = ZL(["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
         sugg["GameSetupHelp"] = ZL(["3:return_id"])
         sugg["Pente"]         = ZL(["0:help_id", "G:rematch_id", "G:menu_id"])
@@ -88,14 +87,15 @@ class Guide(Persistent):
         sugg["HumanHelp"]     = ZL(["5:return_id"])
         sugg["Load"]          = ZL(["3:help_id", "3:menu_id"])
         sugg["LoadHelp"]      = ZL(["10:return_id"])
-        sugg["AI"]            = ZL(["0:help_id", "F:name_id", "3:menu_id"])
+        sugg["AI"]            = ZL(["0:help_id", "F:player_spinner_id", "0:*nemesis*_id", "3:menu_id"])
         sugg["AIHelp"]        = ZL(["20:return_id"])
         sugg["Settings"]      = ZL(["3:help_id", "3:return_id"])
         sugg["SettingsHelp"]  = ZL(["30:return_id"])
 
-        setup_screen = the_app.get_screen("Setup")
-        setup_screen.updated_players = \
-            lambda: self.activate_from_remaining("Setup")
+    def setup_spinner_hooks(self, screen_name):
+        screen = the_app.get_screen(screen_name)
+        screen.updated_players = \
+            lambda: self.activate_from_remaining(screen_name)
 
     def updated_players(self):
         """ This is a bit of a hack; most buttons cause a change of screen,
@@ -103,6 +103,8 @@ class Guide(Persistent):
         Clock.schedule_once(lambda dt: self.activate_from_remaining("Setup"), 0.2)
 
     def on_enter(self, screen_name):
+        self.setup_spinner_hooks(screen_name)
+
         self.stop()
         
         global current_screen_name

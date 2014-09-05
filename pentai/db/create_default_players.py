@@ -99,6 +99,8 @@ def create_default_ais():
         "judgement": 15, "vision": 15, "capture_score_base": 200 },
     { "p_name": "Anthony", "use_openings_book": False, "max_depth": 1,
         "judgement": 10, "vision": 10, "capture_score_base": 300 },
+    { "p_name": "*nemesis*", "use_openings_book": False, "max_depth": 3,
+        "judgement": 100, "vision": 100, "capture_score_base": 300 },
     { "p_name": "*tony*", "use_openings_book": False, "max_depth": 1,
         "judgement": 0, "vision": 10, "capture_score_base": 400 },
     ]
