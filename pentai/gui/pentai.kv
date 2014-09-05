@@ -531,16 +531,15 @@
                 HSpacer:
 
                 CheckBoxList:
-                    # TODO: Horizontally centred
+                    id: black_type_id
                     group: 'black_type'
                     values: ('Human', 'Computer')
-                    id: black_type_id
 
                 # TODO: double click to edit player?
                 Spinner:
+                    id: bpl_id
                     values: root.player_names[1]
                     size_hint: (1, .7)
-                    id: bpl_id
 
             VSpacer:
 
@@ -553,15 +552,14 @@
                 HSpacer:
 
                 CheckBoxList:
-                    # TODO: Horizontally centred
+                    id: white_type_id
                     group: 'white_type'
                     values: ('Human', 'Computer')
-                    id: white_type_id
 
                 Spinner:
+                    id: wpl_id
                     values: root.player_names[2]
                     size_hint: (1, .7)
-                    id: wpl_id
         Widget:
             size_hint: (1, .02)
 
