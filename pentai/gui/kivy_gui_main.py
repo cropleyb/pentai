@@ -142,8 +142,8 @@ class PentAIApp(App):
         else:
             self.saved_pente_game_key = None
 
-        self.saved_guide = self.guide
-        self.guide = None
+        self.saved_guide_state = self.guide.is_enabled()
+        self.guide.disable()
 
         # After the demo, we only want to revert the persistent operations
         # done during the demo. Anything done so far should be kept.
@@ -170,10 +170,10 @@ class PentAIApp(App):
             self.saved_pente_game_key = None
             self.start_game(game)
         try:
-            self.guide = self.saved_guide
-            del self.saved_guide
+            if self.saved_guide_state:
+                self.guide.enable()
             self.guide.unhighlight("rules_demo_id")
-            self.guide.on_enter("Menu")
+            self.guide.on_enter(self.root.current)
         except AttributeError:
             pass
 
