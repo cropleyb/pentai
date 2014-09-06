@@ -368,6 +368,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def on_pre_leave(self):
         self.leave_game()
+        try:
+            # Clean up moving turn marker in case it is still animated
+            widget = self.get_turn_marker()
+            self.anim.stop_all(widget)
+        except:
+            pass
 
     def leave_game(self):
         log.debug("Calling set_live False in leave_game")
@@ -587,8 +593,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.add_widget(widget)
         else:
             from kivy.animation import Animation
-            anim = Animation(pos=new_pos, duration=0.2)
-            anim.start(widget)
+            self.anim = Animation(pos=new_pos, duration=0.2)
+            self.anim.start(widget)
 
     def get_my_dp(self):
         return my_dp
