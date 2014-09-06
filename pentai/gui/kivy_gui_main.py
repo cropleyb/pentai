@@ -53,11 +53,14 @@ class PentAIApp(App):
                         pass
                     '''
 
-    def display_error(self, message):
+    def display_message(self, message, title=None):
         from kivy.uix.label import Label
-        self.popup = MessagePopup(title='Error', content=Label(text=message, font_size='20sp'), \
+        if not title:
+            title="Error"
+        self.popup = MessagePopup(title=title,
+                content=Label(text=message, font_size='20sp'),
                 size_hint=(.9, .2),
-                timeout_val=4)
+                timeout_val=3)
         self.popup.open()
         log.info(message)
 
@@ -185,7 +188,7 @@ class PentAIApp(App):
         try:
             full_path = os.path.join(path, filenames[0])
         except IndexError:
-            self.display_error("Please select a game first")
+            self.display_message("Please select a game first")
             return
         self.load_game_file(full_path)
 

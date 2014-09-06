@@ -27,3 +27,6 @@ class OpeningsBookDuplicateException(Exception):
 
 class ParseException(Exception):
     pass
+
+class MultiplePopupsException(Exception):
+    pass

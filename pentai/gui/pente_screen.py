@@ -314,7 +314,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def display_error(self, message):
         self.get_audio().beep()
-        self.app.display_error(message)
+        self.app.display_message(message)
 
     def request_move(self, name):
         # TODO: Remove need for this - compat with Text GUI

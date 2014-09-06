@@ -169,7 +169,7 @@ class SetupScreen(Screen):
         try:
             bs = int(self.ids.bs_id.text)
         except ValueError:
-            self.app.display_error("Select a board size")
+            self.app.display_message("Select a board size")
             return
         
         rstr = self.ids.rules_id.text
@@ -177,7 +177,7 @@ class SetupScreen(Screen):
         try:
             r = r_m.Rules(bs, rstr, time_control)
         except UnknownRuleType, e:
-            self.app.display_error("Select the rules type")
+            self.app.display_message("Select the rules type")
             return
 
         # TODO: pass in player type
@@ -187,7 +187,7 @@ class SetupScreen(Screen):
             p1_t = "AI"
         p1 = self.pm.find_by_name(self.ids.bpl_id.text, p1_t)
         if not p1:
-            self.app.display_error("Select a player for Black")
+            self.app.display_message("Select a player for Black")
             return
 
         p2_t = self.ids.white_type_id.val
@@ -195,7 +195,7 @@ class SetupScreen(Screen):
             p2_t = "AI"
         p2 = self.pm.find_by_name(self.ids.wpl_id.text, p2_t)
         if not p2:
-            self.app.display_error("Select a player for White")
+            self.app.display_message("Select a player for White")
             return
 
         self.game.setup(r, p1, p2)

@@ -81,7 +81,7 @@ class PlayerScreen(Screen):
     def save_with_check(self, unused=None):
         if self.ids.name_id.text in [self.rename_req, ""]:
             # Attempt to save with no name set.
-            self.app.display_error("Please choose a name before saving")
+            self.app.display_message("Please choose a name before saving")
             return
         self.save()
 

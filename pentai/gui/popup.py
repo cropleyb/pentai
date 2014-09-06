@@ -4,7 +4,9 @@ from kivy.clock import Clock
 
 import audio as a_m
 
-#from defines import *
+from pentai.base.pente_exceptions import *
+import pentai.base.logger as log
+from pentai.base.defines import *
 
 class BasePopup(Popup):
     """ There should only be one active popup at a time. """
@@ -13,6 +15,9 @@ class BasePopup(Popup):
 
     def __init__(self, *args, **kwargs):
         super(BasePopup, self).__init__(*args, **kwargs)
+        if BasePopup.my_active:
+            log.error("More than one popup attempted")
+            raise MultiplePopupsException()
 
     @staticmethod
     def confirm():
@@ -37,6 +42,10 @@ class BasePopup(Popup):
         a.dismiss()
 
     def on_open(self):
+        existing = BasePopup.my_active
+        if existing and existing != self:
+            log.error("More than one popup attempted")
+            raise MultiplePopupsException()
         BasePopup.my_active = self 
 
 class MessagePopup(BasePopup):

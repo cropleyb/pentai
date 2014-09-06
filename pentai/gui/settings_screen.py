@@ -47,8 +47,11 @@ class SettingsScreen(Screen):
     def set_confirmation_popups(self, *args):
         self.app.set_confirmation_popups()
 
-    def set_guide(self, *args):
-        new_val = self.app.set_guide()
+    def set_guide(self):
+        msg_str = "The Guide has been restarted"
+        if self.ids.guide_id.value == "Restart":
+            self.app.display_message(msg_str, title="Guide Reset")
+        self.app.set_guide()
         self.ids.guide_id.load_value()
 
     '''
