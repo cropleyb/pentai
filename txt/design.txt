@@ -1231,3 +1231,59 @@ Use wildcarddistprofile (which version? trying lowest?)
 Build Settings -> Code Signing -> Provisioning Profile -> Release -> wildcarddistprofile (lowest = latest?)
 Build Settings -> Architectures -> Build Active Archive Only -> No
 Build Settings -> Deployment -> iOS Deployment -> iOS 7.0
+
+Guide
+-----
+Difficulty with SetupScreen:
+How to click P2 Spinner then "Beatrice"?
+HighlightableOption is created per SpinnerOption, to put the option in a map from text to widget, to be used by the Guide.
+
+After the Spinner of players is opened, we need to trigger the guide again.
+
+self.updated_players = None
+self.ids.wpl_id.bind(on_is_open=self.updated_players)
+
+    def on_text(self, widget, text):
+        screen.text_to_widget["%s_id" % text] = widget
+
+optimise pyx
+------------
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    66772    4.922    0.000    4.986    0.000 ab_state.pyx:115(after_set_occ)
+    66772    4.556    0.000    4.626    0.000 ab_state.pyx:109(before_set_occ)
+    52034    1.817    0.000    1.817    0.000 ab_state.pyx:11(__init__)
+    53298    0.991    0.000    1.028    0.000 board.pyx:31(clone)
+
+Most of the time is in or beneath before/after_set_occ
+    GameState: 
+    def set_occ(self, move_pos, my_colour):
+        for o in self.observers:
+            o.before_set_occ(self.game, move_pos, my_colour)
+        # And after
+    ABState:
+    def before_set_occ(self, game, pos, colour):
+    def after_set_occ(self, game, pos, colour):
+        which each just delegate to UtilityStats
+    UtilityStats:
+    def set_or_reset_occs(self, brd, rules, pos, int inc):
+
+These are used in set_or_reset_occs:
+    brd.get_size()
+    brd.get_direction_strips()
+    ds.get_strip(pos)
+    ds.get_index(pos)
+    ds.get_bounds(s_num, brd_size)
+    us.set_ind_to_pos(ds.get_pos, s_num)
+    max()
+    llt_m.process_substrips(bs, min_ind, max_ind, us, inc)
+    bs_m.process_enclosed_fours(bs, ind, us, inc)
+
+    # TODO: Put these in one function
+    bs_m.process_takes(bs, ind, strip_min, strip_max, us, inc)
+    bs_m.process_threats(bs, ind, strip_min, strip_max, us, inc)
+
+cython include files? pxd
+
+Try looking at search filters
+Turn off pyx and see where the time goes then
+Try unmove approach? Unit test.
