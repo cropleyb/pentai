@@ -19,6 +19,8 @@ screens_visited = set()
 disabled = False
 
 def stop_all_highlights():
+    global all_highlights
+
     for id, highlight in all_highlights.iteritems():
         widget = highlight.widget
         try:
@@ -26,11 +28,11 @@ def stop_all_highlights():
         except AttributeError:
             pass
         widget.background_color = orig_colour_for_id[id]
-    global all_highlights
     all_highlights = {}
 
 class Highlight(object):
     def __init__(self, widget, initial_wait=0.1):
+        global all_highlights
         self.widget = widget
         self.finished = False
         self.save_orig_colour()
@@ -86,6 +88,10 @@ class Guide(Persistent):
     def enable(self):
         global disabled
         disabled = False
+
+    def is_enabled(self):
+        global disabled
+        return not disabled
 
     def restart(self):
         self.suggestions = sugg = ZM()
@@ -204,6 +210,8 @@ class Guide(Persistent):
             global highlighted
             highlighted.stop()
             highlighted = None
+        except ReferenceError:
+            pass
         except NameError:
             pass
         except AttributeError:
