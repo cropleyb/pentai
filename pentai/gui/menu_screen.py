@@ -18,7 +18,7 @@ class MenuScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(MenuScreen, self).__init__(*args, **kwargs)
 
-        self.version_str = "0.9.3"
+        self.version_str = "0.9.6"
 
         self.intro_text = conv(
 """ Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. It is now owned by Hasbro, and the board game could be bought from [REF=ww]Winning Moves[/REF] until recently.
