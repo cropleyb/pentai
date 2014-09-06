@@ -47,6 +47,10 @@ class SettingsScreen(Screen):
     def set_confirmation_popups(self, *args):
         self.app.set_confirmation_popups()
 
+    def set_guide(self, *args):
+        new_val = self.app.set_guide()
+        self.ids.guide_id.load_value()
+
     '''
     def on_build_ob(self, widget, val, *args):
         if val == BUILD_ALL_NOW:

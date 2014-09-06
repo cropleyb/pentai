@@ -4,6 +4,17 @@
         "title": "User Interface"
     },
     {
+        "type": "options",
+        "title": "Guide",
+        "desc": "Mark the last two moves, each with a dot in the centre",
+        "options": ["Off",
+                    "Restart",
+                    "On"],
+        "section": "PentAI",
+        "key": "guide_setting",
+        "true": "auto"
+    },
+    {
         "type": "bool",
         "title": "Mark moves",
         "desc": "Mark the last two moves, each with a dot in the centre",

@@ -16,6 +16,8 @@ orig_colour_for_id = {}
 # Prevent duplicate initialisation
 screens_visited = set()
 
+disabled = False
+
 def stop_all_highlights():
     for id, highlight in all_highlights.iteritems():
         widget = highlight.widget
@@ -60,6 +62,8 @@ class Highlight(object):
         try:
             if not self.finished:
                 new_colour = BRIGHT_GREEN
+                if disabled:
+                    new_colour = self.orig_colour
                 if self.getting_brighter:
                     new_colour = self.orig_colour
                 self.getting_brighter ^= True
@@ -73,14 +77,21 @@ class Highlight(object):
 
 class Guide(Persistent):
 
-    def reset(self, app):
-        self.suggestions = sugg = ZM()
-        global the_app
-        the_app = app
+    def disable(self):
+        # Keep running the Guide, just don't show it, then if they turn it
+        # on it won't suggest what they have tried already.
+        global disabled
+        disabled = True
 
+    def enable(self):
+        global disabled
+        disabled = False
+
+    def restart(self):
+        self.suggestions = sugg = ZM()
+        
         sugg["Menu"]          = ZL(["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:new_game_id", "1:settings_id", "1:new_game_id", "1:ai_players_id"])
-        # sugg["Setup"]         = ZL(["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
-        sugg["Setup"]         = ZL(["1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
+        sugg["Setup"]         = ZL(["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
         sugg["GameSetupHelp"] = ZL(["3:return_id"])
         sugg["Pente"]         = ZL(["0:help_id", "G:rematch_id", "G:menu_id"])
         sugg["PenteHelp"]     = ZL(["15:return_id"])
@@ -104,6 +115,7 @@ class Guide(Persistent):
         Clock.schedule_once(lambda dt: self.activate_from_remaining("Setup"), 0.2)
 
     def on_enter(self, screen_name):
+        print "on_enter %s" % screen_name
         self.setup_spinner_hooks(screen_name)
 
         self.stop()
@@ -117,11 +129,20 @@ class Guide(Persistent):
 
     def activate_from_remaining(self, screen_name):
         screen = the_app.get_screen(screen_name)
-        remaining = self.suggestions[screen_name]
+        try:
+            remaining = self.suggestions[screen_name]
+        except KeyError:
+            # TODO: Log error
+            print "couldn't find screen %s in activate_from_remaining" % screen_name
+            return
+        print "activating from remaining %s" % remaining
         self.start_activation(remaining, screen)
 
     def on_pente_panel_switch(self, parent):
-        remaining = self.suggestions["Pente"]
+        try:
+            remaining = self.suggestions["Pente"]
+        except KeyError:
+            return
 
         global active_panel
         active_panel = parent
@@ -191,7 +212,10 @@ class Guide(Persistent):
         stop_all_highlights()
 
     def setup_pente_panel_hooks(self, parent):
-        remaining_for_screen = self.suggestions["Pente"]
+        try:
+            remaining_for_screen = self.suggestions["Pente"]
+        except KeyError:
+            return
 
         bound = set()
         for activation_str in remaining_for_screen:
@@ -211,7 +235,11 @@ class Guide(Persistent):
             # Pente screen is sometimes recreated when reentered.
             screens_visited.add(screen_name)
 
-        remaining_for_screen = self.suggestions[screen_name]
+        try:
+            remaining_for_screen = self.suggestions[screen_name]
+        except KeyError:
+            return
+
         screen = the_app.get_screen(screen_name)
         bound = set()
         for activation_str in remaining_for_screen:
@@ -231,6 +259,17 @@ class Guide(Persistent):
                 # w.bind(on_focus=self.on_focus)
                 screen.set_focus_callback(self.on_focus)
 
+    def set_state(self, guide_setting):
+        print "set_state %s" % guide_setting
+        if guide_setting == "Off":
+            self.disable()
+        elif guide_setting == "Restart":
+            self.restart()
+            self.on_enter("Settings")
+        elif guide_setting == "On":
+            self.enable()
+            self.on_enter("Settings")
+
     def on_focus(self, widget, *args):
         try:
             widget_id = widget.my_id
@@ -248,7 +287,11 @@ class Guide(Persistent):
         self.unhighlight(widget_id)
 
     def unhighlight(self, widget_id):
-        remaining_for_screen = self.suggestions[current_screen_name]
+        try:
+            remaining_for_screen = self.suggestions[current_screen_name]
+        except KeyError:
+            print "Trying to unhighlight for another screen: %s" % current_screen_name
+            return
 
         found = None
         for rem in remaining_for_screen:
@@ -271,5 +314,6 @@ class Guide(Persistent):
             pass
 
     def activate(self, widget):
+        print "activating"
         global highlighted
         highlighted = Highlight(widget)

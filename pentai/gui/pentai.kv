@@ -1025,6 +1025,16 @@
 
                 HSpacer:
 
+                OptionsSetting:
+                    id: guide_id
+                    text: "Guide"
+                    values: ("Off", "On", "Restart")
+                    desc: "The Guide helps you to learn how to use PentAI"
+                    key: "guide_setting"
+                    on_value: root.set_guide()
+
+                HSpacer:
+
                 SwitchSetting:
                     text: "Mark Moves"
                     desc: "Mark the last two moves, each with a dot in the centre"

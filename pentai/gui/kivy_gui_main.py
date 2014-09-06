@@ -423,19 +423,29 @@ class PentAIApp(App):
         self.games_screen = root.get_screen("Load")
         self.pente_screen = None
 
-        try:
-            self.guide = misc()["guide"]
-        except KeyError:
-            self.guide = misc()["guide"] = gd_m.Guide()
+        gd_m.the_app = self
 
-        root.guide = self.guide
-        # TODO: Persistent guide
-        self.guide.reset(self)
+        self.set_guide()
 
         self.popup = None
 
         log.debug("Showing menu")
         self.show_menu_screen()
+
+    def set_guide(self):
+        try:
+            self.guide = misc()["guide"]
+        except KeyError:
+            self.guide = misc()["guide"] = gd_m.Guide()
+            self.guide.restart()
+
+        self.root.guide = self.guide
+        guide_setting = self.config.get("PentAI", "guide_setting")
+        self.guide.set_state(guide_setting)
+        if guide_setting == "Restart":
+            guide_setting = "On"
+            self.config.set("PentAI", "guide_setting", guide_setting)
+        return guide_setting
 
     def set_confirmation_popups(self):
         import pentai.gui.popup as p_m
