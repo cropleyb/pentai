@@ -435,7 +435,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 continue
 
         if not move:
-            log.warn("No valid move found")
+            if not self.app.in_demo_mode():
+                log.warn("No valid move found")
             return
 
         try:
