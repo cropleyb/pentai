@@ -201,6 +201,10 @@ class PentAIApp(App):
                 self.defaults = misc()["game_defaults"] = gd_m.GameDefaults()
         return self.defaults
 
+    def set_default_game(self):
+        import pentai.db.create_default_players as cdp_m
+        cdp_m.set_default_game(self.get_game_defaults())
+
     def load_game_file(self, full_path=None):
         if full_path != None:
             self.game_filename = full_path

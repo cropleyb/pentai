@@ -20,21 +20,23 @@ if __name__ == "__main__":
     z_m.set_db("db.fs")
     create_default_names()
 
+def set_default_game(defaults):
+    # Set up default players for first game
+    import pentai.base.rules as r_m
+    rules = r_m.Rules(13, "S")
+    pm = pm_m.PlayersMgr() 
+    you = pm.get_p_key_from_name("You")
+    anthony = pm.get_p_key_from_name("Anthony")
+    defaults.play_game(("Human", you), ("AI", anthony), rules)
+
+    z_m.sync()
+
 def create_default_players(defaults):
     pm = pm_m.PlayersMgr() 
     if pm.get_num_players() == 0:
         create_default_humans()
         create_default_ais()
-
-        # Set up default players for first game
-        import pentai.base.rules as r_m
-        rules = r_m.Rules(13, "S")
-        you = pm.get_p_key_from_name("You")
-        anthony = pm.get_p_key_from_name("Anthony")
-        defaults.play_game(("Human", you), ("AI", anthony), rules)
-
-        z_m.sync()
-
+        set_default_game(defaults)
 
 def create_default_humans():
 
