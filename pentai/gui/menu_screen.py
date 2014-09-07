@@ -35,9 +35,8 @@ class MenuScreen(Screen):
 #It is now owned by Hasbro, and the board game could be bought from [REF=ww]Winning Moves[/REF] until recently.
         self.beginners_text = conv(
 """1. First, watch the 2.5min [REF=rd]Rules Demo[/REF] (button below) to the end, without touching the screen - it skips the current section if you touch the screen.
-2. Next, edit [REF=hp]Human Players[/REF] to create a new human player for yourself.
-3. Start a [REF=ng]New Game[/REF]. Play your first game as the first player against
- [AI]Anthony[/AI]. Try to get five in a row.
+2. Start a [REF=ng]New Game[/REF]. Your first game will be You as the first player against [AI]Anthony[/AI]. Try to get five in a row first.
+3. Next, edit [REF=hp]Human Players[/REF] to create a new human player for yourself.
 4. Continue through the computer opponents alphabetically until you start to lose games. Don't skip too many or you may get disheartened!
 """)
         self.experts_text = conv(
