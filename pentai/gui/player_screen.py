@@ -19,9 +19,6 @@ class PlayerScreen(Screen):
         self.ids.name_id.bind(focus=self.on_rename_focus)
         self.ids.name_id.bind(on_text_validate=self.save_with_check)
 
-    def set_focus_callback(self, focus_callback):
-        self.focus_callback = focus_callback
-
     def set_player_names(self, names):
         self.player_names = names
 
@@ -31,7 +28,7 @@ class PlayerScreen(Screen):
             if self.rename_text == self.rename_req:
                 # Create player -> empty the field
                 self.rename_text = ""
-            self.focus_callback(instance)
+            self.app.guide.on_focus(instance)
 
     def select_player(self, spinner, val):
         # TODO: Trigger save somehow?
@@ -84,6 +81,7 @@ class PlayerScreen(Screen):
             self.app.display_message("Please choose a name before saving")
             return
         self.save()
+        self.app.guide.on_enter("Human")
 
     def save(self, unused=None):
         if self.ids.name_id.text in [self.rename_req, ""]:

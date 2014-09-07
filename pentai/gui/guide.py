@@ -28,6 +28,7 @@ def stop_all_highlights():
         except AttributeError:
             pass
         widget.background_color = orig_colour_for_id[id]
+
     all_highlights = {}
 
 class Highlight(object):
@@ -53,9 +54,15 @@ class Highlight(object):
 
     def stop(self, *ignored):
         self.finished = True
-        self.anim.stop(self.widget)
-        self._revert_anim()
-        Clock.schedule_once(self._revert_anim, FLASH_TIME + 2.0)
+        try:
+            self.anim.stop(self.widget)
+        except ReferenceError:
+            pass
+        try:
+            self._revert_anim()
+            Clock.schedule_once(self._revert_anim, FLASH_TIME + 2.0)
+        except ReferenceError:
+            pass
 
     def _revert_anim(self, *ignored):
         self.widget.background_color = self.orig_colour
@@ -101,7 +108,7 @@ class Guide(Persistent):
         sugg["GameSetupHelp"] = ZL(["3:return_id"])
         sugg["Pente"]         = ZL(["0:help_id", "G:rematch_id", "G:menu_id"])
         sugg["PenteHelp"]     = ZL(["15:return_id"])
-        sugg["Human"]         = ZL(["F:name_id", "4:menu_id"])
+        sugg["Human"]         = ZL(["F:name_id", "0:menu_id"])
         sugg["HumanHelp"]     = ZL(["5:return_id"])
         sugg["Load"]          = ZL(["3:help_id", "3:menu_id"])
         sugg["LoadHelp"]      = ZL(["10:return_id"])
@@ -109,6 +116,8 @@ class Guide(Persistent):
         sugg["AIHelp"]        = ZL(["20:return_id"])
         sugg["Settings"]      = ZL(["3:help_id", "3:return_id"])
         sugg["SettingsHelp"]  = ZL(["30:return_id"])
+
+        the_app.set_default_game()
 
     def setup_spinner_hooks(self, screen_name):
         screen = the_app.get_screen(screen_name)
@@ -255,17 +264,16 @@ class Guide(Persistent):
             try:
                 w = screen.ids[widget_id_text]
             except KeyError:
-                w = screen.text_to_widget[widget_id_text]
+                try:
+                    w = screen.text_to_widget[widget_id_text]
+                except:
+                    print "Guide could not find %s" % widget_id_text
+                    continue
             w.my_id = widget_id_text
 
             if not widget_id_text in bound:
                 w.bind(on_press=self.on_press) 
                 bound.add(widget_id_text)
-
-            if trigger_time == "F":
-                # TODO: This should work, but doesn't:
-                # w.bind(on_focus=self.on_focus)
-                screen.set_focus_callback(self.on_focus)
 
     def set_state(self, guide_setting):
         print "set_state %s" % guide_setting
@@ -322,6 +330,6 @@ class Guide(Persistent):
             pass
 
     def activate(self, widget):
-        print "activating"
+        print "activating %s" % widget.text
         global highlighted
         highlighted = Highlight(widget)
