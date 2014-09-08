@@ -2,60 +2,54 @@ cimport cython
 
 from pentai.base.defines import *
 
-from libc.stdint cimport uint64_t as U64
+from pentai.base.board_strip cimport *
 
-'''
+""" We separate out numbers representing groups of 4 occupancies """
 cdef:
-    U64 FOUR_OCCS_MASK
-    U64 P1_CAPTURE_LEFT_PATTERN
-    U64 P2_CAPTURE_LEFT_PATTERN
-    U64 P1_CAPTURE_RIGHT_PATTERN
-    U64 P2_CAPTURE_RIGHT_PATTERN
-    U64 P1_THREAT_LEFT_PATTERN
-    U64 P2_THREAT_LEFT_PATTERN
-    U64 P1_THREAT_RIGHT_PATTERN
-    U64 P2_THREAT_RIGHT_PATTERN
-'''
+    U64 FOUR_OCCS_MASK = (4 ** 4 - 1)
 
-# We separate out numbers representing groups of 4 occupancies
-cdef U64 FOUR_OCCS_MASK = (4 ** 4 - 1)
+    U64 FIVE_OCCS_MASK = (4 ** 5 - 1)
 
-cdef U64 FIVE_OCCS_MASK = (4 ** 5 - 1)
+    U64 SIX_OCCS_MASK = (4 ** 6 - 1)
 
-cdef U64 SIX_OCCS_MASK = (4 ** 6 - 1)
+""" These patterns are matched against to detect captures """
+cdef:
+    # BWWx
+    U64 P1_CAPTURE_LEFT_PATTERN = P1 + (4 * P2) + (16 * P2) # + 64 * 0
+    # WBBx
+    U64 P2_CAPTURE_LEFT_PATTERN = P2 + (4 * P1) + (16 * P1) # + 64 * 0
+    # xWWB
+    U64 P1_CAPTURE_RIGHT_PATTERN = (P2 + (4 * P2) + (16 * P1)) * 4
+    # xBBW
+    U64 P2_CAPTURE_RIGHT_PATTERN = (P1 + (4 * P1) + (16 * P2)) * 4
 
-# These patterns are matched against to detect captures
+""" These patterns are matched against to detect threats """
+cdef:
+    # .WW.
+    U64 P1_THREAT_PATTERN =         (4 * P2) + ((4**2) * P2) # + 4**3 * 0
+    # .BB.
+    U64 P2_THREAT_PATTERN =         (4 * P1) + ((4**2) * P1) # + 4**3 * 0
 
-# BWWx
-cdef U64 P1_CAPTURE_LEFT_PATTERN = P1 + (4 * P2) + (16 * P2) # + 64 * 0
-# WBBx
-cdef U64 P2_CAPTURE_LEFT_PATTERN = P2 + (4 * P1) + (16 * P1) # + 64 * 0
-# xWWB
-cdef U64 P1_CAPTURE_RIGHT_PATTERN = (P2 + (4 * P2) + (16 * P1)) * 4
-# xBBW
-cdef U64 P2_CAPTURE_RIGHT_PATTERN = (P1 + (4 * P1) + (16 * P2)) * 4
+""" 4 closed at both ends (for position score only) """
+cdef:
+    # WBBBBW
+    U64 P1_ENCLOSED_PATTERN = P2 + 4 * P1 + (4**2) * P1 + (4**3) * P1 + (4**4) * P1 + (4**5) * P2
+    # BWWWWB
+    U64 P2_ENCLOSED_PATTERN = P1 + 4 * P2 + (4**2) * P2 + (4**3) * P2 + (4**4) * P2 + (4**5) * P1
 
-# These patterns are matched against to detect threats
+""" Game over """
+cdef:
+    # BBBBB
+    U64 P1_FIVE_PATTERN = P1 + 4 * P1 + (4**2) * P1 + (4**3) * P1 + (4**4) * P1
+    # WWWWW
+    U64 P2_FIVE_PATTERN = P2 + 4 * P2 + (4**2) * P2 + (4**3) * P2 + (4**4) * P2
 
-# .WW.
-cdef U64 P1_THREAT_PATTERN =         (4 * P2) + ((4**2) * P2) # + 4**3 * 0
-# .BB.
-cdef U64 P2_THREAT_PATTERN =         (4 * P1) + ((4**2) * P1) # + 4**3 * 0
-
-# BBBBB
-cdef U64 P1_FIVE_PATTERN = P1 + 4 * P1 + (4**2) * P1 + (4**3) * P1 + (4**4) * P1
-# WWWWW
-cdef U64 P2_FIVE_PATTERN = P2 + 4 * P2 + (4**2) * P2 + (4**3) * P2 + (4**4) * P2
-# WBBBBW
-cdef U64 P1_ENCLOSED_PATTERN = P2 + 4 * P1 + (4**2) * P1 + (4**3) * P1 + (4**4) * P1 + (4**5) * P2
-# BWWWWB
-cdef U64 P2_ENCLOSED_PATTERN = P1 + 4 * P2 + (4**2) * P2 + (4**3) * P2 + (4**4) * P2 + (4**5) * P1
-
-cpdef U64 get_occ(U64 bs, int ind):
+""" Get and set occ """
+cpdef U64 get_occ(U64 bs, BOARD_WIDTH_T ind):
     ret = bs >> (ind * 2UL)
     return ret & 3UL
 
-cpdef U64 set_occ(U64 bs, int ind, U64 occ):
+cpdef U64 set_occ(U64 bs, BOARD_WIDTH_T ind, U64 occ):
     cdef U64 shift
     shift = 4UL ** ind
     #shift = 1 << (ind * 2) # Type conversion issues in C
@@ -69,7 +63,7 @@ def get_occ_list(bs, min_ind, max_ind):
     return ol
 
 
-cpdef int match_five_in_a_row(U64 bs, int move_ind, int colour):
+cpdef int match_five_in_a_row(U64 bs, BOARD_WIDTH_T move_ind, COLOUR_T colour):
     if colour == P1:
         pattern = P1_FIVE_PATTERN
     else:
@@ -77,8 +71,8 @@ cpdef int match_five_in_a_row(U64 bs, int move_ind, int colour):
     return match_five_inner(bs, move_ind, pattern)
     
 
-cdef int match_five_inner(U64 bs, int move_ind, U64 pattern):
-    cdef int l
+cdef int match_five_inner(U64 bs, BOARD_WIDTH_T move_ind, U64 pattern):
+    cdef BOARD_WIDTH_T l
     cdef U64 to_right
     cdef U64 occs
 
@@ -98,7 +92,7 @@ cdef int match_five_inner(U64 bs, int move_ind, U64 pattern):
 ######################################################################
 
 # Test code only
-cpdef int match_enclosed_four(U64 bs, int move_ind, int colour):
+cpdef int match_enclosed_four(U64 bs, BOARD_WIDTH_T move_ind, COLOUR_T colour):
     if colour == P1:
         pattern = P1_ENCLOSED_PATTERN
     else:
@@ -109,8 +103,8 @@ cpdef int match_enclosed_four(U64 bs, int move_ind, int colour):
     
 # This probably misses an extremely rare pattern of two enclosed 4s
 # but I'd be astonished if this has ever occurred.
-cdef int match_six_inner(U64 bs, int move_ind, U64 pattern):
-    cdef int l
+cdef int match_six_inner(U64 bs, BOARD_WIDTH_T move_ind, U64 pattern):
+    cdef BOARD_WIDTH_T l
     cdef U64 to_right
     cdef U64 occs
 
@@ -129,20 +123,20 @@ cdef int match_six_inner(U64 bs, int move_ind, U64 pattern):
 
 ######################################################################
 
-cpdef match_capture_left(U64 bs, int ind, int colour):
+cpdef match_capture_left(U64 bs, BOARD_WIDTH_T ind, COLOUR_T colour):
     if colour == P1:
         return match_black_capture_left(bs, ind)
     else:
         return match_white_capture_left(bs, ind)
 
-cpdef match_capture_right(U64 bs, int ind, int colour):
+cpdef match_capture_right(U64 bs, BOARD_WIDTH_T ind, COLOUR_T colour):
     if colour == P1:
         return match_black_capture_right(bs, ind)
     else:
         return match_white_capture_right(bs, ind)
 
 @cython.profile(False)
-cdef inline match_pattern_left(U64 bs, int ind, U64 pattern):
+cdef inline match_pattern_left(U64 bs, BOARD_WIDTH_T ind, U64 pattern):
     cdef U64 shift
     cdef U64 occs
 
@@ -156,7 +150,7 @@ cdef inline match_pattern_left(U64 bs, int ind, U64 pattern):
     return ()
 
 @cython.profile(False)
-cdef inline match_pattern_right(U64 bs, int ind, U64 pattern):
+cdef inline match_pattern_right(U64 bs, BOARD_WIDTH_T ind, U64 pattern):
     cdef U64 shift
     cdef U64 occs
 
@@ -167,22 +161,22 @@ cdef inline match_pattern_right(U64 bs, int ind, U64 pattern):
     return ()
 
 @cython.profile(False)
-cdef inline match_black_capture_left(U64 bs, int ind):
+cdef inline match_black_capture_left(U64 bs, BOARD_WIDTH_T ind):
     # BWWx
     return match_pattern_left(bs, ind, P1_CAPTURE_LEFT_PATTERN)
 
 @cython.profile(False)
-cdef inline match_white_capture_left(U64 bs, int ind):
+cdef inline match_white_capture_left(U64 bs, BOARD_WIDTH_T ind):
     # WBBx
     return match_pattern_left(bs, ind, P2_CAPTURE_LEFT_PATTERN )
 
 @cython.profile(False)
-cdef inline match_black_capture_right(U64 bs, int ind):
+cdef inline match_black_capture_right(U64 bs, BOARD_WIDTH_T ind):
     # xWWB
     return match_pattern_right(bs, ind, P1_CAPTURE_RIGHT_PATTERN)
 
 @cython.profile(False)
-cdef inline match_white_capture_right(U64 bs, int ind):
+cdef inline match_white_capture_right(U64 bs, BOARD_WIDTH_T ind):
     # xBBW
     return match_pattern_right(bs, ind, P2_CAPTURE_RIGHT_PATTERN)
 
@@ -198,32 +192,32 @@ def get_capture_indices(bs, ind, colour):
     return captures
 
 @cython.profile(False)
-cdef inline match_black_threat_left(bs, ind):
+cdef inline match_black_threat_left(U64 bs, BOARD_WIDTH_T ind):
     # BWWx
     return match_pattern_left(bs, ind, P1_THREAT_PATTERN)
 
 @cython.profile(False)
-cdef inline match_white_threat_left(bs, ind):
+cdef inline match_white_threat_left(U64 bs, BOARD_WIDTH_T ind):
     # WBBx
     return match_pattern_left(bs, ind, P2_THREAT_PATTERN)
 
 @cython.profile(False)
-cdef inline match_black_threat_right(bs, ind):
+cdef inline match_black_threat_right(U64 bs, BOARD_WIDTH_T ind):
     # xWWB
     return match_pattern_right(bs, ind, P1_THREAT_PATTERN)
 
 @cython.profile(False)
-cdef inline match_white_threat_right(bs, ind):
+cdef inline match_white_threat_right(U64 bs, BOARD_WIDTH_T ind):
     # xBBW
     return match_pattern_right(bs, ind, P2_THREAT_PATTERN)
 
-def match_threat_left(bs, ind, colour):
+def match_threat_left(U64 bs, BOARD_WIDTH_T ind, colour):
     if colour == P1:
         return match_black_threat_left(bs, ind)
     else:
         return match_white_threat_left(bs, ind)
 
-def match_threat_right(bs, ind, colour):
+def match_threat_right(U64 bs, BOARD_WIDTH_T ind, colour):
     if colour == P1:
         return match_black_threat_right(bs, ind)
     else:
@@ -231,7 +225,7 @@ def match_threat_right(bs, ind, colour):
 
 #######################################
 
-def process_takes(bs, ind, strip_min, strip_max, us, inc):
+def process_takes(U64 bs, BOARD_WIDTH_T ind, BOARD_WIDTH_T strip_min, BOARD_WIDTH_T strip_max, us, int inc):
     """
     bs is the board strip that we are looking through
     ind is the index of the affected position, only the 3 positions
@@ -256,7 +250,7 @@ def process_takes(bs, ind, strip_min, strip_max, us, inc):
 #######################################
 
 # TODO: this is copy and paste from above
-def process_threats(bs, ind, strip_min, strip_max, us, inc):
+def process_threats(U64 bs, BOARD_WIDTH_T ind, BOARD_WIDTH_T strip_min, BOARD_WIDTH_T strip_max, us, int inc):
     """
     bs is the board strip that we are looking through
     ind is the index of the affected position, only the 3 positions
@@ -278,7 +272,7 @@ def process_threats(bs, ind, strip_min, strip_max, us, inc):
 
 #######################################
 
-cpdef process_enclosed_fours(U64 bs, int move_ind, us, int inc):
+cpdef process_enclosed_fours(U64 bs, BOARD_WIDTH_T move_ind, us, int inc):
     if match_six_inner(bs, move_ind, P1_ENCLOSED_PATTERN):
         us.report_enclosed_four(P1, inc)
     if match_six_inner(bs, move_ind, P2_ENCLOSED_PATTERN):
