@@ -73,7 +73,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.action_queue = Queue.Queue()
         self.ghosts = []
         self.ghost_colour = None
-        self.swap_colours_due_to_rematch = False
+        self.swap_p1_due_to_rematch = False
         self.confirmation_in_progress = None
         self.game = None
         self.game_filename = filename
@@ -139,7 +139,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         p1, p2 = self.calculate_rematch_players(og)
 
         g = self.gm.create_game(rules, p1, p2)
-        self.app.start_game(g, self.swap_colours_due_to_rematch)
+        self.app.start_game(g, self.swap_p1_due_to_rematch)
 
     def calculate_rematch_players(self, orig_game):
         rfp = self.config.get("PentAI", "rematch_first_player")
@@ -180,7 +180,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                         p2 = o_p1
         if p1 != o_p1:
             #print "Swapping colours due to rematch"
-            self.swap_colours_due_to_rematch ^= True
+            self.swap_p1_due_to_rematch ^= True
         return p1, p2
 
     def create_clocks(self):
@@ -200,7 +200,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def set_game(self, game, swap_colours):
         self.clean_board()
         self.game = game
-        self.swap_colours_due_to_rematch = swap_colours
+        self.swap_p1_due_to_rematch = swap_colours
         p1 = game.get_player_name(P1)
         p2 = game.get_player_name(P2)
         if game.autosave_filename == None:
@@ -285,17 +285,22 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 pname = "[font=%s]%s[/font]" % (AI_FONT, pname)
             self.player_name[player_num] = pname
 
-        c1 = self.get_player_colour(1)
-        self.ids.p1_id.color = c1
-        self.ids.black_time_id.color = c1
-
-        c2 = self.get_player_colour(2)
-        self.ids.p2_id.color = c2
-        self.ids.white_time_id.color = c2
+        for (pn, player_id, time_id) in \
+                [(1, "p1_id", "black_time_id"), \
+                 (2, "p2_id", "white_time_id")]:
+            c = self.get_player_colour(pn)
+            self.ids[time_id].color = c
+            player_widget = self.ids[player_id]
+            if player_widget.color != c:
+                # Workaround for color assignment not causing refresh
+                player_widget.text, tmp = "", player_widget.text
+                player_widget.color = c
+                player_widget.text = tmp
 
     def get_player_colour(self, player_num):
         COL_COLS = (None, (0,0,0,1), (1,1,1,1))
-        pc = COL_COLS[self.get_player_colour_index(player_num)]
+        col_ind = self.get_player_colour_index(player_num)
+        pc = COL_COLS[col_ind]
         return pc
 
     def get_player_colour_index(self, player_num):
@@ -307,7 +312,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             ret = opposite_colour(ret)
 
         elif fpc == "Keep The Same":
-            if self.swap_colours_due_to_rematch:
+            if self.swap_p1_due_to_rematch:
                 ret = opposite_colour(ret)
 
         return ret
