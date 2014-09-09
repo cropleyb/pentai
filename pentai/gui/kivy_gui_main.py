@@ -7,20 +7,16 @@ import pentai.base.logger as log
 from kivy.clock import *
 from kivy.base import *
 
+import pentai.db.zodb_dict as z_m
+
 import pentai.gui.config as cf_m
 import pentai.gui.guide as gd_m
-
-from kivy.uix.screenmanager import * # TODO: Remove
-
-import pentai.db.zodb_dict as z_m
-import p_screen_manager as ps_m
-
-import my_button
+import pentai.gui.p_screen_manager as ps_m
+import pentai.gui.my_button
+from pentai.gui.popup import *
 
 from pentai.db.games_mgr import *
 import pentai.db.openings_book as ob_m
-
-from popup import *
 
 class PentAIApp(App):
     game_filename = StringProperty("")
@@ -225,7 +221,7 @@ class PentAIApp(App):
             prev_game_screen = root.get_screen("Pente")
             if prev_game_screen != None:
                 root.remove_widget(prev_game_screen)
-        except ScreenManagerException:
+        except ps_m.ScreenManagerException:
             pass
 
         screen_size = root.get_size()
@@ -271,7 +267,7 @@ class PentAIApp(App):
                 # Cancel any popup
                 BasePopup.clear()
             else:
-                if self.root.current == "Settings":
+                if self.root.current == "Settings" or "Help" in str(self.root.current):
                     self.pop_screen()
                 elif self.root.current == "Pente" and \
                      self.pente_screen.confirmation_in_progress:
