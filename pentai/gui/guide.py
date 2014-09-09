@@ -85,6 +85,7 @@ class Highlight(object):
                 self.anim.start(self.widget)
                 Clock.schedule_once(self.change_colour, FLASH_TIME)
         except ReferenceError:
+            print "REFERENCE ERROR"
             return
 
 class Guide(Persistent):
@@ -160,6 +161,7 @@ class Guide(Persistent):
         try:
             remaining = self.suggestions["Pente"]
         except KeyError:
+            print "No Pente suggestions"
             return
 
         global active_panel
@@ -235,6 +237,7 @@ class Guide(Persistent):
         try:
             remaining_for_screen = self.suggestions["Pente"]
         except KeyError:
+            print "WARNING: No Pente suggestions to setup hooks"
             return
 
         bound = set()
@@ -243,6 +246,7 @@ class Guide(Persistent):
             try:
                 w = parent.ids[widget_id_text]
             except KeyError:
+                print "WARNING: Pente: No such id: %s" % widget_id_text
                 continue
             if not widget_id_text in bound:
                 w.bind(on_press=self.on_press) 
@@ -250,7 +254,9 @@ class Guide(Persistent):
 
     def setup_hooks(self, screen_name):
         if screen_name in screens_visited:
-            return
+            print "WARNING: Screen %s has already been visited" % screen_name
+            #st()
+            #return
         if screen_name != "Pente":
             # Pente screen is sometimes recreated when reentered.
             screens_visited.add(screen_name)
@@ -258,6 +264,7 @@ class Guide(Persistent):
         try:
             remaining_for_screen = self.suggestions[screen_name]
         except KeyError:
+            print "No suggestions left for %s" % screen_name
             return
 
         screen = the_app.get_screen(screen_name)
@@ -270,13 +277,15 @@ class Guide(Persistent):
                 try:
                     w = screen.text_to_widget[widget_id_text]
                 except:
-                    print "Guide could not find %s" % widget_id_text
+                    print "WARNING: Guide could not find %s" % widget_id_text
                     continue
             w.my_id = widget_id_text
 
             if not widget_id_text in bound:
                 w.bind(on_press=self.on_press) 
                 bound.add(widget_id_text)
+            else:
+                print "Widget %s is already bound" % widget_id_text
 
     def set_state(self, guide_setting):
         print "set_state %s" % guide_setting
@@ -301,6 +310,7 @@ class Guide(Persistent):
         try:
             widget_id = widget.my_id
         except AttributeError:
+            print "WARNING: my_id not found"
             return
 
         self.unhighlight(widget_id)
@@ -309,7 +319,7 @@ class Guide(Persistent):
         try:
             remaining_for_screen = self.suggestions[current_screen_name]
         except KeyError:
-            print "Trying to unhighlight for another screen: %s" % current_screen_name
+            print "WARNING: Trying to unhighlight for another screen: %s" % current_screen_name
             return
 
         found = None
@@ -319,6 +329,7 @@ class Guide(Persistent):
                 break
 
         if not found:
+            print "WARNING: %s not found in remaining list" % widget_id
             return
 
         remaining_for_screen.remove(found)
