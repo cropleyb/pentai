@@ -33,12 +33,17 @@ class GenomeProperties(EventDispatcher):
 for attr_name, val in GenomeProperties.inst.__dict__.iteritems():
     setattr(GenomeProperties, attr_name, Property(val, allownone=True))
 
-screen = None
-
 # TODO: Put this in its own file
 class HighlightableOption(SpinnerOption):
+    def __init__(self, *args, **kwargs):
+        super(HighlightableOption, self).__init__(*args, **kwargs)
+        self.bind(on_press=lambda option: self.on_preselect(option.text))
+
     def on_text(self, widget, text):
-        screen.text_to_widget["%s_id" % text] = widget
+        self.screen.text_to_widget["%s_id" % text] = widget
+
+    def on_preselect(self, new_text):
+        self.screen.preselect(new_text)
 
 class AIPlayerScreen(PlayerScreen):
     genome = GenomeProperties()
@@ -49,12 +54,15 @@ class AIPlayerScreen(PlayerScreen):
     def __init__(self, *args, **kwargs):
         super(AIPlayerScreen, self).__init__(*args, **kwargs)
 
-        global screen
-        screen = self
-
         self.text_to_widget = {}
-        self.ids.player_spinner_id.option_cls = HighlightableOption
+        class AIHiOp(HighlightableOption):
+            screen = self
+        spinner = self.ids.player_spinner_id
+        spinner.option_cls = AIHiOp
         Clock.schedule_once(self.bind_players, 0.1)
+
+    def preselect(self, new_text):
+        self.save()
 
     def bind_players(self, *args):
         # Opening player list triggers updated_players
