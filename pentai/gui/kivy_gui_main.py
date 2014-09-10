@@ -326,7 +326,13 @@ class PentAIApp(App):
                 return True
 
         elif key == 8: # 'delete'
-            if self.root.current in ("Load", "Human", "AI"):
+            #if self.root.current in ("Load", "Human", "AI"):
+            if self.root.current in ("Load"):
+                # TODO: Check if keyboard is open first.
+                '''
+                import kivy.uix.vkeyboard as vk_m
+                if not vk_m.docked:
+                '''
                 self.root.current_screen.delete()
             return True
 
