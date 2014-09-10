@@ -326,8 +326,8 @@ class PentAIApp(App):
                 return True
 
         elif key == 8: # 'delete'
-            if self.root.current == "Load":
-                self.games_screen.delete_game()
+            if self.root.current in ("Load", "Human", "AI"):
+                self.root.current_screen.delete()
             return True
 
         elif key == 115:

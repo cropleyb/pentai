@@ -59,7 +59,7 @@ class GamesScreen(Screen):
         self.clear_selected()
         self.app.edit_game(game)
 
-    def delete_game(self):
+    def delete(self):
         if not self.selected_gid:
             # Ignore it
             return
