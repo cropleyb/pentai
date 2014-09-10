@@ -8,7 +8,6 @@ import checkbox_list as cb_l
 from pentai.gui.player_screen import *
 import pentai.ai.ai_genome as aig_m
 
-from kivy.uix.spinner import *
 
 # TODO: Make a reusable class for this.
 class GenomeProperties(EventDispatcher):
@@ -33,45 +32,12 @@ class GenomeProperties(EventDispatcher):
 for attr_name, val in GenomeProperties.inst.__dict__.iteritems():
     setattr(GenomeProperties, attr_name, Property(val, allownone=True))
 
-# TODO: Put this in its own file
-class HighlightableOption(SpinnerOption):
-    def __init__(self, *args, **kwargs):
-        super(HighlightableOption, self).__init__(*args, **kwargs)
-        self.bind(on_press=lambda option: self.on_preselect(option.text))
-
-    def on_text(self, widget, text):
-        self.screen.text_to_widget["%s_id" % text] = widget
-
-    def on_preselect(self, new_text):
-        self.screen.preselect(new_text)
 
 class AIPlayerScreen(PlayerScreen):
     genome = GenomeProperties()
 
     player_class = aig_m.AIGenome
     player_type_str = "AI"
-
-    def __init__(self, *args, **kwargs):
-        super(AIPlayerScreen, self).__init__(*args, **kwargs)
-
-        self.text_to_widget = {}
-        class AIHiOp(HighlightableOption):
-            screen = self
-        spinner = self.ids.player_spinner_id
-        spinner.option_cls = AIHiOp
-        Clock.schedule_once(self.bind_players, 0.1)
-
-    def preselect(self, new_text):
-        self.save()
-
-    def bind_players(self, *args):
-        # Opening player list triggers updated_players
-        self.refresh_names()
-        self.ids.player_spinner_id.bind(is_open=self.on_p_open)
-
-    def on_p_open(self, spinner, is_open):
-        if is_open:
-            self.updated_players()
 
     def edit_player(self, name):
         g = self.pm.find_genome_by_name(name)
