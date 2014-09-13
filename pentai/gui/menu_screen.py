@@ -26,7 +26,7 @@ class MenuScreen(Screen):
 
 
 
-   [b]Scroll[/b] (drag) for more, or click [REF=none]links[/REF]
+   [b]Scroll[/b] (drag) for more, or click [REF=link]links[/REF]
 
 
 

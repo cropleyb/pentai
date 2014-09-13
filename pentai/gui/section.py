@@ -49,10 +49,9 @@ class Section(GridLayout):
             app.show_games_screen(finished=True)
         elif ref == "settings":
             app.show_settings_screen()
-'''
-    def __init__(self, *args, **kwargs):
-        self.cols = 1
+        elif ref == "link":
+            self.show_link_help(app)
 
-        super(GridLayout, self).__init__(*args, **kwargs)
-'''
+    def show_link_help(self, app):
+        app.display_message("Most links open up app pages\n (except this one)")
 
