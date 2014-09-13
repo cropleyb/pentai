@@ -790,13 +790,20 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def take_back_move(self):
         players = self.game.get_all_players()
-        if players[1].get_type() != "Human" and \
-            players[2].get_type() != "Human":
+        human_count = 0
+        for i in (1,2):
+            if players[i].get_type() == "Human":
+                human_count += 1
+        if human_count == 0:
             self.display_error("You are not playing! (Try reviewing)")
             return
+
         self.reviewing = False
         self.get_audio().mute()
         self.game.go_backwards_one()
+        if human_count == 1:
+            if self.game.get_current_player_type() != "Human":
+                self.game.go_backwards_one()
         self.get_audio().unmute()
 
     def go_to_the_beginning(self):
