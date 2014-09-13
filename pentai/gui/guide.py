@@ -180,8 +180,12 @@ class Guide(Persistent):
         if current_screen_name == "Pente":
             if waiting_for_end_of_game and end_reached:
                 id = waiting_for_end_of_game
-                widget = active_panel.ids[id]
-                self.activate(widget)
+                try:
+                    widget = active_panel.ids[id]
+                    self.activate(widget)
+                except:
+                    print "Can't activate unknown id after finished game: %s" % id
+                    return
 
     def start_activation(self, remaining, parent):
         try:
@@ -344,6 +348,9 @@ class Guide(Persistent):
             pass
 
     def activate(self, widget):
-        print "activating %s" % widget.text
-        global highlighted
-        highlighted = Highlight(widget)
+        try:
+            print "activating %s" % widget.text
+            global highlighted
+            highlighted = Highlight(widget)
+        except ReferenceError:
+            print "WARNING: Attempt to activate GCed widget"
