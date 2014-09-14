@@ -103,3 +103,4 @@ Where should it be? if it is cythonised, it should be in libpentai.a
 Tip for cleaning everything under kivy-ios:
 git clean -dxf
 
+When running build-all.sh, choose 'y' for the changes to libffi (the first lib) - the others don't seem to matter.
