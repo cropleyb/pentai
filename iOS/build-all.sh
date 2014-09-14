@@ -14,6 +14,7 @@ try $(dirname $0)/build-libjpeg.sh
 try $(dirname $0)/build-pil.sh
 try $(dirname $0)/build-kivy.sh
 try $(dirname $0)/build-pyobjus.sh
+try $(dirname $0)/build-zodb.sh
 try $(dirname $0)/build-pentai.sh
 
 echo '== Build done'
