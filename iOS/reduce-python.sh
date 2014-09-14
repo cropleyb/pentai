@@ -39,4 +39,4 @@ mv ../config .
 mv ../site-packages .
 popd
 
-trim_py_zip.sh
+./trim_py_zip.sh
