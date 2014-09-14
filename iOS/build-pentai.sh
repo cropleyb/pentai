@@ -24,11 +24,11 @@ export LDSHARED="$KIVYIOSROOT/tools/liblink"
 # iOS cythonize
 echo "PRE-CYTHONIXE"
 # TODO specified .py
-find . -name "*.pyx" -exec $KIVYIOSROOT/tools/cythonize.py {} \;
+$KIVYIOSROOT/tools/cythonize.py pentai/*/*.pyx
 echo "POST-CYTHONIXE"
 
 # Build cython module
-#HOSTPYTHON=$TMPROOT/Python-$IOS_PYTHON_VERSION/hostpython
+
 echo "BEFORE BUILD1"
 try $HOSTPYTHON ./setup.py build_ext -g
 echo "BETWEEN BUILDS"
@@ -51,6 +51,5 @@ export LDFLAGS="$OLD_LDFLAGS"
 export LDSHARED="$OLD_LDSHARED"
 
 bd=$EXTSRC/build/lib.macosx-*
-#try $KIVYIOSROOT/tools/biglink $BUILDROOT/lib/libpente.a $bd
-try $KIVYIOSROOT/tools/biglink $BUILDROOT/lib/libpente.a $bd $bd/pentai/base $bd/pentai/ai
+try $KIVYIOSROOT/tools/biglink $BUILDROOT/lib/libpente.a $bd $bd/base $bd/ai $bd/db
 deduplicate $BUILDROOT/lib/libpente.a
