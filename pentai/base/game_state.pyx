@@ -2,7 +2,7 @@
 from pentai.base.pente_exceptions import *
 from pentai.base.defines import *
 import pentai.base.board as b_m
-import pentai.base.board_strip as bs_m
+cimport pentai.base.board_strip as bs_m
 
 class GameState(object):
     """ This is for the state of a game as of a particular move. 

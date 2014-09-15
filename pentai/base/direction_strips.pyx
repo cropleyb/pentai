@@ -1,4 +1,4 @@
-from pentai.base.board_strip import *
+from pentai.base.board_strip cimport *
 
 class DirectionStrips(object):
     """ A list of BoardStrips for those going in a particular direction.

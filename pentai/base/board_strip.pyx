@@ -58,7 +58,7 @@ cpdef U64 set_occ(U64 bs, BOARD_WIDTH_T ind, U64 occ):
     return bs
 
 # This method is only used for unit testing of the setting functions, AFAIK
-def get_occ_list(bs, min_ind, max_ind):
+cpdef get_occ_list(bs, min_ind, max_ind):
     ol = [get_occ(bs, i) for i in range(min_ind, 1+max_ind)]
     return ol
 
