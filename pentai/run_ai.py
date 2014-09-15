@@ -114,9 +114,9 @@ class Match():
 
         #self.genome1.utility_filter = True
 
-        self.genome2.filter_num = 5
+        #self.genome2.filter_num = 5
         #self.genome2.chokes = [(3,3)]
-        self.genome2.mmpdl = 13
+        #self.genome2.mmpdl = 13
         #self.genome2.utility_filter = True
 
         #self.genome1.move_factor = 5
@@ -209,8 +209,8 @@ class Match():
 
         results = MatchResults()
         #for game_length in range(2,3):
-        #for game_length in range(2,4):
-        for game_length in range(2,5):
+        for game_length in range(2,4):
+        #for game_length in range(2,5):
         #for game_length in range(2,6):
         #for game_length in range(2,7):
         #for game_length in range(2,8):
