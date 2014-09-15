@@ -53,64 +53,19 @@ utility function
       don't need to search any non-captures for move 1.
 - Create a list of instructive lost games
 - Optimise Openings DB creation
+- chessboard: weighting for more squares of one colour?
 
-Wendy's suggestions (iOS)
--------------------
-AI goes slower or stops early in game (fixed?)
+People's suggestions
+--------------------
 Take back and play not possible (iOS? intermittent?)
-Slow to get game screen when AI makes slow first move
-# Can only create one AI player
-# Main title colour is too much like settings title colour
-# Find same size, level courier font
-
-Noel's suggestions
-------------------
-# Add Kivy request for Text underline
-# Change Save to Delete on player screens
-# AI Player delete
-# Add "Or 5 in a row" for Games screen Standard mode.
-# Don't allow/show illegal tournament mode moves before they are made.
-# Delay between confirming piece - "?" disappears, pause, stone appears.
-Keyboard delete for players
-
+Keyboard delete for players. Tricky because of clash with entering names
 Add clocks through "edit game" -> crash on resume
-
-Tara's suggestions
-------------------
-# Acknowledgements? "Tara"?
-# Green region "Confirm Here"
-# Colour change of wins in demo is confusing
-# Change beginner instructions: create Human Player first
-# "Always Swap" -> "Alternate"
-# Review mode is confusing (+Rematch)
-# Help page for game screen (+Button?)
-# Courier Font for AI players
-# Get rid of DT image
-# Animate Arrow after a move
-# New game screen "Rules" section?
-# Colour the Settings headings
-# Rules Demo return to PenteScreen - doubling sound effects
-# Highlight "New Game" and "Start Game" after watching the Demo? Nah
-# Demo skip "New Game" page
-# Create SectionText, inc. conversion of AI_FONT
-# Menu Sections -> Section
-# Help Sections -> Section
 Move more of the demo so it always moves in the centre first
-# Default first game to Human ("You") versus Anthony
-
-# Create player -> New default in New Game screen
 
 Time full OB build on iOS
-# Human player place stone time optimisation
-
-Rename AI should be reflected in AI Players and Setup Screen. etc.
 
 Duplicate finished games when restored and modified?
 
-# Intro help - pop screen * 2
-Font Colours?
-# Reset OB build setting as we go into full build
-# iOS build openings cleanup zip files
 
 Assessor - show best move on screen. Forward/Back through best history?
 Transition to review should copy game and make it the active game (temp)
