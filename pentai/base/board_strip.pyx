@@ -180,7 +180,7 @@ cdef inline match_white_capture_right(U64 bs, BOARD_WIDTH_T ind):
     # xBBW
     return match_pattern_right(bs, ind, P2_CAPTURE_RIGHT_PATTERN)
 
-def get_capture_indices(bs, ind, colour):
+cpdef get_capture_indices(bs, ind, colour):
     captures = []
     if colour == P1:
         captures.extend(match_black_capture_left(bs, ind))
@@ -211,13 +211,13 @@ cdef inline match_white_threat_right(U64 bs, BOARD_WIDTH_T ind):
     # xBBW
     return match_pattern_right(bs, ind, P2_THREAT_PATTERN)
 
-def match_threat_left(U64 bs, BOARD_WIDTH_T ind, colour):
+cpdef match_threat_left(U64 bs, BOARD_WIDTH_T ind, colour):
     if colour == P1:
         return match_black_threat_left(bs, ind)
     else:
         return match_white_threat_left(bs, ind)
 
-def match_threat_right(U64 bs, BOARD_WIDTH_T ind, colour):
+cpdef match_threat_right(U64 bs, BOARD_WIDTH_T ind, colour):
     if colour == P1:
         return match_black_threat_right(bs, ind)
     else:
@@ -225,7 +225,7 @@ def match_threat_right(U64 bs, BOARD_WIDTH_T ind, colour):
 
 #######################################
 
-def process_takes(U64 bs, BOARD_WIDTH_T ind, BOARD_WIDTH_T strip_min, BOARD_WIDTH_T strip_max, us, int inc):
+cpdef process_takes(U64 bs, BOARD_WIDTH_T ind, BOARD_WIDTH_T strip_min, BOARD_WIDTH_T strip_max, us, int inc):
     """
     bs is the board strip that we are looking through
     ind is the index of the affected position, only the 3 positions
@@ -250,7 +250,7 @@ def process_takes(U64 bs, BOARD_WIDTH_T ind, BOARD_WIDTH_T strip_min, BOARD_WIDT
 #######################################
 
 # TODO: this is copy and paste from above
-def process_threats(U64 bs, BOARD_WIDTH_T ind, BOARD_WIDTH_T strip_min, BOARD_WIDTH_T strip_max, us, int inc):
+cpdef process_threats(U64 bs, BOARD_WIDTH_T ind, BOARD_WIDTH_T strip_min, BOARD_WIDTH_T strip_max, us, int inc):
     """
     bs is the board strip that we are looking through
     ind is the index of the affected position, only the 3 positions
