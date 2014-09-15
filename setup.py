@@ -34,7 +34,10 @@ def get_modulename_from_file(filepath):
 if platform != 'ios':
     # OS X
     from Cython.Build import cythonize
-    ext_modules = cythonize(["pentai/*/*.pyx"])
+
+    ext_options = {"compiler_directives": {"profile": True}, "language": "c++", "annotate": True}
+    #    kwargs['language'] = "c++"
+    ext_modules = cythonize(["pentai/*/*.pyx"], **ext_options) 
 else:
     from distutils.extension import Extension
     import glob
