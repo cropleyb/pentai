@@ -1,0 +1,4 @@
+Cannot use cdef at module scope in a pyx file, must be inside a function.
+Same for both attributes and methods.
+cpdef and public attributes can be used at module scope, as if they were in a
+.py file.
