@@ -7,10 +7,10 @@
     font_size: my.dp(25)
 
 <TitleLabel@Label>:
-    color: (0.8,0.5,0.8,1)
+    color: (0.8, 0.5, 0.8, 1)
 
 <SectionTitle@Label>:
-    color: (0.5,0.6,0.8,1)
+    color: (0.5, 0.6, 0.8, 1)
     halign: "center"
     text_size: self.size
     size_hint_y: None
@@ -25,7 +25,7 @@
     font_size: my.dp(15)
     text_size: self.size
     padding_x: my.dp(20)
-    color: (0.5,0.5,0.5,1)
+    color: (0.5, 0.5, 0.5, 1)
 
 <TextInput>:
     font_size: my.dp(30)
@@ -42,7 +42,7 @@
     height: 5
     canvas:
         Color:
-            rgb: .3, .3, .3
+            rgba: .3, .3, .3, 1
         Rectangle:
             pos: self.x, self.center_y
             size: self.width, 1
@@ -52,7 +52,7 @@
     width: 5
     canvas:
         Color:
-            rgb: .7, .7, .7
+            rgba: .7, .7, .7, 1
         Rectangle:
             pos: self.center_x, self.y
             size: 1, self.height

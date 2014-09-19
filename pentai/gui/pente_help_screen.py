@@ -19,7 +19,7 @@ class PenteHelpText(hs_m.HelpText):
     def set_text(self):
         self.play_text1 = """ To make a move, simply touch the board where you want to go. If you have "Off Board" confirmation mode on, you will need to confirm the move once you get the piece in the right place. To do this, simply touch anywhere in the green area below the board.
 
- If you need a refresher on the rules, watch the [ref=rd][color=00ffff]Rules Demo[/color][/ref]"""
+ If you need a refresher on the rules, watch the [ref=rd][color=00ffffff]Rules Demo[/color][/ref]"""
 
         self.play_text2 = """ The places where pieces were captured show a faint "ghost" image just for the opponent's next turn. You can play over these ghosts. If you are playing Standard or Tournament rules, the pieces that were captured appear in pairs below the board, and when one player reaches five pairs, they win.
 
@@ -27,7 +27,7 @@ class PenteHelpText(hs_m.HelpText):
 
         self.play_text3 = """ If you make a mistake, you can [i]Take Back[/i] if no-one is watching over your shoulder! If you are playing against an AI player, you will want to get the game back to a point where it was your turn, so you may need to click [i]Take Back[/i] twice.
 
- Most of these features can be configured on the [ref=settings][color=00ffff]Settings[/color][/ref] screen.
+ Most of these features can be configured on the [ref=settings][color=00ffffff]Settings[/color][/ref] screen.
 """
         self.controls_text1 = """ There are two modes: [i]Play[/i] mode and [i]Review[/i] mode:
  - In [i]Play[/i] mode, the two players alternate whose turn it is to place a piece on the board, until the game is finished.
@@ -38,7 +38,7 @@ class PenteHelpText(hs_m.HelpText):
  [i]Continue[/i] button."""
 
         self.controls_text2 = """ You can quickly start another game with the same rules and players, by using "Rematch". Who goes first in the next game, and the colours of the players, are determined by the
- [ref=settings][color=00ffff]Settings[/color][/ref].
+ [ref=settings][color=00ffffff]Settings[/color][/ref].
 """
 
 class PenteHelpScreen(hs_m.NewHelpScreen):

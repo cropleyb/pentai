@@ -12,9 +12,9 @@ def get_all_font_paths():
 import re
 
 def conv(orig_string):
-    out = re.sub("\[AI\]", "[font=%s][color=ffaaaa]" % AI_FONT, orig_string)
+    out = re.sub("\[AI\]", "[font=%s][color=ffaaaaff]" % AI_FONT, orig_string)
     out = re.sub("\[/AI\]", "[/color][/font]", out)
-    out = re.sub(r"\[REF=(\w+)\]", r"[ref=\1][color=00eeee]", out)
+    out = re.sub(r"\[REF=(\w+)\]", r"[ref=\1][color=00eeeeff]", out)
     out = re.sub("\[/REF\]", "[/color][/ref]", out)
     return out
 

@@ -48,8 +48,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
     clocks = ListProperty([None])
 
     gridlines = ListProperty([])
-    border_lines = ListProperty([0,0,0,0])
-    border_colour = ListProperty([20,0,0,1])
+    border_lines = ListProperty([0, 0, 0, 0])
+    border_colour = ListProperty([20, 0, 0, 1])
     border_width = NumericProperty(6.0)
     #h_grid_text = StringProperty("ABCD")
     # TODO: Only the vertical offset is used so far.
@@ -298,7 +298,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 player_widget.text = tmp
 
     def get_player_colour(self, player_num):
-        COL_COLS = (None, (0,0,0,1), (1,1,1,1))
+        COL_COLS = (None, (0, 0, 0, 1), (1, 1, 1, 1))
         col_ind = self.get_player_colour_index(player_num)
         pc = COL_COLS[col_ind]
         return pc
@@ -615,7 +615,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         # This part is using the relative layout to get the lines in the right place
         # RL does not scale though.
-        Color(0, 0, 0) # Black lines
+        Color(0, 0, 0, 1) # Black lines
         grid_size_x = float(size_x) / (self.grid_size())
         grid_size_y = float(size_y) / (self.grid_size())
         GS = self.grid_size()
@@ -965,7 +965,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def refresh_illegal(self):
         game = self.game
         rules = game.get_rules()
-        self.illegal_rect_color = [0,0,0,0]
+        self.illegal_rect_color = [0, 0, 0, 0]
         if (game.get_move_number() == 3) and (rules.type_char == 't'):
             self.illegal_rect_color = [1, 0, 0, .5]
             left = game.size()/2 - 2.5
