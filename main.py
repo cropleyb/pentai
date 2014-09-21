@@ -47,6 +47,9 @@ def setup_logging():
     logging.getLogger("ZODB.Connection").addHandler(console)
 
 def main():
+    # TEMP WORKAROUND for Kivy prob.
+    os.environ["KIVY_GLES_LIMITS"] = '0'
+
     setup_logging()
     import startup
     startup.run()
