@@ -4,36 +4,16 @@ import pentai.ai.ab_state as ab_s_m
 from pentai.base.pente_exceptions import *
 from pentai.base.defines import *
 
-#import history_heuristic as hh_m
-import pentai.ai.killer_heuristic as kh_m
 import time
-
-import pentai.ai.choice_stats as cs_m
-
-choice_stats = cs_m.ChoiceStats()
 
 class ABGame():
     """ This class acts as a bridge between the AlphaBeta code and my code """
     def __init__(self, player, base_game):
         search_filter = player.search_filter
-        '''
-        if genome.utility_filter:
-            search_filter.set_game(self)
-        '''
         utility_calculator = player.utility_calculator
         self.max_depth = player.max_depth
         self.force_depth = player.force_depth
         self.bl_cutoff = player.bl_cutoff
-        # Another failed experiment or two...
-        #self.heuristic_stats = hh_m.HistoryHeuristicStats()
-        self.heuristic_stats = kh_m.KillerHeuristicStats()
-        try:
-            #print "ABGame setting heuristic to self.heuristic_stats %s" % \
-            #        self.heuristic_stats
-            search_filter.set_heuristic(self.heuristic_stats)
-        except AttributeError, e:
-            #print e
-            pass
 
         s = self.current_state = ab_s_m.ABState(None, search_filter, utility_calculator)
         s.set_state(base_game.current_state)
@@ -61,16 +41,6 @@ class ABGame():
 
     def reset_transposition_table(self):
         self.transposition_table = {}
-
-    def reset_heuristic(self):
-        self.heuristic_stats.reset()
-
-    def report_short_circuit(self, move, depth):
-        self.heuristic_stats.report_short_circuit(move, depth)
-
-    def report_vals(self, depth, save_values):
-        pass
-        # choice_stats.report_vals(depth, save_values)
 
     def use_bl_cutoff(self):
         return self.bl_cutoff

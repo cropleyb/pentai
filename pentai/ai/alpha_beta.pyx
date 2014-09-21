@@ -52,11 +52,9 @@ def alphabeta_search(state, game):
             save_vs.append(curr_v)
             v = max(v, curr_v)
             if v >= beta:
-                game.report_short_circuit(a, depth)
                 break
             if v > INFINITY/100.0:
                 # Game won, can't get better
-                game.report_short_circuit(a, depth)
                 break
             alpha = max(alpha, v)
 
@@ -72,7 +70,6 @@ def alphabeta_search(state, game):
                         break
 
         game.save_utility(state, depth, v)
-        game.report_vals(depth, save_vs) # Stats only
         return v
 
     def min_value(state, alpha, beta, depth):
@@ -85,11 +82,10 @@ def alphabeta_search(state, game):
             save_vs.append(curr_v)
             v = min(v, curr_v)
             if v <= alpha:
-                game.report_short_circuit(a, depth)
                 break
             if v < -INFINITY/100.0:
                 # Game lost, can't get worse
-                game.report_short_circuit(a, depth)
+                # (for P1, but P2 is trying to minimise)
                 break
             beta = min(beta, v)
 
@@ -105,7 +101,6 @@ def alphabeta_search(state, game):
                         break
 
         game.save_utility(state, depth, v)
-        game.report_vals(depth, save_vs) # Stats only
         return v
 
     def cutoff_test(state, depth):
