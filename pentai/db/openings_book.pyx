@@ -160,6 +160,7 @@ class OpeningsBook(object):
                 # iterate over moves and their stored data
                 moves_data = opening_pos.get_moves_strict(rt, size)
                 if not moves_data:
+                    log.debug("No moves_data found for: %s %s" % (rt, size))
                     continue
 
                 # circulate() TODO: shuffling of moves
@@ -177,6 +178,7 @@ class OpeningsBook(object):
                                 (move_rating, ai_rating))
                         continue
                     if not self.safe_move(suggested_move, search_game, size):
+                        log.debug("Unsafe move: %s" % (suggested_move,))
                         continue
 
                     secondary = (search_rules_type != rt)

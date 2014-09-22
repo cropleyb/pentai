@@ -232,13 +232,6 @@ class Match():
                         results.add(res)
 
         print results
-        cs = abg_m.choice_stats
-        print cs
-        cs.set_threshold(0.98)
-        print cs.f_t_disp()
-        #st()
-
-#cs.filtered_bad_relative_to_best_n_worst(depth=2)
 
 import sys
 
