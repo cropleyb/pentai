@@ -16,6 +16,7 @@ class OpeningsMover(object):
         search_colour = self.game.to_move_colour()
         other_colour = opposite_colour(search_colour)
         move_games = list(self.o_book.get_move_games(self.game))
+        log.debug("move_games: %s", len(move_games))
         ri = random.randint(0,len(move_games))
         mg2 = move_games[ri:] + move_games[:ri]
 
