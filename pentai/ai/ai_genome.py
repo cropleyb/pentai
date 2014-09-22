@@ -20,9 +20,12 @@ class AIGenome(Persistent):
         self.narrowing = 0
         self.chokes = ((4,5),)
         self.bl_cutoff = False
+        self.vision = 100
+
+        # TODO: Remove, no longer used?
         self.utility_filter = False
         self.filter_num = 1
-        self.vision = 100
+
         # Utility function
         self.calc_mode = 1
         self.capture_score_base = 300
