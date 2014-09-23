@@ -16,10 +16,6 @@ def dot():
     sys.stdout.write('.')
     sys.stdout.flush()
 
-if __name__ == "__main__":
-    z_m.set_db("db.fs")
-    create_default_names()
-
 def set_default_game(defaults):
     # Set up default players for first game
     import pentai.base.rules as r_m
@@ -31,21 +27,40 @@ def set_default_game(defaults):
 
     z_m.sync()
 
-def create_default_players(defaults):
+def create_default_players(defaults=None):
+    import pentai.gui.game_defaults as gd_m
+    import misc_db as m_m
+    def misc():
+        return m_m.get_instance()
+    if not defaults:
+        try:
+            defaults = misc()["game_defaults"]
+        except KeyError:
+            defaults = misc()["game_defaults"] = gd_m.GameDefaults()
+
     pm = pm_m.PlayersMgr() 
     if pm.get_num_players() == 0:
-        create_default_humans()
+        try:
+            release = bool(sys.argv[1])
+        except:
+            release = False
+        print "Release mode: %s" % release
+
+        create_default_humans(release)
         create_default_ais()
         set_default_game(defaults)
 
-def create_default_humans():
+def create_default_humans(release):
 
     log.debug("Creating Human Players")
+    if release:
+        log.debug("(for release)")
     pm = pm_m.PlayersMgr()
 
-    # TODO: Don't release these.
-    player_names = ["BC", "Bruce", "Mark", "Jespah", "Arwen", "Sascha",
-            "Marion", "Wendy", "You"]
+    player_names = ["You"]
+    if not release:
+        player_names.extend(["BC", "Bruce", "Mark", "Jespah", "Arwen", "Sascha",
+                "Marion", "Wendy"])
 
     player_names.reverse()
     for name in player_names:
@@ -119,4 +134,8 @@ def create_default_ais():
 
     z_m.sync()
     print
+
+if __name__ == "__main__":
+    z_m.set_db("db.fs")
+    create_default_players()
 
