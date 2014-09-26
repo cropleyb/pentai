@@ -40,6 +40,7 @@ class PScreenManager(ScreenManager):
 
     def set_current(self, screen_name):
         if self.current != screen_name:
+            self.leave()
             self.random_transition()
             self.current = screen_name
             if not self.in_demo_mode():
@@ -90,7 +91,7 @@ class PScreenManager(ScreenManager):
             return super(PScreenManager, self).on_touch_up(*args, **kwargs)
 
     def leave(self):
-        self.current_screen.on_leave()
+        self.guide.on_leave()
     
     def get_all_screens(self):
         import menu_screen as ms_m

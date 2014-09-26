@@ -62,8 +62,7 @@ class SetupScreen(Screen):
         # TODO: Timer default
 
     def on_p2_open(self, spinner, is_open):
-        if is_open:
-            self.updated_players()
+        self.updated_players()
 
     def on_pre_enter(self):
         if not self.initialised:
