@@ -3,8 +3,8 @@
 import pentai.ai.ai_player as aip_m
 from pentai.ai.priority_filter import *
 
-import openings_book as ob_m
-import games_mgr
+import pentai.db.openings_book as ob_m
+import pentai.db.games_mgr
 
 from pentai.ai.ai_genome import *
 
