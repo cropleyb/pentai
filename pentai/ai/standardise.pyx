@@ -1,5 +1,5 @@
-import rot_standardise as rs_m
-import trans_standardise as t_m
+import pentai.ai.rot_standardise as rs_m
+import pentai.ai.trans_standardise as t_m
 
 def standardise(orig_state):
     possibilities = rs_m.rot_possibilities(orig_state)
