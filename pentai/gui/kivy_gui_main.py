@@ -6,6 +6,7 @@ import pentai.base.logger as log
 # TODO: Delay these imports somehow, until after __init__() and build()
 from kivy.clock import *
 from kivy.base import *
+import kivy.core.window
 
 import pentai.db.zodb_dict as z_m
 
@@ -18,6 +19,59 @@ from pentai.gui.popup import *
 from pentai.db.games_mgr import *
 import pentai.db.openings_book as ob_m
 
+import pentai.gui.scale as sc_m
+
+def get_screen_size(appsize=False):
+    import sys
+    """
+    returns Monitor size x and y in pixels.
+    """
+    if sys.platform == 'linux2' and not appsize:
+        import subprocess
+        output = subprocess.Popen(
+            'xrandr | grep "\*" | cut -d" " -f4',
+            shell=True,
+            stdout=subprocess.PIPE).communicate()[0]
+        screenx = int(output.replace('\n', '').split('x')[0])
+        screeny = int(output.replace('\n', '').split('x')[1])
+    elif sys.platform == 'win32' and not appsize:
+        from win32api import GetSystemMetrics
+        screenx = GetSystemMetrics(0)
+        screeny = GetSystemMetrics(1)
+    elif sys.platform == 'darwin' and not appsize:
+        try:
+            from AppKit import NSScreen
+        except ImportError:
+            # iOS
+            return None
+
+        frame_size = NSScreen.mainScreen().frame().size
+        screenx = frame_size.width
+        screeny = frame_size.height
+    else:
+        # For mobile devices, use full screen
+        return None
+    return (screenx, screeny)
+
+def set_screen_size():
+    whole_screen = get_screen_size()
+    if whole_screen:
+        # Pad for OS menubar
+        height = int(whole_screen[1] * .93)
+
+        # Portrait
+        width = int(height * .63)
+
+        # Set the app's size in App.build()
+        kivy.core.window.Window.size = (width, height)
+
+    app_height = int(kivy.core.window.Window.size[1])
+    # 720 was the original height of the app in pixels, to which the 
+    # GUI has been built
+    f = app_height / 720.0
+
+    sc_m.set_scale_factor(f)
+
 class PentAIApp(App):
     game_filename = StringProperty("")
 
@@ -28,9 +82,9 @@ class PentAIApp(App):
         self.menu_screen = None
         self.intro_help_screen = None
 
-        #if True:
-        if False:
-        #if not "db.fs.most" in os.listdir(self.user_data_dir):
+        if True:
+        #if False:
+        #if not "db.fs.openings" in os.listdir(self.user_data_dir):
             log.info("Copying db")
             import shutil
             dest = self.user_data_dir
@@ -38,6 +92,7 @@ class PentAIApp(App):
                 for ext in ["", ".index"]:
                     fn_ext = "%s%s" % (fn, ext)
 
+                    '''
                     # Copy DB to user_data_dir
                     shutil.copy(fn_ext, dest)
                     '''
@@ -47,7 +102,6 @@ class PentAIApp(App):
                         os.unlink(del_path)
                     except OSError:
                         pass
-                    '''
 
     def display_message(self, message, title=None):
         from kivy.uix.label import Label
@@ -366,6 +420,7 @@ class PentAIApp(App):
 
     def build(self):
         log.debug("app build 1")
+        set_screen_size()
         ini_file = "pentai.ini"
         if False:
         #if True:

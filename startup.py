@@ -1,6 +1,5 @@
 from pentai.gui.kivy_gui_main import *
 import pentai.db.zodb_dict as z_m
-import pentai.gui.scale as sc_m
 
 import kivy.core.window as w_m
 from kivy.config import Config
@@ -13,9 +12,6 @@ def run():
     Config.set('kivy', 'log_enable', 1)
     Config.set('kivy', 'log_dir', 'logs')
     Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
-
-    f = w_m.Window.size[1] / 720.0
-    sc_m.set_scale_factor(f)
 
     try:
         pentai_path = os.environ['PENTAIPATH']
