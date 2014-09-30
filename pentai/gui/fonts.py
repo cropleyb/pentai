@@ -2,7 +2,8 @@
 import os
 
 def get_font_path(font_name):
-    font_path = os.path.join("media", "fonts", "%s.ttf" % font_name)
+    # Weird prob on Windows when I had a fonts directory under media (?)
+    font_path = os.path.join("media", "%s.ttf" % font_name)
     return font_path
 
 def get_all_font_paths():
