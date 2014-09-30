@@ -24,7 +24,8 @@ import pentai.gui.scale as sc_m
 def get_screen_size(appsize=False):
     import sys
     """
-    returns Monitor size x and y in pixels.
+    returns Monitor size x and y in pixels for desktop platforms, or None for
+    mobile platforms
     """
     if sys.platform == 'linux2' and not appsize:
         import subprocess
