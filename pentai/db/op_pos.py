@@ -49,6 +49,14 @@ class OpeningPosMoveData(ZM):
         omd = self.setdefault(pos, OpeningMoveGamesData())
         omd.add_game(*args)
 
+'''
+    def __reduce__(self):
+
+>>> z = ZM({3:4})
+>>> z.__reduce__()
+(<function __newobj__ at 0x101499b18>, (<class 'persistent.mapping.PersistentMapping'>,), {'data': {3: 4}})
+'''
+
 rules_map = {'s':0, 't':2, '5':4 }
 
 def get_index(rules_type, size):
