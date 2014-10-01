@@ -1,0 +1,8 @@
+Copy the two hooks files into the directory: pyinstaller/PyInstaller/hooks
+pai.spec is an example of the spec file that you will need to create and alter, as per the Kivy OS X packaging instructions.
+
+It includes alterations for adding the media directory:
+   Tree('/Users/cropleyb/Dropbox/pente/media', prefix="media"),
+
+And for adding the kv file
+   a.datas + (("pentai/gui/pentai.kv", '/Users/cropleyb/Dropbox/pente/pentai/gui/pentai.kv', 'DATA'),),
