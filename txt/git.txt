@@ -1,0 +1,3 @@
+Update from master:
+git pull git://github.com/kivy/kivy.git master
+

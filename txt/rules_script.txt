@@ -1,0 +1,20 @@
+Pente is played on the intersections, not in the squares.
+Black always goes first.
+In the standard and tournament versions, the first move must be in the centre.
+The first player to get five or more stones in a continuous straight line wins.
+Stones can be placed on any empty intersection, including edges and corners.
+Winning lines can also be diagonal.
+
+Pairs of stones may be taken by placing a stone at each end of the pair.
+Diagonal captures are also possible.
+There are several variations that don't cause a capture.
+A single stone cannot be taken.
+Neither can three or more stones.
+There cannot be any gaps.
+One of the end stones must be placed last to trigger the capture.
+Two or more pairs *can* be taken simultaneously.
+
+In the standard and tournament versions, a game can be won by capturing five pairs of stones.
+Note that in the "Five in a Row" variant, captures do not cause a win.
+
+Once the game is over, it is often worth reviewing the game to see how you can improve.

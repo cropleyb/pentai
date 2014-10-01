@@ -1,0 +1,11 @@
+--- setup.py.orig	2014-04-26 18:13:00.000000000 +1000
++++ setup.py	2014-04-26 18:17:45.000000000 +1000
+@@ -50,7 +50,7 @@
+                             ),
+                    Extension(name = 'persistent.cPickleCache',
+                              sources= ['persistent/cPickleCache.c',
+-                                       'persistent/ring.c'
++                                       #'persistent/ring.c'
+                                       ],
+                              depends = ['persistent/cPersistence.h',
+                                         'persistent/ring.h',

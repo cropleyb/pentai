@@ -11,4 +11,7 @@ test*.pkl
 tags
 stats.txt
 media/my_computer.png
-db
+db/*
+db.fs*
+err.txt
+test.log

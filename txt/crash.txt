@@ -1,0 +1,34 @@
+Traceback (most recent call last):
+File "kivy_gui_main.py", line 327, in <module>
+PentAIApp().run()
+File "/Users/cropleyb/kivy/kivy/kivy/app.py", line 800, in run
+runTouchApp()
+File "/Users/cropleyb/kivy/kivy/kivy/base.py", line 481, in runTouchApp
+EventLoop.window.mainloop()
+File "/Users/cropleyb/kivy/kivy/kivy/core/window/window_pygame.py", line 360, in mainloop
+self._mainloop()
+File "/Users/cropleyb/kivy/kivy/kivy/core/window/window_pygame.py", line 266, in _mainloop
+EventLoop.idle()
+File "/Users/cropleyb/kivy/kivy/kivy/base.py", line 321, in idle
+Clock.tick()
+File "/Users/cropleyb/kivy/kivy/kivy/clock.py", line 422, in tick
+self._process_events()
+File "/Users/cropleyb/kivy/kivy/kivy/clock.py", line 537, in _process_events
+if event.tick(self._last_tick) is False:
+File "/Users/cropleyb/kivy/kivy/kivy/clock.py", line 309, in tick
+ret = callback(self._dt)
+File "/Users/cropleyb/Dropbox/pente/pente_screen.py", line 159, in <lambda>
+Clock.schedule_once(lambda dt: self.set_review_mode(False), .2)
+File "/Users/cropleyb/Dropbox/pente/pente_screen.py", line 749, in set_review_mode
+self.go_to_the_end()
+File "/Users/cropleyb/Dropbox/pente/pente_screen.py", line 598, in go_to_the_end
+self.game.go_to_the_end()
+File "/Users/cropleyb/Dropbox/pente/game.py", line 172, in go_to_the_end
+self.go_to_move(len(self.move_history)+1)
+File "/Users/cropleyb/Dropbox/pente/game.py", line 201, in go_to_move
+gs.make_move(self.move_history[i])
+File "game_state.py", line 86, in pente.game_state.GameState.make_move (game_state.c:3153)
+raise IllegalMoveException("The game is already over")
+pente_exceptions.IllegalMoveException: The game is already over
+
+

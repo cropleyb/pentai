@@ -1,0 +1,1171 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+# Globally set lots of size defaults
+<Label>:
+    font_size: my.dp(25)
+
+<TitleLabel@Label>:
+    color: (0.8, 0.5, 0.8, 1)
+
+<SectionTitle@Label>:
+    color: (0.5, 0.6, 0.8, 1)
+    halign: "center"
+    text_size: self.size
+    size_hint_y: None
+    height: my.dp(30)
+
+<SmallLabel>:
+    font_size: my.dp(20)
+    padding_x: my.dp(20)
+    text_size: self.size
+
+<TinyLabel>:
+    font_size: my.dp(15)
+    text_size: self.size
+    padding_x: my.dp(20)
+    color: (0.5, 0.5, 0.5, 1)
+
+<TextInput>:
+    font_size: my.dp(30)
+
+<MyCategoryLabel@Label>:
+    font_size: my.dp(22)
+
+<MyBigLabel@Label>:
+    font_size: my.dp(30)
+    bold: True
+
+<HSpacer>:
+    size_hint_y: None
+    height: 5
+    canvas:
+        Color:
+            rgba: .3, .3, .3, 1
+        Rectangle:
+            pos: self.x, self.center_y
+            size: self.width, 1
+
+<VSpacer>:
+    size_hint_x: None
+    width: 5
+    canvas:
+        Color:
+            rgba: .7, .7, .7, 1
+        Rectangle:
+            pos: self.center_x, self.y
+            size: 1, self.height
+
+<BigCheckBox@CheckBox>:
+
+    canvas:
+        Clear:
+        Color:
+            # Grey background
+            rgba: .6, .6, .6, .5
+        Rectangle:
+            size: my.dp(25), my.dp(25)
+            pos: int(self.center_x - my.dp(13)), int(self.center_y - my.dp(13))
+        Color:
+            rgba: .443, 0.848, 0.926, 1
+        Rectangle:
+            source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
+            size: my.dp(40), my.dp(40)
+            pos: int(self.center_x - my.dp(20)), int(self.center_y - my.dp(20))
+
+<CheckBoxList>:
+    cols: 2
+
+<ClickLabel>:
+    halign: 'center'
+    text_size: self.width, None
+
+<TwoLevelCompositeListItem>:
+    height: my.dp(60)
+    rows: 2
+
+<ConfirmPopup>:
+    content:
+    GridLayout:
+        rows: 2
+        Label:
+            text: root.confirm_prompt
+            font_size: my.dp(20)
+        GridLayout:
+            cols: 2
+            MyButton:
+                text: "Cancel"
+                font_size: my.dp(20)
+                on_release: root.clear()
+            MyButton:
+                text: "OK"
+                font_size: my.dp(20)
+                on_release: root.ok_confirm()
+
+<Section>:
+    cols: 1
+    height: self.minimum_height
+    size_hint_y: None
+    SectionTitle:
+        text: root.title
+    HSpacer:
+        id: h_spacer_id
+    SLPart:
+        text: root.text
+        on_ref_press: root.follow_link(*args)
+
+
+<IntroScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            size_hint: (1, 0.1)
+            text: "Preparing for PentAI!"
+            font_size: my.dp(40)
+
+        Label:
+            id: activity_label_id
+            size_hint: (1, 0.1)
+            font_size: my.dp(30)
+
+        ProgressBar:
+            id: progress_bar_id
+            max: 1000
+            size_hint: (1, 0.1)
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, 0.03)
+
+            MyButton:
+                text: "Quit"
+                on_release: root.prompt_quit()
+
+            MyButton:
+                text: "Skip"
+                on_release: root.pop_screen()
+
+            MyButton:
+                text: "Help"
+                on_release: root.show_help()
+
+<GamesScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            # text: "Unfinished Games" or "Recently Finished"
+            id: title_id
+            size_hint_y: .10
+
+        GamesView:
+            id: games_view
+
+        GridLayout:
+            rows: 2
+            size_hint: (1, .15)
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "Delete"
+                    on_release: root.delete()
+                MyButton:
+                    text: "Edit"
+                    on_release: root.edit_game()
+                MyButton:
+                    text: "Load"
+                    on_release: root.load_game()
+            GridLayout:
+                rows: 1
+                MyButton:
+                    id: menu_id
+                    text: "Menu"
+                    on_release: root.app.show_menu_screen()
+                MyButton:
+                    id: help_id
+                    text: "Help"
+                    on_release: root.app.show_load_help()
+
+<LoadHelpScreen>:
+    title: "Games Screens Help"
+
+<LoadHelpText>:
+    Section:
+        continuation: True
+        text: root.intro_text
+        
+    HSpacer:
+    Section:
+        title: "Load"
+        text: root.load_text
+ 
+    HSpacer:
+    Section:
+        title: "Edit"
+        text: root.edit_text
+ 
+    HSpacer:
+    Section:
+        title: "Delete"
+        text: root.delete_text
+
+<SetupHelpScreen>:
+    title: "Games Screens Help"
+
+<SetupHelpText>:
+    Section:
+        title: "Rules Variation"
+        text: root.rules_text
+
+    HSpacer:
+    Section:
+        title: "Clocks"
+        text: root.clocks_text
+        
+    HSpacer:
+    Section:
+        title: "Player Selection"
+        text: root.players_text
+
+<SettingsHelpScreen>:
+    title: "Settings Help"
+
+<SettingsHelpText>:
+    Section:
+        continuation: True
+        text: root.intro_text
+
+    HSpacer:
+    Section:
+        title: "User Interface"
+        text: root.ui_text1
+    Section:
+        continuation: True
+        text: root.ui_text2
+
+    HSpacer:
+    Section:
+        title: "Players"
+        text: root.players_text
+
+    HSpacer:
+    Section:
+        title: "Opening Book"
+        text: root.ob_text
+
+    HSpacer:
+    Section:
+        title: "Sound"
+        text: root.sound_text
+
+<PenteHelpScreen>:
+    title: "Pente Game Screen Help"
+
+<PenteHelpText>:
+    Section:
+        title: "User Interface"
+        text: root.play_text1
+    Section:
+        continuation: True
+        text: root.play_text2
+    Section:
+        continuation: True
+        text: root.play_text3
+
+    HSpacer:
+    Section:
+        title: "Controls"
+        text: root.controls_text1
+    Section:
+        continuation: True
+        text: root.controls_text2
+
+<HumanHelpScreen>:
+    title: "Human Edit Help"
+
+<HumanHelpText>:
+    Section:
+        title: "Edit"
+        text: root.edit_text
+
+<SLPart@Label>:
+    size_hint_y: None
+    text_size: (.95 * root.width), None
+    height: self.texture_size[1]
+    strip: False
+    markup: True
+
+<ScrollableLabel>:
+    GridLayout:
+        id: gl_id
+        cols: 1
+        height: self.minimum_height
+        size_hint_y: None
+        SLPart:
+            text: root.text1
+            id: label1_id
+        SLPart:
+            text: root.text2
+            id: label2_id
+
+<MyScrollableLabel>:
+    size_hint_y: .8
+    GridLayout:
+        # This GridLayout and its children are due to an issue with
+        # Kivy textures that cannot be allocated because they are too big:
+        # https://github.com/kivy/kivy/issues/2119
+        id: gl_id
+        cols: 1
+        height: self.minimum_height
+        size_hint_y: None
+
+        SLPart:
+            text: root.text1
+            id: label1_id
+        SLPart:
+            text: root.text2
+            id: label2_id
+        SLPart:
+            text: root.text3
+            id: label3_id
+        SLPart:
+            text: root.text4
+            id: label4_id
+        SLPart:
+            text: root.text5
+            id: label5_id
+        SLPart:
+            text: root.text6
+            id: label6_id
+
+<MyScrollable>:
+    cols: 1
+    id: gl_id
+    height: self.minimum_height
+    size_hint_y: None
+
+<MenuScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            size_hint: 1, .1
+            markup: True
+            text: "[b]PentAI %s[/b] by Bruce Cropley" % root.version_str
+
+        HSpacer:
+    
+        ScrollView:
+
+            MyScrollable:
+
+                Section:
+                    title: "Introduction"
+                    text: root.intro_text
+                    
+                HSpacer:
+                Section:
+                    title: "Beginners"
+                    text: root.beginners_text
+
+                HSpacer:
+                Section:
+                    title: "Experts"
+                    text: root.experts_text
+
+                HSpacer:
+                Section:
+                    title: "About"
+                    text: root.about_text1
+                Section:
+                    continuation: True
+                    text: root.about_text2
+
+                HSpacer:
+                Section:
+                    title: "Acknowledgements"
+                    text: root.ack_text
+    
+        GridLayout:
+            cols: 1
+            size_hint: 1, .4
+    
+            MyButton:
+                id: new_game_id
+                text: "New Game"
+                on_release: root.app.show_new_game_screen()
+    
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "In Progress"
+                    on_release: root.app.show_games_screen()
+
+                MyButton:
+                    text: "Recently Finished"
+                    on_release: root.app.show_games_screen(finished=True)
+    
+            GridLayout:
+                rows: 1
+                MyButton:
+                    id: human_players_id
+                    text: "Human Players"
+                    on_release: root.app.show_human_screen()
+        
+                MyButton:
+                    id: ai_players_id
+                    text: "AI Players"
+                    on_release: root.app.show_ai_screen()
+    
+            GridLayout:
+                rows: 1
+                MyButton:
+                    id: rules_demo_id
+                    text: "Rules Demo"
+                    on_release: root.app.show_demo()
+        
+                MyButton:
+                    id: settings_id
+                    text: "Settings"
+                    on_release: root.app.show_settings_screen()
+    
+            MyButton:
+                text: "Quit"
+                on_release: root.app.prompt_quit()
+    
+            # TODO: Edit openings? Review completed games?
+
+
+<SetupScreen>:
+    GridLayout:
+        cols: 1
+
+        TitleLabel:
+            id: title_id
+            size_hint_y: .10
+
+        HSpacer:
+
+        SectionTitle:
+            text: "Rules"
+            size_hint_y: .11
+
+        HSpacer:
+
+        GridLayout:
+            cols: 2
+            size_hint: 1, None
+            height: my.dp(170)
+
+            MyCategoryLabel:
+                text: "Rules Variation"
+                size_hint: (1, .7)
+
+            MyCategoryLabel:
+                text: "Board Size"
+                size_hint: (1, .7)
+
+            Spinner:
+                text: 'Standard'
+                values: ['Standard', 'Tournament', '5-In-A-Row']
+                      #, 'Keryo', 'Freestyle', 'No Captures']
+                size_hint: (1, .7)
+                id: rules_id
+
+            Spinner:
+                text: '13'
+                values: ['9', '13', '19']
+                size_hint: (1, .7)
+                id: bs_id
+
+        SmallLabel:
+            size_hint: (1, .2)
+            id: rules_explanation_id
+            valign: 'top'
+            markup: True
+            
+        GridLayout:
+            cols: 1
+            size_hint_y: .3
+            Label:
+            Label:
+                text: "Game Clocks (minutes each)"
+            Label:
+
+            GridLayout:
+                size_hint_y: .5
+                rows: 1
+                Slider:
+                    id: time_control_id
+                    padding: my.dp(30)
+                    min: 0
+                    max: 10
+                    step: .5
+                    value: root.time_control
+                    on_value: root.time_control = (int(2*self.value)) / 2.0
+
+                Label:
+                    size_hint_x: .28
+                    text: root.time_control_text(time_control_id.value)
+
+        Label:
+            size_hint_y: .05
+
+        HSpacer:
+
+        SectionTitle:
+            text: "Players"
+            size_hint_y: .11
+
+        HSpacer:
+
+        GridLayout:
+            rows: 1
+            size_hint_y: .75
+
+            GridLayout:
+                cols: 1
+
+                MyCategoryLabel:
+                    text: "First Player"
+                    size_hint_y: .5
+
+                HSpacer:
+
+                CheckBoxList:
+                    id: black_type_id
+                    group: 'black_type'
+                    values: ('Human', 'Computer')
+
+                # TODO: double click to edit player?
+                Spinner:
+                    id: bpl_id
+                    values: root.player_names[1]
+                    size_hint: (1, .7)
+
+            VSpacer:
+
+            GridLayout:
+                cols: 1
+                MyCategoryLabel:
+                    text: "Second Player"
+                    size_hint_y: .5
+
+                HSpacer:
+
+                CheckBoxList:
+                    id: white_type_id
+                    group: 'white_type'
+                    values: ('Human', 'Computer')
+
+                Spinner:
+                    id: wpl_id
+                    values: root.player_names[2]
+                    size_hint: (1, .7)
+        Widget:
+            size_hint: (1, .02)
+
+        MyButton:
+            id: start_game_id
+            text: "Start Game"
+            on_press: root.start_game()
+            size_hint: (1, .22)
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, .18)
+
+            MyButton:
+                id: return_id
+                text: "Return"
+                on_press: root.app.pop_screen()
+
+            MyButton:
+                id: help_id
+                text: "Help"
+                on_press: root.app.show_game_setup_help()
+
+<AIPlayerScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            size_hint: (1, 0.6)
+            text: "AI Player Editor"
+
+        HSpacer:
+
+        SectionTitle:
+            text: 'Choose Player'
+
+        Spinner:
+            id: player_spinner_id
+            values: root.player_names
+            size_hint: (1, 0.7)
+
+        TextInput:
+            id: name_id
+            text: root.rename_text
+            multiline: False
+
+        SectionTitle:
+            text: 'Search Parameters'
+
+        HSpacer:
+
+        GridLayout:
+            size_hint_y: 3
+            cols: 1
+
+            BoxLayout:
+                #size_hint_y: None
+                #height: my.dp(48)
+
+                Label:
+                    size_hint_x: .3
+                    text: 'Depth'
+
+                Slider:
+                    id: depth_id
+                    min: 1
+                    max: 10
+                    step: 1
+                    value: root.genome.max_depth
+                    on_value: root.genome.max_depth = self.value
+
+                Label:
+                    size_hint_x: .2
+                    text: '{}'.format(int(depth_id.value))
+
+            BoxLayout:
+                #size_hint_y: None
+                #size_hint_y: 0.5
+                #height: my.dp(48)
+
+                Label:
+                    size_hint_x: .3
+                    text: 'Vision'
+
+                Slider:
+                    id: vision_id
+                    min: 10
+                    max: 100
+                    step: 1
+                    value: root.genome.vision
+                    on_value: root.genome.vision = self.value
+
+                Label:
+                    size_hint_x: .2
+                    text: '{}'.format(int(vision_id.value))
+
+            BoxLayout:
+                #size_hint_y: None
+                #height: my.dp(48)
+
+                Label:
+                    size_hint_x: .75
+                    text: 'Openings Book'
+
+                BigCheckBox:
+                    id: openings_id
+                    active: root.genome.use_openings_book
+                    on_active: root.genome.use_openings_book = self.active
+
+        HSpacer:
+
+        SectionTitle:
+            text: 'Position Evaluation'
+
+        HSpacer:
+
+        BoxLayout:
+            #size_hint_y: None
+            size_hint_y: 1.5
+            height: my.dp(48)
+
+            Label:
+                size_hint_x: .7
+                text: 'Judgement'
+                halign: 'left'
+
+            Slider:
+                id: j_id
+                min: 0
+                max: 100
+                value: root.genome.judgement
+                on_value: root.genome.judgement = self.value
+
+            Label:
+                size_hint_x: .3
+                text: '{}'.format(int(j_id.value))
+
+        GridLayout:
+            rows: 1 
+            size_hint_y: 0.75
+
+            MyButton:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            MyButton:
+                text: "Delete"
+                on_release: root.delete()
+
+        GridLayout:
+            rows: 1 
+            size_hint_y: 0.75
+            MyButton:
+                id: menu_id
+                text: "Menu"
+                on_release: root.show_menu_screen()
+
+            MyButton:
+                id: help_id
+                text: "Help"
+                on_release: root.show_help()
+
+<HumanPlayerScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            text: "Human Player Editor"
+            size_hint_y: .33
+
+        HSpacer:
+
+        Label:
+            text: 'Choose Player'
+
+        Spinner:
+            # TODO: double click to edit name
+            values: root.player_names
+            size_hint: (1, 0.35)
+            id: player_spinner_id
+
+        TextInput:
+            id: name_id
+            text: root.rename_text
+            size_hint: (1, 0.35)
+            multiline: False
+
+        Widget:
+
+        GridLayout:
+            rows: 2
+            size_hint: 1, .6
+
+            MyButton:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            MyButton:
+                text: "Delete"
+                on_release: root.delete()
+
+            MyButton:
+                id: menu_id
+                text: "Menu"
+                on_release: root.show_menu_screen()
+
+            MyButton:
+                text: "Help"
+                on_release: root.show_help()
+
+<HelpScreen>:
+    GridLayout:
+        cols: 1
+        id: gl_id
+        TitleLabel:
+            size_hint: 1, .07
+            markup: True
+            text: root.heading
+
+        HSpacer:
+    
+        MyScrollableLabel:
+            id: scrollable_id
+
+        GridLayout:
+            cols: 1
+            size_hint: 1, .07
+
+            MyButton:
+                id: return_id
+                text: "Return"
+                on_press: root.app.pop_screen()
+
+<HumanHelpScreen@HelpScreen>:
+
+<NewHelpScreen>:
+    GridLayout:
+        cols: 1
+        id: gl_id
+        TitleLabel:
+            size_hint: 1, .07
+            markup: True
+            text: root.title_text
+
+        HSpacer:
+    
+        ScrollView:
+            # This is for switching help text
+            id: scrollable_id
+
+        GridLayout:
+            cols: 1
+            size_hint: 1, .07
+
+            MyButton:
+                id: return_id
+                text: "Return"
+                on_press: root.app.pop_screen()
+
+<AIHelpScreen>:
+    title: "AI Player Help"
+
+<AIHelpText>:
+    Section:
+        continuation: True
+        text: root.intro_text
+        
+    HSpacer:
+    Section:
+        title: "Properties"
+        text: root.properties_text
+ 
+    HSpacer:
+    Section:
+        title: "Openings Book"
+        text: root.openings_text
+ 
+    HSpacer:
+    Section:
+        title: "Profiles"
+        text: root.profiles_text
+
+<ReviewButtons>:
+    size_hint_x: .3
+    cols: 1
+    MyButton:
+        id: rematch_id
+        text: "Rematch"
+        on_release: root.ps.rematch()
+    MyButton:
+        text: "Continue"
+        on_release: root.ps.set_review_mode(False)
+    MyButton:
+        id: beginning_id
+        text: "Beginning"
+        on_release: root.ps.go_to_the_beginning()
+    MyButton:
+        text: "Forward"
+        silent: True
+        id: forward_id
+        on_release: root.ps.go_forwards_one()
+    MyButton:
+        text: "Back"
+        on_release: root.ps.go_backwards_one()
+    MyButton:
+        id: menu_id
+        text: "Menu"
+        on_release: root.ps.app.show_menu_screen()
+
+<PlayButtons>:
+    size_hint_x: .3
+    cols: 1
+
+    MyButton:
+        id: rematch_id
+        text: "Rematch"
+        on_release: root.ps.rematch()
+    MyButton:
+        text: "Review"
+        id: review_id
+        on_release: root.ps.set_review_mode(True)
+    MyButton:
+        text: "Take Back"
+        on_release: root.ps.take_back_move()
+    MyButton:
+        text: "Settings"
+        on_release: root.ps.app.show_settings_screen()
+    MyButton:
+        id: help_id
+        text: "Help"
+        on_release: root.ps.show_help()
+    MyButton:
+        id: menu_id
+        text: "Menu"
+        on_release: root.ps.confirm_menu_screen()
+
+<PenteScreen>:
+    RelativeLayout:
+        pos: self.parent.board_offset
+        canvas:
+            Rectangle:
+                source: 'media/41-old-wooden-board.jpg'
+                size: self.size
+            Color:
+                rgba: 0, 0, 0, 1
+            Line:
+                points: root.gridlines
+                width: 2.0 * root.get_my_dp()
+            Color:
+                rgba: root.border_colour
+            Line:
+                #id: border_id
+                points: root.border_lines
+                joint: 'none'
+                width: root.border_width
+            Color:
+                rgba: root.illegal_rect_color
+            Rectangle:
+                pos: root.illegal_rect_pos
+                size: root.illegal_rect_size
+
+        RelativeLayout:
+            id: lower_horiz_grid_id
+            pos: 0,0
+            GridLayout:
+                rows: 1
+        #Label:
+            #text: root.h_grid_text
+            #halign: 'justify'
+            #color: 0, 0, 0, 1
+            #size_hint_y: None
+            #height: self.texture_size[1]
+            #text_size: self.width - 20, None
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: root.board_offset[1]
+        canvas.before:
+            Color:
+                rgba: .3, .6, .9, 1
+            Rectangle:
+                # self here refers to the widget i.e GridLayout
+                pos: self.pos
+                size: self.size
+        GridLayout:
+            rows: 1
+
+            GridLayout:
+                # This is for switching panel buttons
+                rows: 1
+                size_hint: (.35, 1)
+                id: panel_buttons_id
+            
+            GridLayout:
+                rows: 2
+                # TODO: duplication
+                MyBigLabel:
+                    id: black_time_id
+                    text: ""
+                MyBigLabel:
+                MyBigLabel:
+                    id: p1_id
+                    text: root.player_name[1]
+                    markup: True
+                MyBigLabel:
+
+                MyBigLabel:
+                    id: white_time_id
+                    text: ""
+                MyBigLabel:
+                MyBigLabel:
+                    id: p2_id
+                    text: root.player_name[2]
+                    markup: True
+                MyBigLabel:
+
+    RelativeLayout:
+        pos: (0,0)
+        canvas:
+            Color:
+                rgba: root.confirm_rect_color
+            Rectangle:
+                size: (root.size[0], self.parent.board_offset[1])
+        Label:
+            id: 'confirm_text'
+            size_hint_y: .35
+            color: root.confirm_text_color
+            font_size: my.dp(65)
+            text: "Confirm Here"
+
+<SettingsScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            text: "PentAI Settings"
+            size_hint_y: .08
+
+        HSpacer:
+
+        ScrollView:
+            size_hint_y: .8
+            GridLayout:
+                id: gl_id
+                cols: 1
+                height: self.minimum_height
+                size_hint_y: 1.7
+
+                SectionTitle:
+                    text: "User Interface"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                OptionsSetting:
+                    id: guide_id
+                    text: "Guide"
+                    values: ("Off", "On", "Restart")
+                    desc: "The Guide helps you to learn how to use PentAI"
+                    key: "guide_setting"
+                    on_value: root.set_guide()
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Mark Moves"
+                    desc: "Mark the last two moves, each with a dot in the centre"
+                    key: "mark_moves"
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Show Captures"
+                    desc: "Show pieces that were captured last move as transparent ghost pieces"
+                    key: "mark_captures"
+
+                HSpacer:
+
+                OptionsSetting:
+                    text: "Move Confirmation"
+                    values: ("None Required", "Off Board")
+                    desc: "For small screens or while travelling"
+                    key: "move_confirmation"
+
+                HSpacer:
+
+                SliderSetting:
+                    text: "Minimum Wait Time"
+                    desc: "Minimum time to wait for the AI to play (secs)"
+                    min: 0
+                    max: 2
+                    step: .1
+                    key: "minimum_wait"
+                            #text: "%.1f" % s_id.value
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Show Confirmation Popups"
+                    desc: "For major actions such as exiting"
+                    key: "confirm_popups"
+                    on_value: root.set_confirmation_popups()
+
+                HSpacer:
+
+                SectionTitle:
+                    text: "Players"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                OptionsSetting:
+                    text: "Rematch first player"
+                    values: ("Don't Swap", "Alternate", "Loser First")
+                    desc: "Who goes first in a rematch?"
+                    key: "rematch_first_player"
+
+                HSpacer:
+
+                OptionsSetting:
+                    text: "First player colour"
+                    values: ("Always White", "Always Black", "Keep The Same")
+                    desc: "Which colour goes first"
+                    key: "first_player_colour"
+
+                HSpacer:
+
+                SectionTitle:
+                    text: "Openings Book"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Add games"
+                    desc: "Add my completed games to the openings book"
+                    key: "add_games_to_ob"
+
+                # Label:
+                #     size_hint_y: .07
+
+                # OptionsSetting:
+                #     id: build_id
+                #     text: "Build"
+                #     key: "openings_book_building"
+
+                # HSpacer:
+
+                SectionTitle:
+                    text: "Sound"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                SliderSetting:
+                    text: "Effects Volume"
+                    desc: "How loud should the sound effects be?"
+                    min: 0
+                    max: 1
+                    key: "effects_volume"
+                    display_factor: 100
+                    on_value: root.adjust_volumes()
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Tick"
+                    desc: "Should the clock make a ticking sound?"
+                    key: "tick"
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Play win/loss sounds"
+                    desc: "Should the end of a game play music?"
+                    key: "win_loss_sound"
+
+                HSpacer:
+
+                SliderSetting:
+                    text: "Music Volume"
+                    desc: "How loud should the music be?"
+                    min: 0
+                    max: 1
+                    key: "music_volume"
+                    display_factor: 100
+                    on_value: root.adjust_volumes()
+
+                HSpacer:
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, .06)
+
+            MyButton:
+                id: return_id
+                text: "Return"
+                on_press: root.app.pop_screen()
+
+            MyButton:
+                id: help_id
+                text: "Help"
+                on_press: root.app.show_settings_help()
+
+<Piece>:
+    Image:
+        id: image
+        source: root.source
+        center: 0, 0
+

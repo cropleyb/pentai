@@ -1,0 +1,17 @@
+Thad:	(28. March 2014, 03:32:15) You learned a lot in this one, yes?
+cropleyb:	(28. March 2014, 03:23:22) Looks like it just gave up. *sigh*
+Thad:	(28. March 2014, 03:06:27) I'm curious to see what PentAI does here. "Mate in 2" if he (she?) fails to block in column L.
+cropleyb:	(28. March 2014, 00:30:35) Hmmm. Fair enough. I've built in openings book functionality, but the "database" that it uses at the moment is very dodgy. It does learn from previous games when the openings book is turned on (which it isn't here).
+Thad:	(27. March 2014, 19:10:29) I have always seen forced to mean having only one move.
+
+You can't use an algorithm to make P2‘s first move. There are too many possibilities. Right? You need an opening book. When you transition from an opening book to the algorithm is subjective, I'd say. Does your program learn from past games?
+cropleyb:	(27. March 2014, 09:51:44) In this position, I had a choice of two moves. I consider that to be forced :) And it all goes downhill from here... (as you predicted) Do you think an optimal openings book is required? I'd prefer to have the general search algorithm make better moves than have it follow an openings book "recipe", but that seems to be the only way to win against top players such as yourself.
+Thad:	(27. March 2014, 09:23:21) Yes, by ahead, I meant controlling the play. Although your move isn't forced here, you do need to block my tria. And then I will build another tria on my next move or capture a pair where you will need to replace one of the stones, etc. A good player can grab that initive very early and really hold on to it.
+cropleyb:	(27. March 2014, 06:51:52) It's the overall board situation that PentAI doesn't get yet. By "ahead" I guess you mean something like having the initiative in chess - having the ability to force defensive moves by the opponent? PentAI values a single longer line to be worth many lines with one less stone in there. The scaling factor is something like 17 at the moment (established by setting up lots of duels b/w AI versions)
+Thad:	(27. March 2014, 00:27:31) Hmm, I consider myself to be strong when I get some diagonals going, but I don't know if I value them more than h/v ones. I value being ahead more than horizontal/vertical vs. diagonal. I think they have to be measured in conjunction with the rest of the board.
+
+Have you looked at Connect6? I should have mentioned it before now. It doesn't suffer the first player advantage that pente has.
+cropleyb:	(25. March 2014, 23:09:51) Well this doesn't look great even to me. If it is just experience of this particular position that tells you it is bad, it is probably best covered by an openings book entry. Another question for you - do you value diagonal lines differently to orthogonal ones (H/V)? Or are they completely equivalent. I might do some testing.
+Thad:	(25. March 2014, 20:14:40) Experience? Let's see where we are in a couple more moves.
+cropleyb:	(25. March 2014, 09:20:19) What makes you think it is weak?
+Thad:	(25. March 2014, 08:49:14) I think J11 was a weak move, but we'll have to see where the game goes.

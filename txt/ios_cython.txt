@@ -1,0 +1,19 @@
+Hi all
+
+I am having trouble getting my cython extensions on to my new iPad.
+I just found this blog, which should help, but I still have some conceptual questions.
+http://shadowmint.blogspot.com.au/2013/10/kivy-cython-extensions-and-ios.html
+
+Is there a reason why the .pyx files cannot be cythonized and compiled by the tools/populate-project.sh script, and then built from XCode?
+
+Why do I get the error:
+  File "/Library/Python/2.7/site-packages/Cython/Compiler/Main.py", line 17, in <module>
+    from Scanning import PyrexScanner, FileSourceDescriptor
+ImportError: dynamic module does not define init function (initScanning)
+... when I attempt to build my extensions via XCode?
+
+I have several .py files that I cythonize when I build and test on OS X. I'd like to avoid having to move them out of my source tree and/or have them build into separate python package(s). Is this possible?
+
+Thanks in advance for any suggestions, this has been very time consuming...
+Bruce
+

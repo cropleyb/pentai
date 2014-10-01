@@ -1,0 +1,5 @@
+An interesting discussion about the limits of pente AIs.
+http://pente.org/gameServer/forums/thread.jspa?forumID=1&threadID=4653&start=60&tstart=0
+
+History Heuristic and other alpha-beta enhancements compared.
+http://www.faui01.de/brettspiele/schaeffer-alphabetaenhancements.pdf

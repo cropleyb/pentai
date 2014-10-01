@@ -1,19 +1,26 @@
 [
     {
         "type": "title",
-        "title": "Mark last 2 moves"
+        "title": "User Interface"
     },
     {
-        "type": "bool",
-        "title": "Mark them",
-        "desc": "Mark the last two moves with a dot in the centre",
+        "type": "options",
+        "title": "Guide",
+        "desc": "Mark the last two moves, each with a dot in the centre",
+        "options": ["Off",
+                    "Restart",
+                    "On"],
         "section": "PentAI",
-        "key": "mark_moves",
+        "key": "guide_setting",
         "true": "auto"
     },
     {
-        "type": "title",
-        "title": "Mark captures"
+        "type": "bool",
+        "title": "Mark moves",
+        "desc": "Mark the last two moves, each with a dot in the centre",
+        "section": "PentAI",
+        "key": "mark_moves",
+        "true": "auto"
     },
     {
         "type": "bool",
@@ -24,19 +31,23 @@
         "true": "auto"
     },
     {
-        "type": "title",
-        "title": "Confirm style"
-    },
-    {
         "type": "options",
         "title": "Move confirmation",
-        "desc": "",
+        "desc": "For small screens or while travelling",
         "options": ["None Required",
                     "Off Board",
                     "On Piece"],
         "section": "PentAI",
         "key": "move_confirmation",
         "true": "auto"
+    },
+    {
+        "type": "numeric",
+        "title": "Minimum wait time",
+        "desc": "Minimum time to wait for the AI to play (secs)",
+        "section": "PentAI",
+        "key": "minimum_wait",
+        "0.5": "auto"
     },
     {
         "type": "title",
@@ -52,14 +63,30 @@
     },
     {
         "type": "title",
-        "title": "Sound volume"
+        "title": "Sound"
     },
     {
         "type": "numeric",
-        "title": "Volume",
+        "title": "Effects Volume",
         "desc": "How loud are the sound effects",
         "section": "PentAI",
         "key": "effects_volume",
-        ".5": "auto"
+        "1.0": "auto"
+    },
+    {
+        "type": "bool",
+        "title": "Tick",
+        "desc": "Should the clock make a ticking sound?",
+        "section": "PentAI",
+        "key": "tick",
+        "true": "auto"
+    },
+    {
+        "type": "numeric",
+        "title": "Music Volume",
+        "desc": "How loud is the music",
+        "section": "PentAI",
+        "key": "music_volume",
+        "0.5": "auto"
     }
 ]

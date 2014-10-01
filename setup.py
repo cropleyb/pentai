@@ -1,40 +1,62 @@
-"""
-Distutils script for building cython .c and .so files. Call it with:
-python setup.py build_ext --inplace
-"""
+#
+# Kivy - Crossplatform NUI toolkit
+# http://kivy.org/
+#
 
 from distutils.core import setup
-from Cython.Build import cythonize
+from os.path import sep
+from os import environ
+import sys
 
-#from Cython.Compiler.Options import directive_defaults
-#directive_defaults['profile'] = True
+platform = sys.platform
+kivy_ios_root = environ.get('KIVYIOSROOT', None)
+if kivy_ios_root is not None:
+    platform = 'ios'
 
-cy_modules = [
-            'board_strip.pyx',
-            'length_lookup_table.pyx',
-            ]
-if False:
-    cy_modules.extend([
-            'priority_filter.py',
-            'priority_filter_2.py',
-            'utility_stats.py',
-    ])
-if False:
-    cy_modules.extend([
-        'budget_searcher.py',
-        'utility_calculator.py',
-        'direction_strips.py',
-        'alpha_beta.py',
-        'ab_state.py',
-        'game_state.py',
-        'board.py',
-        'ai_player.py',
-    ])
+# -----------------------------------------------------------------------------
+
+def get_modulename_from_file(filepath):
+    filepath = filepath.replace(sep, '/')
+    pyx = '.'.join(filepath.split('.')[:-1])
+    pyxl = pyx.split('/')
+
+    try:
+        while pyxl[0] != 'pente':
+            pyxl.pop(0)
+        if pyxl[1] == 'pente':
+            pyxl.pop(0)
+    except:
+        print "Couldn't get_modulename_from_file from %s" % filepath
+        pyxl = pyx.split('/')[1:] # Strip off the leading "./"
+    r = '.'.join(pyxl)
+    return r
+
+if platform != 'ios':
+    # OS X
+    from Cython.Build import cythonize
+
+    ext_options = {"compiler_directives": {"profile": False}, "language": "c++", "annotate": False}
+    #    kwargs['language'] = "c++"
+    ext_modules = cythonize(["pentai/*/*.pyx"], **ext_options) 
+else:
+    from distutils.extension import Extension
+    import glob
+
+    ext_modules = []
+    c_files = glob.glob("pentai/*/*.c")
+    for filepath in c_files:
+        ext_name = get_modulename_from_file(filepath)
+        ext_modules.append(Extension(ext_name, [filepath]))
 
 setup(
-        name = "Pentacular",
-        ext_modules = cythonize(
-            cy_modules
-            # extra_compile_args=["-O3"], # Is this doing anything?
-        )
+    name='pentai',
+    author='Bruce Cropley',
+    packages=[
+        'pentai',
+        'pentai.base',
+        'pentai.ai',
+        # TODO: Why is db missing (openings book)
+        ],
+    ext_modules=ext_modules,
     )
+

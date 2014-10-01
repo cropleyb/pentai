@@ -1,0 +1,44 @@
+Cannot use cdef at module scope in a pyx file, must be inside a function.
+Same for both attributes and methods.
+cpdef and public attributes can be used at module scope, as if they were in a
+.py file.
+
+Plan
+How to convert to cython incrementally?
+
+cpdef
+Add types to signatures
+Create cdefines for base types
+Pos tuple -> cdef class
+
+pentai/ai/ab_game.pyx
+pentai/ai/ab_state.pyx
+pentai/ai/alpha_beta.pyx
+pentai/ai/heuristic_filter.pyx
+pentai/ai/killer_filter.pyx
+pentai/ai/length_factor.pyx
+pentai/ai/length_lookup_table.pyx
+pentai/ai/openings_mover.pyx
+pentai/ai/priority_filter.pyx
+pentai/ai/priority_filter_2.pyx
+pentai/ai/priority_filter_3.pyx
+pentai/ai/priority_filter_4.pyx
+pentai/ai/priority_filter_5.pyx
+pentai/ai/rot_standardise.pyx
+pentai/ai/trans_standardise.pyx
+pentai/ai/utility_calculator.pyx
+pentai/ai/utility_filter.pyx
+pentai/ai/utility_stats.pyx
+pentai/base/bit_reverse.pyx
+pentai/base/board.pyx
+pentai/base/board_strip.pyx
+pentai/base/defines.pyx
+pentai/base/direction_strips.pyx
+pentai/base/game.pyx
+pentai/base/game_state.pyx
+pentai/db/openings_book.pyx
+
+Pos tuple -> cdef class
+__getitem__ must work from .py
+internally, unsigned short?
+
