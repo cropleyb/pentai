@@ -1,59 +1,44 @@
-Letter from Prof. Rosenthal that I can't work
-Disability solicitor: Maurice Blackburn 1800 173 657
-Local toy broker: Malcolm Hall: 9886 9122
-Test Flight: http://tflig.ht/1mL1zQu
-bundle id: org.kivy.pentai
-Financial Advisor: Mark Costigan 9739 6911
-
 For Alpha release
-# Contact Hasbro again?
-Call copyright lawyer: ?
-Kristel contacts?
-Liam feedback?
 Edit game defaults overridding .
 More Colour? Background animation?
 
-Gary Gabrel:
-http://www.inc.com/magazine/19830701/1772.html
-
-list of testers
-FB ask for volunteers publicly, or privately?
-Who has an iPad?
-bionoid? inclement? mmammel?
-
-Great :) You have an iPad? I will need your email address to send a TestFlight invite. Once you get that and register your device, I need to load that into a "profile" and then build a version of my app with that profile in it, and upload it to TestFlight again.
-
 Finishing off before wide public release
 ----------------------------------------
-Openings Book: request permission from Rainwolf?
+Merge main dev branch to master
+Fix RH edge play bug on iOS
+Package version on OS X
+
 Remove Human Player defaults
 
 Improve strength
 ----------------
+- Optimise with more cython features: pxd cincludes, cdef classes
+  This could boost the speed of the AI search by a factor of 5 or 10, which would enable the depth slider to go up by 1 (to 11 ;)
+
 Openings book - Manual Tweak? Filter out worst moves
-optimise
 search alg.
-- iterative deepening
-- chokes: study move number chosen
+- Go back moves in search to avoid cloning for every move searched
+- Try iterative deepening
+- How to gauge how many moves need to be searched at a particular level? For budget search etc.
 #- killer heuristic? history heuristic? Not helping.
+#- search order inc line subtype knowledge. didn't seem to help much.
+
 utility function
-- fukami
-- diagonal versus straight weighting?
-#- different utility for different spacings of same length lines
-- search order inc line subtype knowledge
+- fukami. didn't seem to help when implemented for search order; perhaps it would help if it was included in the utility calc.?
+- diagonal versus straight line weighting?
 - parallel lines
+- black to white squares ratio (if it was a chessboard)
 - centeredness
 - hammer formation
-- How to gauge how many moves need to be searched at a particular level? For budget search etc.
-- Length level for search stats; yet another PF that uses it (count levels of lengths used as best, relative to the first level tried)
-- Go back moves in search to avoid cloning
+- chessboard: weighting for more squares of one colour?
 - 0. m 1. capture m 2. m Must be better than 0. m 1. (anything else)
   (where m is an opponent move, and 2. m is the best line of play for P2)
   If best move (move 2) == same as two moves ago: # after all move 2s searched
-      don't need to search any non-captures for move 1.
+      -> don't need to search any non-captures for move 1, the capture is best
 - Create a list of instructive lost games
-- Optimise Openings DB creation
-- chessboard: weighting for more squares of one colour?
+#- different utility for different spacings of same length lines ("subtypes")
+#- Length level for search stats; yet another PF that uses it (count levels of lengths used as best, relative to the first level tried)
+- Optimise Openings DB creation: op_pos.py -> .pyx helped a lot, but made the db not portable.(?)
 
 People's suggestions
 --------------------
