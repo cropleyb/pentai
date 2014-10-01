@@ -212,6 +212,12 @@ class GameTest(unittest.TestCase):
         g.set_rating(P1, 1179)
         self.assertEquals(g.get_rating(P1), 1179)
 
+    def test_win_far_corner(self):
+        rules = Rules(19, "tournament")
+        game = Game(rules, Player("Kelvin"), Player("Bruce"))
+        game.load_moves("1. (9,9)\n2. (18,18)\n3. (3,5)\n4. (17,17)\n5. (6,3)\n6. (16,16)\n7. (11,1)\n8. (15,15)\n9. (8,6)\n10. (14,14)\n")
+        self.assertEquals(game.get_won_by(), P2)
+
 if __name__ == "__main__":
     unittest.main()
 
