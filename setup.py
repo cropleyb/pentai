@@ -35,8 +35,7 @@ if platform != 'ios':
     # OS X
     from Cython.Build import cythonize
 
-    ext_options = {"compiler_directives": {"profile": False}, "language": "c++", "annotate": False}
-    #    kwargs['language'] = "c++"
+    ext_options = {"compiler_directives": {"profile": False}, "annotate": False}
     ext_modules = cythonize(["pentai/*/*.pyx"], **ext_options) 
 else:
     from distutils.extension import Extension
