@@ -19,6 +19,10 @@ Windows         Yes?            Not tried
 Linux           Yes             Not tried
 Android         Not tried       Not tried
 
+High level AI design
+--------------------
+http://www.bruce-cropley.com/pentai
+
 Music
 -----
 The music is all original, by me (Bruce Cropley)
