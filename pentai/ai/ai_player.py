@@ -77,7 +77,7 @@ class AIPlayer(p_m.Player):
             try:
                 #import disable_process
                 self.do_search_process(gui)
-            except ImportError: # For Multiprocessing
+            except ImportError: # No multiprocessing
                 t = threading.Thread(target=self.search_thread, args=(gui,))
                 
                 # Allow the program to be exited quickly
