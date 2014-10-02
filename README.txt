@@ -8,7 +8,7 @@ PentAI is an app that plays Pente. The Artificial Intelligence (AI) can play at 
 Dependencies
 ------------
 User Interface: Kivy 1.8.1
-Persistence:    ZODB 4.0.0
+Persistence:    ZODB 4.0.0 & zlibstorage
 
 Status
 ------
@@ -16,7 +16,7 @@ Platform        Builds & Runs   Package
 OS X            Yes             Yes, except for NSScreen
 iOS (iPad Air)  Yes?            Yes?, but it's a nightmare.
 Windows         Yes?            Not tried
-Linux           Not tried       Not tried
+Linux           Yes             Not tried
 Android         Not tried       Not tried
 
 Music
@@ -29,29 +29,32 @@ Install Kivy and all its dependencies as per the kivy website instructions
 
 Install ZODB with:
 kivy pip install ZODB
+kivy pip install zlibstorage
+
+Before it will run, you will need to build the cython modules (see below)
 
 Build and test for development (OS X/Windows)
 ------------------------------
-I use vim, and have a few key maps set up to do several repeated tasks:
+I use the text editor vim, and have a few key maps set up to do several frequently repeated tasks:
 
 Build the cython extensions with:
-kivy setup.py build_ext --inplace
+kivy ./setup.py build_ext --inplace
 map <silent> ,b :wa<CR>:!kivy $PENTAIPATH/setup.py build_ext --inplace<CR>
 
 Run all the unit tests (<1s) with:
-kivy pentai/t_all.py
+kivy ./pentai/t_all.py
 map <silent> ,t :wa<CR>:!kivy $PENTAIPATH/pentai/t_all.py<CR>
 
 Run the AI subsystem tests (<20s):
-kivy pentai/ai/t_ai_subsystem.py
+kivy ./pentai/ai/t_ai_subsystem.py
 map <silent> ,a :wa<CR>:!kivy $PENTAIPATH/pentai/ai/t_ai_subsystem.py<CR>
 
 Run the AI in matches against itself (no visuals)
-kivy pentai/run_ai.py
+kivy ./pentai/run_ai.py
 map <silent> ,r :wa<CR>:!kivy $PENTAIPATH/pentai/run_ai.py<CR>
 
 Run the app:
-kivy main.py -m inspector
+kivy ./main.py -m inspector
 map <silent> ,k :wa<CR>:!kivy $PENTAIPATH/main.py -m inspector<CR>
 
 Build for iOS
