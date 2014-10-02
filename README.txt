@@ -14,8 +14,8 @@ Status
 ------
 Platform        Builds & Runs   Package
 OS X            Yes             Yes, except for NSScreen
-iOS (iPad Air)  Yes             Yes, but it's a nightmare.
-Windows         Yes             Not tried
+iOS (iPad Air)  Yes?            Yes?, but it's a nightmare.
+Windows         Yes?            Not tried
 Linux           Not tried       Not tried
 Android         Not tried       Not tried
 
