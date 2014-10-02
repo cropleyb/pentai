@@ -21,58 +21,6 @@ import pentai.db.openings_book as ob_m
 
 import pentai.gui.scale as sc_m
 
-def get_screen_size(appsize=False):
-    import sys
-    """
-    returns Monitor size x and y in pixels for desktop platforms, or None for
-    mobile platforms
-    """
-    if sys.platform == 'linux2' and not appsize:
-        import subprocess
-        output = subprocess.Popen(
-            'xrandr | grep "\*" | cut -d" " -f4',
-            shell=True,
-            stdout=subprocess.PIPE).communicate()[0]
-        screenx = int(output.replace('\n', '').split('x')[0])
-        screeny = int(output.replace('\n', '').split('x')[1])
-    elif sys.platform == 'win32' and not appsize:
-        from win32api import GetSystemMetrics
-        screenx = GetSystemMetrics(0)
-        screeny = GetSystemMetrics(1)
-    elif sys.platform == 'darwin' and not appsize:
-        try:
-            from AppKit import NSScreen
-        except ImportError:
-            # iOS
-            return None
-
-        frame_size = NSScreen.mainScreen().frame().size
-        screenx = frame_size.width
-        screeny = frame_size.height
-    else:
-        # For mobile devices, use full screen
-        return None
-    return (screenx, screeny)
-
-def set_screen_size():
-    whole_screen = get_screen_size()
-    if whole_screen:
-        # Pad for OS menubar
-        height = int(whole_screen[1] * .93)
-
-        # Portrait
-        width = int(height * .63)
-
-        # Set the app's size in App.build()
-        kivy.core.window.Window.size = (width, height)
-
-    app_height = int(kivy.core.window.Window.size[1])
-    # 720 was the original height of the app in pixels, to which the 
-    # GUI has been built
-    f = app_height / 720.0
-
-    sc_m.set_scale_factor(f)
-
 class PentAIApp(App):
     game_filename = StringProperty("")
 
@@ -103,6 +51,20 @@ class PentAIApp(App):
                         os.unlink(del_path)
                     except OSError:
                         pass
+
+    def set_screen_size(self):
+        app_width = self.config.getint("PentAI", "app_width")
+        app_height = self.config.getint("PentAI", "app_height")
+        kivy.core.window.Window.size = (app_width, app_height)
+
+        # 720 was the original height of the app in pixels, to which the 
+        # GUI has been built
+        f = app_height / 720.0
+
+        sc_m.set_scale_factor(f)
+
+    def on_resize(self, *args):
+        self.root.resize(*args)
 
     def display_message(self, message, title=None):
         from kivy.uix.label import Label
@@ -307,6 +269,13 @@ class PentAIApp(App):
         # TODO Send to the current screen for cleanup?
         current_screen = self.root.current_screen
         if current_screen:
+
+            app_width, app_height = kivy.core.window.Window.size
+
+            self.config.set("PentAI", "app_width", str(app_width))
+            self.config.set("PentAI", "app_height", str(app_height))
+            self.config.write()
+
             current_screen.on_pre_leave()
             current_screen.on_leave()
         z_m.sync()
@@ -421,10 +390,10 @@ class PentAIApp(App):
 
     def build(self):
         log.debug("app build 1")
-        set_screen_size()
         ini_file = "pentai.ini"
-        if False:
+        #if False:
         #if True:
+        if not ini_file in os.listdir(self.user_data_dir):
             # Keep this for developing new config items
             log.info("Copying init")
             import shutil
@@ -432,6 +401,7 @@ class PentAIApp(App):
             shutil.copy(ini_file, dest)
         log.debug("app build 2")
         self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
+        self.set_screen_size()
 
         root = ps_m.PScreenManager()
         self.root = root
@@ -439,6 +409,8 @@ class PentAIApp(App):
         log.debug("app build 3")
         self.show_intro_screen()
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
+
+        EventLoop.window.bind(on_resize=self.on_resize)                  
 
         import audio as a_m
         self.audio = a_m.Audio(self.config)

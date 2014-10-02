@@ -60,13 +60,23 @@ class PenteScreen(Screen, gso_m.GSObserver):
     illegal_rect_pos = ListProperty([0, 0])
     illegal_rect_size = ListProperty([0, 0])
 
+    def set_my_dp(self, screen_size):
+        print "set_my_dp ss: %s" % (screen_size,)
+        # TODO: Use scale module
+        global my_dp
+        my_dp = screen_size[0] / 457.0
+        self.calc_board_offset(screen_size)
+
     def __init__(self, screen_size, filename, *args, **kwargs):
         # GuiPlayer?
         self.moved_marker = [None, None, None]
 
+        self.set_my_dp(screen_size)
+        '''
         # TODO: Use scale module
         global my_dp
         my_dp = screen_size[0] / 457.0
+        '''
 
         self.marker = None
         self.stones_by_board_pos = {}
@@ -82,8 +92,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.turn_marker = None
         self.win_marker = Piece(13, source=win_filename)
 
-        self.calc_board_offset(screen_size)
-
         self.reviewing = False
 
         super(PenteScreen, self).__init__(*args, **kwargs)
@@ -95,6 +103,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         x, y = screen_size
         # bo = y - x # Square board
         bo = y * .35 # Same vertical ratio
+        print "Setting BO to %s" % bo
         self.board_offset[1] = bo
 
     def clean_board(self):
@@ -370,6 +379,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if not self.game.finished():
             self.set_review_mode(False)
         time.sleep(0.5)
+
+    def resize(self, screen_size):
+
+        self.set_my_dp(screen_size)
+        self.setup_grid()
+        #self.size = screen_size
+        self.on_enter()
 
     def on_pre_leave(self):
         self.leave_game()
@@ -683,6 +699,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             dependant on the size of the board """
         size_x, size_y = self.size
         bsp = screen_pos[0], screen_pos[1]-self.board_offset[1]
+        #print "screen_to_board size: %s" % self.size
         size_y -= self.board_offset[1]
         GS = self.grid_size()
         board_x = int(round(GS * bsp[0] / size_x) - 1)

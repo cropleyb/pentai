@@ -38,6 +38,10 @@ class PScreenManager(ScreenManager):
     def get_size(self):
         return self.current_screen.size
 
+    def resize(self, *args):
+        if self.current == "Pente":
+            self.current_screen.resize(args[1:])
+
     def set_current(self, screen_name):
         if self.current != screen_name:
             self.leave()
