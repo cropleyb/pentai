@@ -50,7 +50,7 @@ def create_default_players(defaults=None):
         create_default_ais()
         set_default_game(defaults)
 
-def create_default_humans(release=True):
+def create_default_humans(release):
 
     log.debug("Creating Human Players")
     pm = pm_m.PlayersMgr()
