@@ -1,3 +1,6 @@
+This file has been used to self document the design process.
+It does not describe the current design, rather the history of the design. Only the more challenging design issues are "discussed", with varying levels of detail. It is in time order, so the latest challenges are at the end of the document.
+
 Classes
 -------
 detect 5 in a row from substrip?
@@ -14,14 +17,10 @@ IBoardDisplay, KVBoardDisplay, TxtBoardDisplay (,curses?), NullBoardDisplay
 Rules - board size, 5 in a row, etc.
 
 ABState - state used by alpha-beta search code
-ABState must be notified of changes to the wrapped GameState, so it can update the 
-substrips - similar to the gui; it only needs to be told about adding and removing stones, and doesn't need
-it's own Board instance; use the same code for both.
+ABState must be notified of changes to the wrapped GameState, so it can update the substrips - similar to the gui; it only needs to be told about adding and removing stones, and doesn't need it's own Board instance; use the same code for both.
 ABGame - game used by alpha-beta search code
 
 AB code has a cutoff test, which can be used by the GUI
-
-
 
 GameUI
 (two subclasses, kivy and txt)
