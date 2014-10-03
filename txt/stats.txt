@@ -1,3 +1,10 @@
+This was some testing into the effectiveness of the search ordering;
+how often was the "best" move found as the nth move examined.
+A better move ordering in the search means that more branches will be
+cut off by the Alpha-Beta search, so the search will be quicker.
+A quicker AI means that a deeper search can be performed, which leads to
+an AI that plays better.
+
 Best value was at:
 Depth	v0	v1		v2		v3		v4		v5		v6		v7		v8
 0	0		0		0		0		0		0		0		0		0

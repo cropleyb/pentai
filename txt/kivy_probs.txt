@@ -1,7 +1,0 @@
-Text wrapping - spaces at start of line.
-Lines starting with a dash should indent (2 spaces?) if they are automatically wrapped.
-
-Audio length 0 on iOS - raise NotImplementedError
-Texture size too big - should be transparently creating a composite, or raising an exception
-Report errors should raise exceptions. refer to Python style guide, other bug reports
-

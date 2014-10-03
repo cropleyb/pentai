@@ -1,5 +1,4 @@
 Pente is played on the intersections, not in the squares.
-Black always goes first.
 In the standard and tournament versions, the first move must be in the centre.
 The first player to get five or more stones in a continuous straight line wins.
 Stones can be placed on any empty intersection, including edges and corners.

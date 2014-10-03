@@ -1,0 +1,32 @@
+This document will attempt to describe the current design of the PentAI App.
+
+Directory structure
+
+pentai
+    base
+        Contains the low level modules for representing a game of Pente:
+        Board, Rules, Game, Player. Much is cythonized for speed.
+    ai
+        The Artificial Intelligence code. Much is cythonized here too.
+    db
+        DataBase - for persisting games, players, opening positions etc.
+        Uses the ZODB (Object Oriented DB), which internally uses cPickle.
+    gui
+        Graphical User Interface for PentAI, using Kivy
+
+media
+    Contains a mixture of graphics (.png) and sounds (.ogg)
+    TODO: Put the graphic and sounds in different directories; images are currently directly beneath media, sounds are in subdirectories of media.
+    music
+    demo
+
+Libraries and Tools
+    Kivy
+    Cython
+    ZODB
+    mention PersistentDict
+    PyInstaller
+
+Features
+
+Demo
