@@ -72,5 +72,16 @@ Package for OS X
 ----------------
 Basically as per the Kivy packaging instructions, with the added difficulty of packaging ZODB and PentAI's cythonized AI code.
 
+Run AI
+------
+There is a very hacky script that I have used to compare various AI player settings: pentai.run_ai
+I have deliberately left lots of dead code in there to show what can be done with it. If you want to get repeatable results, turn the openings book off for both players.
 
+Build openings book
+-------------------
+The openings book is built from many games played by good players.
+There is a tradeoff between the size of the distributed app, and the time taken to build the openings DB. Representing each game as series of moves takes less space than representing each entire state of the board for matching against during games. However, at the moment, the full openings DB is distributed as part of the package.
 
+To build db.fs.openings (on a desktop machine):
+(delete it first or it will grow with duplicates)
+python pentai/db/openings_builder.py
