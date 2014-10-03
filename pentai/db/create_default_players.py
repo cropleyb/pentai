@@ -50,17 +50,12 @@ def create_default_players(defaults=None):
         create_default_ais()
         set_default_game(defaults)
 
-def create_default_humans(release):
+def create_default_humans(release=True):
 
     log.debug("Creating Human Players")
-    if release:
-        log.debug("(for release)")
     pm = pm_m.PlayersMgr()
 
     player_names = ["You"]
-    if not release:
-        player_names.extend(["BC", "Bruce", "Mark", "Jespah", "Arwen", "Sascha",
-                "Marion", "Wendy"])
 
     player_names.reverse()
     for name in player_names:
