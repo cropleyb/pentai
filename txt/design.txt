@@ -1,32 +1,80 @@
 This document will attempt to describe the current design of the PentAI App.
 
-Directory structure
-
-pentai
-    base
-        Contains the low level modules for representing a game of Pente:
-        Board, Rules, Game, Player. Much is cythonized for speed.
-    ai
-        The Artificial Intelligence code. Much is cythonized here too.
-    db
-        DataBase - for persisting games, players, opening positions etc.
-        Uses the ZODB (Object Oriented DB), which internally uses cPickle.
-    gui
-        Graphical User Interface for PentAI, using Kivy
-
-media
-    Contains a mixture of graphics (.png) and sounds (.ogg)
-    TODO: Put the graphic and sounds in different directories; images are currently directly beneath media, sounds are in subdirectories of media.
-    music
-    demo
-
 Libraries and Tools
-    Kivy
     Cython
     ZODB
-    mention PersistentDict
-    PyInstaller
+    Kivy
+
+Directory structure
+
+    pentai
+        base
+            Contains the low level modules for representing a game of Pente:
+            Board, Rules, Game, Player. Much is cythonized for speed.
+        ai
+            The Artificial Intelligence code. Much is cythonized here too.
+        db
+            DataBase - for persisting games, players, opening positions etc.
+            Uses the ZODB (Object Oriented DB), which internally uses cPickle.
+        gui
+            Graphical User Interface for PentAI, using Kivy
+
+    media
+        Contains a mixture of graphics (.png), sounds (.ogg), and a font (.ttf)
+        TODO: Put the graphic and sounds in different directories
+            images are currently directly beneath media
+            sounds are in subdirectories of media:
+                click stones demo tick fonts lose beep music win 
+
+Cython
+    Is a library for translating a Python-like language into highly optimized
+    C extension modules, for use by Python code. PentAI uses it to achieve the
+    speed it requires for a tolerably effective AI.
+
+ZODB
+    Is an Object Oriented Database for python, originally written by the Zope
+    team. It is efficient and stable. PentAI originally used a PersistentDict
+    for each type of data, but that wasn't sufficient as it grew:
+        no transactions
+        poor representation of hierarchies
+    PentAI Classes need to derive from Persistent to be stored.
+
+Kivy
+    Is a UI library for developing efficient apps in Python that can be
+    deployed to several platforms, including the main mobile and desktop ones.
+
 
 Features
 
+AI
+    See http://www.bruce-cropley.com/pente (or locally web/web_explanation.html)
+
 Demo
+    The demo is deliberately not recorded as a video, because of the continual
+    changes that have been made to the UI. Instead, it is a series of commands
+    to drive the application at particular times.
+
+Settings
+    The Settings screen looks a lot like, and started off using the standard 
+    Kivy settings module. PentAI had a couple of extra requirements that
+    weren't supported, so PentAI has its own SettingsScreen that just looks
+    very similar.
+
+Navigation
+    This is handled the PScreenManager (derived from Kivy's ScreenManager).
+    It maintains a stack of screens, so "Return" buttons can return to the
+    appropriate screen. It triggers a random slide transition each time.
+
+The Guide
+    Beginning PentAI users often requested information about what to do next.
+    The "Guide" suggests what the user could press next when they start out,
+    by highlighting a button in a viciously flashing green. The flashing
+    uses Kivy's Animation functionality.
+
+Audio
+    All audio files are in .ogg format, as that is a compressed format that
+    seems to be supported by all Kivy platforms. All PentAI audio activity
+    goes through pentai.gui.audio. That includes UI sound effects, music,
+    and the Demo vocals (thanks Alan Morris). UI sound effects each have
+    several different versions that are chosen from randomly. My music tracks
+    are iterated through sequentially from a random starting track.
