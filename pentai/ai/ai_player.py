@@ -9,6 +9,7 @@ import pentai.ai.utility_calculator as uc_m
 
 import random
 import threading
+import sys
 
 skip_openings_book = False
 def set_skip_openings_book(val):
@@ -73,17 +74,22 @@ class AIPlayer(p_m.Player):
         if test:
             return self.do_the_search()
         else:
-            # TODO: platform dependent choice?
-            try:
-                #import disable_process
-                self.do_search_process(gui)
-            except ImportError: # No multiprocessing
-                t = threading.Thread(target=self.search_thread, args=(gui,))
-                
-                # Allow the program to be exited quickly
-                t.daemon = True
-                
-                t.start()
+            if sys.platform == "darwin":
+                # TODO: Linux is probably OK (#16)
+                # TODO: Windows should be fixable (#1)
+                try:
+                    # OS X or iOS
+                    self.do_search_process(gui)
+                    return
+                except ImportError:
+                    # iOS
+                    pass
+            t = threading.Thread(target=self.search_thread, args=(gui,))
+            
+            # Allow the program to be exited quickly
+            t.daemon = True
+            
+            t.start()
 
         return "%s is thinking" % self.get_name()
 
