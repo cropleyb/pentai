@@ -1,9 +1,8 @@
 PentAI by Bruce Cropley
 
-Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. The board game is owned by Hasbro and is/was distributed via Winning Moves, however there are many computer versions of Pente out there.
-If you succeed at making money out of PentAI, you will most likely encounter their legal department.
-Pente has a very small number of rules, it is quick to play (~5mins), but takes years to master.
-PentAI is an app that plays Pente. The Artificial Intelligence (AI) can play at an advanced level, but it can be set to a very basic level where it blunders most of the time, and everything in between.
+Pente is a strategic board game for two players, created in 1977 by Gary Gabrel. Pente has a very small number of rules, it is quick to play (~5mins), but takes years to master. There is no luck involved.
+PentAI is an app that plays Pente. The Artificial Intelligence (AI) can play at an advanced level, it can be set to a very basic level, or anything in between.
+Pente is a great little game, and it deserves to be played much more.
 
 Dependencies
 ------------
