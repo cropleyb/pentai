@@ -1,7 +1,7 @@
 PentAI by Bruce Cropley
 
 Pente is a strategic board game for two players, created in 1977 by Gary Gabrel. Pente has a very small number of rules, it is quick to play (~5mins), but takes years to master. There is no luck involved.
-PentAI is an app that plays Pente. The Artificial Intelligence (AI) can play at an advanced level, it can be set to a very basic level, or anything in between.
+PentAI is an app that plays Pente. The Artificial Intelligence (AI) can play at an advanced level; it can be set to a very basic level, or anything in between.
 Pente is a great little game, and it deserves to be played much more.
 
 Dependencies
