@@ -32,7 +32,7 @@ Install Kivy and all its dependencies as per the kivy website instructions
 
 Install ZODB with:
 kivy pip install ZODB
-kivy pip install zlibstorage
+kivy pip install zc.zlibstorage
 
 Before it will run, you will need to build the cython modules (see below)
 
