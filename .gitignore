@@ -14,3 +14,4 @@ db/*
 db.fs*
 err.txt
 test.log
+*.pyd
