@@ -6,6 +6,7 @@ sys.exit(0)
 '''
 
 import os
+import platform
 
 '''
 def _total_size(source):
@@ -49,6 +50,11 @@ def setup_logging():
 def main():
     # TEMP WORKAROUND for Kivy prob.
     os.environ["KIVY_GLES_LIMITS"] = '0'
+
+    if platform.system() == 'Windows':
+
+        # TEST WORKAROUND. SDL2 is supposed to be even better :)
+        os.environ['KIVY_AUDIO'] = 'pygame'
 
     setup_logging()
     import startup
