@@ -686,14 +686,27 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def setup_legend_pos(self):
         bs = self.board_size()
+        bsf = bs / 19.0
+        bigger_fac = 1.0
+        bf2 = 1.0
+        bf3 = 1.0
+        if bs <= 13:
+            bigger_fac = 1.5
+        if bs <= 9:
+            bigger_fac = 2.5
+            bf2 = 1.5
+            bf3 = .9
+        # If bs < 10, shift lv slightly to the left
+        # Push top & bottom away from center for 9x9
+        # LV left slightly for 9x9
         for i, w in enumerate(self.lh_legend_labels):
-            w.pos = self.board_to_screen((i-0.25, -1.20))
+            w.pos = self.board_to_screen((i-(0.25*bsf), -1.20*bsf*bf2))
         for i, w in enumerate(self.uh_legend_labels):
-            w.pos = self.board_to_screen((i-0.25, bs-0.8))
+            w.pos = self.board_to_screen((i-0.25*bsf, bs-1.0*bsf*bigger_fac*0.9 / bf2))
         for i, w in enumerate(self.lv_legend_labels):
-            w.pos = self.board_to_screen((-1.0, i-0.5))
+            w.pos = self.board_to_screen((-1.0*bsf*bigger_fac*bf3, i-0.5*bsf))
         for i, w in enumerate(self.rv_legend_labels):
-            w.pos = self.board_to_screen((bs-1.2, i-0.5))
+            w.pos = self.board_to_screen((bs-1.2*bsf, i-0.5*bsf))
 
     def setup_grid(self, _dt=None):
         if self.game != None:
