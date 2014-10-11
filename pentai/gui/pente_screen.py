@@ -5,6 +5,7 @@ from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
 from kivy.uix.label import Label
+from kivy.uix.widget import WidgetException
 
 import pentai.base.gs_observer as gso_m
 from pentai.base.pente_exceptions import *
@@ -209,6 +210,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def set_game(self, game, swap_colours):
         self.clean_board()
+        self.lh_legend_labels = []
         self.game = game
         self.swap_p1_due_to_rematch = swap_colours
         p1 = game.get_player_name(P1)
@@ -566,6 +568,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def refresh_all(self):
         self.display_names()
+        self.refresh_legend()
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
@@ -650,32 +653,63 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_colour_border(size_x, size_y)
         return lines
 
-    def setup_grid_text(self):
-        hg = self.ids.lower_horiz_grid_id
-        if len(hg.children) > 0:
+    def setup_legend(self):
+        if len(self.lh_legend_labels):
+            # Already initialised
             return
-        hg.pos = self.board_to_screen((0,0))
 
-        hgg = hg.children[0]
-        l = Label()
-        l.text = "Help!"
-        hgg.add_widget(l)
+        letters = string.ascii_lowercase.replace('i','')[:self.board_size()]
+        letters = "%s" % letters
+        self.lh_legend_labels = self.create_legend_widgets(letters)
+        self.uh_legend_labels = self.create_legend_widgets(letters)
 
-        '''
-        chars = string.ascii_uppercase.replace('I','')[:self.board_size()]
-        chars = "%s " % chars
-        for val in chars:
+        # Spacing is different L/R vertical legends
+        nums = ["%2d" % (i+1) for i in range(self.board_size())]
+        self.lv_legend_labels = self.create_legend_widgets(nums)
+        nums = [str(i+1) for i in range(self.board_size())]
+        self.rv_legend_labels = self.create_legend_widgets(nums)
+
+    def create_legend_widgets(self, chars):
+        fl = self.ids.float_layout_id
+        label_arr = []
+        for i, val in enumerate(chars):
             l = Label()
             l.text = val
-            l.color = 0, 0, 0, 1
-            hgg.add_widget(l)
-        '''
+            l.color = 1, 1, 1, 0.5
+            l.text_size = l.size
+            l.size_hint = (None, None)
+            l.font_name = AI_FONT
+            l.align = "center"
+            fl.add_widget(l)
+            label_arr.append(l)
+        return label_arr
+
+    def setup_legend_pos(self):
+        bs = self.board_size()
+        for i, w in enumerate(self.lh_legend_labels):
+            w.pos = self.board_to_screen((i-0.25, -1.20))
+        for i, w in enumerate(self.uh_legend_labels):
+            w.pos = self.board_to_screen((i-0.25, bs-0.8))
+        for i, w in enumerate(self.lv_legend_labels):
+            w.pos = self.board_to_screen((-1.0, i-0.5))
+        for i, w in enumerate(self.rv_legend_labels):
+            w.pos = self.board_to_screen((bs-1.2, i-0.5))
 
     def setup_grid(self, _dt=None):
         if self.game != None:
             self.gridlines = self.setup_grid_lines()
-            #self.h_grid_text = "ABC"
-            self.setup_grid_text()
+            # HERE
+            self.setup_legend()
+            self.setup_legend_pos()
+
+    def refresh_legend(self):
+        try:
+            if self.config.getint("PentAI", "show_legend"):
+                self.add_widget(self.ids.float_layout_id)
+            else:
+                self.remove_widget(self.ids.float_layout_id)
+        except WidgetException:
+            pass
 
     def snap_to_grid(self, screen_pos):
         return self.board_to_screen(self.screen_to_board(screen_pos))

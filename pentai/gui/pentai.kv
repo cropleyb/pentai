@@ -976,6 +976,9 @@
                     markup: True
                 MyBigLabel:
 
+    FloatLayout:
+        id: float_layout_id
+
     RelativeLayout:
         pos: (0,0)
         canvas:
@@ -1034,6 +1037,14 @@
                     text: "Show Captures"
                     desc: "Show pieces that were captured last move as transparent ghost pieces"
                     key: "mark_captures"
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Show Legend"
+                    desc: "For those who play a lot"
+                    key: "show_legend"
+                    #on_value: root.set_confirmation_popups()
 
                 HSpacer:
 
