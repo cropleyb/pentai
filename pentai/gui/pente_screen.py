@@ -5,6 +5,7 @@ from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
 from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import WidgetException
 
 import pentai.base.gs_observer as gso_m
@@ -210,7 +211,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def set_game(self, game, swap_colours):
         self.clean_board()
-        self.lh_legend_labels = []
+        self.legend_complete = False
         self.game = game
         self.swap_p1_due_to_rematch = swap_colours
         p1 = game.get_player_name(P1)
@@ -654,66 +655,58 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return lines
 
     def setup_legend(self):
-        if len(self.lh_legend_labels):
+        if self.legend_complete:
             # Already initialised
             return
 
-        letters = string.ascii_lowercase.replace('i','')[:self.board_size()]
+        bs = self.board_size()
+
+        letters = string.ascii_lowercase.replace('i','')[:bs]
         letters = "%s" % letters
-        self.lh_legend_labels = self.create_legend_widgets(letters)
-        self.uh_legend_labels = self.create_legend_widgets(letters)
 
-        # Spacing is different L/R vertical legends
-        nums = ["%2d" % (i+1) for i in range(self.board_size())]
-        self.lv_legend_labels = self.create_legend_widgets(nums)
-        nums = [str(i+1) for i in range(self.board_size())]
-        self.rv_legend_labels = self.create_legend_widgets(nums)
+        board_offset_factor_y = float(self.board_offset[1]) / self.size[1]
+        tob = 0.5-board_offset_factor_y
 
-    def create_legend_widgets(self, chars):
+        self.create_legend("horizontal", 1.0/(2*bs), 0.25/bs-0.5,
+                           (float(bs)/(bs+1),None), letters)
+
+        # top of screen is +.5, except it is shifted by the relative layout
+        self.create_legend("horizontal", 1.0/(2*bs), tob-.25/bs,
+                           (float(bs)/(bs+1),None), letters)
+
+        nums = reversed(["%d" % (i+1) for i in range(bs)])
+        self.create_legend("vertical", -0.47, 0.35/bs,
+                           (None,0.645*(bs)/(bs+1)), nums)
+
+        nums = reversed(["%d" % (i+1) for i in range(bs)])
+        self.create_legend("vertical", 0.47, 0.35/bs,
+                           (None,0.645*(bs)/(bs+1)), nums)
+
+        self.legend_complete = True
+
+    def create_legend(self, orientation, x_factor, y_factor, size_hint, chars):
         fl = self.ids.float_layout_id
-        label_arr = []
+        bl = BoxLayout(orientation=orientation)
+        fl.add_widget(bl)
+        self.create_legend_widgets(bl, chars)
+        bl.pos_hint = {'x':x_factor, 'y':y_factor}
+        if size_hint[0]:
+            bl.size_hint_x = size_hint[0]
+        if size_hint[1]:
+            bl.size_hint_y = size_hint[1]
+
+    def create_legend_widgets(self, parent, chars):
         for i, val in enumerate(chars):
             l = Label()
             l.text = val
-            l.color = 1, 1, 1, 0.5
-            l.text_size = l.size
-            l.size_hint = (None, None)
-            l.font_name = AI_FONT
+            l.color = 0, 0, 0, 0.8
             l.align = "center"
-            fl.add_widget(l)
-            label_arr.append(l)
-        return label_arr
-
-    def setup_legend_pos(self):
-        bs = self.board_size()
-        bsf = bs / 19.0
-        bigger_fac = 1.0
-        bf2 = 1.0
-        bf3 = 1.0
-        if bs <= 13:
-            bigger_fac = 1.5
-        if bs <= 9:
-            bigger_fac = 2.5
-            bf2 = 1.5
-            bf3 = .9
-        # If bs < 10, shift lv slightly to the left
-        # Push top & bottom away from center for 9x9
-        # LV left slightly for 9x9
-        for i, w in enumerate(self.lh_legend_labels):
-            w.pos = self.board_to_screen((i-(0.25*bsf), -1.20*bsf*bf2))
-        for i, w in enumerate(self.uh_legend_labels):
-            w.pos = self.board_to_screen((i-0.25*bsf, bs-1.0*bsf*bigger_fac*0.9 / bf2))
-        for i, w in enumerate(self.lv_legend_labels):
-            w.pos = self.board_to_screen((-1.0*bsf*bigger_fac*bf3, i-0.5*bsf))
-        for i, w in enumerate(self.rv_legend_labels):
-            w.pos = self.board_to_screen((bs-1.2*bsf, i-0.5*bsf))
+            parent.add_widget(l)
 
     def setup_grid(self, _dt=None):
         if self.game != None:
             self.gridlines = self.setup_grid_lines()
-            # HERE
             self.setup_legend()
-            self.setup_legend_pos()
 
     def refresh_legend(self):
         try:
@@ -746,7 +739,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             dependant on the size of the board """
         size_x, size_y = self.size
         bsp = screen_pos[0], screen_pos[1]-self.board_offset[1]
-        #print "screen_to_board size: %s" % self.size
+        print "screen_to_board size: %s" % self.size
         size_y -= self.board_offset[1]
         GS = self.grid_size()
         board_x = int(round(GS * bsp[0] / size_x) - 1)
@@ -1075,6 +1068,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.get_audio().place()
 
     def on_size(self,*args,**kwargs):
+        self.legend_complete = False
         self.setup_grid()
 
     def get_gridlines(self):
