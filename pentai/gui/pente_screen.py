@@ -661,6 +661,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         bs = self.board_size()
 
+        try:
+            for bl in self.legend_box_layouts:
+                bl.parent.remove_widget(bl)
+        except AttributeError:
+            pass
+        self.legend_box_layouts = []
+
         letters = string.ascii_lowercase.replace('i','')[:bs]
         letters = "%s" % letters
 
@@ -675,7 +682,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                            (float(bs)/(bs+1),None), letters)
 
         nums = reversed(["%d" % (i+1) for i in range(bs)])
-        self.create_legend("vertical", -0.47, 0.35/bs,
+        self.create_legend("vertical", -0.476, 0.35/bs,
                            (None,0.645*(bs)/(bs+1)), nums)
 
         nums = reversed(["%d" % (i+1) for i in range(bs)])
@@ -687,6 +694,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def create_legend(self, orientation, x_factor, y_factor, size_hint, chars):
         fl = self.ids.float_layout_id
         bl = BoxLayout(orientation=orientation)
+        self.legend_box_layouts.append(bl)
         fl.add_widget(bl)
         self.create_legend_widgets(bl, chars)
         bl.pos_hint = {'x':x_factor, 'y':y_factor}
@@ -710,11 +718,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def refresh_legend(self):
         try:
-            if self.config.getint("PentAI", "show_legend"):
-                self.add_widget(self.ids.float_layout_id)
-            else:
-                self.remove_widget(self.ids.float_layout_id)
-        except WidgetException:
+            fl = self.ids.float_layout_id
+            show = self.config.getint("PentAI", "show_legend")
+            for bl in self.legend_box_layouts:
+                if show:
+                    fl.add_widget(bl)
+                else:
+                    fl.remove_widget(bl)
+        except WidgetException, e:
             pass
 
     def snap_to_grid(self, screen_pos):
