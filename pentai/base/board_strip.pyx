@@ -46,14 +46,15 @@ cdef:
 
 """ Get and set occ """
 cpdef U64 get_occ(U64 bs, BOARD_WIDTH_T ind):
-    ret = bs >> (ind * 2UL)
-    return ret & 3UL
+    cdef U64 ret
+    ret = bs >> (ind * 2)
+    return ret & 3
 
 cpdef U64 set_occ(U64 bs, BOARD_WIDTH_T ind, U64 occ):
-    cdef U64 shift
-    shift = 4UL ** ind
-    #shift = 1 << (ind * 2) # Type conversion issues in C
-    bs &= ~(shift + (shift << 1UL))
+    cdef U64 shift, base4
+    base4 = 4
+    shift = base4 ** ind
+    bs &= ~(shift + (shift << 1))
     bs |= (occ * shift)
     return bs
 
@@ -76,17 +77,17 @@ cdef int match_five_inner(U64 bs, BOARD_WIDTH_T move_ind, U64 pattern):
     cdef U64 to_right
     cdef U64 occs
 
-    l = move_ind - 4UL
+    l = move_ind - 4
     if l < 0:
         l = 0
 
-    to_right = bs >> (l << 1UL)
+    to_right = bs >> (l << 1)
     while l <= move_ind:
         occs = to_right & FIVE_OCCS_MASK
         if occs == pattern:
             return True
-        to_right >>= 2UL
-        l += 1UL
+        to_right >>= 2
+        l += 1
     return False
 
 ######################################################################
@@ -108,17 +109,17 @@ cdef int match_six_inner(U64 bs, BOARD_WIDTH_T move_ind, U64 pattern):
     cdef U64 to_right
     cdef U64 occs
 
-    l = move_ind - 5UL
+    l = move_ind - 5
     if l < 0:
         l = 0
 
-    to_right = bs >> (l << 1UL)
+    to_right = bs >> (l << 1)
     while l <= move_ind:
         occs = to_right & SIX_OCCS_MASK
         if occs == pattern:
             return True
-        to_right >>= 2UL
-        l += 1UL
+        to_right >>= 2
+        l += 1
     return False
 
 ######################################################################
@@ -140,13 +141,13 @@ cdef inline match_pattern_left(U64 bs, BOARD_WIDTH_T ind, U64 pattern):
     cdef U64 shift
     cdef U64 occs
 
-    if ind < 3UL:
+    if ind < 3:
         # Cannot place to the left - off the board
         return ()
-    shift = (ind-3UL) << 1UL
+    shift = (ind-3) << 1
     occs = (bs >> shift) & FOUR_OCCS_MASK
     if occs == pattern:
-        return (ind-1UL, ind-2UL)
+        return (ind-1, ind-2)
     return ()
 
 @cython.profile(False)
@@ -154,10 +155,10 @@ cdef inline match_pattern_right(U64 bs, BOARD_WIDTH_T ind, U64 pattern):
     cdef U64 shift
     cdef U64 occs
 
-    shift = ind << 1UL
+    shift = ind << 1
     occs = (bs >> shift) & FOUR_OCCS_MASK
     if occs == pattern:
-        return (ind+1UL, ind+2UL)
+        return (ind+1, ind+2)
     return ()
 
 @cython.profile(False)
