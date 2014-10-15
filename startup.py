@@ -18,7 +18,7 @@ def run():
         pentai_path = None
 
     try:
-        from pentai.gui.kivy_gui_main import *
+        from pentai.gui.kivy_gui_main import PentAIApp
         pa = PentAIApp()
 
         if pentai_path == None:
