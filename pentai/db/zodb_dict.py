@@ -52,6 +52,8 @@ class DBConn(object):
     def close(self):
         try:
             self.conn.close()
+            self.conn = None
+            self.db.close()
         except AttributeError:
             pass
 
