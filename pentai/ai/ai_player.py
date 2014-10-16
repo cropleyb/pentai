@@ -7,9 +7,9 @@ import pentai.ai.openings_mover as om_m
 import pentai.base.player as p_m
 import pentai.ai.utility_calculator as uc_m
 
-import random
 import threading
-import sys
+
+from kivy import platform
 
 skip_openings_book = False
 def set_skip_openings_book(val):
@@ -74,15 +74,13 @@ class AIPlayer(p_m.Player):
         if test:
             return self.do_the_search()
         else:
-            if sys.platform == "darwin":
+            if platform == "osx":
                 # TODO: Linux is probably OK (#16)
                 # TODO: Windows should be fixable (#1)
                 try:
-                    # OS X or iOS
                     self.do_search_process(gui)
                     return
                 except ImportError:
-                    # iOS
                     pass
             t = threading.Thread(target=self.search_thread, args=(gui,))
             
@@ -169,7 +167,6 @@ class AIPlayer(p_m.Player):
         #log.info(" => %s" % (action,))
         return turn, prev_move, action
 
-    #def set_interrupted(self):
     def stop(self):
         if self.search_process != None:
             # TODO: Reset the queue, as it could be corrupted by this
