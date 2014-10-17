@@ -237,5 +237,12 @@ class UtilityCalculator(object):
 
             # else: Captured stones are not worth anything
 
+        cb_val = self.checkerboard_value
+        if cb_val:
+            # Give an advantage to having more pieces on one colour of squares
+            ours = state.utility_stats.checkerboard_stats[eval_colour]
+            diff = cb_val * abs(ours[0] - ours[1])/(ours[0] + ours[1] + 1)
+            score += diff
+
         return score
 
