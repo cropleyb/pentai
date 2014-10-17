@@ -75,12 +75,13 @@ class AIFactory: # TODO: These are just functions
             uc.enclosed_four_base = genome.enclosed_four_base
         except:
             uc.enclosed_four_base = genome.enclosed_four_base = 400
+
+        uc.judgement = genome.judgement
+
         try:
-            uc.judgement = genome.judgement
+            uc.checkerboard_value = genome.checkerboard_value
         except:
-            uc.judgement = 100 - genome.misjudgement
-            genome.judgement = uc.judgement
-            # TODO? del genome.misjudgement
+            uc.checkerboard_value = 0
         '''
         # Example of how to handle new fields:
         try:
