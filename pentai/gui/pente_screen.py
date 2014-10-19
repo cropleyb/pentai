@@ -5,6 +5,8 @@ from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
 from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import WidgetException
 
 import pentai.base.gs_observer as gso_m
 from pentai.base.pente_exceptions import *
@@ -209,6 +211,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def set_game(self, game, swap_colours):
         self.clean_board()
+        self.legend_complete = False
         self.game = game
         self.swap_p1_due_to_rematch = swap_colours
         p1 = game.get_player_name(P1)
@@ -566,6 +569,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def refresh_all(self):
         self.display_names()
+        self.refresh_legend()
         self.refresh_moved_markers()
         self.refresh_captures_and_winner()
         self.refresh_ghosts()
@@ -650,32 +654,79 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.setup_colour_border(size_x, size_y)
         return lines
 
-    def setup_grid_text(self):
-        hg = self.ids.lower_horiz_grid_id
-        if len(hg.children) > 0:
+    def setup_legend(self):
+        if self.legend_complete:
+            # Already initialised
             return
-        hg.pos = self.board_to_screen((0,0))
 
-        hgg = hg.children[0]
-        l = Label()
-        l.text = "Help!"
-        hgg.add_widget(l)
+        bs = self.board_size()
 
-        '''
-        chars = string.ascii_uppercase.replace('I','')[:self.board_size()]
-        chars = "%s " % chars
-        for val in chars:
+        try:
+            for bl in self.legend_box_layouts:
+                bl.parent.remove_widget(bl)
+        except AttributeError:
+            pass
+        self.legend_box_layouts = []
+
+        letters = string.ascii_lowercase.replace('i','')[:bs]
+        letters = "%s" % letters
+
+        board_offset_factor_y = float(self.board_offset[1]) / self.size[1]
+        tob = 0.5-board_offset_factor_y
+
+        self.create_legend("horizontal", 1.0/(2*bs), 0.25/bs-0.5,
+                           (float(bs)/(bs+1),None), letters)
+
+        # top of screen is +.5, except it is shifted by the relative layout
+        self.create_legend("horizontal", 1.0/(2*bs), tob-.25/bs,
+                           (float(bs)/(bs+1),None), letters)
+
+        nums = reversed(["%d" % (i+1) for i in range(bs)])
+        self.create_legend("vertical", -0.476, 0.35/bs,
+                           (None,0.645*(bs)/(bs+1)), nums)
+
+        nums = reversed(["%d" % (i+1) for i in range(bs)])
+        self.create_legend("vertical", 0.47, 0.35/bs,
+                           (None,0.645*(bs)/(bs+1)), nums)
+
+        self.legend_complete = True
+
+    def create_legend(self, orientation, x_factor, y_factor, size_hint, chars):
+        fl = self.ids.float_layout_id
+        bl = BoxLayout(orientation=orientation)
+        self.legend_box_layouts.append(bl)
+        fl.add_widget(bl)
+        self.create_legend_widgets(bl, chars)
+        bl.pos_hint = {'x':x_factor, 'y':y_factor}
+        if size_hint[0]:
+            bl.size_hint_x = size_hint[0]
+        if size_hint[1]:
+            bl.size_hint_y = size_hint[1]
+
+    def create_legend_widgets(self, parent, chars):
+        for i, val in enumerate(chars):
             l = Label()
             l.text = val
-            l.color = 0, 0, 0, 1
-            hgg.add_widget(l)
-        '''
+            l.color = 0, 0, 0, 0.8
+            l.align = "center"
+            parent.add_widget(l)
 
     def setup_grid(self, _dt=None):
         if self.game != None:
             self.gridlines = self.setup_grid_lines()
-            #self.h_grid_text = "ABC"
-            self.setup_grid_text()
+            self.setup_legend()
+
+    def refresh_legend(self):
+        try:
+            fl = self.ids.float_layout_id
+            show = self.config.getint("PentAI", "show_legend")
+            for bl in self.legend_box_layouts:
+                if show:
+                    fl.add_widget(bl)
+                else:
+                    fl.remove_widget(bl)
+        except WidgetException, e:
+            pass
 
     def snap_to_grid(self, screen_pos):
         return self.board_to_screen(self.screen_to_board(screen_pos))
@@ -699,7 +750,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             dependant on the size of the board """
         size_x, size_y = self.size
         bsp = screen_pos[0], screen_pos[1]-self.board_offset[1]
-        #print "screen_to_board size: %s" % self.size
+        print "screen_to_board size: %s" % self.size
         size_y -= self.board_offset[1]
         GS = self.grid_size()
         board_x = int(round(GS * bsp[0] / size_x) - 1)
@@ -1028,6 +1079,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.get_audio().place()
 
     def on_size(self,*args,**kwargs):
+        self.legend_complete = False
         self.setup_grid()
 
     def get_gridlines(self):

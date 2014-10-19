@@ -910,7 +910,6 @@
             Color:
                 rgba: root.border_colour
             Line:
-                #id: border_id
                 points: root.border_lines
                 joint: 'none'
                 width: root.border_width
@@ -920,18 +919,8 @@
                 pos: root.illegal_rect_pos
                 size: root.illegal_rect_size
 
-        RelativeLayout:
-            id: lower_horiz_grid_id
-            pos: 0,0
-            GridLayout:
-                rows: 1
-        #Label:
-            #text: root.h_grid_text
-            #halign: 'justify'
-            #color: 0, 0, 0, 1
-            #size_hint_y: None
-            #height: self.texture_size[1]
-            #text_size: self.width - 20, None
+        FloatLayout:
+            id: float_layout_id
 
     GridLayout:
         cols: 2
@@ -1034,6 +1023,14 @@
                     text: "Show Captures"
                     desc: "Show pieces that were captured last move as transparent ghost pieces"
                     key: "mark_captures"
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Show Legend"
+                    desc: "For those who play a lot"
+                    key: "show_legend"
+                    #on_value: root.set_confirmation_popups()
 
                 HSpacer:
 

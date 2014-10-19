@@ -107,10 +107,12 @@ class ABState(gso_m.GSObserver):
     def before_set_occ(self, game, pos, colour):
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, -1)
+        self.utility_stats.update_checkerboard_stats(colour, pos, -1)
 
     def after_set_occ(self, game, pos, colour):
         self.utility_stats.set_or_reset_occs( \
                 self.board(), self.get_rules(), pos, 1)
+        self.utility_stats.update_checkerboard_stats(colour, pos, 1)
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

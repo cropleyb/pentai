@@ -17,6 +17,7 @@ class UtilityStats(object):
         if parent == None:
             self.search_filter = search_filter
             self.i_to_p = pass_through_func
+            self.checkerboard_stats = [None, [0,0],[0,0]]
             self.reset()
 
             # TODO: move this to test code?
@@ -25,6 +26,8 @@ class UtilityStats(object):
             # Manual deep copy
             pl = parent.lines
             self.lines = [None, pl[P1][:], pl[P2][:]]
+            pcs = parent.checkerboard_stats
+            self.checkerboard_stats = [None, pcs[P1][:], pcs[P2][:]]
             self.takes = parent.takes[:]
             self.threats = parent.threats[:]
             self.enclosed_four = parent.enclosed_four[:]
@@ -76,6 +79,18 @@ class UtilityStats(object):
     #@cython.profile(False)
     def set_or_reset_occs(self, brd, rules, pos, int inc):
         set_or_reset_occs(self, brd, rules, pos, inc)
+
+    #@cython.profile(False)
+    def update_checkerboard_stats(self, colour, pos, int inc):
+        if not colour:
+            # We don't care about empty spaces
+            return
+
+        x, y = pos
+        square_colour = (x % 2) ^ (y % 2)
+
+        cb_stats_for_colour = self.checkerboard_stats[colour]
+        cb_stats_for_colour[square_colour] += inc
 
 #@cython.profile(False)
 cdef inline set_or_reset_occs(self, brd, rules, pos, int inc):

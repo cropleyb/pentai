@@ -1,7 +1,5 @@
-from pentai.gui.kivy_gui_main import *
 import pentai.db.zodb_dict as z_m
 
-import kivy.core.window as w_m
 from kivy.config import Config
 
 import os, sys
@@ -12,6 +10,7 @@ def run():
     Config.set('kivy', 'log_enable', 1)
     Config.set('kivy', 'log_dir', 'logs')
     Config.set('kivy', 'log_name', 'kivy_%y-%m-%d_%_.txt')
+    Config.set('graphics', 'fullscreen', '0')
 
     try:
         pentai_path = os.environ['PENTAIPATH']
@@ -19,6 +18,7 @@ def run():
         pentai_path = None
 
     try:
+        from pentai.gui.kivy_gui_main import PentAIApp
         pa = PentAIApp()
 
         if pentai_path == None:

@@ -109,11 +109,12 @@ class Match():
         return ret
 
     def play_some_games(self):
-        self.genome1.use_openings_book = False
-        self.genome2.use_openings_book = False
+        #self.genome1.use_openings_book = False
+        #self.genome2.use_openings_book = False
 
+        self.genome1.checkerboard_value = 30
+        self.genome2.checkerboard_value = 90
         #self.genome1.utility_filter = True
-
         #self.genome2.filter_num = 5
         #self.genome2.chokes = [(3,3)]
         #self.genome2.mmpdl = 13
@@ -209,16 +210,18 @@ class Match():
 
         results = MatchResults()
         #for game_length in range(2,3):
-        for game_length in range(2,4):
+        #for game_length in range(2,4):
         #for game_length in range(2,5):
         #for game_length in range(2,6):
         #for game_length in range(2,7):
         #for game_length in range(2,8):
+        for game_length in range(2,9):
+        #for game_length in range(2,10):
             for board_size in [19]:
             #for board_size in [13, 19]:
                 for first_player in [0, 1]:
-                    for rules_type in ['s', 't']:
-                    #for rules_type in ['t']:
+                    #for rules_type in ['s', 't']:
+                    for rules_type in ['t']:
                     #for rules_type in ['s']:
                         #self.set_up(game_length, 1) # For p2 depth boost
                         self.set_up(game_length)

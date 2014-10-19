@@ -22,6 +22,7 @@ class DBConn(object):
     def load_db(self):
         if self.zdbroot:
             return
+        self.delete_extra_files()
         fp = self.get_filepath()
         storage = FileStorage.FileStorage(fp)
         self.db = DB(storage, cache_size=1000)
@@ -51,23 +52,26 @@ class DBConn(object):
     def close(self):
         try:
             self.conn.close()
+            self.conn = None
+            self.db.close()
         except AttributeError:
             pass
 
-    def delete_extra_files(self):
-        for ext in ["tmp", "old"]:
-            extra_file_path = ".".join([self.get_filepath(), ext])
-            try:
-                os.unlink(extra_file_path)
-            except OSError:
-                pass
-
     def delete_all_dangerous(self):
         """ Only use this for test code!!!"""
-        for ext in ["", ".tmp", ".lock", ".index"]:
-            extra_file_path = "%s%s" % (self.get_filepath(), ext)
+        exts = ["", ".tmp", ".lock", ".index", ".old"]
+        self.delete_files(exts)
+
+    def delete_extra_files(self):
+        """ Delete as yet unnecessary files """
+        exts = [".tmp", ".lock", ".index", ".old"]
+        self.delete_files(exts)
+
+    def delete_files(self, exts):
+        for ext in exts:
+            file_path = "%s%s" % (self.get_filepath(), ext)
             try:
-                os.unlink(extra_file_path)
+                os.unlink(file_path)
             except OSError:
                 pass
 

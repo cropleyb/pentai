@@ -40,6 +40,7 @@ class AIGenome(Persistent):
         self.scale_pob = False
         self.force_depth = 0
         self.judgement = 100
+        self.checkerboard_value = 35
 
         # dead
         self.length_boosts = () #ZL([]), # length, boost

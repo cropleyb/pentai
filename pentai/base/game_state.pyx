@@ -71,8 +71,10 @@ class GameState(object):
         self.captured[player_num] = pieces
 
     def set_occ(self, move_pos, my_colour):
+        old_colour = self.board.get_occ(move_pos)
+
         for o in self.observers:
-            o.before_set_occ(self.game, move_pos, my_colour)
+            o.before_set_occ(self.game, move_pos, old_colour)
 
         self.board.set_occ(move_pos, my_colour)
 

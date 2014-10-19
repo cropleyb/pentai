@@ -53,9 +53,14 @@ class PentAIApp(App):
                         pass
 
     def set_screen_size(self):
-        app_width = self.config.getint("PentAI", "app_width")
-        app_height = self.config.getint("PentAI", "app_height")
-        kivy.core.window.Window.size = (app_width, app_height)
+        from kivy import platform
+
+        if platform in ("ios", "android"):
+            app_width, app_height = kivy.core.window.Window.size
+        else:
+            app_width = self.config.getint("PentAI", "app_width")
+            app_height = self.config.getint("PentAI", "app_height")
+            kivy.core.window.Window.size = (app_width, app_height)
 
         # 720 was the original height of the app in pixels, to which the 
         # GUI has been built
