@@ -393,19 +393,23 @@ class PentAIApp(App):
         scr.ob = self.openings_book
         scr.pm = self.games_mgr.players_mgr
 
-    def build(self):
-        log.debug("app build 1")
+    def load_config(self):
         ini_file = "pentai.ini"
-        #if False:
-        #if True:
-        if not ini_file in os.listdir(self.user_data_dir):
-            # Keep this for developing new config items
+        try:
+            self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
+            # Add new config accesses here
+            foo = self.config.getint("PentAI", "show_legend")
+        except:
             log.info("Copying init")
+            # TODO update existing config from new one.
             import shutil
             dest = self.user_data_dir
             shutil.copy(ini_file, dest)
-        log.debug("app build 2")
-        self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
+            self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
+
+    def build(self):
+        log.debug("app build 1")
+        self.load_config()
         self.set_screen_size()
 
         root = ps_m.PScreenManager()
