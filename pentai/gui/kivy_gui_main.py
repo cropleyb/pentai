@@ -395,17 +395,7 @@ class PentAIApp(App):
 
     def load_config(self):
         ini_file = "pentai.ini"
-        try:
-            self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
-            # Add new config accesses here
-            foo = self.config.getint("PentAI", "show_legend")
-        except:
-            log.info("Copying init")
-            # TODO update existing config from new one.
-            import shutil
-            dest = self.user_data_dir
-            shutil.copy(ini_file, dest)
-            self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
+        self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
 
     def build(self):
         log.debug("app build 1")
