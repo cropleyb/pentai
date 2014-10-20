@@ -110,6 +110,9 @@ class GameState(object):
             # Restore the captured stones
             self.set_occ(cap_pos, my_colour)
 
+        other_colour = self.to_move_colour()
+        self.captured[other_colour] -= len(captured)
+
     def make_move(self, move_pos):
         exception = self.is_illegal(move_pos)
         if exception:
