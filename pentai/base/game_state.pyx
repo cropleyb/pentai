@@ -113,6 +113,10 @@ class GameState(object):
         other_colour = self.to_move_colour()
         self.captured[other_colour] -= len(captured)
 
+        # This is not as robust as it could be, if it was possible to move
+        # after the game was finished. But that should be prevented anyway.
+        self.set_won_by(EMPTY)
+
     def make_move(self, move_pos):
         exception = self.is_illegal(move_pos)
         if exception:

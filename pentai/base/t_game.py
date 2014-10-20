@@ -191,12 +191,17 @@ class GameTest(unittest.TestCase):
         self.assertEquals(board.get_occ((2,0)), EMPTY)
         self.assertEquals(g.get_captured(P2), 2)
 
+        # HACKY TEST
+        g.set_won_by(P2)
+
         g.go_backwards_one()
         self.assertEquals(board.get_occ((1,0)), P1)
         self.assertEquals(board.get_occ((2,0)), P1)
         self.assertEquals(g.get_captured(P2), 0)
 
-        # TODO: undo won_by
+        self.assertEquals(g.get_captured(P2), 0)
+
+        self.assertEquals(g.get_won_by(), EMPTY)
 
     def test_take_back_1_then_forwards_1_should_recall_start_of_current_move(self):
         rules = Rules(9, "standard", time_control=3)
