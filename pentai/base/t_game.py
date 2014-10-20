@@ -154,6 +154,7 @@ class GameTest(unittest.TestCase):
         self.assertEquals(g.remaining_time(P1), 179)
         self.assertEquals(g.remaining_time(P2), 179)
 
+    #! ./pentai/base/t_game.py GameTest.test_take_back_first_move
     def test_take_back_first_move(self):
         rules = Rules(9, "standard", time_control=3)
         g = Game(rules, Player("BC"), Player("Whoever"))
@@ -176,6 +177,22 @@ class GameTest(unittest.TestCase):
 
         self.assertEquals(g.remaining_time(P1), 179)
         self.assertEquals(g.remaining_time(P2), 179.5)
+
+    # ! ./pentai/base/t_game.py GameTest.test_undo_capture
+    def test_undo_capture(self):
+        rules = Rules(9, "standard", time_control=3)
+        g = Game(rules, Player("BC"), Player("Whoever"))
+        g.make_move((1,0))
+        g.make_move((0,0))
+        g.make_move((2,0))
+        g.make_move((3,0))
+        board = g.get_board()
+        self.assertEquals(board.get_occ((1,0)), EMPTY)
+        self.assertEquals(board.get_occ((2,0)), EMPTY)
+
+        g.go_backwards_one()
+        self.assertEquals(board.get_occ((1,0)), P1)
+        self.assertEquals(board.get_occ((2,0)), P1)
 
     def test_take_back_1_then_forwards_1_should_recall_start_of_current_move(self):
         rules = Rules(9, "standard", time_control=3)

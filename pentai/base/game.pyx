@@ -10,6 +10,7 @@ class Game(object):
         self.game_id = None
         self.move_history = []
         self.time_history = [0, 0]
+        self.capture_history = []
         self.resume_move_number = None
         self.date = datetime.date.today() # TODO
         self.setup(*args, **kwargs)
@@ -158,11 +159,13 @@ class Game(object):
         self.resume_move_number = len(self.move_history) + 1
 
         try:
-            self.current_state.make_move(move)
+            captured = self.current_state.make_move(move)
         except IllegalMoveException, e:
             # Wipe that one off.
             del self.move_history[-1]
             raise e
+
+        self.capture_history.append(captured)
 
         '''
         # Temp: disable due to iOS restrictions
@@ -198,8 +201,22 @@ class Game(object):
         self.go_to_move(self.get_move_number() + 1)
 
     def go_backwards_one(self):
-        self.go_to_move(self.get_move_number() - 1)
-    
+        current_move = self.get_move_number()
+        if current_move <= 0:
+            # Already at the beginning
+            return
+
+        try:
+            move = self.move_history[current_move - 2]
+            captured = self.capture_history[current_move - 2]
+        except IndexError:
+            return
+        self.current_state.undo_move(move, captured)
+
+        self.resume_move_number = current_move - 1
+
+        self.current_state.send_up_to_date()
+
     def go_to_the_end(self):
         self.go_to_move(len(self.move_history)+1)
 
@@ -333,7 +350,6 @@ class Game(object):
         return remaining
 
     def _remaining_times_ind(self, colour):
-        rem_times = self.time_history
         mn = self.get_move_number()
 
         if self.to_move_colour() == colour:

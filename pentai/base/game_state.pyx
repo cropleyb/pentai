@@ -97,6 +97,19 @@ class GameState(object):
                 return IllegalMoveException("That move is too close to the centre.")
         return False
 
+    def undo_move(self, move_pos, captured):
+        rules = self.get_rules()
+
+        my_colour = self.to_move_colour() # Save it before the turn is changed
+        self.move_number -= 1
+
+        # Remove the move stone
+        self.set_occ(move_pos, EMPTY)
+
+        for cap_pos in captured:
+            # Restore the captured stones
+            self.set_occ(cap_pos, my_colour)
+
     def make_move(self, move_pos):
         exception = self.is_illegal(move_pos)
         if exception:
@@ -110,11 +123,15 @@ class GameState(object):
         MC = my_colour
         OC = self.to_move_colour() # Other Colour
 
+        captures = []
+
         ccp = rules.can_capture_pairs
         if ccp:
             # Process captures
             for ds in self.board.get_direction_strips():
-                self.process_direction_captures(ds, move_pos, MC)
+                captures.extend(
+                    self.process_direction_captures(ds, move_pos, MC)
+                )
 
         # Place a stone
         self.set_occ(move_pos, my_colour)
@@ -130,6 +147,8 @@ class GameState(object):
 
         # TEMP for debugging
         self.last_move = move_pos
+
+        return captures
 
     def check_direction_for_5_in_a_row(self, ds, move_pos, my_colour):
         s, strip_num = ds.get_strip(move_pos)
@@ -150,6 +169,7 @@ class GameState(object):
             if sfcw > 0:
                 if self.captured[my_colour] >= sfcw:
                     self.set_won_by(my_colour)
+        return captures
 
     def set_won_by(self, wb):
         self._won_by = wb
