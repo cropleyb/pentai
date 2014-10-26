@@ -666,6 +666,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 bl.parent.remove_widget(bl)
         except AttributeError:
             pass
+        board_rgb = (0.8117, 0.4667, .2039)
+        black_rgb = (0.0, 0.0, 0.0)
+        self.legend_colour = \
+            self.calc_contrast_colour(board_rgb, black_rgb, self.border_colour)
+
         self.legend_box_layouts = []
 
         letters = string.ascii_lowercase.replace('i','')[:bs]
@@ -674,7 +679,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         board_offset_factor_y = float(self.board_offset[1]) / self.size[1]
         tob = 0.5-board_offset_factor_y
 
-        self.create_legend("horizontal", 1.0/(2*bs), 0.25/bs-0.5,
+        self.create_legend("horizontal", 1.0/(2*bs), 0.25/bs-0.495,
                            (float(bs)/(bs+1),None), letters)
 
         # top of screen is +.5, except it is shifted by the relative layout
@@ -703,11 +708,39 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if size_hint[1]:
             bl.size_hint_y = size_hint[1]
 
+    def calc_contrast_colour(self, *source_colours):
+        """
+        Create a contrasting colour to n arbitrary RGB colours
+        E.g. (a,b,c) & (d,e,f) => (g,h,i)
+        All of a,b,c,d,e,f are in the range 0.0 to 1.0
+        For the pair a&d, we want the number in this range that is furthest from
+        the closest of these.
+        """
+        cc = [0,0,0,1]
+        for i in (0,1,2):
+            source_components = [sc[i] for sc in source_colours]
+            ssc = sorted(source_components)
+            candidates = [0]
+            cand_vals = [ssc[0]-0.0]
+
+            for j in range(len(ssc)-1):
+                candidates.append(j)
+                cand_vals.append((ssc[j+1]-ssc[j]) * 0.5)
+
+            candidates.append(len(ssc))
+            cand_vals.append(1.0-ssc[-1])
+
+            cv_zipped = zip(cand_vals, candidates)
+
+            cc[i] = max(cv_zipped)[1]
+
+        return cc
+
     def create_legend_widgets(self, parent, chars):
         for i, val in enumerate(chars):
             l = Label()
             l.text = val
-            l.color = 0, 0, 0, 0.8
+            l.color = self.legend_colour
             l.align = "center"
             parent.add_widget(l)
 
