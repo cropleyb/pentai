@@ -29,11 +29,12 @@ class CheckBoxList(GridLayout):
 
     def __init__(self, *args, **kwargs):
         self.cols = 1
+        self.widgets_by_val = {}
 
         super(CheckBoxList, self).__init__(*args, **kwargs)
 
         # The properties haven't been initialised yet
-        Clock.schedule_once(self.setup, 0.5)
+        Clock.schedule_once(self.setup, 0.02)
 
     def setup(self, ignored):
         vals_gl = GridLayout(cols=3)
@@ -71,7 +72,11 @@ class CheckBoxList(GridLayout):
 
     def set_active(self, val):
         """ Set the active value from other python code. """
+        Clock.schedule_once(lambda dt: self.set_active_inner(val), 0.5)
+
+    def set_active_inner(self, val):
         w = self.widgets_by_val[str(val)]
+
         w.active = True
 
         val = str(val)
