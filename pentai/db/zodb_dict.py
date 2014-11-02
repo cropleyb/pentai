@@ -10,6 +10,7 @@ import zc.zlibstorage
 import os
 
 from pentai.base.defines import *
+import pentai.base.logger as log
 
 class DBConn(object):
     def __init__(self, db_name):
@@ -24,14 +25,21 @@ class DBConn(object):
             return
         self.delete_extra_files()
         fp = self.get_filepath()
+        log.debug("zodb load_db 1")
         storage = FileStorage.FileStorage(fp)
+        log.debug("zodb load_db 2")
         self.db = DB(storage, cache_size=1000)
+        log.debug("zodb load_db 3")
         self.conn = self.db.open()
+        log.debug("zodb load_db 4")
         self.zdbroot = self.conn.root()
+        log.debug("zodb load_db 5")
 
     def get_section(self, section_key, tp=None):
+        log.debug("zodb a")
         if self.zdbroot is None:
             self.load_db()
+        log.debug("zodb b")
         if self.zdbroot.has_key(section_key):
             section = self.zdbroot[section_key]
         else:
@@ -42,7 +50,7 @@ class DBConn(object):
 
     def root(self):
         if not self.zdbroot:
-            load_db()
+            self.load_db()
         return self.zdbroot
 
     def pack(self, *args, **kwargs):
@@ -83,19 +91,36 @@ def set_db(path):
     global db_path
     db_path = path
 
-def load_db(): # TODO: Rename
+def load_most():
     global most, openings
+    log.debug("zodb 1a")
     most = DBConn("most")
+    log.debug("zodb 1b")
     most.load_db()
+    log.debug("zodb 1c")
+
+def load_openings():
+    global openings
+    log.debug("zodb 1d")
     openings = DBConn("openings")
+    log.debug("zodb 1e")
     openings.load_db()
+    log.debug("zodb 1f")
+
+def load_both_dbs():
+    load_most()
+    load_openings()
 
 def get_section(section_key, tp=None):
+    log.debug("zodb 1")
     if not most:
-        load_db()
+        load_most()
+    log.debug("zodb 2")
     db = most
     if section_key == "openings":
+        load_openings()
         db = openings
+    log.debug("zodb 3")
     try:
         return db.get_section(section_key, tp)
     except:
@@ -115,6 +140,7 @@ def close():
         openings.close()
 
 def pack():
+    log.info("Packing")
     global most, openings
     if most:
         most.pack()
