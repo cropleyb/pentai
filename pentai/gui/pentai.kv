@@ -16,12 +16,12 @@
     size_hint_y: None
     height: my.dp(30)
 
-<SmallLabel>:
+<SmallLabel@Label>:
     font_size: my.dp(20)
     padding_x: my.dp(20)
     text_size: self.size
 
-<TinyLabel>:
+<TinyLabel@Label>:
     font_size: my.dp(15)
     text_size: self.size
     padding_x: my.dp(20)
@@ -653,8 +653,8 @@
                     on_value: root.genome.vision = self.value
 
                 Label:
-                    size_hint_x: .2
-                    text: '{}'.format(int(vision_id.value))
+                    size_hint_x: .3
+                    text: '{}%'.format(int(vision_id.value))
 
             BoxLayout:
                 #size_hint_y: None
@@ -682,7 +682,7 @@
             height: my.dp(48)
 
             Label:
-                size_hint_x: .7
+                size_hint_x: .6
                 text: 'Judgement'
                 halign: 'left'
 
@@ -694,8 +694,8 @@
                 on_value: root.genome.judgement = self.value
 
             Label:
-                size_hint_x: .3
-                text: '{}'.format(int(j_id.value))
+                size_hint_x: .35
+                text: '{}%'.format(int(j_id.value))
 
         GridLayout:
             rows: 1 
