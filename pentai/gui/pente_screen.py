@@ -808,7 +808,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if colour == P1:
                 filename = moved_marker_filename_b
             try:
-                mm = Piece(self.game.size(), source=filename)
+                mm = Piece(self.game.size()*0.5, source=filename)
                 self.moved_marker[colour] = mm
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
