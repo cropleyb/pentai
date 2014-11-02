@@ -16,14 +16,19 @@ def misc():
 class GamesMgr(gso_m.GSObserver):
     # TODO: Borg pattern?
     def __init__(self, *args, **kwargs):
+        log.debug("Entered GamesMgr __init__")
         self.games_dbs = {}
         self.players_mgr = players_mgr.PlayersMgr()
+        log.debug("GamesMgr created PlayersMgr")
         id_section = "id_map"
         self.id_lookup = zd_m.get_section(id_section)
+        log.debug("GamesMgr 3")
         u_s = "unfinished"
         self.unfinished_db = zd_m.get_section(u_s)
+        log.debug("GamesMgr 4")
         f_k = "recently_finished"
         self.finished_db = misc().setdefault(f_k, mru_m.MRUCache(30))
+        log.debug("GamesMgr 5")
 
     def get_filename(self, key):
         if key.__class__ is g_m.Game:

@@ -26,9 +26,12 @@ def player_type_to_int(pt):
 class PlayersMgr():
     # TODO: Borg pattern?
     def __init__(self, *args, **kwargs):
+        log.debug("PlayersMgr 1")
         self.factory = ai_factory.AIFactory()
+        log.debug("PlayersMgr 2")
         section = "players"
         players = self.players_by_p_key = z_m.get_section(section)
+        log.debug("PlayersMgr 3")
         subsection = "p_keys_by_name"
         try:
             self.p_keys_by_name = players[subsection]
