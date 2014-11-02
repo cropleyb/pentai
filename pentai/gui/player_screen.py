@@ -18,9 +18,11 @@ class HighlightableOption(SpinnerOption):
         self.screen.preselect(new_text)
 
 class PlayerScreen(Screen):
-    create_text = "Create One"
+    create_text = "Create"
+    select_text = "Select"
     player_names = ListProperty([])
-    rename_req = "Give me a Name"
+    #rename_req = "Give me a Name"
+    rename_req = "Create"
     rename_text = StringProperty(rename_req)
 
     def __init__(self, *args, **kwargs):
@@ -30,7 +32,7 @@ class PlayerScreen(Screen):
 
         spinner = self.ids.player_spinner_id
         spinner.bind(text=self.select_player)
-        spinner.text = self.create_text
+        spinner.text = self.select_text
 
         self.ids.name_id.bind(focus=self.on_rename_focus)
         self.ids.name_id.bind(on_text_validate=self.save_with_check)
@@ -67,8 +69,13 @@ class PlayerScreen(Screen):
 
     def select_player(self, spinner, val):
         if val == self.create_text:
+            spinner = self.ids.player_spinner_id
+            spinner.text = self.select_text
+            return
+        if val == self.select_text:
             self.rename_text = self.rename_req
             return
+
         if val != "":
             self.rename_text = val
         self.edit_player(val)
@@ -105,7 +112,7 @@ class PlayerScreen(Screen):
         self.rename_text = self.rename_req
         self.ids.name_id.focus = False
         self.refresh_names()
-        self.set_spinner_val(self.create_text)
+        self.set_spinner_val(self.select_text)
 
     def save_with_check(self, unused=None):
         if self.ids.name_id.text in [self.rename_req, ""]:
@@ -125,7 +132,8 @@ class PlayerScreen(Screen):
         if not pn:
             return
 
-        if pn != self.create_text and pn and self.rename_text:
+        if (not pn in (self.create_text, self.select_text)) \
+                and pn and self.rename_text:
             # Rename
             pl = self.pm.find_genome_by_name(self.rename_text, self.player_type_str)
             if not pl:
