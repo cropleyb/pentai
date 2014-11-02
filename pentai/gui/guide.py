@@ -19,9 +19,15 @@ screens_visited = set()
 
 disabled = False
 
+queued_to_highlight = False
+
 def stop_all_highlights():
     global all_highlights
+    global queued_to_highlight
+
     log.debug("in stop_all_highlights")
+
+    queued_to_highlight = False
 
     for id, highlight in all_highlights.iteritems():
         widget = highlight.widget
@@ -40,14 +46,15 @@ def stop_all_highlights():
 
 class Highlight(object):
     def __init__(self, widget, initial_wait=0.1):
+        print "in Highlight __init__"
         global all_highlights
         self.widget = widget
         self.finished = False
         self.save_orig_colour()
         self.getting_brighter = True
-        Clock.schedule_once(self.change_colour, initial_wait)
-
         all_highlights[widget.my_id] = self
+
+        Clock.schedule_once(self.change_colour, initial_wait)
 
     def save_orig_colour(self):
         w = self.widget
@@ -258,6 +265,7 @@ class Guide(Persistent):
                 w = parent.ids[widget_id_text]
             except KeyError:
                 log.debug("WARNING: Pente: No such id: %s" % widget_id_text)
+                #st()
                 continue
             if not widget_id_text in bound:
                 w.bind(on_press=self.on_press) 
@@ -355,6 +363,16 @@ class Guide(Persistent):
             pass
 
     def activate(self, widget):
+        try:
+            if highlighted and highlighted.widget.my_id == widget.my_id:
+                #st()
+                print "Already activated %s, ignoring" % widget.my_id
+                return
+        except NameError:
+            pass
+        except ReferenceError:
+            return
+
         try:
             log.debug("activating %s" % widget.text)
             global highlighted
