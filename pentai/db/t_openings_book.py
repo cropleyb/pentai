@@ -11,6 +11,7 @@ import misc_db as m_m
 from pentai.db.games_mgr import *
 from pentai.base.player import *
 import pentai.db.test_db as tdb_m
+import pentai.db.zodb_dict as z_m
 
 def print_func():
     pass
@@ -220,6 +221,7 @@ class ATOTest(unittest.TestCase):
         print_func()
         self.load_moves_and_set_win("1. (10,10)\n2. (9,9)\n3. (9,10)\n4. (11,10)")
         self.ob.add_position(self.game, 1, P1)
+        z_m.sync()
 
         o_mgr2 = ob_m.OpeningsBook()
 
@@ -290,6 +292,7 @@ class ATOTest(unittest.TestCase):
         print_func()
         self.load_moves_and_set_win("1. (4,4)\n2. (3,3)\n3. (3,4)\n4. (5,4)")
         self.ob.add_game(self.game, P1)
+        z_m.sync()
 
         o_mgr2 = ob_m.OpeningsBook()
 
