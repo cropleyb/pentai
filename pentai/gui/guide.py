@@ -238,8 +238,9 @@ class Guide(Persistent):
         global end_reached
         end_reached = False
 
+        global highlighted
+
         try:
-            global highlighted
             highlighted.stop()
             highlighted = None
         except ReferenceError:
@@ -351,8 +352,8 @@ class Guide(Persistent):
 
         remaining_for_screen.remove(found)
 
+        global highlighted
         try:
-            global highlighted
             if highlighted.widget.my_id == widget_id:
                 highlighted.stop()
         except NameError:
@@ -363,9 +364,9 @@ class Guide(Persistent):
             pass
 
     def activate(self, widget):
+        global highlighted
         try:
             if highlighted and highlighted.widget.my_id == widget.my_id:
-                #st()
                 print "Already activated %s, ignoring" % widget.my_id
                 return
         except NameError:
@@ -375,7 +376,6 @@ class Guide(Persistent):
 
         try:
             log.debug("activating %s" % widget.text)
-            global highlighted
             highlighted = Highlight(widget)
         except ReferenceError:
             log.debug("WARNING: Attempt to activate GCed widget")
