@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 from kivy.properties import StringProperty
 
 from scrollable_label import *
@@ -18,7 +18,7 @@ class MenuScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(MenuScreen, self).__init__(*args, **kwargs)
 
-        self.version_str = "0.9.6"
+        self.version_str = "0.9.7"
 
         self.intro_text = conv(
 """ Pente is a strategy board game for two or more players, created in 1977 by Gary Gabrel. If you are new to this App, follow the Guide by clicking on the flashing green areas.
@@ -72,3 +72,6 @@ There are a few [REF=settings]Settings[/REF] that you might like to change, for 
  Bruce
 """)
 
+    def on_enter(self, *args, **kwargs):
+        log.debug("Expanding openings book")
+        self.app.openings_book._get_instance()
