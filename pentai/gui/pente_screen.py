@@ -583,16 +583,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
             level = colour
             self.update_captures(colour, self.game.get_captured(colour))
 
-        # TODO: Show draws somehow
-        if self.game.get_won_by() == P1 + P2:
-            log.warn("TODO! Display draws as such!")
-            return
-
         if self.game.finished():
             widget = self.win_marker
             colour = self.game.get_won_by()
             other_marker = self.get_turn_marker()
+            self.show_win_method()
+            if self.game.get_won_by() == P1 + P2:
+                return
         else:
+            self.ids.win_method_id.text = ""
             colour = self.game.to_move_colour()
             widget = self.get_turn_marker()
             other_marker = self.win_marker
@@ -612,6 +611,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
             from kivy.animation import Animation
             self.anim = Animation(pos=new_pos, duration=0.2)
             self.anim.start(widget)
+
+    def show_win_method(self):
+        self.ids.win_method_id.text = \
+                "[b]Won by %s[/b]" % self.game.get_win_method()
 
     def get_my_dp(self):
         return my.ps_dp()

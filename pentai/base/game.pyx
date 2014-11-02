@@ -182,6 +182,16 @@ class Game(object):
     def get_won_by(self):
         return self.current_state.get_won_by()
 
+    def get_win_method(self):
+        won_by = self.get_won_by()
+        if not won_by:
+            return ""
+        elif won_by == (P1 + P2):
+            return "Drawn"
+        elif self.get_captured(won_by) >= 10:
+            return "Captures"
+        return "Five in a row"
+
     def winner_name(self):
         return self.players[self.current_state.get_won_by()]
 

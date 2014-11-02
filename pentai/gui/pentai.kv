@@ -29,7 +29,6 @@
 
 <TextInput>:
     font_size: my.dp(25)
-    valign: "center"
 
 <MyCategoryLabel@Label>:
     font_size: my.dp(22)
@@ -973,12 +972,20 @@
                 rgba: root.confirm_rect_color
             Rectangle:
                 size: (root.size[0], self.parent.board_offset[1])
+
         Label:
             id: 'confirm_text'
             size_hint_y: .35
             color: root.confirm_text_color
             font_size: my.dp(65)
             text: "Confirm Here"
+
+        Label:
+            id: win_method_id
+            markup: True
+            size_hint_x: 1.2
+            size_hint_y: .35
+            color: (.99, 0.31, 0.25, 1)
 
 <SettingsScreen>:
     GridLayout:
