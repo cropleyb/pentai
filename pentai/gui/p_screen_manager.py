@@ -3,13 +3,19 @@ from kivy.uix.screenmanager import *
 from pentai.gui.intro_screen import *
 from pentai.gui.intro_help_screen import *
 from pentai.base.defines import *
+from pentai.base.future import *
 from pentai.gui.guide import *
 import pentai.base.logger as log
 
+import importlib
 import random
 
+from pentai.gui.setup_screen import *
+from pentai.gui.pente_screen import *
+
 class PScreenManager(ScreenManager):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, app, *args, **kwargs):
+        self.app = app
         self.demo = None
         super(PScreenManager, self).__init__(*args, **kwargs)
         self.transition = SlideTransition()
@@ -46,9 +52,15 @@ class PScreenManager(ScreenManager):
         if self.current != screen_name:
             self.leave()
             self.random_transition()
+            self.create_if_necessary(screen_name)
             self.current = screen_name
             if not self.in_demo_mode():
                 self.guide.on_enter(screen_name)
+
+    def get_screen(self, screen_name, init=True):
+        if init:
+            self.create_if_necessary(screen_name)
+        return super(PScreenManager, self).get_screen(screen_name)
 
     def pop_screen(self):
         log.debug("Popping to %s" % (self.previous))
@@ -96,30 +108,46 @@ class PScreenManager(ScreenManager):
 
     def leave(self):
         self.guide.on_leave()
-    
-    def get_all_screens(self):
-        import menu_screen as ms_m
-        import ai_player_screen as aips_m
-        import ai_help_screen as aihs_m
-        import human_player_screen as hps_m
-        import human_help_screen as hhs_m
-        import setup_screen as sts_m
-        import setup_help_screen as shs_m
-        import settings_screen as ses_m
-        import settings_help_screen as sehs_m
-        import games_screen as gs_m
-        import load_help_screen as lhs_m
-        import pente_help_screen as phs_m
 
-        screens = [(ms_m.MenuScreen, "Menu"),
-                   (ses_m.SettingsScreen, "Settings"),
-                   (sehs_m.SettingsHelpScreen, "SettingsHelp"),
-                   (sts_m.SetupScreen, "Setup"),
-                   (shs_m.SetupHelpScreen, "GameSetupHelp"),
-                   (gs_m.GamesScreen, "Load"),
-                   (lhs_m.LoadHelpScreen, "LoadHelp"),
-                   (aips_m.AIPlayerScreen, "AI"), (aihs_m.AIHelpScreen, "AIHelp"),
-                   (hps_m.HumanPlayerScreen, "Human"), (hhs_m.HumanHelpScreen, "HumanHelp"),
-                   (phs_m.PenteHelpScreen, "PenteHelp"),
-                   ]
-        return screens
+    def create_if_necessary(self, screen_name):
+        if not self.has_screen(screen_name):
+            scr_mod_name, scr_cls_name = self.screen_data[screen_name]
+            scr_mod = "pentai.gui.%s_screen" % scr_mod_name
+
+            mod = importlib.import_module(scr_mod)
+            scr_cls_name = "%sScreen" % (scr_cls_name,)
+            scr_cls = getattr(mod, scr_cls_name)
+
+            self.add_screen_inc_globals(scr_cls, screen_name)
+
+    
+    def add_screen(self, scr_cls, scr_name):
+        scr = scr_cls(name=scr_name)
+        scr.set_app(self.app)
+        scr.set_config(self.app.config)
+        self.add_widget(scr)
+        return scr
+
+    def add_screen_inc_globals(self, scr_cls, scr_name):
+        scr = self.add_screen(scr_cls, scr_name)
+        app = self.app
+        scr.set_games_mgr(app.games_mgr)
+        scr.set_openings_book(app.openings_book)
+        scr.set_players_mgr(app.games_mgr.players_mgr)
+        return scr
+
+    screen_data = {
+            "Menu": ("menu", "Menu"),
+            "Settings": ("settings", "Settings"),
+            "SettingsHelp": ("settings_help", "SettingsHelp", ),
+            "Setup": ("setup", "Setup", ),
+            "GameSetupHelp": ("setup_help", "SetupHelp", ),
+            "Load": ("games", "Games", ),
+            "LoadHelp": ("load_help", "LoadHelp", ),
+            "AI": ("ai_player", "AIPlayer", ),
+            "AIHelp": ("ai_help", "AIHelp", ),
+            "Human": ("human_player", "HumanPlayer", ),
+            "HumanHelp": ("human_help", "HumanHelp", ),
+            "PenteHelp": ("pente_help", "PenteHelp", ),
+           }
+
