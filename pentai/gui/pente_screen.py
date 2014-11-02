@@ -1,6 +1,6 @@
 from kivy.logger import Logger
 from kivy.uix.scatter import Scatter
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.graphics import *
@@ -20,6 +20,7 @@ import pentai.base.mock as mock
 import pentai.ai.assessor as as_m
 import pentai.gui.popup as popup
 import pentai.gui.config as cf_m
+import pentai.gui.scale as my
 import gui_clock as gc_m
 
 import Queue
@@ -63,22 +64,17 @@ class PenteScreen(Screen, gso_m.GSObserver):
     illegal_rect_size = ListProperty([0, 0])
 
     def set_my_dp(self, screen_size):
-        print "set_my_dp ss: %s" % (screen_size,)
-        # TODO: Use scale module
-        global my_dp
-        my_dp = screen_size[0] / 457.0
         self.calc_board_offset(screen_size)
 
-    def __init__(self, screen_size, filename, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        self.game = None
+        super(PenteScreen, self).__init__(*args, **kwargs)
+
+    def start_up(self, screen_size, filename):
         # GuiPlayer?
         self.moved_marker = [None, None, None]
 
         self.set_my_dp(screen_size)
-        '''
-        # TODO: Use scale module
-        global my_dp
-        my_dp = screen_size[0] / 457.0
-        '''
 
         self.marker = None
         self.stones_by_board_pos = {}
@@ -88,7 +84,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.ghost_colour = None
         self.swap_p1_due_to_rematch = False
         self.confirmation_in_progress = None
-        self.game = None
         self.game_filename = filename
 
         self.turn_marker = None
@@ -96,7 +91,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         self.reviewing = False
 
-        super(PenteScreen, self).__init__(*args, **kwargs)
 
     def player_num_to_colour(self, player_num):
         return player_num
@@ -387,7 +381,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         self.set_my_dp(screen_size)
         self.setup_grid()
-        #self.size = screen_size
         self.on_enter()
 
     def on_pre_leave(self):
@@ -621,7 +614,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.anim.start(widget)
 
     def get_my_dp(self):
-        return my_dp
+        return my.ps_dp()
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
@@ -765,7 +758,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return self.board_to_screen(self.screen_to_board(screen_pos))
 
     def setup_colour_border(self, size_x, size_y):
-        w = 6 * my_dp
+        w = 6 * self.get_my_dp()
         # This is ugly, but using the "rectangle" feature causes issues in the corners
         self.border_lines = [w,w, size_x,w, w,w, w,size_y, w,size_y-w, size_x,size_y-w]
         self.border_lines.extend([size_x-w,size_y, size_x-w,w, w,w, w,0])
@@ -899,10 +892,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         self.reviewing = False
         self.get_audio().mute()
-        self.game.go_backwards_one()
+        self.game.go_backwards_one_for_gui()
         if human_count == 1:
             if self.game.get_current_player_type() != "Human":
-                self.game.go_backwards_one()
+                self.game.go_backwards_one_for_gui()
         self.get_audio().unmute()
 
     def go_to_the_beginning(self):
@@ -913,7 +906,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def go_backwards_one(self):
         self.get_audio().mute()
-        self.game.go_backwards_one()
+        self.game.go_backwards_one_for_gui()
         self.get_audio().unmute()
 
     def go_to_the_end(self):
@@ -1155,7 +1148,7 @@ class Piece(Scatter):
     source = StringProperty(None)
 
     def __init__(self, board_size, *args, **kwargs):
-        self.scale = my_dp * 7.0 / board_size
+        self.scale = my.ps_dp() * 7.0 / board_size
         super(Piece, self).__init__(*args, **kwargs)
         self.do_translation = False
         self.do_rotation = False
