@@ -17,7 +17,8 @@ import pentai.gui.my_button
 from pentai.gui.popup import *
 
 from pentai.db.games_mgr import *
-import pentai.db.openings_book as ob_m
+from pentai.base.future import Future
+
 
 import pentai.gui.scale as sc_m
 
@@ -28,7 +29,6 @@ class PentAIApp(App):
         self.debug = False
         super(PentAIApp, self).__init__(*args, **kwargs)
         self.defaults = None
-        self.menu_screen = None
         self.intro_help_screen = None
 
         if True:
@@ -91,7 +91,7 @@ class PentAIApp(App):
     def show_intro_help(self, ignored=None):
         if self.intro_help_screen is None:
             self.intro_help_screen = \
-                    self.add_screen(ps_m.IntroHelpScreen, 'IntroHelp')
+                    self.root.add_screen(ps_m.IntroHelpScreen, 'IntroHelp')
         self.root.push_current("IntroHelp")
 
     def pop_screen(self, ignored=None):
@@ -113,8 +113,11 @@ class PentAIApp(App):
     def show_pente_help(self, ignored=None):
         self.root.push_current("PenteHelp")
 
+    def get_games_screen(self):
+        return self.root.get_screen("Load")
+
     def show_games_screen(self, ignored=None, finished=False):
-        self.games_screen.set_show_finished(finished)
+        self.get_games_screen().set_show_finished(finished)
         self.root.set_current("Load")
 
     def show_load_help(self, ignored=None):
@@ -137,9 +140,12 @@ class PentAIApp(App):
         self.root.clear_hist()
         self.game = None
 
+    def get_setup_screen(self):
+        return self.root.get_screen("Setup")
+
     def show_new_game_screen(self):
         self.game_filename = ""
-        self.setup_screen.create_game()
+        self.get_setup_screen().create_game()
         self.root.push_current("Setup")
 
     def get_screen(self, screen_name):
@@ -148,7 +154,7 @@ class PentAIApp(App):
     def edit_game(self, game=None):
         if not game is None:
             self.game = game
-        self.setup_screen.alter_game(self.game)
+        self.get_setup_screen().alter_game(self.game)
         self.root.push_current("Setup")
 
     def show_game_setup_help(self, ignored=None):
@@ -171,7 +177,7 @@ class PentAIApp(App):
         z_m.sync()
 
         import demo as d_m
-        d = d_m.Demo(self, self.setup_screen.size)
+        d = d_m.Demo(self, self.get_setup_screen().size)
         # Intercept all touch events
         self.root.push_demo(d)
 
@@ -229,7 +235,7 @@ class PentAIApp(App):
         if self.game_filename == "":
             self.game_filename = self.game.autosave_filename
         # TODO: Check file parsed etc.
-        self.setup_screen.load_file(self.game_filename)
+        self.get_setup_screen().load_file(self.game_filename)
         # TODO production app should start game here.
         self.root.current = "Setup"
 
@@ -240,7 +246,7 @@ class PentAIApp(App):
         # TODO: Move this?
         root = self.root
         try:
-            prev_game_screen = root.get_screen("Pente")
+            prev_game_screen = root.get_screen("Pente", init=False)
             if prev_game_screen != None:
                 root.remove_widget(prev_game_screen)
         except ps_m.ScreenManagerException:
@@ -249,11 +255,11 @@ class PentAIApp(App):
         screen_size = root.get_size()
 
         from pente_screen import PenteScreen
-        self.add_screen_inc_globals(PenteScreen,
-            "Pente", screen_size=screen_size,
-            filename=self.game_filename)
+        root.add_screen_inc_globals(PenteScreen,
+            "Pente")
 
         self.pente_screen = root.get_screen("Pente")
+        self.pente_screen.start_up(screen_size=screen_size, filename=self.game_filename)
         self.game = game
 
         # load the game screen
@@ -284,6 +290,7 @@ class PentAIApp(App):
             current_screen.on_pre_leave()
             current_screen.on_leave()
         z_m.sync()
+        z_m.pack()
         self.stop()
 
     def hook_keyboard(self, window, key, *ignored_args):               
@@ -380,19 +387,6 @@ class PentAIApp(App):
 
         return False
 
-    def add_screen(self, scr_cls, scr_name, **kwargs):
-        scr = scr_cls(name=scr_name, **kwargs)
-        scr.app = self
-        scr.config = self.config # TODO: only use singleton accessor
-        self.root.add_widget(scr)
-        return scr
-
-    def add_screen_inc_globals(self, scr_cls, scr_name, **kwargs):
-        scr = self.add_screen(scr_cls, scr_name, **kwargs)
-        scr.gm = self.games_mgr
-        scr.ob = self.openings_book
-        scr.pm = self.games_mgr.players_mgr
-
     def load_config(self):
         ini_file = "pentai.ini"
         self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
@@ -402,13 +396,13 @@ class PentAIApp(App):
         self.load_config()
         self.set_screen_size()
 
-        root = ps_m.PScreenManager()
+        root = ps_m.PScreenManager(self)
         self.root = root
-        self.add_screen(ps_m.IntroScreen, 'Intro')
+        root.add_screen(ps_m.IntroScreen, 'Intro') # TODO: move into PSM
         log.debug("app build 3")
         self.show_intro_screen()
-        EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
 
+        EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
         EventLoop.window.bind(on_resize=self.on_resize)                  
 
         import audio as a_m
@@ -427,19 +421,12 @@ class PentAIApp(App):
         log.debug("Create Games Mgr")
         self.games_mgr = GamesMgr()
         log.debug("Create Openings Book")
-        self.openings_book = ob_m.OpeningsBook()
+        self.openings_book = Future("OpeningsBook", "pentai.db.openings_book")
         log.debug("Created Book")
         
         import pentai.db.create_default_players as cdp
         cdp.create_default_players(self.get_game_defaults())
 
-        self.pack_and_start()
-
-    def pack_and_start(self):
-        log.info("About to pack_and_start DB")
-        # Finished loading openings games. Pack the DB to reclaim space 
-        z_m.pack()
-        log.info("Done packing DB")
         Clock.schedule_once(self.create_screens, 0)
 
     def create_screens(self, ignored=None):
@@ -447,16 +434,6 @@ class PentAIApp(App):
 
         log.debug("Creating screens")
 
-        screens = root.get_all_screens()
-
-        log.debug("Adding screens to SM")
-        for scr_cls, scr_name in screens:
-            self.add_screen_inc_globals(scr_cls, scr_name)
-
-        self.menu_screen = root.get_screen("Menu")
-        self.setup_screen = root.get_screen("Setup")
-        self.settings_screen = root.get_screen("Settings")
-        self.games_screen = root.get_screen("Load")
         self.pente_screen = None
 
         gd_m.the_app = self

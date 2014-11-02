@@ -1,5 +1,5 @@
 from kivy.properties import *
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 
 import pentai.base.rules as r_m
 from pentai.base.defines import *
@@ -7,6 +7,7 @@ from pentai.base.pente_exceptions import *
 import pentai.base.logger as log
 
 from pentai.gui.game_defaults import *
+import pentai.gui.checkbox_list as cb_l
 
 import pentai.db.misc_db as m_m
 

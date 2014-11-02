@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 import kivy.uix.gridlayout as gl_m
 import kivy.uix.label as l_m
 import kivy.uix.progressbar as pb_m

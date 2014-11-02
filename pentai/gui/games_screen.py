@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 from kivy.uix.listview import ListView
 import kivy.uix.gridlayout as gl_m
 from kivy.adapters.dictadapter import DictAdapter

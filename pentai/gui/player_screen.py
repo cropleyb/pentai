@@ -1,5 +1,5 @@
 from kivy.properties import *
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 from kivy.uix.spinner import *
 from kivy.clock import Clock
 

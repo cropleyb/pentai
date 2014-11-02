@@ -1,4 +1,4 @@
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 
 from my_setting import *
 import audio as a_m

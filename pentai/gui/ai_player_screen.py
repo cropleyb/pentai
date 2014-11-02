@@ -1,9 +1,9 @@
 from kivy.properties import *
-from kivy.uix.screenmanager import Screen
+from pentai.gui.screen import Screen
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 
-import checkbox_list as cb_l
+import pentai.gui.checkbox_list as cb_l
 
 from pentai.gui.player_screen import *
 import pentai.ai.ai_genome as aig_m
