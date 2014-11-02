@@ -73,5 +73,7 @@ There are a few [REF=settings]Settings[/REF] that you might like to change, for 
 """)
 
     def on_enter(self, *args, **kwargs):
-        log.debug("Expanding openings book")
-        self.app.openings_book._get_instance()
+        log.debug("Not Expanding openings book")
+        #log.debug("Expanding openings book")
+        #from pentai.db.openings_book import *
+        #self.app.openings_book._get_instance()
