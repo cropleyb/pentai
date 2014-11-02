@@ -15,8 +15,7 @@ def iam(m_str):
 def suite():
     global all_tests
     all_tests = unittest.TestSuite()
-    iam("t_pos")
-    iam("tc_pos")
+    #iam("t_pos")
     iam("t_rules")
     iam("t_bit_reverse")
     iam("t_board_strip")
@@ -24,6 +23,7 @@ def suite():
     iam("t_board")
     iam("t_direction_strips")
     iam("t_game")
+    iam("t_future")
 
     return all_tests
 
