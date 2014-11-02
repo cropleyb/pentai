@@ -200,6 +200,9 @@ class Game(object):
     def go_forwards_one(self):
         self.go_to_move(self.get_move_number() + 1)
 
+    def go_backwards_one_for_gui(self):
+        self.go_to_move(self.get_move_number() - 1)
+
     def go_backwards_one(self):
         current_move = self.get_move_number()
         if current_move <= 0:
