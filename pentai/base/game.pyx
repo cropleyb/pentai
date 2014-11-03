@@ -188,7 +188,8 @@ class Game(object):
             return ""
         elif won_by == (P1 + P2):
             return "Drawn"
-        elif self.get_captured(won_by) >= 10:
+        elif self.rules.can_capture_pairs and \
+             self.get_captured(won_by) >= self.rules.stones_for_capture_win:
             return "Captures"
         return "Five in a row"
 
