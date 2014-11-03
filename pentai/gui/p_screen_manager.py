@@ -149,5 +149,6 @@ class PScreenManager(ScreenManager):
             "Human": ("human_player", "HumanPlayer", ),
             "HumanHelp": ("human_help", "HumanHelp", ),
             "PenteHelp": ("pente_help", "PenteHelp", ),
+            "GoodBye": ("goodbye", "GoodBye", ),
            }
 

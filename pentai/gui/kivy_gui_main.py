@@ -96,6 +96,9 @@ class PentAIApp(App):
                     self.root.add_screen(ps_m.IntroHelpScreen, 'IntroHelp')
         self.root.push_current("IntroHelp")
 
+    def show_goodbye_screen(self):
+        self.root.push_current("GoodBye")
+
     def pop_screen(self, ignored=None):
         ok = self.root.pop_screen()
         if not ok:
@@ -279,21 +282,7 @@ class PentAIApp(App):
                     size_hint=(.8, .2))
 
     def close_confirmed(self):
-        # TODO Send to the current screen for cleanup?
-        current_screen = self.root.current_screen
-        if current_screen:
-
-            app_width, app_height = kivy.core.window.Window.size
-
-            self.config.set("PentAI", "app_width", str(app_width))
-            self.config.set("PentAI", "app_height", str(app_height))
-            self.config.write()
-
-            current_screen.on_pre_leave()
-            current_screen.on_leave()
-        z_m.sync()
-        z_m.pack()
-        self.stop()
+        self.show_goodbye_screen()
 
     def hook_keyboard(self, window, key, *ignored_args):               
         # This keyboard control is just for my convenience, not on app.
