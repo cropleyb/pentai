@@ -32,17 +32,17 @@ class PentAIApp(App):
         self.defaults = None
         self.intro_help_screen = None
 
-        if True:
+        #if True:
         #if False:
-        #if not "db.fs.openings" in os.listdir(self.user_data_dir):
+        if not "db.fs.openings" in os.listdir(self.user_data_dir):
             log.info("Copying db")
             import shutil
             dest = self.user_data_dir
             for fn in ["db.fs.most", "db.fs.openings"]:
-                for ext in ["", ".index"]:
+                #for ext in ["", ".index"]:
+                for ext in [""]:
                     fn_ext = "%s%s" % (fn, ext)
 
-                    '''
                     # Copy DB to user_data_dir
                     shutil.copy(fn_ext, dest)
                     '''
@@ -52,6 +52,7 @@ class PentAIApp(App):
                         os.unlink(del_path)
                     except OSError:
                         pass
+                    '''
 
     def set_screen_size(self):
         from kivy import platform
