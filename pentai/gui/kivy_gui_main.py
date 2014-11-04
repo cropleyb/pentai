@@ -17,7 +17,7 @@ import pentai.gui.my_button
 from pentai.gui.popup import *
 
 from pentai.db.games_mgr import *
-#from pentai.base.future import Future
+from pentai.base.future import Future
 from pentai.db.openings_book import *
 
 
@@ -412,8 +412,7 @@ class PentAIApp(App):
         log.debug("Create Games Mgr")
         self.games_mgr = GamesMgr()
         log.debug("Create Openings Book")
-        self.openings_book = OpeningsBook()
-        #self.openings_book = Future("OpeningsBook", "pentai.db.openings_book")
+        self.openings_book = Future("OpeningsBook", "pentai.db.openings_book")
         log.debug("Created Book")
         
         import pentai.db.create_default_players as cdp
