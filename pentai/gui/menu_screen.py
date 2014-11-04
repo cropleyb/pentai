@@ -64,6 +64,7 @@ There are a few [REF=settings]Settings[/REF] that you might like to change, for 
 - Annette Campbell for inspiring me to write this in the first place
 - Sascha, Jespah and Arwen for their comments on "The Sod"
 - Tara for lots of insights into the user interface
+- Richard B for many helpful suggestions
 - The Kivy team for lots of help with their excellent toolset
 - Liam Routt for games development advice
 - Lots of other people for their support and feedback
@@ -73,7 +74,6 @@ There are a few [REF=settings]Settings[/REF] that you might like to change, for 
 """)
 
     def on_enter(self, *args, **kwargs):
-        log.debug("Not Expanding openings book")
-        #log.debug("Expanding openings book")
-        #from pentai.db.openings_book import *
-        #self.app.openings_book._get_instance()
+        log.debug("Expanding openings book")
+
+        self.app.openings_book._get_instance()

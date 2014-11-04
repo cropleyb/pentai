@@ -11,11 +11,19 @@ class Future(object):
 
     def _get_instance(self):
         if not self._instance:
-            #import pdb
-            #pdb.set_trace()
-            mod = importlib.import_module(self._mod_name)
+            
+            try:
+                mod = importlib.import_module(self._mod_name)
+            except KeyError:
+                # iOS (&windows?) seems to flatten the full package &
+                # module name into a module name with underscores
+                # separating the package components (&module name)
+                flattened = self._mod_name.replace('.', '_')
+                mod = importlib.import_module(flattened)
+
             cls = getattr(mod, self._cls_name)
-            self.__dict__["_instance"] = cls(*self._args, **self._kwargs)
+            self._instance = cls(*self._args, **self._kwargs)
+
         return self._instance
 
     def __getattr__(self, attr_name):
