@@ -1,7 +1,7 @@
 from pentai.gui.screen import Screen
 from kivy.properties import StringProperty
 
-from scrollable_label import *
+from pentai.gui.scrollable_label import *
 import pentai.base.logger as log
 from pentai.gui.fonts import *
 
