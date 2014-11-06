@@ -29,7 +29,7 @@ class AIHelpText(hs_m.HelpText):
  """)
 
         self.openings_text = conv(
-""" The Openings Book uses positions that have been played previously with PentAI, and by many skilled players on pente.org. Every time you play a game against an AI Player, the result is added to the Openings Book, along with the first 12 or so moves. (unless you disable this in [REF=sh]Settings[/REF]))
+""" The Openings Book uses positions that have been played previously with PentAI, and by many skilled players on pente.org. Every time you play a game against an AI Player, the result is added to the Openings Book, along with the first 12 or so moves. (unless you disable this in [REF=settings]Settings[/REF]))
 
  When you have finished creating or editing an AI Player, just click on the "Menu" button, or change the player being edited, and it will be automatically saved. If you make some changes, and then decide you don't want to keep them, press "Cancel".
 """)
