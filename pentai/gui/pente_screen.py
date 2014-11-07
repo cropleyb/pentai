@@ -21,6 +21,7 @@ import pentai.ai.assessor as as_m
 import pentai.gui.popup as popup
 import pentai.gui.config as cf_m
 import pentai.gui.scale as my
+import pentai.gui.game_gui as gg_m
 import gui_clock as gc_m
 
 import Queue
@@ -67,7 +68,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.calc_board_offset(screen_size)
 
     def __init__(self, *args, **kwargs):
-        self.game = None
+        self.set_global_game(None)
         super(PenteScreen, self).__init__(*args, **kwargs)
 
     def start_up(self, screen_size, filename):
@@ -91,6 +92,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         self.reviewing = False
 
+    def set_global_game(self, game):
+        gg_m.set_instance(game)
+
+    def get_game(self):
+        return gg_m.get_instance()
 
     def player_num_to_colour(self, player_num):
         return player_num
@@ -126,7 +132,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def rematch(self):
         self.get_audio().hush_game_over_sound()
-        cs = self.game.get_current_state()
+        cs = self.get_game().get_current_state()
         if cs.get_won_by():
             self.rematch_confirmed()
         else:
@@ -137,7 +143,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def rematch_confirmed(self, *ignored):
         log.debug("Calling set_live False due to rematch")
 
-        og = self.game
+        og = self.get_game()
         og.set_live(False, self)
 
         rules = og.get_rules()
@@ -192,12 +198,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def create_clocks(self):
         # TODO: Ugly
         self.clocks[:] = [None]
-        if self.game.get_total_time() > 0:
+        if self.get_game().get_total_time() > 0:
             # Time controls active.
             for player_num, time_id in [
                     (P1, self.ids.black_time_id),
                     (P2, self.ids.white_time_id)]:
-                gc = gc_m.GuiClock(player_num, time_id, self.game)
+                gc = gc_m.GuiClock(player_num, time_id, self.get_game())
                 self.clocks.append(gc)
         else:
             self.clocks.append(mock.Mock())
@@ -206,7 +212,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def set_game(self, game, swap_colours):
         self.clean_board()
         self.legend_complete = False
-        self.game = game
+        self.set_global_game(game)
         self.swap_p1_due_to_rematch = swap_colours
         p1 = game.get_player_name(P1)
         p2 = game.get_player_name(P2)
@@ -245,21 +251,30 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def really_start_game(self, *ignored):
         if self.game_filename:
             self.load_file()
-        elif self.game.resume_move_number > 1:
+        elif self.get_game().resume_move_number > 1:
             self.load_moves()
         else:
             self.make_first_move()
 
     def is_live(self):
-        return self.game.is_live()
+        game = self.get_game()
+        return game and game.is_live()
 
     def set_live(self, val):
         #log.debug("pente_screen set_live: %s" % val)
         was_live = self.is_live()
-        self.game.set_live(val, self)
+        game = self.get_game()
+        if not game:
+            if not val:
+                return
+            log.error("Cannot make non-existent game live")
+            crash()
+            return
+
+        game.set_live(val, self)
         if val:
-            if not was_live and not self.game.finished():
-                if self.game.get_move_number() > 1:
+            if not was_live and not self.get_game().finished():
+                if self.get_game().get_move_number() > 1:
                     # Transitioning to live, so get things going
                     self.prompt_for_action()
 
@@ -267,7 +282,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
                     self.start_ticking()
         else:
             self.stop_ticking()
-            self.game.get_current_player().stop()
+            self.get_game().get_current_player().stop()
 
     # GuiPlayer?
     def make_first_move(self, *ignored):
@@ -275,18 +290,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
         Some rule variations require that the first black move must
         be in the center. TODO: This shouldn't really be in the GUI.
         """
-        r = self.game.rules
+        r = self.get_game().rules
         if r.center_first:
             bs = r.size
-            self.game.make_move((bs/2, bs/2))
+            self.get_game().make_move((bs/2, bs/2))
             self.refresh_all()
             self.clocks[P1].made_move()
         self.prompt_for_action()
 
     def display_names(self):
         for player_num in (P1, P2):
-            pname = self.game.get_player_name(player_num)
-            ptype = self.game.get_player_type(player_num)
+            pname = self.get_game().get_player_name(player_num)
+            ptype = self.get_game().get_player_type(player_num)
             if ptype in ("Computer", "AI"):
                 pname = "[font=%s]%s[/font]" % (AI_FONT, pname)
             self.player_name[player_num] = pname
@@ -333,14 +348,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def enqueue_action(self, action):
         self.action_queue.put(action)
-        current_player_type = self.game.get_current_player_type()
+        current_player_type = self.get_game().get_current_player_type()
         mw = 0.0
         if current_player_type in ("Computer", "AI"):
             mw = self.config.getfloat("PentAI", "minimum_wait")
         Clock.schedule_once(self.trig, mw)
 
     def enqueue_move(self, move):
-        game = self.game
+        game = self.get_game()
         turn = game.get_move_number()
         prev_move = game.get_last_move()
         action = turn, prev_move, move
@@ -348,8 +363,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def load_file(self, dt):
         f = open(self.game_filename)
-        self.game.autosave_filename = self.game_filename[:]
-        self.game.load_game(f.read())
+        self.get_game().autosave_filename = self.game_filename[:]
+        self.get_game().load_game(f.read())
         self.setup_grid()
         self.game_filename = None
         self.refresh_all()
@@ -357,9 +372,9 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def load_moves(self, dt=None):
         self.get_audio().mute()
-        self.game.resume()
+        self.get_game().resume()
 
-        is_finished = self.game.get_won_by() > 0
+        is_finished = self.get_game().get_won_by() > 0
         self.set_review_mode(is_finished)
 
         self.game_filename = None
@@ -368,20 +383,31 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.prompt_for_action()
 
     def on_enter(self):
-        if self.game.get_move_number() > 1:
+        if self.get_game().get_move_number() > 1:
             self.go_to_the_beginning()
             self.load_moves()
 
         self.refresh_all()
-        if not self.game.finished():
+        if not self.get_game().finished():
             self.set_review_mode(False)
         time.sleep(0.5)
 
     def resize(self, screen_size):
-
+        if not self.get_game():
+            return
+        '''
+        '''
         self.set_my_dp(screen_size)
-        self.setup_grid()
-        self.on_enter()
+        self.ids.confirm_text_id.font_size = my.dp(65)
+        if self.turn_marker:
+            self.remove_widget(self.turn_marker)
+        self.turn_marker = None
+        self.win_marker = Piece(13, source=win_filename)
+        try:
+            self.setup_grid()
+        except:
+            st()
+        #self.on_enter()
 
     def on_pre_leave(self):
         self.leave_game()
@@ -396,33 +422,33 @@ class PenteScreen(Screen, gso_m.GSObserver):
         log.debug("Calling set_live False in leave_game")
         self.set_live(False)
         if not self.app.in_demo_mode():
-            self.gm.save(self.game)
+            self.gm.save(self.get_game())
             self.get_audio().mute()
             try:
-                won_by = self.game.get_won_by()
+                won_by = self.get_game().get_won_by()
                 if won_by:
                     add_to_ob = self.config.get("PentAI", "add_games_to_ob")
                     log.debug("Add single game to openings book: %s" % add_to_ob)
                     if add_to_ob:
-                        self.ob.add_game(self.game, won_by)
+                        self.ob.add_game(self.get_game(), won_by)
             except OpeningsBookDuplicateException:
                 pass
             self.get_audio().unmute()
 
     def start_ticking(self):
-        if not self.game.finished():
-            colour = self.game.to_move_colour()
+        if not self.get_game().finished():
+            colour = self.get_game().to_move_colour()
             self.clocks[colour].start_ticking()
 
     def stop_ticking(self):
-        if self.game:
-            colour = self.game.to_move_colour()
+        if self.get_game():
+            colour = self.get_game().to_move_colour()
             self.clocks[colour].made_move() # TODO: "made_move"
             opp_colour = opposite_colour(colour)
             self.clocks[opp_colour].made_move() # TODO: "made_move"
 
     def perform(self, dt):
-        game = self.game
+        game = self.get_game()
         move = None
         while not self.action_queue.empty():
             # Remove marker if it is currently displayed
@@ -433,11 +459,16 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.cancel_confirmation()
             
             action = self.action_queue.get()
-            if not game.is_live():
-                log.info("Attempt was made to move while the game was not live")
+            try:
+                if not game.is_live():
+                    log.info("Attempt was made to move while the game was not live")
+                    return
+            except AttributeError:
+                log.info("Attempt was made to move after game was left")
                 return
+
             if not action:
-                if self.game.get_won_by() == (P1+P2):
+                if self.get_game().get_won_by() == (P1+P2):
                     log.info("Draw detected")
                     # TODO: return? GUI feedback?
                 return
@@ -457,7 +488,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             return
 
         try:
-            self.game.make_move(move)
+            self.get_game().make_move(move)
             self.refresh_all()
             self.prompt_for_action()
         except Exception, e:
@@ -470,14 +501,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if self.is_live() and not self.reviewing:
             # TODO: game.prompt_for_action if not finished?
             self.start_ticking()
-            self.game.prompt_for_action(self)
+            self.get_game().prompt_for_action(self)
 
     def board_size(self):
-        return self.game.size()
+        return self.get_game().size()
 
     def grid_size(self):
         """ The Grid on the screen allows extra space at the edges """
-        return self.game.size() + 1
+        return self.get_game().size() + 1
 
     def reset_state(self, game):
         """ Callback from game_state """
@@ -518,7 +549,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
     # KivyPlayer
     def update_captures(self, colour, captured):
         """ Update the display of captured stones below the board """
-        if self.game.rules.stones_for_capture_win <= 0:
+        if self.get_game().rules.stones_for_capture_win <= 0:
             # Don't display them if the rules prevent capture wins
             return
         cw = self.captured_widgets[colour]
@@ -581,18 +612,18 @@ class PenteScreen(Screen, gso_m.GSObserver):
         # TODO: Only call this when the game is up to date
         for colour in (P1, P2):
             level = colour
-            self.update_captures(colour, self.game.get_captured(colour))
+            self.update_captures(colour, self.get_game().get_captured(colour))
 
-        if self.game.finished():
+        if self.get_game().finished():
             widget = self.win_marker
-            colour = self.game.get_won_by()
+            colour = self.get_game().get_won_by()
             other_marker = self.get_turn_marker()
             self.show_win_method()
-            if self.game.get_won_by() == P1 + P2:
+            if self.get_game().get_won_by() == P1 + P2:
                 return
         else:
             self.ids.win_method_id.text = ""
-            colour = self.game.to_move_colour()
+            colour = self.get_game().to_move_colour()
             widget = self.get_turn_marker()
             other_marker = self.win_marker
 
@@ -613,8 +644,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.anim.start(widget)
 
     def show_win_method(self):
-        self.ids.win_method_id.text = \
-                "[b]Won by %s[/b]" % self.game.get_win_method()
+        wm_w = self.ids.win_method_id
+        wm_w.text = \
+                "[b]Won by %s[/b]" % self.get_game().get_win_method()
+        wm_w.font_size = my.dp(30)
 
     def get_my_dp(self):
         return my.ps_dp()
@@ -674,6 +707,14 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         board_offset_factor_y = float(self.board_offset[1]) / self.size[1]
         tob = 0.5-board_offset_factor_y
+        print "tob: %s -------------------" % tob
+        print "bofy: %s size[1]: %s" % (board_offset_factor_y, self.size[1])
+        '''
+        : 0.35 size[1]: 396
+        
+        tob: 0.15 -------------------
+        bofy: 0.35 size[1]: 396
+        '''
 
         self.create_legend("horizontal", 1.0/(2*bs), 0.25/bs-0.495,
                            (float(bs)/(bs+1),None), letters)
@@ -741,7 +782,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             parent.add_widget(l)
 
     def setup_grid(self, _dt=None):
-        if self.game != None:
+        if self.get_game() != None:
             self.gridlines = self.setup_grid_lines()
             self.setup_legend()
 
@@ -767,7 +808,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.border_lines.extend([size_x-w,size_y, size_x-w,w, w,w, w,0])
         # The last two points are just to fill in a point that is missing
         # at the bottom left.
-        self.border_colour = self.game.rules.border_colour
+        self.border_colour = self.get_game().rules.border_colour
         self.border_width = w
 
     # screen_to_board and board_to_screen do their own compensating for
@@ -785,7 +826,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         board_x = int(round(GS * bsp[0] / size_x) - 1)
         board_y = int(round(GS * bsp[1] / size_y) - 1)
         pos = board_x, board_y
-        cs = self.game.get_current_state()
+        cs = self.get_game().get_current_state()
         exception = cs.is_illegal(pos)
         if exception:
             raise exception
@@ -811,7 +852,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             if colour == P1:
                 filename = moved_marker_filename_b
             try:
-                mm = Piece(self.game.size()*0.5, source=filename)
+                mm = Piece(self.get_game().size()*0.5, source=filename)
                 self.moved_marker[colour] = mm
             except Exception, e:
                 Logger.exception('Board: Unable to load <%s>' % filename)
@@ -851,10 +892,10 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 widget.pos = self.board_to_screen(board_pos)
                 self.confirmation_in_progress = widget, board_pos
         else:
-            colour = self.get_player_colour_index(self.game.to_move_colour())
+            colour = self.get_player_colour_index(self.get_game().to_move_colour())
             cfs = confirm_filename
             filename = cfs[colour]
-            widget = Piece(self.game.size(), source=filename)
+            widget = Piece(self.get_game().size(), source=filename)
             widget.pos = self.board_to_screen(board_pos)
             self.add_widget(widget)
             self.confirmation_in_progress = widget, board_pos
@@ -884,7 +925,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return self.config.getint("PentAI", "mark_captures")
 
     def take_back_move(self):
-        players = self.game.get_all_players()
+        players = self.get_game().get_all_players()
         human_count = 0
         for i in (1,2):
             if players[i].get_type() == "Human":
@@ -895,31 +936,31 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         self.reviewing = False
         self.get_audio().mute()
-        self.game.go_backwards_one_for_gui()
+        self.get_game().go_backwards_one_for_gui()
         if human_count == 1:
-            if self.game.get_current_player_type() != "Human":
-                self.game.go_backwards_one_for_gui()
+            if self.get_game().get_current_player_type() != "Human":
+                self.get_game().go_backwards_one_for_gui()
         self.get_audio().unmute()
 
     def go_to_the_beginning(self):
-        self.game.go_to_the_beginning()
+        self.get_game().go_to_the_beginning()
 
     def go_forwards_one(self):
-        self.game.go_forwards_one()
+        self.get_game().go_forwards_one()
 
     def go_backwards_one(self):
         self.get_audio().mute()
-        self.game.go_backwards_one_for_gui()
+        self.get_game().go_backwards_one_for_gui()
         self.get_audio().unmute()
 
     def go_to_the_end(self):
         self.get_audio().mute()
-        self.game.go_to_the_end()
+        self.get_game().go_to_the_end()
         self.get_audio().unmute()
 
     def assess(self):
         # TODO: only in review mode
-        assessor = as_m.Assessor(self.game)
+        assessor = as_m.Assessor(self.get_game())
         log.debug("calculating best move")
         answer = assessor.calc_best_move(gui=self)
         print answer
@@ -943,13 +984,13 @@ class PenteScreen(Screen, gso_m.GSObserver):
             return True
 
         # Check that it is a human's turn.
-        current_player = self.game.get_current_player()
+        current_player = self.get_game().get_current_player()
         if current_player.get_type() == "Human":
             # Place a marker at the (snapped) cursor position.
             if self.marker == None:
                 try:
                     # load the image
-                    self.marker = Piece(self.game.size(), \
+                    self.marker = Piece(self.get_game().size(), \
                             source=x_filename)
                 except Exception, e:
                     Logger.exception('Board: Unable to load <%s>' % x_filename)
@@ -1050,7 +1091,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
         try:
             # load and place the appropriate stone image
-            new_piece = Piece(self.game.size(), source=filename)
+            new_piece = Piece(self.get_game().size(), source=filename)
             new_piece.pos = self.board_to_screen(board_pos)
             self.ghosts.append(new_piece)
             self.add_widget(new_piece)
@@ -1058,7 +1099,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             Logger.exception('Board: Unable to load <%s>' % filename)
 
     def refresh_illegal(self):
-        game = self.game
+        game = self.get_game()
         rules = game.get_rules()
         self.illegal_rect_color = [0, 0, 0, 0]
         if (game.get_move_number() == 3) and (rules.type_char == 't'):
@@ -1098,7 +1139,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
             try:
                 # load and place the appropriate stone image
-                new_piece = Piece(self.game.size(), source=filename)
+                new_piece = Piece(self.get_game().size(), source=filename)
                 self.stones_by_board_pos[board_pos] = new_piece, colour
                 new_piece.pos = self.board_to_screen(board_pos)
                 self.add_widget(new_piece)
@@ -1132,12 +1173,12 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.panel_buttons = panel_buttons
         panel_buttons.ps = self
 
-        try:
+        #try:
             # TODO Merge into one call
-            self.app.guide.setup_pente_panel_hooks(panel_buttons)
-            self.app.guide.on_pente_panel_switch(panel_buttons)
-        except AttributeError:
-            pass
+        self.app.guide.setup_pente_panel_hooks(panel_buttons)
+        self.app.guide.on_pente_panel_switch(panel_buttons)
+        #except AttributeError:
+        #    pass
 
         pb_parent = self.ids.panel_buttons_id
         pb_parent.clear_widgets()

@@ -211,7 +211,16 @@ class Guide(Persistent):
             try:
                 widget = parent.ids[widget_id_text]
             except KeyError:
-                widget = parent.text_to_widget[widget_id_text]
+                try:
+                    print "parent has no id: %s" % widget_id_text
+                    widget = parent.text_to_widget[widget_id_text]
+                except AttributeError:
+                    print "trying active_panel"
+                    #st()
+                    try:
+                        widget = active_panel.ids[widget_id_text]
+                    except KeyError:
+                        return
 
             widget.my_id = widget_id_text
 

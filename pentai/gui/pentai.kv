@@ -983,10 +983,10 @@
                 size: (root.size[0], self.parent.board_offset[1])
 
         Label:
-            id: 'confirm_text'
+            id: confirm_text_id
             size_hint_y: .35
             color: root.confirm_text_color
-            font_size: my.dp(65)
+            font_size: my.dp(65) # TODO: Handle Resize by moving this to .py
             text: "Confirm Here"
 
         Label:

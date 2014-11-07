@@ -45,8 +45,22 @@ class PScreenManager(ScreenManager):
         return self.current_screen.size
 
     def resize(self, *args):
-        if self.current == "Pente":
-            self.current_screen.resize(args[1:])
+        pente_screen = None
+        current = self.current
+        if current == "Pente":
+            # Only resize PenteScreen if it is the current screen,
+            # otherwise just create a new one.
+            pente_screen = self.get_screen("Pente")
+            pente_screen.resize(args[1:])
+
+        self.clear_widgets()
+
+        if pente_screen:
+            try:
+                self.add_widget(pente_screen)
+            except ScreenManagerException:
+                pass
+        self.set_current(current)
 
     def set_current(self, screen_name):
         if self.current != screen_name:
@@ -55,12 +69,16 @@ class PScreenManager(ScreenManager):
             self.create_if_necessary(screen_name)
             self.current = screen_name
             if not self.in_demo_mode():
-                self.guide.on_enter(screen_name)
+                if screen_name:
+                    self.guide.on_enter(screen_name)
 
     def get_screen(self, screen_name, init=True):
         if init:
             self.create_if_necessary(screen_name)
-        return super(PScreenManager, self).get_screen(screen_name)
+        try:
+            return super(PScreenManager, self).get_screen(screen_name)
+        except ScreenManagerException:
+            return None
 
     def pop_screen(self):
         log.debug("Popping to %s" % (self.previous))
@@ -110,7 +128,7 @@ class PScreenManager(ScreenManager):
         self.guide.on_leave()
 
     def create_if_necessary(self, screen_name):
-        if not self.has_screen(screen_name):
+        if screen_name != "Pente" and not self.has_screen(screen_name):
             scr_mod_name, scr_cls_name = self.screen_data[screen_name]
             scr_mod = "pentai.gui.%s_screen" % scr_mod_name
 

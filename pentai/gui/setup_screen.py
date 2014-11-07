@@ -7,6 +7,7 @@ from pentai.base.pente_exceptions import *
 import pentai.base.logger as log
 
 from pentai.gui.game_defaults import *
+import pentai.gui.game_gui as gg_m
 import pentai.gui.checkbox_list as cb_l
 
 import pentai.db.misc_db as m_m
@@ -33,7 +34,6 @@ class SetupScreen(Screen):
         global screen
         screen = self
 
-        self.game = None
         self.repop = False
         self.initialised = False
         
@@ -147,13 +147,14 @@ class SetupScreen(Screen):
             self.app.start_game(g)
 
     def create_game(self):
-        self.game = self.app.games_mgr.create_game()
+        game = self.app.games_mgr.create_game()
+        gg_m.set_instance(game)
         self.ids.title_id.text = "New Game"
         self.ids.start_game_id.text = "Start Game"
         self.ids.bs_id.disabled = False
 
     def alter_game(self, game):
-        self.game = game
+        gg_m.set_instance(game)
         self.set_defaults_from_game(game)
         self.ids.title_id.text = "Edit Game"
         self.ids.start_game_id.text = "Resume Game"
@@ -200,9 +201,10 @@ class SetupScreen(Screen):
             self.app.display_message("Select a player for White")
             return
 
-        self.game.setup(r, p1, p2)
-        self.set_defaults_from_game(self.game)
-        return self.game
+        game = gg_m.get_instance()
+        game.setup(r, p1, p2)
+        self.set_defaults_from_game(game)
+        return game
     
     def set_GUI_from_defaults(self, g): # TODO: don't pass g in?
         self.ids.bpl_id.text = self.get_default_player_name(P1)

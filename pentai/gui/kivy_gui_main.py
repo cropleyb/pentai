@@ -15,6 +15,7 @@ import pentai.gui.guide as gd_m
 import pentai.gui.p_screen_manager as ps_m
 import pentai.gui.my_button
 from pentai.gui.popup import *
+import pentai.gui.game_gui as gg_m
 
 from pentai.db.games_mgr import *
 from pentai.base.future import Future
@@ -64,6 +65,9 @@ class PentAIApp(App):
             app_height = self.config.getint("PentAI", "app_height")
             kivy.core.window.Window.size = (app_width, app_height)
 
+        self.set_scale_factor(app_height)
+
+    def set_scale_factor(self, app_height):
         # 720 was the original height of the app in pixels, to which the 
         # GUI has been built
         f = app_height / 720.0
@@ -71,6 +75,7 @@ class PentAIApp(App):
         sc_m.set_scale_factor(f)
 
     def on_resize(self, *args):
+        self.set_scale_factor(args[2])
         self.root.resize(*args)
 
     def display_message(self, message, title=None):
@@ -143,6 +148,7 @@ class PentAIApp(App):
     def show_menu_screen(self, ignored=None):
         self.root.set_current("Menu")
         self.root.clear_hist()
+        gg_m.set_instance(None)
         self.game = None
 
     def get_setup_screen(self):
@@ -157,18 +163,26 @@ class PentAIApp(App):
         return self.root.get_screen(screen_name)
 
     def edit_game(self, game=None):
-        if not game is None:
+        if game is None:
+            game = gg_m.get_instance()
             self.game = game
-        self.get_setup_screen().alter_game(self.game)
+
+        self.get_setup_screen().alter_game(game)
+
         self.root.push_current("Setup")
+
+    def get_game(self):
+        #return gg_m.get_instance()
+        return self.game
 
     def show_game_setup_help(self, ignored=None):
         self.root.push_current("GameSetupHelp")
 
     def show_demo(self):
         # This is to allow the demo to be shown from the game screen help.
-        if self.game:
-            self.saved_pente_game_key = self.game.key()
+        game = self.get_game()
+        if game:
+            self.saved_pente_game_key = game.key()
             if self.pente_screen:
                 self.pente_screen.leave_game()
         else:
@@ -191,6 +205,7 @@ class PentAIApp(App):
     def finish_demo(self):
         import audio as a_m
         a_m.instance.cut_demo()
+        #gg_m.set_instance(None)
         self.game = None
         self.pop_screen()
         z_m.abort()
@@ -238,7 +253,7 @@ class PentAIApp(App):
         if full_path != None:
             self.game_filename = full_path
         if self.game_filename == "":
-            self.game_filename = self.game.autosave_filename
+            self.game_filename = self.get_game().autosave_filename
         # TODO: Check file parsed etc.
         self.get_setup_screen().load_file(self.game_filename)
         # TODO production app should start game here.
@@ -250,6 +265,11 @@ class PentAIApp(App):
     def start_game(self, game, swap_colours=False, demo=False):
         # TODO: Move this?
         root = self.root
+
+        # Get the size of the current screen before removing the pente screen
+        # (which might be current) - otherwise we get screen size: 1,1
+        screen_size = root.get_size()
+
         try:
             prev_game_screen = root.get_screen("Pente", init=False)
             if prev_game_screen != None:
@@ -257,14 +277,12 @@ class PentAIApp(App):
         except ps_m.ScreenManagerException:
             pass
 
-        screen_size = root.get_size()
-
         from pente_screen import PenteScreen
-        root.add_screen_inc_globals(PenteScreen,
-            "Pente")
+        root.add_screen_inc_globals(PenteScreen, "Pente")
 
         self.pente_screen = root.get_screen("Pente")
         self.pente_screen.start_up(screen_size=screen_size, filename=self.game_filename)
+        # gg_m.set_instance(game)
         self.game = game
 
         # load the game screen
@@ -324,7 +342,7 @@ class PentAIApp(App):
                 return True
             # Ignore spaces on other pages, could be entering names
             if self.root.current == "Pente":
-                if self.game.finished():
+                if self.get_game().finished():
                     self.show_games_screen()
                 else:
                     # Game in progress, prompt
@@ -407,6 +425,7 @@ class PentAIApp(App):
         return root
 
     def build_more(self, ignored):
+        # gg_m.set_instance(None)
         self.game = None
         
         log.debug("Create Games Mgr")
