@@ -149,7 +149,6 @@ class PentAIApp(App):
         self.root.set_current("Menu")
         self.root.clear_hist()
         gg_m.set_instance(None)
-        self.game = None
 
     def get_setup_screen(self):
         return self.root.get_screen("Setup")
@@ -165,15 +164,13 @@ class PentAIApp(App):
     def edit_game(self, game=None):
         if game is None:
             game = gg_m.get_instance()
-            self.game = game
 
         self.get_setup_screen().alter_game(game)
 
         self.root.push_current("Setup")
 
     def get_game(self):
-        #return gg_m.get_instance()
-        return self.game
+        return gg_m.get_instance()
 
     def show_game_setup_help(self, ignored=None):
         self.root.push_current("GameSetupHelp")
@@ -205,8 +202,7 @@ class PentAIApp(App):
     def finish_demo(self):
         import audio as a_m
         a_m.instance.cut_demo()
-        #gg_m.set_instance(None)
-        self.game = None
+        gg_m.set_instance(None)
         self.pop_screen()
         z_m.abort()
 
@@ -282,8 +278,7 @@ class PentAIApp(App):
 
         self.pente_screen = root.get_screen("Pente")
         self.pente_screen.start_up(screen_size=screen_size, filename=self.game_filename)
-        # gg_m.set_instance(game)
-        self.game = game
+        gg_m.set_instance(game)
 
         # load the game screen
         self.pente_screen.set_game(game, swap_colours=swap_colours)
@@ -425,8 +420,7 @@ class PentAIApp(App):
         return root
 
     def build_more(self, ignored):
-        # gg_m.set_instance(None)
-        self.game = None
+        gg_m.set_instance(None)
         
         log.debug("Create Games Mgr")
         self.games_mgr = GamesMgr()
