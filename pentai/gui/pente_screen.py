@@ -1,33 +1,17 @@
 from kivy.logger import Logger
-from kivy.uix.scatter import Scatter
 from pentai.gui.screen import Screen
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.clock import Clock
-from kivy.graphics import *
-from kivy.uix.label import Label
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import WidgetException
+from kivy.graphics import Color
 
 import pentai.base.gs_observer as gso_m
 from pentai.base.pente_exceptions import *
 
-from pentai.gui.fonts import AI_FONT
-
-import audio as a_m
 from pentai.base.defines import *
 import pentai.base.logger as log
-import pentai.base.mock as mock
-import pentai.ai.assessor as as_m
 import pentai.gui.popup as popup
-import pentai.gui.config as cf_m
 import pentai.gui.scale as my
 import pentai.gui.game_gui as gg_m
-import gui_clock as gc_m
-
-import Queue
-import datetime # TODO: Remove when old file format is gone
-import string
-import time
 
 piece_filename = (None, \
     "./media/black_transparent.png", \
@@ -73,6 +57,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def start_up(self, screen_size, filename):
         # GuiPlayer?
+        import Queue
+
         self.moved_marker = [None, None, None]
 
         self.set_my_dp(screen_size)
@@ -200,16 +186,20 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.clocks[:] = [None]
         if self.get_game().get_total_time() > 0:
             # Time controls active.
+            import gui_clock as gc_m
             for player_num, time_id in [
                     (P1, self.ids.black_time_id),
                     (P2, self.ids.white_time_id)]:
                 gc = gc_m.GuiClock(player_num, time_id, self.get_game())
                 self.clocks.append(gc)
         else:
+            import pentai.base.mock as mock
             self.clocks.append(mock.Mock())
             self.clocks.append(mock.Mock())
 
     def set_game(self, game, swap_colours):
+        import datetime # TODO: Remove when old file format is gone
+
         self.clean_board()
         self.legend_complete = False
         self.set_global_game(game)
@@ -299,6 +289,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.prompt_for_action()
 
     def display_names(self):
+        from pentai.gui.fonts import AI_FONT
         for player_num in (P1, P2):
             pname = self.get_game().get_player_name(player_num)
             ptype = self.get_game().get_player_type(player_num)
@@ -325,6 +316,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return pc
 
     def get_player_colour_index(self, player_num):
+        import pentai.gui.config as cf_m
         fpc = cf_m.config_instance().get("PentAI", "first_player_colour")
 
         ret = player_num
@@ -390,6 +382,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.refresh_all()
         if not self.get_game().finished():
             self.set_review_mode(False)
+
+        import time
         time.sleep(0.5)
 
     def resize(self, screen_size):
@@ -547,6 +541,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.app.guide.on_end_of_game()
 
     def get_audio(self):
+        import audio as a_m
         return a_m.instance
 
     def remove_captured_widgets(self, colour):
@@ -691,6 +686,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return lines
 
     def setup_legend(self):
+        import string
         if self.legend_complete:
             # Already initialised
             return
@@ -741,6 +737,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.legend_complete = True
 
     def create_legend(self, orientation, x_factor, y_factor, size_hint, chars):
+        from kivy.uix.boxlayout import BoxLayout
         fl = self.ids.float_layout_id
         bl = BoxLayout(orientation=orientation)
         self.legend_box_layouts.append(bl)
@@ -781,6 +778,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return cc
 
     def create_legend_widgets(self, parent, chars):
+        from kivy.uix.label import Label
         for i, val in enumerate(chars):
             l = Label()
             l.text = val
@@ -794,6 +792,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.setup_legend()
 
     def refresh_legend(self):
+        from kivy.uix.widget import WidgetException
         try:
             fl = self.ids.float_layout_id
             show = self.config.getint("PentAI", "show_legend")
@@ -827,7 +826,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             dependant on the size of the board """
         size_x, size_y = self.size
         bsp = screen_pos[0], screen_pos[1]-self.board_offset[1]
-        print "screen_to_board size: %s" % self.size
         size_y -= self.board_offset[1]
         GS = self.grid_size()
         board_x = int(round(GS * bsp[0] / size_x) - 1)
@@ -967,6 +965,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def assess(self):
         # TODO: only in review mode
+        import pentai.ai.assessor as as_m
         assessor = as_m.Assessor(self.get_game())
         log.debug("calculating best move")
         answer = assessor.calc_best_move(gui=self)
@@ -1194,6 +1193,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def are_reviewing(self):
         return self.reviewing
 
+
+from kivy.uix.scatter import Scatter
 
 class Piece(Scatter):
     source = StringProperty(None)
