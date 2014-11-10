@@ -7,9 +7,7 @@ from kivy.clock import Clock
 from kivy.properties import *
 from kivy.uix.spinner import Spinner, SpinnerOption
 from kivy.uix.dropdown import *
-from kivy.config import Config
 
-import pentai.gui.scale as my
 from pentai.base.defines import *
 
 import datetime
