@@ -1,6 +1,6 @@
 import pentai.ai.ai_genome as aig_m
 import ai_factory
-import misc_db as m_m
+from misc_db import misc
 import mru_cache as mru_m
 
 from pentai.base.defines import *
@@ -8,9 +8,6 @@ import pentai.base.logger as log
 import zodb_dict as z_m
 
 import os
-
-def misc():
-    return m_m.get_instance()
 
 # TODO: Move these into player classes
 HUMAN_TYPE = int(0)

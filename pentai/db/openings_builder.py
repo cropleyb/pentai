@@ -9,13 +9,10 @@ import pentai.base.pente_exceptions as pe_m
 import pentai.db.zodb_dict as z_m
 import pentai.db.openings_book as ob_m
 import pentai.db.games_mgr as gm_m
-import pentai.db.misc_db as m_m
+from misc_db import misc
 
 from pentai.base.defines import *
 import pentai.base.logger as log
-
-def misc():
-    return m_m.get_instance()
 
 def unzip_section(section, user_data_dir):
     log.info("unzipping %s" % section)

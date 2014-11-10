@@ -2,16 +2,13 @@ import pentai.base.game as g_m
 import players_mgr
 import preserved_game as pg_m
 import zodb_dict as zd_m
-import misc_db as m_m
+from pentai.db.misc_db import misc
 import mru_cache as mru_m
 import os
 import pentai.base.gs_observer as gso_m
 
 from pentai.base.defines import *
 import pentai.base.logger as log
-
-def misc():
-    return m_m.get_instance()
 
 class GamesMgr(gso_m.GSObserver):
     # TODO: Borg pattern?

@@ -29,9 +29,7 @@ def set_default_game(defaults):
 
 def create_default_players(defaults=None):
     import pentai.gui.game_defaults as gd_m
-    import misc_db as m_m
-    def misc():
-        return m_m.get_instance()
+    from pentai.db.misc_db import misc
     if not defaults:
         try:
             defaults = misc()["game_defaults"]

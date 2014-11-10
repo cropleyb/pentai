@@ -10,11 +10,6 @@ from pentai.gui.game_defaults import *
 import pentai.gui.game_gui as gg_m
 import pentai.gui.checkbox_list as cb_l
 
-import pentai.db.misc_db as m_m
-
-def misc():
-    return m_m.get_instance()
-
 from kivy.uix.spinner import *
 
 screen = None

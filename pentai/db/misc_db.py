@@ -14,3 +14,6 @@ def reset():
     global the_instance
     the_instance = None
 
+def misc():
+    return get_instance()
+

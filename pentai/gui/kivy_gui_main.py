@@ -17,7 +17,6 @@ import pentai.gui.my_button
 from pentai.gui.popup import *
 import pentai.gui.game_gui as gg_m
 
-from pentai.db.games_mgr import *
 from pentai.base.future import Future
 from pentai.db.openings_book import *
 
@@ -220,8 +219,8 @@ class PentAIApp(App):
         self.load_game_file(full_path)
 
     def get_game_defaults(self):
-        import pentai.gui.game_defaults as gd_m
         if not self.defaults:
+            from pentai.db.misc_db import misc
             try:
                 self.defaults = misc()["game_defaults"]
             except KeyError:
@@ -406,7 +405,8 @@ class PentAIApp(App):
         gg_m.set_instance(None)
         
         log.debug("Create Games Mgr")
-        self.games_mgr = GamesMgr()
+        import pentai.db.games_mgr as gm_m
+        self.games_mgr = gm_m.GamesMgr()
         log.debug("Create Openings Book")
         self.openings_book = Future("OpeningsBook", "pentai.db.openings_book")
         log.debug("Created Book")
@@ -433,6 +433,7 @@ class PentAIApp(App):
         self.show_menu_screen()
 
     def set_guide(self):
+        from pentai.db.misc_db import misc
         try:
             self.guide = misc()["guide"]
         except KeyError:
