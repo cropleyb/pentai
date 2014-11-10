@@ -6,6 +6,7 @@ from kivy.clock import Clock
 
 from kivy.properties import *
 from kivy.uix.spinner import Spinner, SpinnerOption
+from kivy.uix.dropdown import *
 from kivy.config import Config
 
 import pentai.gui.scale as my
@@ -70,9 +71,10 @@ class SwitchSetting(MySetting):
 
 
 class MySpinnerOption(SpinnerOption):
-    def __init__(self, *args, **kwargs):
-        super(MySpinnerOption, self).__init__(*args, **kwargs)
-        self.font_size = my.dp(20)
+    pass
+
+class MySpinnerDropDown(DropDown):
+    pass
 
 class MySpinner(Spinner):
     """ Workaround for Kivy bug with Spinner inside a ScrollView (via GridLayout) """
@@ -95,38 +97,21 @@ class MySpinner(Spinner):
 
 class OptionsSetting(MySetting):
     values = ListProperty([])
+    desc = StringProperty()
+    text = StringProperty()
 
     def setup(self, ignored):
-        gl = GridLayout(rows=1)
-        self.add_widget(gl)
-
-        sl = SmallLabel(text=self.text)
-        sl.valign = "middle"
-        gl.add_widget(sl)
-
-        self.sp = sp = MySpinner()
-        sp.values = self.values
-        sp.valign = 'bottom'
-        sp.size_hint_x = .6
-        sp.font_size = my.dp(20)
-        sp.option_cls = MySpinnerOption
-        gl.add_widget(sp)
-
-        # Padding only.
-        l = Label()
-        l.size_hint_x = .05
-        gl.add_widget(l)
-
-        self.dl = TinyLabel(text=self.desc)
-        self.dl.size_hint_y = .8
-        self.add_widget(self.dl)
+        spinner = self.ids.spinner_id
+        spinner.option_cls = MySpinnerOption
+        spinner.dropdown_cls = MySpinnerDropDown
 
         self.load_value()
-        self.sp.bind(text=self.save_value)                  
+        spinner.bind(text=self.save_value)                  
 
     def load_value(self):
-        self.sp.text = self.get_config().get('PentAI', self.key)
-        return self.sp.text
+        spinner = self.ids.spinner_id
+        spinner.text = self.get_config().get('PentAI', self.key)
+        return spinner.text
 
     def save_value(self, switch, val):
         self.get_config().set('PentAI', self.key, val)

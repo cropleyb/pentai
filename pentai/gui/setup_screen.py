@@ -63,7 +63,7 @@ class SetupScreen(Screen):
         # TODO: Timer default
 
     def on_p2_open(self, spinner, is_open):
-        self.updated_players()
+        self.trigger_guide()
 
     def on_pre_enter(self):
         if not self.initialised:
@@ -74,7 +74,7 @@ class SetupScreen(Screen):
         self.populate_all_players()
 
     def on_enter(self):
-        self.updated_players()
+        self.trigger_guide()
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
@@ -112,6 +112,9 @@ class SetupScreen(Screen):
     def populate_white_player_list(self, *args):
         ptw = self.get_defaults().get_type(P2)
         self.populate_player_list(ptw, P2)
+        self.trigger_guide()
+
+    def trigger_guide(self):
         try:
             # Callback to guide
             self.updated_players()

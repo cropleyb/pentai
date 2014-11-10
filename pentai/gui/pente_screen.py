@@ -395,19 +395,23 @@ class PenteScreen(Screen, gso_m.GSObserver):
     def resize(self, screen_size):
         if not self.get_game():
             return
-        '''
-        '''
         self.set_my_dp(screen_size)
-        self.ids.confirm_text_id.font_size = my.dp(65)
+
         if self.turn_marker:
             self.remove_widget(self.turn_marker)
         self.turn_marker = None
+
+        if self.win_marker:
+            self.remove_widget(self.win_marker)
+        self.win_marker = None
+
         self.win_marker = Piece(13, source=win_filename)
         try:
             self.setup_grid()
         except:
             st()
-        #self.on_enter()
+        #st()
+        self.on_enter()
 
     def on_pre_leave(self):
         self.leave_game()
@@ -418,9 +422,15 @@ class PenteScreen(Screen, gso_m.GSObserver):
         except:
             pass
 
+    # Called from:
+    # - screen mgr when we leave the screen (push or pop)
+    # - demo start code (in kivy_app_main)
+    # For pop / menu, we should clear out the game_gui instance.
     def leave_game(self):
         log.debug("Calling set_live False in leave_game")
+
         self.set_live(False)
+
         if not self.app.in_demo_mode():
             self.gm.save(self.get_game())
             self.get_audio().mute()
@@ -579,8 +589,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
                     try:
                         # load and place the appropriate stone image
                         new_piece = Piece(19, source=filename)
-                        x = base_x + j * 7 * self.get_my_dp()
-                        y = base_y + i_centred * 20 * self.get_my_dp()
+                        x = base_x + j * 7 * my.dp
+                        y = base_y + i_centred * 20 * my.dp
                         new_piece.pos = x,y
                         cw.append(new_piece)
                         self.add_widget(new_piece)
@@ -647,10 +657,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         wm_w = self.ids.win_method_id
         wm_w.text = \
                 "[b]Won by %s[/b]" % self.get_game().get_win_method()
-        wm_w.font_size = my.dp(30)
-
-    def get_my_dp(self):
-        return my.ps_dp()
+        wm_w.font_size = 30 * my.dp
 
     def setup_grid_lines(self):
         size_x, size_y = self.size
@@ -802,7 +809,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return self.board_to_screen(self.screen_to_board(screen_pos))
 
     def setup_colour_border(self, size_x, size_y):
-        w = 6 * self.get_my_dp()
+        w = 6 * my.dp
         # This is ugly, but using the "rectangle" feature causes issues in the corners
         self.border_lines = [w,w, size_x,w, w,w, w,size_y, w,size_y-w, size_x,size_y-w]
         self.border_lines.extend([size_x-w,size_y, size_x-w,w, w,w, w,0])
@@ -1192,7 +1199,7 @@ class Piece(Scatter):
     source = StringProperty(None)
 
     def __init__(self, board_size, *args, **kwargs):
-        self.scale = my.ps_dp() * 7.0 / board_size
+        self.scale = 7.0 * my.dp / board_size
         super(Piece, self).__init__(*args, **kwargs)
         self.do_translation = False
         self.do_rotation = False

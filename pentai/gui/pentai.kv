@@ -1,10 +1,10 @@
 #:kivy 1.1.0
-#:import my pentai.gui.scale
+#:import my pentai.gui.scale.MyScale
 # Use "my" own scaling due to issues with screen resolution and Kivy dp
 
 # Globally set lots of size defaults
 <Label>:
-    font_size: my.dp(25)
+    font_size: 25 * my.dp
 
 <TitleLabel@Label>:
     color: (0.8, 0.5, 0.8, 1)
@@ -14,28 +14,58 @@
     halign: "center"
     text_size: self.size
     size_hint_y: None
-    height: my.dp(30)
+    height: 30 * my.dp
 
 <SmallLabel@Label>:
-    font_size: my.dp(20)
-    padding_x: my.dp(20)
+    font_size: 20 * my.dp
+    padding_x: 20 * my.dp
     text_size: self.size
 
 <TinyLabel@Label>:
-    font_size: my.dp(15)
+    font_size: .03 * my.dp
     text_size: self.size
-    padding_x: my.dp(20)
+    padding_x: 20 * my.dp
     color: (0.5, 0.5, 0.5, 1)
 
 <TextInput>:
-    font_size: my.dp(25)
+    font_size: 25 * my.dp
 
 <MyCategoryLabel@Label>:
-    font_size: my.dp(22)
+    font_size: 22 * my.dp
 
 <MyBigLabel@Label>:
-    font_size: my.dp(30)
+    font_size: 30 * my.dp
     bold: True
+
+<MySpinnerOption@SpinnerOption>:
+    font_size: 20 * my.dp
+
+<MySpinnerDropdown@Dropdown>:
+    font_size: 20 * my.dp
+
+<OptionsSetting>:
+    GridLayout:
+        rows: 1
+
+        SmallLabel:
+            text: root.text
+            valign: "middle"
+
+        MySpinner:
+            id: spinner_id
+            values: root.values
+            valign: 'bottom'
+            size_hint_x: .6
+            font_size: 20 * my.dp
+            on_text: root.save_value
+
+        # Padding only.
+        Label:
+            size_hint_x: .05
+
+    TinyLabel:
+        text: root.desc
+        size_hint_y: .8
 
 <HSpacer>:
     size_hint_y: None
@@ -65,14 +95,14 @@
             # Grey background
             rgba: .6, .6, .6, .5
         Rectangle:
-            size: my.dp(25), my.dp(25)
-            pos: int(self.center_x - my.dp(13)), int(self.center_y - my.dp(13))
+            size: 25 * my.dp, 25 * my.dp
+            pos: int(self.center_x - 13 * my.dp), int(self.center_y - 13 * my.dp)
         Color:
             rgba: .443, 0.848, 0.926, 1
         Rectangle:
             source: 'atlas://data/images/defaulttheme/checkbox%s_%s' % (('_radio' if self.group else ''), ('on' if self.active else 'off'))
-            size: my.dp(40), my.dp(40)
-            pos: int(self.center_x - my.dp(20)), int(self.center_y - my.dp(20))
+            size: 40 * my.dp, 40 * my.dp
+            pos: int(self.center_x - 20 * my.dp), int(self.center_y - 20 * my.dp)
 
 <CheckBoxList>:
     cols: 2
@@ -82,7 +112,7 @@
     text_size: self.width, None
 
 <TwoLevelCompositeListItem>:
-    height: my.dp(60)
+    height: 60 * my.dp
     rows: 2
 
 <ConfirmPopup>:
@@ -91,16 +121,16 @@
         rows: 2
         Label:
             text: root.confirm_prompt
-            font_size: my.dp(20)
+            font_size: 20 * my.dp
         GridLayout:
             cols: 2
             MyButton:
                 text: "Cancel"
-                font_size: my.dp(20)
+                font_size: 20 * my.dp
                 on_release: root.clear()
             MyButton:
                 text: "OK"
-                font_size: my.dp(20)
+                font_size: 20 * my.dp
                 on_release: root.ok_confirm()
 
 <Section>:
@@ -122,12 +152,12 @@
         Label:
             size_hint: (1, 0.1)
             text: "Preparing for PentAI!"
-            font_size: my.dp(40)
+            font_size: 40 * my.dp
 
         Label:
             id: activity_label_id
             size_hint: (1, 0.1)
-            font_size: my.dp(30)
+            font_size: 30 * my.dp
 
         ProgressBar:
             id: progress_bar_id
@@ -156,7 +186,7 @@
         Label:
             size_hint: (1, 0.1)
             text: "Thanks for playing\nPentAI!"
-            font_size: my.dp(40)
+            font_size: 40 * my.dp
             halign: 'center'
 
 <GamesScreen>:
@@ -463,7 +493,7 @@
         GridLayout:
             cols: 2
             size_hint: 1, None
-            height: my.dp(170)
+            height: 170 * my.dp
 
             MyCategoryLabel:
                 text: "Rules Variation"
@@ -505,7 +535,7 @@
                 rows: 1
                 Slider:
                     id: time_control_id
-                    padding: my.dp(30)
+                    padding: 30 * my.dp
                     min: 0
                     max: 10
                     step: .5
@@ -625,8 +655,6 @@
             cols: 1
 
             BoxLayout:
-                #size_hint_y: None
-                #height: my.dp(48)
 
                 Label:
                     size_hint_x: .3
@@ -645,9 +673,6 @@
                     text: '{}'.format(int(depth_id.value))
 
             BoxLayout:
-                #size_hint_y: None
-                #size_hint_y: 0.5
-                #height: my.dp(48)
 
                 Label:
                     size_hint_x: .3
@@ -666,8 +691,6 @@
                     text: '{}%'.format(int(vision_id.value))
 
             BoxLayout:
-                #size_hint_y: None
-                #height: my.dp(48)
 
                 Label:
                     size_hint_x: .75
@@ -686,9 +709,8 @@
         HSpacer:
 
         BoxLayout:
-            #size_hint_y: None
             size_hint_y: 1.5
-            height: my.dp(48)
+            height: 48 * my.dp
 
             Label:
                 size_hint_x: .6
@@ -915,7 +937,7 @@
                 rgba: 0, 0, 0, 1
             Line:
                 points: root.gridlines
-                width: 2.0 * root.get_my_dp()
+                width: 2 * my.dp
             Color:
                 rgba: root.border_colour
             Line:
@@ -986,7 +1008,7 @@
             id: confirm_text_id
             size_hint_y: .35
             color: root.confirm_text_color
-            font_size: my.dp(65) # TODO: Handle Resize by moving this to .py
+            font_size: 65 * my.dp
             text: "Confirm Here"
 
         Label:

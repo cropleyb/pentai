@@ -21,7 +21,6 @@ from pentai.db.games_mgr import *
 from pentai.base.future import Future
 from pentai.db.openings_book import *
 
-
 import pentai.gui.scale as sc_m
 
 class PentAIApp(App):
@@ -58,24 +57,12 @@ class PentAIApp(App):
     def set_screen_size(self):
         from kivy import platform
 
-        if platform in ("ios", "android"):
-            app_width, app_height = kivy.core.window.Window.size
-        else:
+        if not platform in ("ios", "android"):
             app_width = self.config.getint("PentAI", "app_width")
             app_height = self.config.getint("PentAI", "app_height")
             kivy.core.window.Window.size = (app_width, app_height)
 
-        self.set_scale_factor(app_height)
-
-    def set_scale_factor(self, app_height):
-        # 720 was the original height of the app in pixels, to which the 
-        # GUI has been built
-        f = app_height / 720.0
-
-        sc_m.set_scale_factor(f)
-
     def on_resize(self, *args):
-        self.set_scale_factor(args[2])
         self.root.resize(*args)
 
     def display_message(self, message, title=None):
@@ -396,14 +383,12 @@ class PentAIApp(App):
         self.config = cf_m.create_config_instance(ini_file, self.user_data_dir)
 
     def build(self):
-        log.debug("app build 1")
         self.load_config()
         self.set_screen_size()
 
         root = ps_m.PScreenManager(self)
         self.root = root
         root.add_screen(ps_m.IntroScreen, 'Intro') # TODO: move into PSM
-        log.debug("app build 3")
         self.show_intro_screen()
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
@@ -411,9 +396,7 @@ class PentAIApp(App):
 
         import audio as a_m
         self.audio = a_m.Audio(self.config)
-        log.debug("app build 4")
         self.audio.schedule_music()
-        log.debug("app build 5")
         
         Clock.schedule_once(self.build_more, 0.1)
         

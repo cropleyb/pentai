@@ -1,9 +1,9 @@
 from kivy.uix.screenmanager import *
+from kivy.core.window import *
 
 from pentai.gui.intro_screen import *
 from pentai.gui.intro_help_screen import *
 from pentai.base.defines import *
-from pentai.base.future import *
 from pentai.gui.guide import *
 import pentai.base.logger as log
 
@@ -18,10 +18,11 @@ class PScreenManager(ScreenManager):
         self.app = app
         self.demo = None
         super(PScreenManager, self).__init__(*args, **kwargs)
-        self.transition = SlideTransition()
         self.random_transition()
         self.previous = []
         # self.guide = Guide() # TODO: Persistent -> misc_db
+        Window.bind(on_width=self.width)                  
+        Window.bind(on_height=self.height)                  
 
     def push_demo(self, d):
         self.previous.append(self.current)
@@ -45,29 +46,21 @@ class PScreenManager(ScreenManager):
         return self.current_screen.size
 
     def resize(self, *args):
-        pente_screen = None
         current = self.current
+
         if current == "Pente":
             # Only resize PenteScreen if it is the current screen,
             # otherwise just create a new one.
             pente_screen = self.get_screen("Pente")
             pente_screen.resize(args[1:])
 
-        self.clear_widgets()
-
-        if pente_screen:
-            try:
-                self.add_widget(pente_screen)
-            except ScreenManagerException:
-                pass
-        self.set_current(current)
-
     def set_current(self, screen_name):
         if self.current != screen_name:
             self.leave()
             self.random_transition()
             self.create_if_necessary(screen_name)
-            self.current = screen_name
+            if self.current != screen_name:
+                self.current = screen_name
             if not self.in_demo_mode():
                 if screen_name:
                     self.guide.on_enter(screen_name)
@@ -93,6 +86,7 @@ class PScreenManager(ScreenManager):
         self.previous[:] = []
 
     def random_transition(self):
+        self.transition = SlideTransition()
         trans = self.transition
 
         dirs = ['right','up','down','left']

@@ -1,15 +1,18 @@
 
-factor = 1.0
-my_dp = 1.0
+from kivy.properties import NumericProperty
+from kivy.core.window import Window
+from kivy.event import EventDispatcher
 
-def set_scale_factor(f):
-    global factor, my_dp
-    factor = f
-    my_dp = f
+class Scale(EventDispatcher):
+    dp = NumericProperty(1.0)
 
-def dp(v):
-    return int(v * factor)
+    def __init__(self):
+        Window.bind(height=self.set_height)
 
-def ps_dp():
-    return my_dp
+    def set_height(self, provider, height):
+        self.dp = height / 720.0
+
+MyScale = Scale()
+
+dp = MyScale.dp
 
