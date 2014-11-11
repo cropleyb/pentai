@@ -75,9 +75,11 @@ class CheckBoxList(GridLayout):
         Clock.schedule_once(lambda dt: self.set_active_inner(val), 0.5)
 
     def set_active_inner(self, val):
-        w = self.widgets_by_val[str(val)]
-
-        w.active = True
+        try:
+            w = self.widgets_by_val[str(val)]
+            w.active = True
+        except KeyError:
+            pass
 
         val = str(val)
         for key,widget in self.widgets_by_val.items():
