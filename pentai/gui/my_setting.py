@@ -122,6 +122,9 @@ class OptionsSetting(MySetting):
     def set_values(self, values):
         self.sp.values = values
 
+class MySlider(Slider):
+    pass
+
 class SliderSetting(MySetting):
     value = NumericProperty()
     min = NumericProperty()
@@ -144,7 +147,7 @@ class SliderSetting(MySetting):
         l = Label(size_hint_x=0.05)
         gl.add_widget(l)
 
-        self.slider = slider = Slider()
+        self.slider = slider = MySlider()
         slider.min = self.min
         slider.max = self.max
         slider.step = self.step
