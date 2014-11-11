@@ -61,9 +61,6 @@ class PentAIApp(App):
             app_height = self.config.getint("PentAI", "app_height")
             kivy.core.window.Window.size = (app_width, app_height)
 
-    def on_resize(self, *args):
-        self.root.resize(*args)
-
     def display_message(self, message, title=None):
         from kivy.uix.label import Label
         if not title:
@@ -391,7 +388,6 @@ class PentAIApp(App):
         self.show_intro_screen()
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  
-        EventLoop.window.bind(on_resize=self.on_resize)                  
 
         import audio as a_m
         self.audio = a_m.Audio(self.config)

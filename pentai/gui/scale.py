@@ -14,5 +14,3 @@ class Scale(EventDispatcher):
 
 MyScale = Scale()
 
-dp = MyScale.dp
-

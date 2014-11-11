@@ -45,15 +45,6 @@ class PScreenManager(ScreenManager):
     def get_size(self):
         return self.current_screen.size
 
-    def resize(self, *args):
-        current = self.current
-
-        if current == "Pente":
-            # Only resize PenteScreen if it is the current screen,
-            # otherwise just create a new one.
-            pente_screen = self.get_screen("Pente")
-            pente_screen.resize(args[1:])
-
     def set_current(self, screen_name):
         if self.current != screen_name:
             self.leave()

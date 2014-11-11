@@ -10,7 +10,7 @@ from pentai.base.pente_exceptions import *
 from pentai.base.defines import *
 import pentai.base.logger as log
 import pentai.gui.popup as popup
-import pentai.gui.scale as my
+from pentai.gui.scale import MyScale as my
 import pentai.gui.game_gui as gg_m
 
 piece_filename = (None, \
@@ -686,10 +686,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return lines
 
     def setup_legend(self):
-        import string
         if self.legend_complete:
             # Already initialised
             return
+
+        import string
 
         bs = self.board_size()
 
@@ -1156,6 +1157,8 @@ class PenteScreen(Screen, gso_m.GSObserver):
 
     def on_size(self,*args,**kwargs):
         self.legend_complete = False
+        #Clock.schedule_once(lambda dt: self.resize(args[1]), 0.1)
+        self.resize(args[1])
         self.setup_grid()
 
     def get_gridlines(self):
@@ -1200,6 +1203,7 @@ class Piece(Scatter):
     source = StringProperty(None)
 
     def __init__(self, board_size, *args, **kwargs):
+        print "Creating Piece with dp: %s" % my.dp
         self.scale = 7.0 * my.dp / board_size
         super(Piece, self).__init__(*args, **kwargs)
         self.do_translation = False
