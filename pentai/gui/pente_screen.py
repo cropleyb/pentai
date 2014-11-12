@@ -1203,7 +1203,6 @@ class Piece(Scatter):
     source = StringProperty(None)
 
     def __init__(self, board_size, *args, **kwargs):
-        print "Creating Piece with dp: %s" % my.dp
         self.scale = 7.0 * my.dp / board_size
         super(Piece, self).__init__(*args, **kwargs)
         self.do_translation = False
