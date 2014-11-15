@@ -119,11 +119,20 @@
             source: 'atlas://data/images/defaulttheme/slider_cursor{}'.         format('_disabled' if self.disabled else '')
 
 <CheckBoxList>:
-    cols: 2
 
-<ClickLabel>:
-    halign: 'center'
-    text_size: self.width, None
+<CheckBoxRow@GridLayout>:
+    rows: 1
+
+    Label:
+        text: root.value
+
+    BigCheckBox:
+        group: root.group
+        size_hint_x: 0.1
+
+    # This is just padding
+    Label:
+        size_hint_x: 0.2
 
 <TwoLevelCompositeListItem>:
     height: 60 * my.dp
