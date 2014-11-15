@@ -65,11 +65,11 @@ class SetupScreen(Screen):
             self.initialised = True
 
         self.show_rules_explanation()
-        self.set_GUI_from_defaults(self.get_defaults())
         self.populate_all_players()
 
     def on_enter(self):
         self.trigger_guide()
+        self.set_GUI_from_defaults(self.get_defaults())
 
     def set_player_name(self, colour, player_name):
         if not self.repop:
