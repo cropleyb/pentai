@@ -101,7 +101,8 @@ class TwoLevelCompositeListItem(cli_m.CompositeListItem):
 class GamesView(gl_m.GridLayout):
 
     def __init__(self, **kwargs):
-        kwargs["cols"] = 2
+        self.cols = 2
+
         super(GamesView, self).__init__(**kwargs)
 
         """
