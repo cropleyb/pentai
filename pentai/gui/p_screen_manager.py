@@ -1,5 +1,6 @@
 from kivy.uix.screenmanager import *
 from kivy.core.window import *
+from kivy.lang import Builder
 
 from pentai.gui.intro_screen import *
 from pentai.gui.intro_help_screen import *
@@ -54,7 +55,10 @@ class PScreenManager(ScreenManager):
                 self.current = screen_name
             if not self.in_demo_mode():
                 if screen_name:
-                    self.guide.on_enter(screen_name)
+                    try:
+                        self.guide.on_enter(screen_name)
+                    except AttributeError:
+                        pass
 
     def get_screen(self, screen_name, init=True):
         if init:
@@ -110,11 +114,24 @@ class PScreenManager(ScreenManager):
             return super(PScreenManager, self).on_touch_up(*args, **kwargs)
 
     def leave(self):
-        self.guide.on_leave()
+        try:
+            self.guide.on_leave()
+        except AttributeError:
+            pass
 
     def create_if_necessary(self, screen_name):
         if screen_name != "Pente" and not self.has_screen(screen_name):
             scr_mod_name, scr_cls_name = self.screen_data[screen_name]
+
+            path_list = ['pentai', 'gui', 'screens', '%s_screen.kv' % scr_mod_name]
+
+            kv_path = os.path.join(*path_list)
+
+            try:
+                Builder.load_file(kv_path)
+            except IOError:
+                pass
+            
             scr_mod = "pentai.gui.%s_screen" % scr_mod_name
 
             mod = importlib.import_module(scr_mod)
@@ -134,12 +151,16 @@ class PScreenManager(ScreenManager):
     def add_screen_inc_globals(self, scr_cls, scr_name):
         scr = self.add_screen(scr_cls, scr_name)
         app = self.app
-        scr.set_games_mgr(app.games_mgr)
-        scr.set_openings_book(app.openings_book)
-        scr.set_players_mgr(app.games_mgr.players_mgr)
+        try:
+            scr.set_games_mgr(app.games_mgr)
+            scr.set_openings_book(app.openings_book)
+            scr.set_players_mgr(app.games_mgr.players_mgr)
+        except AttributeError:
+            pass
         return scr
 
     screen_data = {
+            "Intro": ("intro", "Intro"),
             "Menu": ("menu", "Menu"),
             "Settings": ("settings", "Settings"),
             "SettingsHelp": ("settings_help", "SettingsHelp", ),

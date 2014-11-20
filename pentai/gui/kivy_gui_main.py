@@ -383,7 +383,6 @@ class PentAIApp(App):
 
         root = ps_m.PScreenManager(self)
         self.root = root
-        root.add_screen(ps_m.IntroScreen, 'Intro') # TODO: move into PSM
         self.show_intro_screen()
 
         EventLoop.window.bind(on_keyboard=self.hook_keyboard)                  

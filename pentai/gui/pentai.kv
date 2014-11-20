@@ -169,40 +169,6 @@
         on_ref_press: root.follow_link(*args)
 
 
-<IntroScreen>:
-    GridLayout:
-        cols: 1
-        Label:
-            size_hint: (1, 0.1)
-            text: "Preparing for PentAI!"
-            font_size: 40 * my.dp
-
-        Label:
-            id: activity_label_id
-            size_hint: (1, 0.1)
-            font_size: 30 * my.dp
-
-        ProgressBar:
-            id: progress_bar_id
-            max: 1000
-            size_hint: (1, 0.1)
-
-        GridLayout:
-            rows: 1
-            size_hint: (1, 0.03)
-
-            MyButton:
-                text: "Quit"
-                on_release: root.prompt_quit()
-
-            MyButton:
-                text: "Skip"
-                on_release: root.pop_screen()
-
-            MyButton:
-                text: "Help"
-                on_release: root.show_help()
-
 <GoodByeScreen>:
     GridLayout:
         cols: 1
