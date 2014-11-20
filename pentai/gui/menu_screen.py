@@ -77,3 +77,7 @@ There are a few [REF=settings]Settings[/REF] that you might like to change, for 
         log.debug("Expanding openings book")
 
         self.app.openings_book._get_instance()
+
+        if not self.app.root.loaded_kv("Pente"):
+            log.debug("pre-loading pente.kv")
+            self.app.root.load_kivy_file("Pente")

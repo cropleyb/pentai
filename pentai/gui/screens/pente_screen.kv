@@ -1,0 +1,155 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<ReviewButtons>:
+    size_hint_x: .3
+    cols: 1
+    MyButton:
+        id: rematch_id
+        text: "Rematch"
+        on_release: root.ps.rematch()
+    MyButton:
+        text: "Continue"
+        on_release: root.ps.set_review_mode(False)
+    MyButton:
+        id: beginning_id
+        text: "Beginning"
+        on_release: root.ps.go_to_the_beginning()
+    MyButton:
+        text: "Forward"
+        silent: True
+        id: forward_id
+        on_release: root.ps.go_forwards_one()
+    MyButton:
+        text: "Back"
+        on_release: root.ps.go_backwards_one()
+    MyButton:
+        id: menu_id
+        text: "Menu"
+        on_release: root.ps.app.show_menu_screen()
+
+<PlayButtons>:
+    size_hint_x: .3
+    cols: 1
+
+    MyButton:
+        id: rematch_id
+        text: "Rematch"
+        on_release: root.ps.rematch()
+    MyButton:
+        text: "Review"
+        id: review_id
+        on_release: root.ps.set_review_mode(True)
+    MyButton:
+        text: "Take Back"
+        on_release: root.ps.take_back_move()
+    MyButton:
+        text: "Settings"
+        on_release: root.ps.app.show_settings_screen()
+    MyButton:
+        id: help_id
+        text: "Help"
+        on_release: root.ps.show_help()
+    MyButton:
+        id: menu_id
+        text: "Menu"
+        on_release: root.ps.confirm_menu_screen()
+
+<PenteScreen>:
+    RelativeLayout:
+        pos: self.parent.board_offset
+        canvas:
+            Rectangle:
+                source: 'media/41-old-wooden-board.jpg'
+                size: self.size
+            Color:
+                rgba: 0, 0, 0, 1
+            Line:
+                points: root.gridlines
+                width: 2 * my.dp
+            Color:
+                rgba: root.border_colour
+            Line:
+                points: root.border_lines
+                joint: 'none'
+                width: root.border_width
+            Color:
+                rgba: root.illegal_rect_color
+            Rectangle:
+                pos: root.illegal_rect_pos
+                size: root.illegal_rect_size
+
+        FloatLayout:
+            id: float_layout_id
+
+    GridLayout:
+        cols: 2
+        size_hint: 1, None
+        height: root.board_offset[1]
+        canvas.before:
+            Color:
+                rgba: .3, .6, .9, 1
+            Rectangle:
+                # self here refers to the widget i.e GridLayout
+                pos: self.pos
+                size: self.size
+        GridLayout:
+            rows: 1
+
+            GridLayout:
+                # This is for switching panel buttons
+                rows: 1
+                size_hint: (.35, 1)
+                id: panel_buttons_id
+            
+            GridLayout:
+                rows: 2
+                # TODO: duplication
+                MyBigLabel:
+                    id: black_time_id
+                    text: ""
+                MyBigLabel:
+                MyBigLabel:
+                    id: p1_id
+                    text: root.player_name[1]
+                    markup: True
+                MyBigLabel:
+
+                MyBigLabel:
+                    id: white_time_id
+                    text: ""
+                MyBigLabel:
+                MyBigLabel:
+                    id: p2_id
+                    text: root.player_name[2]
+                    markup: True
+                MyBigLabel:
+
+    RelativeLayout:
+        pos: (0,0)
+        canvas:
+            Color:
+                rgba: root.confirm_rect_color
+            Rectangle:
+                size: (root.size[0], self.parent.board_offset[1])
+
+        Label:
+            id: confirm_text_id
+            size_hint_y: .35
+            color: root.confirm_text_color
+            font_size: 65 * my.dp
+            text: "Confirm Here"
+
+        Label:
+            id: win_method_id
+            markup: True
+            size_hint_x: 1.2
+            size_hint_y: .35
+            color: (.99, 0.31, 0.25, 1)
+
+<Piece>:
+    Image:
+        id: image
+        source: root.source
+        center: 0, 0

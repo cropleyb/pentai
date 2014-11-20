@@ -21,6 +21,7 @@ class PScreenManager(ScreenManager):
         super(PScreenManager, self).__init__(*args, **kwargs)
         self.random_transition()
         self.previous = []
+        self.loaded_kv_files = set()
         # self.guide = Guide() # TODO: Persistent -> misc_db
         Window.bind(on_width=self.width)                  
         Window.bind(on_height=self.height)                  
@@ -119,18 +120,27 @@ class PScreenManager(ScreenManager):
         except AttributeError:
             pass
 
+    def loaded_kv(self, screen_name):
+        return screen_name in self.loaded_kv_files
+
+    def load_kivy_file(self, screen_name):
+        scr_mod_name, scr_cls_name = self.screen_data[screen_name]
+
+        path_list = ['pentai', 'gui', 'screens', '%s_screen.kv' % scr_mod_name]
+
+        kv_path = os.path.join(*path_list)
+
+        try:
+            Builder.load_file(kv_path)
+            self.loaded_kv_files.add(screen_name)
+        except IOError:
+            pass
+
     def create_if_necessary(self, screen_name):
         if screen_name != "Pente" and not self.has_screen(screen_name):
+            self.load_kivy_file(screen_name)
+
             scr_mod_name, scr_cls_name = self.screen_data[screen_name]
-
-            path_list = ['pentai', 'gui', 'screens', '%s_screen.kv' % scr_mod_name]
-
-            kv_path = os.path.join(*path_list)
-
-            try:
-                Builder.load_file(kv_path)
-            except IOError:
-                pass
             
             scr_mod = "pentai.gui.%s_screen" % scr_mod_name
 
@@ -172,6 +182,7 @@ class PScreenManager(ScreenManager):
             "AIHelp": ("ai_help", "AIHelp", ),
             "Human": ("human_player", "HumanPlayer", ),
             "HumanHelp": ("human_help", "HumanHelp", ),
+            "Pente": ("pente", "Pente", ),
             "PenteHelp": ("pente_help", "PenteHelp", ),
             "GoodBye": ("goodbye", "GoodBye", ),
            }
