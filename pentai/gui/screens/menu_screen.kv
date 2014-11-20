@@ -1,0 +1,94 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<MenuScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            size_hint: 1, .1
+            markup: True
+            text: "[b]PentAI %s[/b] by Bruce Cropley" % root.version_str
+
+        HSpacer:
+    
+        ScrollView:
+
+            MyScrollable:
+
+                Section:
+                    title: "Introduction"
+                    text: root.intro_text
+                    
+                HSpacer:
+                Section:
+                    title: "Beginners"
+                    text: root.beginners_text
+
+                HSpacer:
+                Section:
+                    title: "Experts"
+                    text: root.experts_text
+
+                HSpacer:
+                Section:
+                    title: "About"
+                    text: root.about_text1
+                Section:
+                    continuation: True
+                    text: root.about_text2
+
+                HSpacer:
+                Section:
+                    title: "Acknowledgements"
+                    text: root.ack_text
+    
+        GridLayout:
+            cols: 1
+            size_hint: 1, .4
+    
+            MyButton:
+                id: new_game_id
+                text: "New Game"
+                on_release: root.app.show_new_game_screen()
+    
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "In Progress"
+                    on_release: root.app.show_games_screen()
+
+                MyButton:
+                    text: "Recently Finished"
+                    on_release: root.app.show_games_screen(finished=True)
+    
+            GridLayout:
+                rows: 1
+                MyButton:
+                    id: human_players_id
+                    text: "Human Players"
+                    on_release: root.app.show_human_screen()
+        
+                MyButton:
+                    id: ai_players_id
+                    text: "AI Players"
+                    on_release: root.app.show_ai_screen()
+    
+            GridLayout:
+                rows: 1
+                MyButton:
+                    id: rules_demo_id
+                    text: "Rules Demo"
+                    on_release: root.app.show_demo()
+        
+                MyButton:
+                    id: settings_id
+                    text: "Settings"
+                    on_release: root.app.show_settings_screen()
+    
+            MyButton:
+                text: "Quit"
+                on_release: root.app.prompt_quit()
+    
+            # TODO: Edit openings? Review completed games?
+

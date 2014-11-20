@@ -1,0 +1,13 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<GoodByeScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            size_hint: (1, 0.1)
+            text: "Thanks for playing\nPentAI!"
+            font_size: 40 * my.dp
+            halign: 'center'
+

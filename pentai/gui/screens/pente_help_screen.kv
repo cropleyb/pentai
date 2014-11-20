@@ -1,0 +1,26 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<PenteHelpScreen>:
+    title: "Pente Game Screen Help"
+
+<PenteHelpText>:
+    Section:
+        title: "User Interface"
+        text: root.play_text1
+    Section:
+        continuation: True
+        text: root.play_text2
+    Section:
+        continuation: True
+        text: root.play_text3
+
+    HSpacer:
+    Section:
+        title: "Controls"
+        text: root.controls_text1
+    Section:
+        continuation: True
+        text: root.controls_text2
+

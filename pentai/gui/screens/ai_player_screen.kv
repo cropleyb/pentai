@@ -1,0 +1,135 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<AIPlayerScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            size_hint: (1, 0.6)
+            text: "AI Player Editor"
+
+        HSpacer:
+
+        SectionTitle:
+            text: 'Choose Player'
+
+        Spinner:
+            id: player_spinner_id
+            values: root.player_names
+            size_hint: (1, 0.7)
+
+        TextInput:
+            id: name_id
+            text: root.rename_text
+            multiline: False
+
+        SectionTitle:
+            text: 'Search Parameters'
+
+        HSpacer:
+
+        GridLayout:
+            size_hint_y: 3
+            cols: 1
+
+            BoxLayout:
+
+                Label:
+                    size_hint_x: .3
+                    text: 'Depth'
+
+                MySlider:
+                    id: depth_id
+                    min: 1
+                    max: 10
+                    step: 1
+                    value: root.genome.max_depth
+                    on_value: root.genome.max_depth = self.value
+
+                Label:
+                    size_hint_x: .2
+                    text: '{}'.format(int(depth_id.value))
+
+            BoxLayout:
+
+                Label:
+                    size_hint_x: .3
+                    text: 'Vision'
+
+                MySlider:
+                    id: vision_id
+                    min: 10
+                    max: 100
+                    step: 1
+                    value: root.genome.vision
+                    on_value: root.genome.vision = self.value
+
+                Label:
+                    size_hint_x: .3
+                    text: '{}%'.format(int(vision_id.value))
+
+            BoxLayout:
+
+                Label:
+                    size_hint_x: .75
+                    text: 'Openings Book'
+
+                BigCheckBox:
+                    id: openings_id
+                    active: root.genome.use_openings_book
+                    on_active: root.genome.use_openings_book = self.active
+
+        HSpacer:
+
+        SectionTitle:
+            text: 'Position Evaluation'
+
+        HSpacer:
+
+        BoxLayout:
+            size_hint_y: 1.5
+            height: 48 * my.dp
+
+            Label:
+                size_hint_x: .6
+                text: 'Judgement'
+                halign: 'left'
+
+            MySlider:
+                id: j_id
+                min: 0
+                max: 100
+                value: root.genome.judgement
+                on_value: root.genome.judgement = self.value
+
+            Label:
+                size_hint_x: .35
+                text: '{}%'.format(int(j_id.value))
+
+        GridLayout:
+            rows: 1 
+            size_hint_y: 0.75
+
+            MyButton:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            MyButton:
+                text: "Delete"
+                on_release: root.delete()
+
+        GridLayout:
+            rows: 1 
+            size_hint_y: 0.75
+            MyButton:
+                id: menu_id
+                text: "Menu"
+                on_release: root.show_menu_screen()
+
+            MyButton:
+                id: help_id
+                text: "Help"
+                on_release: root.show_help()
+
+

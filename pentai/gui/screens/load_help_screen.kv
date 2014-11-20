@@ -1,0 +1,28 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<LoadHelpScreen>:
+    title: "Games Screens Help"
+
+<LoadHelpText>:
+    Section:
+        continuation: True
+        text: root.intro_text
+        
+    HSpacer:
+    Section:
+        title: "Load"
+        text: root.load_text
+ 
+    HSpacer:
+    Section:
+        title: "Edit"
+        text: root.edit_text
+ 
+    HSpacer:
+    Section:
+        title: "Delete"
+        text: root.delete_text
+
+

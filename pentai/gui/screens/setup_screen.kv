@@ -1,0 +1,154 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<SetupScreen>:
+    GridLayout:
+        cols: 1
+
+        TitleLabel:
+            id: title_id
+            size_hint_y: .10
+
+        HSpacer:
+
+        SectionTitle:
+            text: "Rules"
+            size_hint_y: .11
+
+        HSpacer:
+
+        GridLayout:
+            cols: 2
+            size_hint: 1, None
+            height: 170 * my.dp
+
+            MyCategoryLabel:
+                text: "Rules Variation"
+                size_hint: (1, .7)
+
+            MyCategoryLabel:
+                text: "Board Size"
+                size_hint: (1, .7)
+
+            Spinner:
+                text: 'Standard'
+                values: ['Standard', 'Tournament', '5-In-A-Row']
+                      #, 'Keryo', 'Freestyle', 'No Captures']
+                size_hint: (1, .7)
+                id: rules_id
+
+            Spinner:
+                text: '13'
+                values: ['9', '13', '19']
+                size_hint: (1, .7)
+                id: bs_id
+
+        SmallLabel:
+            size_hint: (1, .2)
+            id: rules_explanation_id
+            valign: 'top'
+            markup: True
+            
+        GridLayout:
+            cols: 1
+            size_hint_y: .3
+            Label:
+            Label:
+                text: "Game Clocks (minutes each)"
+            Label:
+
+            GridLayout:
+                size_hint_y: .5
+                rows: 1
+
+                MySlider:
+                    id: time_control_id
+                    padding: 30 * my.dp
+                    min: 0
+                    max: 10
+                    step: .5
+                    value: root.time_control
+                    on_value: root.time_control = (int(2*self.value)) / 2.0
+
+                Label:
+                    size_hint_x: .28
+                    text: root.time_control_text(time_control_id.value)
+
+        Label:
+            size_hint_y: .05
+
+        HSpacer:
+
+        SectionTitle:
+            text: "Players"
+            size_hint_y: .11
+
+        HSpacer:
+
+        GridLayout:
+            rows: 1
+            size_hint_y: .75
+
+            GridLayout:
+                cols: 1
+
+                MyCategoryLabel:
+                    text: "First Player"
+                    size_hint_y: .5
+
+                HSpacer:
+
+                CheckBoxList:
+                    id: black_type_id
+                    group: 'black_type'
+                    values: ('Human', 'Computer')
+
+                # TODO: double click to edit player?
+                Spinner:
+                    id: bpl_id
+                    values: root.player_names[1]
+                    size_hint: (1, .7)
+
+            VSpacer:
+
+            GridLayout:
+                cols: 1
+                MyCategoryLabel:
+                    text: "Second Player"
+                    size_hint_y: .5
+
+                HSpacer:
+
+                CheckBoxList:
+                    id: white_type_id
+                    group: 'white_type'
+                    values: ('Human', 'Computer')
+
+                Spinner:
+                    id: wpl_id
+                    values: root.player_names[2]
+                    size_hint: (1, .7)
+        Widget:
+            size_hint: (1, .02)
+
+        MyButton:
+            id: start_game_id
+            text: "Start Game"
+            on_press: root.start_game()
+            size_hint: (1, .22)
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, .18)
+
+            MyButton:
+                id: return_id
+                text: "Return"
+                on_press: root.app.pop_screen()
+
+            MyButton:
+                id: help_id
+                text: "Help"
+                on_press: root.app.show_game_setup_help()
+

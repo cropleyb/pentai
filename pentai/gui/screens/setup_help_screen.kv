@@ -1,0 +1,23 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<SetupHelpScreen>:
+    title: "Games Screens Help"
+
+<SetupHelpText>:
+    Section:
+        title: "Rules Variation"
+        text: root.rules_text
+
+    HSpacer:
+    Section:
+        title: "Clocks"
+        text: root.clocks_text
+        
+    HSpacer:
+    Section:
+        title: "Player Selection"
+        text: root.players_text
+
+

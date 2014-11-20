@@ -1,0 +1,58 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<GamesScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            # text: "Unfinished Games" or "Recently Finished"
+            id: title_id
+            size_hint_y: .10
+
+        HSpacer:
+
+        GridLayout:
+            size_hint_y: .10
+            rows: 2
+            Label:
+                text: "Id"
+            Label:
+                text: "P1"
+            Label:
+                text: "P2"
+            Label:
+                text: "Date"
+            Label:
+                text: "Size"
+            Label:
+                text: "Rules"
+
+        GamesView:
+            id: games_view
+
+        GridLayout:
+            rows: 2
+            size_hint: (1, .15)
+            GridLayout:
+                rows: 1
+                MyButton:
+                    text: "Delete"
+                    on_release: root.delete()
+                MyButton:
+                    text: "Edit"
+                    on_release: root.edit_game()
+                MyButton:
+                    text: "Load"
+                    on_release: root.load_game()
+            GridLayout:
+                rows: 1
+                MyButton:
+                    id: menu_id
+                    text: "Menu"
+                    on_release: root.app.show_menu_screen()
+                MyButton:
+                    id: help_id
+                    text: "Help"
+                    on_release: root.app.show_load_help()
+

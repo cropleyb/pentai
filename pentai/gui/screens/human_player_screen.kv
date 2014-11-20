@@ -1,0 +1,52 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<HumanPlayerScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            text: "Human Player Editor"
+            size_hint_y: .33
+
+        HSpacer:
+
+        Label:
+            text: 'Choose Player'
+
+        Spinner:
+            # TODO: double click to edit name
+            values: root.player_names
+            size_hint: (1, 0.35)
+            id: player_spinner_id
+
+        TextInput:
+            id: name_id
+            text: root.rename_text
+            size_hint: (1, 0.35)
+            multiline: False
+
+        Widget:
+
+        GridLayout:
+            rows: 2
+            size_hint: 1, .6
+
+            MyButton:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            MyButton:
+                text: "Delete"
+                on_release: root.delete()
+
+            MyButton:
+                id: menu_id
+                text: "Menu"
+                on_release: root.show_menu_screen()
+
+            MyButton:
+                text: "Help"
+                on_release: root.show_help()
+
+

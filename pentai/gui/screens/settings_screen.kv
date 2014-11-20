@@ -1,0 +1,185 @@
+#:kivy 1.1.0
+#:import my pentai.gui.scale.MyScale
+# Use "my" own scaling due to issues with screen resolution and Kivy dp
+
+<SettingsScreen>:
+    GridLayout:
+        cols: 1
+        TitleLabel:
+            text: "PentAI Settings"
+            size_hint_y: .08
+
+        HSpacer:
+
+        ScrollView:
+            size_hint_y: .8
+            GridLayout:
+                id: gl_id
+                cols: 1
+                height: self.minimum_height
+                size_hint_y: 1.7
+
+                SectionTitle:
+                    text: "User Interface"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                OptionsSetting:
+                    id: guide_id
+                    text: "Guide"
+                    values: ("Off", "On", "Restart")
+                    desc: "The Guide helps you to learn how to use PentAI"
+                    key: "guide_setting"
+                    on_value: root.set_guide()
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Mark Moves"
+                    desc: "Mark the last two moves, each with a dot in the centre"
+                    key: "mark_moves"
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Show Captures"
+                    desc: "Show pieces that were captured last move as transparent ghost pieces"
+                    key: "mark_captures"
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Show Legend"
+                    desc: "For those who play a lot"
+                    key: "show_legend"
+                    #on_value: root.set_confirmation_popups()
+
+                HSpacer:
+
+                OptionsSetting:
+                    text: "Move Confirmation"
+                    values: ("None Required", "Off Board")
+                    desc: "For small screens or while travelling"
+                    key: "move_confirmation"
+
+                HSpacer:
+
+                SliderSetting:
+                    text: "Minimum Wait Time"
+                    desc: "Minimum time to wait for the AI to play (secs)"
+                    min: 0
+                    max: 2
+                    step: .1
+                    key: "minimum_wait"
+                            #text: "%.1f" % s_id.value
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Show Confirmation Popups"
+                    desc: "For major actions such as exiting"
+                    key: "confirm_popups"
+                    on_value: root.set_confirmation_popups()
+
+                HSpacer:
+
+                SectionTitle:
+                    text: "Players"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                OptionsSetting:
+                    text: "Rematch first player"
+                    values: ("Don't Swap", "Alternate", "Loser First")
+                    desc: "Who goes first in a rematch?"
+                    key: "rematch_first_player"
+
+                HSpacer:
+
+                OptionsSetting:
+                    text: "First player colour"
+                    values: ("Always White", "Always Black", "Keep The Same")
+                    desc: "Which colour goes first"
+                    key: "first_player_colour"
+
+                HSpacer:
+
+                SectionTitle:
+                    text: "Openings Book"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Add games"
+                    desc: "Add my completed games to the openings book"
+                    key: "add_games_to_ob"
+
+                # Label:
+                #     size_hint_y: .07
+
+                # OptionsSetting:
+                #     id: build_id
+                #     text: "Build"
+                #     key: "openings_book_building"
+
+                # HSpacer:
+
+                SectionTitle:
+                    text: "Sound"
+                    size_hint_y: .15
+
+                HSpacer:
+
+                SliderSetting:
+                    text: "Effects Volume"
+                    desc: "How loud should the sound effects be?"
+                    min: 0
+                    max: 1
+                    key: "effects_volume"
+                    display_factor: 100
+                    on_value: root.adjust_volumes()
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Tick"
+                    desc: "Should the clock make a ticking sound?"
+                    key: "tick"
+
+                HSpacer:
+
+                SwitchSetting:
+                    text: "Play win/loss sounds"
+                    desc: "Should the end of a game play music?"
+                    key: "win_loss_sound"
+
+                HSpacer:
+
+                SliderSetting:
+                    text: "Music Volume"
+                    desc: "How loud should the music be?"
+                    min: 0
+                    max: 1
+                    key: "music_volume"
+                    display_factor: 100
+                    on_value: root.adjust_volumes()
+
+                HSpacer:
+
+        GridLayout:
+            rows: 1
+            size_hint: (1, .06)
+
+            MyButton:
+                id: return_id
+                text: "Return"
+                on_press: root.app.pop_screen()
+
+            MyButton:
+                id: help_id
+                text: "Help"
+                on_press: root.app.show_settings_help()
+
