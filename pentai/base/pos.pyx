@@ -7,7 +7,8 @@ cdef class Pos:
         pass
 
     def __init__(self, *args):
-        self.set(*args)
+        if args:
+            self.set(*args)
 
     def __getitem__(self, int i):
         if i:
@@ -17,7 +18,10 @@ cdef class Pos:
 
     def set(self, *args):
         cdef board_width_type x, y
-        x, y = args
+        try:
+            x, y = args
+        except ValueError:
+            x, y = args[0]
         self.val = y * MAX_BOARD_WIDTH + x
 
     def _richcmp(self, other, compare_type):
