@@ -21,8 +21,15 @@ cdef class Pos:
         try:
             x, y = args
         except ValueError:
-            x, y = args[0]
+            try:
+                x, y = args[0]
+            except TypeError:
+                x, y = args[0], 0
+
         self.val = y * MAX_BOARD_WIDTH + x
+
+    def __reduce__(self):
+        return (self.__class__, (self.val,))
 
     def _richcmp(self, other, compare_type):
         v1 = self.val
