@@ -284,7 +284,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         if r.center_first:
             bs = r.size
             self.get_game().make_move((bs/2, bs/2))
-            self.refresh_all()
             self.clocks[P1].made_move()
         self.prompt_for_action()
 
@@ -359,7 +358,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.get_game().load_game(f.read())
         self.setup_grid()
         self.game_filename = None
-        self.refresh_all()
         self.prompt_for_action()
 
     def load_moves(self, dt=None):
@@ -370,7 +368,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
         self.set_review_mode(is_finished)
 
         self.game_filename = None
-        self.refresh_all()
         self.get_audio().unmute()
         self.prompt_for_action()
 
@@ -379,7 +376,6 @@ class PenteScreen(Screen, gso_m.GSObserver):
             self.go_to_the_beginning()
             self.load_moves()
 
-        self.refresh_all()
         if not self.get_game().finished():
             self.set_review_mode(False)
 
