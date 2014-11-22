@@ -323,7 +323,6 @@ class Guide(Persistent):
             self.on_enter("Settings")
         elif guide_setting == "On":
             self.enable()
-            self.on_enter("Settings")
 
     def on_focus(self, widget, *args):
         try:
