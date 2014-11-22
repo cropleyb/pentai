@@ -218,18 +218,18 @@ class Game(object):
         current_move = self.get_move_number()
         if current_move <= 0:
             # Already at the beginning
+            # TODO: raise exception
             return
 
         try:
             move = self.move_history[current_move - 2]
             captured = self.capture_history[current_move - 2]
         except IndexError:
+            # TODO: raise exception
             return
         self.current_state.undo_move(move, captured)
 
         self.resume_move_number = current_move - 1
-
-        self.current_state.send_up_to_date()
 
     def go_to_the_end(self):
         self.go_to_move(len(self.move_history)+1)
@@ -247,6 +247,10 @@ class Game(object):
     def go_to_move(self, move_number):
         # TODO: All these +1 and -1 shifts look a bit dodgy.
         current_move = self.get_move_number()
+        if move_number == current_move:
+            import pentai.base.logger as log
+            log.debug("Already at move number: %s" % move_number)
+            return
         self.resume_move_number = move_number
         time_hist = self.time_history[:]
 
