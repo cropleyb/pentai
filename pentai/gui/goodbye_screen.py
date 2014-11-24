@@ -7,7 +7,6 @@ from pentai.gui.screen import Screen
 class GoodByeScreen(Screen):
     def __init__(self, *args, **kwargs):
         super(GoodByeScreen, self).__init__(*args, **kwargs)
-        print "init goodbye screen"
 
     def on_enter(self, *args, **kwargs):
         # Was getting part of the wooden board on the screen
