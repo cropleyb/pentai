@@ -12,6 +12,7 @@ import pentai.db.zodb_dict as z_m
 
 import pentai.gui.config as cf_m
 import pentai.gui.guide as gd_m
+import pentai.gui.game_defaults as gdf_m
 import pentai.gui.p_screen_manager as ps_m
 import pentai.gui.my_button
 from pentai.gui.popup import *
@@ -224,7 +225,7 @@ class PentAIApp(App):
             try:
                 self.defaults = misc()["game_defaults"]
             except KeyError:
-                self.defaults = misc()["game_defaults"] = gd_m.GameDefaults()
+                self.defaults = misc()["game_defaults"] = gdf_m.GameDefaults()
         return self.defaults
 
     def set_default_game(self):
