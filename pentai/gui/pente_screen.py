@@ -868,9 +868,11 @@ class PenteScreen(Screen, gso_m.GSObserver):
                 if not w.parent is None:
                     self.remove_widget(w)
                 # Then put them back ON TOP OF THE PIECES
-                if self.mark_moves() == 1:
-                    if w.parent is None:
-                        self.add_widget(w)
+                if self.get_game().get_move_number() > 1:
+                    # TODO: Would be neater if moved_marker was cleared properly
+                    if self.mark_moves():
+                        if w.parent is None:
+                            self.add_widget(w)
 
     def cancel_confirmation(self):
         if self.confirmation_in_progress != None:
