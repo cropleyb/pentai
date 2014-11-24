@@ -54,10 +54,14 @@ class PentAIApp(App):
                     '''
 
     def set_screen_size(self):
-        app_width = self.config.getint("PentAI", "app_width")
-        app_height = self.config.getint("PentAI", "app_height")
+        from kivy import platform
+        if platform in ("ios", "android"):
+            app_width, app_height = kivy.core.window.Window.size
+        else:
+            app_width = self.config.getint("PentAI", "app_width")
+            app_height = self.config.getint("PentAI", "app_height")
+            kivy.core.window.Window.size = (app_width, app_height)
 
-        kivy.core.window.Window.size = (app_width, app_height)
         sc_m.MyScale.set_height(None, app_height)
 
     def display_message(self, message, title=None):
