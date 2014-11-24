@@ -123,7 +123,7 @@ class Guide(Persistent):
         sugg["Menu"]          = ZL(["0:rules_demo_id", "1:new_game_id", "1:human_players_id", "1:new_game_id", "1:settings_id", "1:new_game_id", "1:ai_players_id"])
         sugg["Setup"]         = ZL(["1:help_id", "1:start_game_id", "1:wpl_id", "0:Beatrice_id", "1:start_game_id", "1:wpl_id", "0:Claude_id", "1:start_game_id"])
         sugg["GameSetupHelp"] = ZL(["3:return_id"])
-        sugg["Pente"]         = ZL(["0:help_id", "G:rematch_id", "G:menu_id", "G:rematch_id", "G:menu_id", "G:rematch_id", "G:menu_id"])
+        sugg["Pente"]         = ZL(["0:p_help_id", "G:rematch_id", "G:menu_id", "G:rematch_id", "G:menu_id", "G:rematch_id", "G:menu_id"])
         sugg["PenteHelp"]     = ZL(["15:return_id"])
         sugg["Human"]         = ZL(["F:name_id", "0:menu_id"])
         sugg["HumanHelp"]     = ZL(["5:return_id"])
