@@ -213,6 +213,7 @@ class Game(object):
 
     def go_backwards_one_for_gui(self):
         self.go_to_move(self.get_move_number() - 1)
+        self.current_state.send_up_to_date()
 
     def go_backwards_one(self):
         current_move = self.get_move_number()
