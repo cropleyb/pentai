@@ -1,5 +1,6 @@
 from pentai.base.defines import INFINITY
 from pentai.base.pente_exceptions import *
+import pentai.base.logger as log
 
 INF = INFINITY
 NEGINF = -INFINITY
@@ -12,6 +13,7 @@ def argmax(aspi, fn):
     try:
         curr_state = aspi.next()
     except StopIteration:
+        log.warn("No moves at all!")
         raise NoMovesException()
 
     try:
@@ -21,6 +23,7 @@ def argmax(aspi, fn):
         # TODO: This is assuming that there is only one move because
         # they have been correctly prioritised, and that the value
         # returned by the search is irrelevant.
+        log.debug("Only one move")
         return curr_state, 0
 
     val = fn(curr_state)
