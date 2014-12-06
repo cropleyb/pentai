@@ -138,7 +138,6 @@ class AIPlayer(p_m.Player):
         seen = set()
         turn = ab_game.get_move_number()
         prev_move = ab_game.get_last_move()
-        #st()
         move = self.make_opening_move(turn, seen)
         rules = ab_game.get_rules()
 
@@ -147,14 +146,18 @@ class AIPlayer(p_m.Player):
                 log.info("Corrupt opening %s suggestion ignored" % (move,))
             else:
                 assert(turn != 3 or not rules.move_is_too_close(move))
+                print "chose opening move"
                 return turn, prev_move, move
 
         ab_ss = ab_game.current_state
+
+        # What is this for? No tests break without it?
         if len(seen) < 2:
             ab_ss.set_seen(seen)
 
         move, value = ab_m.alphabeta_search(ab_ss, ab_game)
         if self.ab_game.was_interrupted():
+            log.info("Game was interrupted")
             return None
 
         action = move[0]
