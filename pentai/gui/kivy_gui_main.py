@@ -43,8 +43,12 @@ class PentAIApp(App):
                 for ext in [""]:
                     fn_ext = "%s%s" % (fn, ext)
 
-                    # Copy DB to user_data_dir
-                    shutil.copy(fn_ext, dest)
+                    try:
+                        # Copy DB to user_data_dir
+                        shutil.copy(fn_ext, dest)
+                    except IOError:
+                        dest_filename = os.path.join(dest, fn_ext)
+                        open(dest_filename, 'a')
                     '''
                     # Delete existing DB in user_data_dir
                     del_path = os.path.join(dest, fn_ext)
