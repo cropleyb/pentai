@@ -70,6 +70,24 @@ class PriorityFilter2(object):
     def priority_level(self, level, colour):
         return self.candidates_by_priority_and_colour[level][colour]
 
+    def always_return_something(self, sugg):
+        total_moves = 0
+        for r in sugg:
+            total_moves += len(r)
+
+        if total_moves > 0:
+            return sugg, False
+        else:
+            # Current player is going to lose. Play a "good" move anyway
+            cbpc = self.candidates_by_priority_and_colour
+            #[level][colour]
+            # HERE
+            ret = []
+            for level in range(4, -1, -1):
+                for colour in [P1, P2]: # Doesn't matter, we're gonna lose anyway
+                    ret.append(self.priority_level(level, colour))
+            return ret, True
+
     '''
     # TODO?
     Opponent Min response
@@ -124,19 +142,59 @@ class PriorityFilter2(object):
             # We will lose unless we block or capture 
             return [their_fours, our_takes], False
 
+
         '''
-        # This works and has the same result as PF1, but it's slower
+        # This isn't working, yet?
+
+        # a single instance of a double 3 attack must be blocked,
+        # captured, or threatened, or we must extend a 3 of our own
+
         our_threes = self.priority_level(3, our_colour)
-        their_threes = self.priority_level(3, their_colour)
+        all_their_threes = self.priority_level(3, their_colour)
+
+        their_multi_threes = {}
+        for p,count in all_their_threes.iteritems():
+            if count > 1:
+                their_multi_threes[p] = count
+
         our_threats = self.priority_level(2, our_colour)
         their_threats = self.priority_level(2, their_colour)
+
+        tmtc = len(their_multi_threes)
+        if tmtc > 0:
+            # They have at least one place that they can get 2 or more
+            # simultaneous 4 attacks.
+
+            # We must capture, threaten it, block
+            # there, or extend a 3
+            if tmtc < 3:
+                # We must capture, threaten it, block
+                # there, or extend a 3
+                ret = [their_multi_threes]
+            else:
+                # Can't block all that
+                ret = []
+
+            """
+            all_their_ones = self.priority_level(1, their_colour)
+
+            for to_pos in all_their_ones:
+                for mt_pos in their_multi_threes:
+                    # if the pos is near their multi-three, it might be able
+                    # to take into two or more 4 lines. Hmmm.
+                    if mt_pos
+            """
+
+            ret.extend([our_takes, our_threes, our_threats, their_threats, all_their_ones])
+
+            return self.always_return_something(ret)
+        '''
+
+        '''
         our_twos = self.priority_level(1, our_colour)
 
         if len(their_threes) > 2 and len(our_threes) == 0:
             return [their_threes, our_takes, our_threats, their_takes, our_twos], False
-        '''
-
-        '''
 
         their_twos = self.priority_level(1, their_colour)
         # if len(their_takes) > 0:
@@ -181,6 +239,7 @@ class PriorityFilter2(object):
                         if self.vision < 100:
                             if random.random() * 100 > self.vision:
                                 # Can't see that sorry ;)
+                                print "Blind to that"
                                 continue
                         # Check for 2nd P1 move
                         try:
@@ -198,6 +257,10 @@ class PriorityFilter2(object):
                             return
                         if len(tried) >= self.max_moves_func(depth):
                             return
+
+        #if len(tried) == 0:
+            #print "No candidates: %s " % candidate_slots
+            #raise NoMovesException("In PF2!")
 
     def __repr__(self):
         return "%s" % self.candidates_by_priority_and_colour[5]
