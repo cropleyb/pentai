@@ -8,7 +8,7 @@ class OpeningsMover(object):
         self.o_book = o_book
         self.game = ab_game.get_base_game()
 
-    def get_a_good_move(self, aip, seen=None):
+    def get_a_good_move(self, aip, seen=None, force=False):
         # TODO: shouldn't need to pass in aip each time, make it self.player?
         if seen is None:
             seen = set()
@@ -21,6 +21,8 @@ class OpeningsMover(object):
         mg2 = move_games[ri:] + move_games[:ri]
 
         total_score = .1 # For fall through to default search
+        if force:
+            total_score = 0.0
 
         score_moves = []
         for move, data, secondary in mg2:

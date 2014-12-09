@@ -1,4 +1,5 @@
 from pentai.base.defines import *
+from pentai.base.pente_exceptions import *
 
 def max_moves_sample_func(depth):
     return 9
@@ -159,6 +160,7 @@ class PriorityFilter2(object):
         '''
 
         ret = []
+        #print "defaulting to many levels"
         for level in range(4, -1, -1):
             for colour in [our_colour, their_colour]:
                 ret.append(self.priority_level(level, colour))
@@ -180,9 +182,19 @@ class PriorityFilter2(object):
                             if random.random() * 100 > self.vision:
                                 # Can't see that sorry ;)
                                 continue
+                        # Check for 2nd P1 move
+                        try:
+                            if state:
+                                # TODO: Rename to check_legality
+                                state.is_illegal(pos)
+                        except IllegalMoveException:
+                            print "Skipping illegal suggestion - probably tournament move restriction"
+                            continue
+
                         tried.add(pos)
                         yield pos
                         if one_poss:
+                            #print "one_poss"
                             return
                         if len(tried) >= self.max_moves_func(depth):
                             return

@@ -212,26 +212,74 @@ class PriorityFilter2Test(unittest.TestCase):
         l = list(self.pf2.get_iter(P1))
         self.assertEquals(l[0],(3,3))
 
-    def atest_multiple_entries_searched_first2(self):
-        self.arc(P1, 3, ((4,6),(5,6),), inc=1)
-        self.arc(P1, 3, ((9,6),(10,6),), inc=1)
-        self.arc(P1, 3, ((5,6),(9,6),), inc=1)
-        self.arc(P2, 2, ((7,8),(8,8),(10,8)), inc=1)
-        self.arc(P2, 2, ((8,8),(10,8),(12,8)), inc=1)
-        self.arc(P2, 2, ((10,8),(12,8),(13,8)), inc=1)
-        l = list(self.pf2.get_iter(P1))
-        self.assertEquals(len(l), 4)
-        first_pair = ((5,6), (9,6))
-        self.assertIn(l[0], first_pair)
-        self.assertIn(l[1], first_pair)
 
-    def test_pointless_positions_ignored_gracefully(self):
+    def test_lost_positions_ignored_gracefully(self):
         self.arc(P1, 4, ((4,6),), inc=1)
         self.arc(P1, 4, ((5,7),), inc=1)
         self.arc(P1, 4, ((4,6),), inc=-1)
         l = list(self.pf2.get_iter(P1))
         self.assertEquals(len(l), 1)
         self.assertEquals(l[0],(5,7))
+
+    def test_one_opponent_double_three_must_be_block_cap_or_threatened(self):
+        # i.e. a single instance of a double 3 attack must be blocked,
+        # captured, or threatened, or we must extend a 3 of our own
+        self.pf2.add_or_remove_take(P2, (1,5), inc=1)
+
+        # Only their threes needs to be looked at, since there is a double 3
+        self.arc(P1, 3, ((4,6),(5,6),), inc=1)
+        self.arc(P1, 3, ((5,6),(9,6),), inc=1)
+
+        # all our 3s should be included
+        self.arc(P2, 3, ((4,8),(10,6),), inc=1)
+
+        # only threats that threaten the double 3 really need considering (TODO)
+        self.pf2.add_or_remove_threat(P2, (2,9), inc=1)
+
+        # All 2s are irrelevant since there is a double 3
+        self.arc(P2, 2, ((7,8),(8,8),(10,8)), inc=1)
+        self.arc(P2, 2, ((8,8),(10,8),(12,8)), inc=1)
+        self.arc(P2, 2, ((10,8),(12,8),(13,8)), inc=1)
+
+        l = list(self.pf2.get_iter(P2))
+        self.assertEquals(len(l), 5)
+        self.assertEquals(l[0], (5,6)) # Their open 3
+        self.assertEquals(l[1], (1,5)) # Our take
+        our_threes = ((4,8), (10,5)) # Our 3s
+        self.assertIn(l[2], our_threes)
+        self.assertIn(l[3], our_threes)
+        self.assertEquals(l[3], (2,9)) # Our threat (TODO)
+
+    '''
+    def test_two_opponent_double_threes_block_cap_or_threatened(self):
+        # i.e. a single instance of a double 3 attack must be blocked,
+        # captured, or threatened, or we must extend a 3 of our own
+        self.pf2.add_or_remove_take(P2, (1,5), inc=1)
+
+        # Only their threes needs to be looked at, since there is a double 3
+        self.arc(P1, 3, ((4,6),(5,6),), inc=1)
+        self.arc(P1, 3, ((5,6),(9,6),), inc=1)
+
+        # all our 3s should be included
+        self.arc(P2, 3, ((4,8),(10,6),), inc=1)
+
+        # only threats that threaten the double 3 really need considering (TODO)
+        self.pf2.add_or_remove_threat(P2, (2,9), inc=1)
+
+        # All 2s are irrelevant since there is a double 3
+        self.arc(P2, 2, ((7,8),(8,8),(10,8)), inc=1)
+        self.arc(P2, 2, ((8,8),(10,8),(12,8)), inc=1)
+        self.arc(P2, 2, ((10,8),(12,8),(13,8)), inc=1)
+
+        l = list(self.pf2.get_iter(P2))
+        self.assertEquals(len(l), 5)
+        self.assertEquals(l[0], (5,6)) # Their open 3
+        self.assertEquals(l[1], (1,5)) # Our take
+        our_threes = ((4,8), (10,5)) # Our 3s
+        self.assertIn(l[2], our_threes)
+        self.assertIn(l[3], our_threes)
+        self.assertEquals(l[3], (2,9)) # Our threat (TODO)
+    '''
 
 if __name__ == "__main__":
     unittest.main()

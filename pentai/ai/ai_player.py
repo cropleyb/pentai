@@ -114,12 +114,15 @@ class AIPlayer(p_m.Player):
     def make_opening_move(self, turn, seen):
         if turn > 8: # TODO: Use OPENINGS_DEPTH constant - but where should it live???
             return
-        if self.use_openings_book():
+        base_game = self.ab_game.base_game
+        rules = base_game.get_rules()
+        tournament = rules.tournament_rule
+        if self.use_openings_book() or (turn == 3 and tournament):
+            # assert(turn != 3 or not rules.move_is_too_close(move))
             log.info("Looking for an opening book move")
-            base_game = self.ab_game.base_game
 
             om = self.get_openings_mover()
-            move = om.get_a_good_move(self, seen)
+            move = om.get_a_good_move(self, seen, force=tournament)
             if move:
                 log.info("Used an opening book move")
                 return move
