@@ -94,6 +94,9 @@ class ABState(gso_m.GSObserver):
     def board(self):
         return self.state.board
 
+    def is_illegal(self, pos):
+        return self.state.is_illegal(pos)
+
     def get_rules(self):
         return self.game().rules
 
@@ -105,14 +108,10 @@ class ABState(gso_m.GSObserver):
 
     # TODO: Could these two be moved to utility_stats too?
     def before_set_occ(self, game, pos, colour):
-        self.utility_stats.set_or_reset_occs( \
-                self.board(), self.get_rules(), pos, -1)
-        self.utility_stats.update_checkerboard_stats(colour, pos, -1)
+        self.utility_stats.before_set_occ(game, pos, colour, self.board(), self.get_rules())
 
     def after_set_occ(self, game, pos, colour):
-        self.utility_stats.set_or_reset_occs( \
-                self.board(), self.get_rules(), pos, 1)
-        self.utility_stats.update_checkerboard_stats(colour, pos, 1)
+        self.utility_stats.after_set_occ(game, pos, colour, self.board(), self.get_rules())
 
     def create_state(self, move_pos):
         ab_child = ABState(self)

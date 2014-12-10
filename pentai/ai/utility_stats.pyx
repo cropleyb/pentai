@@ -47,6 +47,14 @@ class UtilityStats(object):
         return "Lines: %s, Takes: %s, Threats: %s, Best: %s" % \
                 (self.lines, self.takes, self.threats, self.search_filter)
 
+    def before_set_occ(self, game, pos, colour, board, rules):
+        set_or_reset_occs(self, board, rules, pos, -1)
+        self.update_checkerboard_stats(colour, pos, -1)
+
+    def after_set_occ(self, game, pos, colour, board, rules):
+        set_or_reset_occs(self, board, rules, pos, 1)
+        self.update_checkerboard_stats(colour, pos, 1)
+
     # This is called LOTS of times
     def report_length_candidate(self, colour, length, ind_list, inc):
         self.lines[colour][length-1] += inc
@@ -75,11 +83,6 @@ class UtilityStats(object):
         self.i_to_p = func
         self.s_num = s_num
     
-    # Slow
-    #@cython.profile(False)
-    def set_or_reset_occs(self, brd, rules, pos, int inc):
-        set_or_reset_occs(self, brd, rules, pos, inc)
-
     #@cython.profile(False)
     def update_checkerboard_stats(self, colour, pos, int inc):
         if not colour:
