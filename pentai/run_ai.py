@@ -74,7 +74,6 @@ class Match():
         self.p2 = aif.create_player(self.genome2)
 
     def play_one_game(self, board_size, rules_type, p1, p2):
-        #st()
         r = r_m.Rules(board_size, rules_type)
         self.game = self.games_mgr.create_game(r, p1, p2)
         #self.evaluator = Evaluator(self.game.current_state)
@@ -233,8 +232,8 @@ class Match():
 
         results = MatchResults()
         #for game_length in range(2,3):
-        for game_length in range(2,4):
-        #for game_length in range(2,5):
+        #for game_length in range(2,4):
+        for game_length in range(2,5):
         #for game_length in range(2,6):
         #for game_length in range(2,7):
         #for game_length in range(2,8):
@@ -304,5 +303,5 @@ if __name__ == "__main__":
     cProfile.runctx("m.play_some_games()", globals(), locals(), "Profile.prof")
 
     s = pstats.Stats("Profile.prof")
-    #s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
-    s.strip_dirs().sort_stats("time").print_stats(20)
+    s.strip_dirs().sort_stats("cumulative").print_stats(20) # or "time"
+    #s.strip_dirs().sort_stats("time").print_stats(20)

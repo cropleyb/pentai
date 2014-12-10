@@ -1,6 +1,8 @@
 from pentai.base.defines import *
 from pentai.base.pente_exceptions import *
 
+cimport cython
+
 def max_moves_sample_func(depth):
     return 9
 
@@ -265,11 +267,6 @@ class PriorityFilter2(object):
     def __repr__(self):
         return "%s" % self.candidates_by_priority_and_colour[5]
 
-    def adjust_slot(self, slot, pos, inc):
-        slot[pos] = slot.setdefault(pos, 0) + inc
-        if slot[pos] == 0:
-            del slot[pos]
-
     def add_or_remove_candidates(self, colour, length, pos_list, inc=1):
         if length == 5:
             # won already, ignore
@@ -282,18 +279,25 @@ class PriorityFilter2(object):
         for pos in pos_list:
             assert pos[0] >= 0
             assert pos[1] >= 0
-            self.adjust_slot(slot, pos, inc)
+            adjust_slot(self, slot, pos, inc)
 
     def add_or_remove_take(self, colour, pos, inc=1):
         assert pos[0] >= 0
         assert pos[1] >= 0
         # Valuing takes between 3s and 4s
         slot = self.candidates_by_priority_and_colour[4][colour]
-        self.adjust_slot(slot, pos, inc)
+        adjust_slot(self, slot, pos, inc)
 
     def add_or_remove_threat(self, colour, pos, inc=1):
         assert pos[0] >= 0
         assert pos[1] >= 0
         # Valuing threats between 2s and 3s
         slot = self.candidates_by_priority_and_colour[2][colour]
-        self.adjust_slot(slot, pos, inc)
+        adjust_slot(self, slot, pos, inc)
+
+@cython.profile(False)
+cdef inline adjust_slot(self, slot, pos, inc):
+    slot[pos] = slot.setdefault(pos, 0) + inc
+    if slot[pos] == 0:
+        del slot[pos]
+

@@ -6,6 +6,8 @@ from pentai.base.defines import *
 from libc.stdint cimport uint64_t as U64
 # U64 = int # For debugging as .py
 
+cimport cython
+
 # TODO: move this to test code?
 def pass_through_func(a, ignored):
     """ This is just a stub, shouldn't be called in production code. """
@@ -55,15 +57,8 @@ class UtilityStats(object):
         set_or_reset_occs(self, board, rules, pos, 1)
         self.update_checkerboard_stats(colour, pos, 1)
 
-    # This is called LOTS of times
     def report_length_candidate(self, colour, length, ind_list, inc):
-        self.lines[colour][length-1] += inc
-
-        # TODO: Can this be done faster?
-        pos_list = [self.i_to_p(i, self.s_num) for i in ind_list]
-
-        self.search_filter.add_or_remove_candidates(
-                colour, length, pos_list, inc)
+        report_length_candidate(self, colour, length, ind_list, inc)
 
     def report_take(self, colour, ind, inc):
         self.takes[colour] += inc
@@ -94,6 +89,19 @@ class UtilityStats(object):
 
         cb_stats_for_colour = self.checkerboard_stats[colour]
         cb_stats_for_colour[square_colour] += inc
+
+# This is called LOTS of times
+#@cython.profile(False)
+cdef report_length_candidate(self, int colour, int length, ind_list, int inc):
+    self.lines[colour][length-1] += inc
+
+    # TODO: Can this be done even faster?
+    i_to_p = self.i_to_p
+    s_num = self.s_num
+    pos_list = [i_to_p(i, s_num) for i in ind_list]
+
+    self.search_filter.add_or_remove_candidates(
+            colour, length, pos_list, inc)
 
 #@cython.profile(False)
 cdef inline set_or_reset_occs(self, brd, rules, pos, int inc):

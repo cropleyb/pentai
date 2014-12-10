@@ -4,6 +4,7 @@ COUNT_LENGTH=5
 
 from pentai.base.defines import *
 
+from pentai.ai.utility_stats cimport report_length_candidate
 cimport cython
 
 from libc.stdint cimport uint64_t as U64
@@ -79,7 +80,7 @@ def prepare_length_lookups():
 # TODO: Something better than a global
 prepare_length_lookups()
 
-#@cython.profile(False)
+@cython.profile(False)
 cpdef process_substrips(U64 bs, int min_ind, int max_ind, us, int inc):
     """
     Try to match each stretch of 5 positions against our lookup table.
@@ -108,5 +109,5 @@ cpdef process_substrips(U64 bs, int min_ind, int max_ind, us, int inc):
 
         # Report it
         shifted_empties = [e+ind for e in empty_list]
-        us.report_length_candidate(colour, length, shifted_empties, inc)
+        report_length_candidate(us, colour, length, shifted_empties, inc)
 
