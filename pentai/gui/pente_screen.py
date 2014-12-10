@@ -929,6 +929,7 @@ class PenteScreen(Screen, gso_m.GSObserver):
         return self.config.getint("PentAI", "mark_captures")
 
     def take_back_move(self):
+        #st()
         players = self.get_game().get_all_players()
         human_count = 0
         for i in (1,2):
@@ -1206,6 +1207,70 @@ class Piece(Scatter):
         self.do_translation = False
         self.do_rotation = False
         self.do_scale = False
+'''
+
+from kivy.uix.image import Image
+#from kivy.uix.widget import Widget
+
+# TODO: Rename: ScaledImage?
+# Turn marker and flag should not use this!
+class Piece(Image):
+    #source = StringProperty(None)
+    board_size = NumericProperty(None)
+
+    def __init__(self, board_size, source, *args, **kwargs):
+        self.board_size = board_size
+        self.source = source
+        #super(Piece, self).__init__(*args, **kwargs)
+
+        #Clock.schedule_once(self.redraw, .01)
+
+        #self.my_image = Image(source=source, allow_stretch=True, center=(0,0))
+        #my_image = self.my_image
+        #self.bind(texture_size=self.redraw)
+
+        #my.bind(dp=self.redraw)
+        #my_image.bind(pos=self.redraw)
+        #self.redraw()
+
+        #self.add_widget(my_image)
+
+    """
+    def redraw(self, *ignored):
+        print "redrawing Piece"
+        #st()
+        self.size = (20, 20) # * my.dp / self.board_size 
+        #self.size = .1 # * my.dp / self.board_size 
+        #self.size_y = self.my_image.norm_image_size[1] * my.dp / self.board_size 
+        #self.pos = self.pos
+    """
+'''
+'''
+class Piece(Widget):
+    source = StringProperty(None)
+    board_size = NumericProperty(None)
+
+    def __init__(self, board_size, source, *args, **kwargs):
+        self.board_size = board_size
+        self.source = source
+        super(Piece, self).__init__(*args, **kwargs)
+
+        self.my_image = Image(source=source, allow_stretch=True, center=(0,0))
+        my_image = self.my_image
+        my_image.bind(norm_image_size=self.redraw)
+
+        my.bind(dp=self.redraw)
+        my_image.bind(pos=self.redraw)
+        self.redraw()
+
+        self.add_widget(my_image)
+
+    def redraw(self, *ignored):
+        print "redrawing Piece"
+        self.size_x = self.my_image.norm_image_size[0] * my.dp / self.board_size 
+        #self.size_y = self.my_image.norm_image_size[1] * my.dp / self.board_size 
+        self.my_image.pos = self.pos
+'''
 
 from kivy.uix.gridlayout import GridLayout
 

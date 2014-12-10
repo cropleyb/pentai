@@ -148,8 +148,36 @@
             size_hint_y: .35
             color: (.99, 0.31, 0.25, 1)
 
+
+#<Piece@Image>:
+    #allow_stretch: True
+    #center: (0,0)
+    #on_size: self.resize()
+
 <Piece>:
     Image:
         id: image
         source: root.source
         center: 0, 0
+
+#<Piece@Image>:
+    #allow_stretch: True
+    #center: (0,0)
+    #on_size: self.resize()
+    #canvas:
+        #Rectangle:
+            #texture: self.texture
+            #size_x: self.width / (self.board_size + 2)
+            #size_y: self.width / (self.board_size + 2)
+            #pos: self.x, self.y
+
+# <Piece>:
+#     size: self.image_id.norm_image_size * my.dp / root.board_size 
+#     Image:
+#         id: image_id
+#         source: root.source
+#         center: 0, 0
+#         pos: root.pos
+#         #size_x: my.dp / root.board_size
+#         allow_stretch: True
+#         #self.scale = 7.0 * my.dp / board_size
