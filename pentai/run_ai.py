@@ -74,6 +74,7 @@ class Match():
         self.p2 = aif.create_player(self.genome2)
 
     def play_one_game(self, board_size, rules_type, p1, p2):
+        #st()
         r = r_m.Rules(board_size, rules_type)
         self.game = self.games_mgr.create_game(r, p1, p2)
         #self.evaluator = Evaluator(self.game.current_state)
@@ -109,27 +110,29 @@ class Match():
         return ret
 
     def play_some_games(self):
-        #self.genome1.use_openings_book = False
-        #self.genome2.use_openings_book = False
+        aip_m.set_skip_openings_book(True) # For deterministic results
+        self.genome1.use_openings_book = False
+        self.genome2.use_openings_book = False
+        self.genome2.filter_num = 2
 
-        self.genome1.capture_score_base = 300
-        self.genome2.capture_score_base = 300
+        #self.genome1.capture_score_base = 300
+        #self.genome2.capture_score_base = 300
         #self.genome2.capture_score_base = 500
-        self.genome1.enclosed_four_base = 400
-        self.genome2.enclosed_four_base = 400
+        #self.genome1.enclosed_four_base = 400
+        #self.genome2.enclosed_four_base = 400
         #self.genome2.enclosed_four_base = 300
-        self.genome1.threat_score_base = 20
-        self.genome2.threat_score_base = 20
+        #self.genome1.threat_score_base = 20
+        #self.genome2.threat_score_base = 20
         #self.genome2.threat_score_base = 25
-        self.genome1.length_factor = 35
-        self.genome2.length_factor = 35
+        #self.genome1.length_factor = 35
+        #self.genome2.length_factor = 35
         #self.genome2.length_factor = 22
-        self.genome1.move_factor = 45
-        self.genome2.move_factor = 45
+        #self.genome1.move_factor = 45
+        #self.genome2.move_factor = 45
         #self.genome2.move_factor = 80
-        self.genome1.checkerboard_value = 0
+        #self.genome1.checkerboard_value = 0
         #self.genome1.checkerboard_value = 30
-        self.genome2.checkerboard_value = 35
+        #self.genome2.checkerboard_value = 35
 
         #self.threat_score_base = 20
         #self.take_score_base = 80
@@ -230,19 +233,19 @@ class Match():
 
         results = MatchResults()
         #for game_length in range(2,3):
-        #for game_length in range(2,4):
+        for game_length in range(2,4):
         #for game_length in range(2,5):
         #for game_length in range(2,6):
         #for game_length in range(2,7):
         #for game_length in range(2,8):
         #for game_length in range(2,9):
-        for game_length in range(2,10):
-            for board_size in [19]:
-            #for board_size in [13, 19]:
+        #for game_length in range(2,10):
+            #for board_size in [19]:
+            for board_size in [13, 19]:
                 for first_player in [0, 1]:
                     #for rules_type in ['s', 't']:
-                    for rules_type in ['t']:
-                    #for rules_type in ['s']:
+                    #for rules_type in ['t']:
+                    for rules_type in ['s']:
                         #self.set_up(game_length, 1) # For p2 depth boost
                         self.set_up(game_length)
                         players = [self.p1, self.p2]
