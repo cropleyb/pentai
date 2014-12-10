@@ -24,7 +24,7 @@ class AIGenome(Persistent):
 
         # TODO: Remove, no longer used?
         self.utility_filter = False
-        self.filter_num = 1
+        self.filter_num = 2
 
         # Utility function
         self.calc_mode = 1
