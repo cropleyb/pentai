@@ -61,3 +61,28 @@ class AIGenome(Persistent):
     def get_key(self):
         return self.p_key
 
+    '''
+    def __reduce__(self):
+        print "IN REDUCE ---------------------------"
+        return (self.__class__, (self.__dict__,))
+
+    def _richcmp(self, other, compare_type):
+        print "IN RICHCMP ---------------------------"
+        v1 = self.p_key
+        v2 = other.p_key
+        if compare_type == 2:
+            return v1 == v2
+        elif compare_type == 3:
+            return v1 != v2
+        elif compare_type == 0:
+            return v1 < v2
+        elif compare_type == 1:
+            return v1 <= v2
+        elif compare_type == 4:
+            return v1 > v2
+        elif compare_type == 5:
+            return v1 >= v2
+
+    def __richcmp__(self, other, compare_type):
+        return self._richcmp(other, compare_type)
+    '''
