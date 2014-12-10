@@ -2,6 +2,7 @@
 
 import pentai.ai.ai_player as aip_m
 from pentai.ai.priority_filter import *
+from pentai.ai.priority_filter_2 import *
 
 import pentai.db.openings_book as ob_m
 import pentai.db.games_mgr
@@ -15,6 +16,8 @@ class AIFactory: # TODO: These are just functions
 
         if filter_num == 1:
             sf = PriorityFilter()
+        elif filter_num == 2:
+            sf = PriorityFilter2()
 
         sf.set_max_moves_per_depth_level(mmpdl=genome.mmpdl, narrowing=genome.narrowing,
                 chokes=genome.chokes)
@@ -41,12 +44,11 @@ class AIFactory: # TODO: These are just functions
         except AttributeError:
             p.bl_cutoff = False
         
-        if genome.use_openings_book:
-            ob = ob_m.instance
-            if not ob:
-                ob = ob_m.OpeningsBook()
-                ob_m.instance = ob
-            p.set_use_openings_book(ob)
+        ob = ob_m.instance
+        if not ob:
+            ob = ob_m.OpeningsBook()
+            ob_m.instance = ob
+        p.set_use_openings_book(ob)
 
         p.force_depth = genome.force_depth
 

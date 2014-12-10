@@ -37,7 +37,7 @@ class AIPlayer(p_m.Player):
         return self.__class__ == other.__class__ and self.genome == other.genome
 
     def use_openings_book(self):
-        return not (self.openings_book is None) and not skip_openings_book
+        return (not self.openings_book is None) and skip_openings_book
 
     def set_use_openings_book(self, openings_book):
         self.openings_book = openings_book
@@ -117,7 +117,7 @@ class AIPlayer(p_m.Player):
         base_game = self.ab_game.base_game
         rules = base_game.get_rules()
         tournament = rules.tournament_rule
-        if self.use_openings_book() or (turn == 3 and tournament):
+        if self.use_openings_book() or (turn == 3 and tournament and not skip_openings_book):
             # assert(turn != 3 or not rules.move_is_too_close(move))
             log.info("Looking for an opening book move")
 
