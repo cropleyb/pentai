@@ -4,6 +4,7 @@ rm alpha_beta.py[c]
 rm openings_mover.py[c]
 rm utility_calculator.py[c]
 # rm utility_stats.py[c]
+rm length_factor.py[c]
 rm priority_filter.py[c]
 rm priority_filter_2.py[c]
 rm priority_filter_3.py[c]
@@ -19,6 +20,7 @@ rm alpha_beta.py
 rm openings_mover.py
 rm utility_calculator.py
 # rm utility_stats.py
+rm length_factor.py
 rm priority_filter.py
 rm priority_filter_2.py
 rm priority_filter_3.py
