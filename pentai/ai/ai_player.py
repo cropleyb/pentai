@@ -37,7 +37,7 @@ class AIPlayer(p_m.Player):
         return self.__class__ == other.__class__ and self.genome == other.genome
 
     def use_openings_book(self):
-        return (not self.openings_book is None) and skip_openings_book
+        return (not self.openings_book is None) and not skip_openings_book
 
     def set_use_openings_book(self, openings_book):
         self.openings_book = openings_book
